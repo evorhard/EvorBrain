@@ -1,6 +1,10 @@
 # Personal
 notes.md
 
+# Claude AI Assistant
+.claude/settings.local.json
+.claude/*.local.json
+
 # Logs
 logs
 *.log
