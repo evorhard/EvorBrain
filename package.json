@@ -1,0 +1,44 @@
+{
+  "name": "evorbrain",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "EvorBrain - Offline-first personal productivity system",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "tauri": "tauri",
+    "tauri:dev": "tauri dev",
+    "tauri:build": "tauri build",
+    "tauri:build:debug": "tauri build --debug",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "type-check": "tsc --noEmit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/evorhard/evorbrain.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/evorhard/evorbrain/issues"
+  },
+  "homepage": "https://github.com/evorhard/evorbrain#readme",
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.6.2",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react": "^4.6.0",
+    "typescript": "^5.8.3",
+    "vite": "^7.0.4"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2.6.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  }
+}

@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <a href="#"><img src="https://img.shields.io/badge/version-0.1.0--alpha-blue" alt="Version"></a>
+  <a href="#"><img src="https://img.shields.io/badge/version-0.1.0--dev-blue" alt="Version"></a>
   <a href="#license"><img src="https://img.shields.io/badge/license-MIT-green" alt="License"></a>
   <a href="#"><img src="https://img.shields.io/badge/build-pending-yellow" alt="Build Status"></a>
   <a href="#"><img src="https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey" alt="Platform"></a>
@@ -238,9 +238,10 @@ EvorBrain includes comprehensive documentation for different audiences:
 
 ### Current Development Status
 
-- **Phase**: MVP Development (Phase 1)
-- **Progress**: Architecture complete, starting implementation
+- **Phase**: MVP Development (Phase 1 - Week 1)
+- **Progress**: Tauri project initialized, TypeScript configured
 - **Target**: 6-week MVP release
+- **Next**: SQLite integration and Feature-Sliced Design structure
 
 See [TASKS.md](TASKS.md) for detailed progress.
 
@@ -312,6 +313,10 @@ Please read our [Code of Conduct](CODE_OF_CONDUCT.md) before contributing.
 
 - [x] Architecture planning
 - [x] Development environment setup
+- [x] Tauri project initialization
+- [-] TypeScript + path aliases configuration (in progress)
+- [ ] SQLite integration
+- [ ] Feature-Sliced Design structure
 - [ ] Core CRUD operations
 - [ ] Calendar integration
 - [ ] Basic UI implementation
