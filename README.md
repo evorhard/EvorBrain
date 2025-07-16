@@ -1,6 +1,7 @@
-<p align="center">
+<!-- Logo placeholder - add logo image when available -->
+<!-- <p align="center">
   <img src="docs/images/evorbrain-logo.png" alt="EvorBrain Logo" width="200" />
-</p>
+</p> -->
 
 <h1 align="center">EvorBrain</h1>
 
@@ -62,7 +63,8 @@ Tasks (Monday workout, Study Chapter 3)
 
 ### Screenshots
 
-<p align="center">
+<!-- Screenshots coming soon - application UI in development -->
+<!-- <p align="center">
   <img src="docs/images/screenshot-dashboard.png" alt="Dashboard View" width="600" />
   <br />
   <em>Dashboard - See your entire life at a glance</em>
@@ -72,7 +74,9 @@ Tasks (Monday workout, Study Chapter 3)
   <img src="docs/images/screenshot-calendar.png" alt="Calendar View" width="600" />
   <br />
   <em>Calendar - Visualize tasks and deadlines</em>
-</p>
+</p> -->
+
+*Screenshots will be added once the UI is implemented.*
 
 ---
 
