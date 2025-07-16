@@ -1,0 +1,9 @@
+dist
+build
+src-tauri/target
+node_modules
+*.min.js
+*.min.css
+coverage
+.vscode
+.idea
