@@ -1,29 +1,26 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
-import App from "./App";
+import { App } from "@/app";
 
 describe("App", () => {
-  it("renders welcome message", () => {
+  it("renders the main layout", () => {
     render(<App />);
-    expect(screen.getByText("Welcome to EvorBrain!")).toBeInTheDocument();
+    // Check for main layout structure
+    const mainElement = screen.getByRole("main");
+    expect(mainElement).toBeInTheDocument();
   });
 
-  it("renders productivity system description", () => {
+  it("renders EvorBrain title in sidebar", () => {
     render(<App />);
+    expect(screen.getByText("EvorBrain")).toBeInTheDocument();
+  });
+
+  it("renders Dashboard page", () => {
+    render(<App />);
+    // Check for the dashboard heading (h2)
+    expect(screen.getByRole("heading", { name: "Dashboard" })).toBeInTheDocument();
     expect(
-      screen.getByText("Your offline-first personal productivity system.")
+      screen.getByText("Welcome to EvorBrain - Your Personal Productivity System")
     ).toBeInTheDocument();
-  });
-
-  it("renders input field", () => {
-    render(<App />);
-    const input = screen.getByPlaceholderText("Enter a name...");
-    expect(input).toBeInTheDocument();
-  });
-
-  it("renders greet button", () => {
-    render(<App />);
-    const button = screen.getByRole("button", { name: /greet/i });
-    expect(button).toBeInTheDocument();
   });
 });

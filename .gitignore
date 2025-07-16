@@ -41,3 +41,38 @@ src-tauri/WixTools/
 
 # Windows artifacts
 nul
+Thumbs.db
+desktop.ini
+
+# Test coverage
+coverage/
+*.lcov
+.nyc_output/
+
+# Database files (when SQLite is implemented)
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# Temporary files
+*.tmp
+*.temp
+.temp/
+.tmp/
+
+# Build locks (optional - some prefer to commit these)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
