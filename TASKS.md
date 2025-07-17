@@ -72,24 +72,26 @@
 
 #### Database Integration
 
-- [ ] **Implement SQLite integration in Tauri backend** 🔴 📐
+- [x] **Implement SQLite integration in Tauri backend** 🔴 📐
 
   - **Acceptance Criteria**:
-    - Database connection established
-    - Migration system implemented
-    - Error handling for DB operations
+    - Database connection established ✓
+    - Migration system implemented ✓
+    - Error handling for DB operations ✓
   - **Dependencies**: Tauri project setup
   - **Reference**: [Database Schema Design](PLANNING.md#database-schema-design)
   - **Testing**: Unit tests for database operations
+  - **Completed**: 2025-01-17
 
-- [ ] **Create database schema and migrations** 🔴 📐
+- [x] **Create database schema and migrations** 🔴 📐
 
   - **Acceptance Criteria**:
-    - All tables created per schema
-    - Indexes implemented
-    - Foreign key constraints active
+    - All tables created per schema ✓
+    - Indexes implemented ✓
+    - Foreign key constraints active ✓
   - **Dependencies**: SQLite integration
   - **Technical Notes**: Use schema from PLANNING.md
+  - **Completed**: 2025-01-17
 
 - [ ] **Implement Tauri IPC commands for data operations** 🔴 🏗️
   - **Acceptance Criteria**:
@@ -98,6 +100,48 @@
     - Type-safe command definitions
   - **Dependencies**: Database schema created
   - **Testing**: Integration tests for each command
+
+#### Critical Security Fixes (Immediate)
+
+- [ ] **Fix SQL injection vulnerabilities** 🔴 📌
+
+  - **Acceptance Criteria**:
+    - Use parameterized queries exclusively
+    - Remove direct SQL query construction
+    - Audit all database queries
+  - **Dependencies**: Database connection established
+  - **Files to Fix**: `src-tauri/src/main.rs:27`
+  - **Testing**: Security audit of all queries
+
+- [ ] **Implement path traversal protection** 🔴 📌
+
+  - **Acceptance Criteria**:
+    - Sanitize all file paths
+    - Validate database path construction
+    - Prevent directory traversal attacks
+  - **Dependencies**: Database module
+  - **Files to Fix**: `src-tauri/src/database/connection.rs:18`
+  - **Technical Notes**: Use canonical path resolution
+
+- [ ] **Add input validation layer** 🔴 📐
+
+  - **Acceptance Criteria**:
+    - Validate all DTOs before operations
+    - Implement schema validation
+    - Standardize error messages
+  - **Dependencies**: Entity models complete
+  - **Files to Fix**: `src/features/tasks/model/store.ts`
+  - **Technical Notes**: Consider zod for TypeScript, validator crate for Rust
+
+- [ ] **Configure Tauri security settings** 🔴 📌
+
+  - **Acceptance Criteria**:
+    - Configure command allowlist
+    - Implement CSP headers
+    - Enable security features
+  - **Dependencies**: Tauri setup
+  - **Files to Fix**: `tauri.conf.json`
+  - **Reference**: [Tauri Security Guide](https://tauri.app/v1/guides/distribution/hardening)
 
 #### State Management Setup
 
@@ -283,6 +327,47 @@
   - **Dependencies**: @dnd-kit integration
 
 ### Week 6: Polish & Testing
+
+#### Performance Optimizations
+
+- [ ] **Optimize React re-renders** 🔴 📐
+
+  - **Acceptance Criteria**:
+    - Add React.memo where appropriate
+    - Implement useCallback/useMemo
+    - Prevent unnecessary renders
+  - **Dependencies**: Components implemented
+  - **Files to Fix**: `src/pages/dashboard/ui/DashboardPage.tsx`
+  - **Testing**: React DevTools Profiler
+
+- [ ] **Add missing database indexes** 🔴 📌
+
+  - **Acceptance Criteria**:
+    - Add composite index (project_id, status)
+    - Analyze query patterns
+    - Create performance indexes
+  - **Dependencies**: Database schema complete
+  - **Files to Fix**: `migrations/0001_initial_schema.sql`
+  - **Technical Notes**: Use EXPLAIN QUERY PLAN
+
+- [ ] **Implement efficient state updates** 🟡 📐
+
+  - **Acceptance Criteria**:
+    - Add immer middleware to Zustand
+    - Optimize Map operations
+    - Reduce state mutations
+  - **Dependencies**: Zustand configured
+  - **Files to Fix**: `src/features/tasks/model/store.ts:78-79`
+  - **Testing**: Performance benchmarks
+
+- [ ] **Configure code splitting** 🟡 📐
+
+  - **Acceptance Criteria**:
+    - Lazy load routes
+    - Split vendor chunks
+    - Analyze bundle size
+  - **Dependencies**: Routing implemented
+  - **Technical Notes**: Use React.lazy and Suspense
 
 #### UI/UX Improvements
 
@@ -560,6 +645,212 @@
     - Process to project/task
     - Bulk processing
   - **Dependencies**: Quick capture modal
+
+### Architecture & Code Quality Improvements (Week 13)
+
+#### FSD Architecture Compliance
+
+- [ ] **Fix FSD layer violations** 🔴 📐
+
+  - **Acceptance Criteria**:
+    - Remove direct Tauri calls from pages
+    - Create proper API abstraction layer
+    - Route all calls through features
+  - **Dependencies**: Core features implemented
+  - **Files to Fix**: `src/pages/dashboard/ui/DashboardPage.tsx:9,17,67`
+  - **Reference**: [Feature-Sliced Design](PLANNING.md#architecture-pattern-feature-sliced-design)
+
+- [ ] **Create API abstraction layer** 🔴 📐
+
+  - **Acceptance Criteria**:
+    - Typed API wrapper for all Tauri commands
+    - Centralized error handling
+    - Request/response typing
+  - **Dependencies**: Tauri commands implemented
+  - **Technical Notes**: Create in shared/api layer
+
+- [ ] **Implement proper routing system** 🔴 📐
+
+  - **Acceptance Criteria**:
+    - React Router integration
+    - Type-safe routes
+    - Navigation guards
+  - **Dependencies**: Pages implemented
+  - **Files to Fix**: `src/widgets/Sidebar/ui/Sidebar.tsx:24-38`
+
+#### Code Quality Enhancements
+
+- [ ] **Extract common patterns** 🟡 📐
+
+  - **Acceptance Criteria**:
+    - Identify duplicate code patterns
+    - Create utility functions
+    - Reduce code duplication
+  - **Dependencies**: Core features complete
+  - **Files to Fix**: `src/features/tasks/model/store.ts:36-51,53-72`
+
+- [ ] **Standardize naming conventions** 🟡 📌
+
+  - **Acceptance Criteria**:
+    - Consistent snake_case in Rust
+    - Consistent camelCase in TypeScript
+    - Mapping layer between them
+  - **Dependencies**: Database models stable
+  - **Files to Fix**: `src-tauri/src/database/models/task.rs`
+
+- [ ] **Add comprehensive error handling** 🔴 📐
+
+  - **Acceptance Criteria**:
+    - Error boundaries at all levels
+    - Consistent error types
+    - User-friendly error messages
+  - **Dependencies**: Component hierarchy complete
+  - **Technical Notes**: Use React Error Boundary
+
+### Database Optimization (Week 14)
+
+#### Performance Optimizations
+
+- [ ] **Implement connection pooling configuration** 🟡 📐
+
+  - **Acceptance Criteria**:
+    - Dynamic pool size based on system resources
+    - Connection reuse optimization
+    - Pool monitoring metrics
+  - **Dependencies**: SQLite integration complete
+  - **Technical Notes**: Configure based on available memory and CPU cores
+
+- [ ] **Add database query caching layer** 🟡 📐
+
+  - **Acceptance Criteria**:
+    - LRU cache for frequent queries
+    - Cache invalidation strategy
+    - Performance metrics
+  - **Dependencies**: Core CRUD operations complete
+  - **Testing**: Verify cache hit rates and memory usage
+
+- [ ] **Implement batch operations for bulk inserts/updates** 🟡 📐
+
+  - **Acceptance Criteria**:
+    - Batch insert for tasks
+    - Transaction management
+    - Performance benchmarks
+  - **Dependencies**: Task CRUD operations
+  - **Technical Notes**: Use prepared statements and transactions
+
+#### Code Architecture Improvements
+
+- [ ] **Create repository pattern for data access** 🔴 📐
+
+  - **Acceptance Criteria**:
+    - Repository interfaces defined
+    - Separation of business logic from DB queries
+    - Unit testable design
+  - **Dependencies**: All entity CRUD operations complete
+  - **Reference**: Clean architecture principles
+
+- [ ] **Add service layer between Tauri commands and database** 🔴 📐
+
+  - **Acceptance Criteria**:
+    - Service interfaces for each domain
+    - Business logic encapsulation
+    - Error handling standardization
+  - **Dependencies**: Repository pattern implemented
+  - **Testing**: Integration tests for service layer
+
+- [ ] **Implement unit of work pattern for transactions** 🟡 📐
+
+  - **Acceptance Criteria**:
+    - Transaction boundaries defined
+    - Rollback capability
+    - Nested transaction support
+  - **Dependencies**: Service layer complete
+  - **Technical Notes**: Consider sqlx transaction API
+
+#### Type Safety and Validation
+
+- [ ] **Add validation layer for DTOs** 🟡 📌
+
+  - **Acceptance Criteria**:
+    - Input validation before DB operations
+    - Custom validation rules
+    - Error message standardization
+  - **Dependencies**: Entity models complete
+  - **Technical Notes**: Consider validator crate for Rust
+
+- [ ] **Implement builder patterns for complex entities** 🟢 📐
+
+  - **Acceptance Criteria**:
+    - Type-safe builders for Task, Project
+    - Validation in builder methods
+    - Fluent API design
+  - **Dependencies**: Entity models stabilized
+
+- [ ] **Add compile-time SQL validation with sqlx macros** 🟡 📐
+
+  - **Acceptance Criteria**:
+    - query! macro usage
+    - Compile-time SQL checking
+    - Type-safe query results
+  - **Dependencies**: Database schema stable
+  - **Technical Notes**: Requires DATABASE_URL at compile time
+
+#### Enhanced Error Handling
+
+- [ ] **Add granular error types for different scenarios** 🟡 📌
+
+  - **Acceptance Criteria**:
+    - Specific error types per domain
+    - Error context preservation
+    - User-friendly error messages
+  - **Dependencies**: Basic error handling in place
+
+- [ ] **Implement retry logic for transient errors** 🟡 📐
+
+  - **Acceptance Criteria**:
+    - Exponential backoff
+    - Max retry configuration
+    - Retry-able error detection
+  - **Dependencies**: Error types defined
+  - **Technical Notes**: Handle SQLite busy errors
+
+- [ ] **Add structured logging for database operations** 🟡 📌
+
+  - **Acceptance Criteria**:
+    - Operation timing logs
+    - Query parameter logging (sanitized)
+    - Error context logging
+  - **Dependencies**: Logging framework setup
+  - **Technical Notes**: Use tracing crate
+
+#### Testing Infrastructure
+
+- [ ] **Create unit tests for database operations** 🔴 📐
+
+  - **Acceptance Criteria**:
+    - 80% coverage for DB modules
+    - Mock database for unit tests
+    - Test data fixtures
+  - **Dependencies**: Repository pattern complete
+  - **Testing**: Use sqlx test features
+
+- [ ] **Add integration tests for migrations** 🔴 📐
+
+  - **Acceptance Criteria**:
+    - Migration up/down tests
+    - Schema validation tests
+    - Data integrity checks
+  - **Dependencies**: Migration system stable
+  - **Technical Notes**: Use test databases
+
+- [ ] **Create performance benchmarks** 🟡 📐
+
+  - **Acceptance Criteria**:
+    - Query performance benchmarks
+    - Load testing scenarios
+    - Performance regression detection
+  - **Dependencies**: Core features complete
+  - **Technical Notes**: Use criterion for benchmarking
 
 ### Data Management
 
@@ -881,6 +1172,26 @@
 
 ## Ongoing Tasks
 
+### Security & Compliance
+
+- [ ] **Security vulnerability scanning** 🔴 📌
+
+  - **Acceptance Criteria**:
+    - Automated security scans
+    - Dependency vulnerability checks
+    - Code security analysis
+  - **Schedule**: Weekly
+  - **Tools**: npm audit, cargo audit, SAST tools
+
+- [ ] **Security audit checklist** 🔴 📐
+
+  - **Acceptance Criteria**:
+    - Input validation review
+    - Authentication checks
+    - Data sanitization audit
+  - **Schedule**: Before each release
+  - **Reference**: OWASP guidelines
+
 ### Maintenance & Optimization
 
 - [ ] **Weekly dependency updates** 🟡 📌
@@ -963,6 +1274,8 @@ _Tasks will be moved here upon completion with completion date_
 - [x] **Implement basic Zustand store structure** - Created tasks store with TypeScript types and CRUD operations
 - [x] **Create initial entity models** - TypeScript interfaces for Task, Project, Goal, and LifeArea entities
 - [x] **Restore greeting functionality** - Moved greeting feature to Dashboard page with improved styling
+- [x] **Implement SQLite integration in Tauri backend** - Database connection with pooling (WAL mode), custom error types, sqlx/tokio dependencies, test command added
+- [x] **Create database schema and migrations** - All tables (life_areas, goals, projects, tasks, tags, task_tags), foreign key constraints, performance indexes, update triggers, SQLx migration system
 
 ---
 
