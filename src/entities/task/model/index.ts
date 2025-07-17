@@ -4,7 +4,7 @@
  * Task entity types and interfaces
  */
 
-import { TaskPriority, TaskStatus } from '@/shared/config';
+import type { TaskPriority, TaskStatus } from '@/shared/config';
 
 export interface Task {
   id: string;
@@ -30,4 +30,4 @@ export interface CreateTaskDto {
   estimatedMinutes?: number;
 }
 
-export interface UpdateTaskDto extends Partial<Omit<Task, 'id' | 'createdAt' | 'updatedAt'>> {}
+export type UpdateTaskDto = Partial<Omit<Task, 'id' | 'createdAt' | 'updatedAt'>>

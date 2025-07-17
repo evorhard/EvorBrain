@@ -5,7 +5,7 @@
  */
 
 import { invokeCommand } from '@/shared/api';
-import { Task, CreateTaskDto, UpdateTaskDto } from '@/entities/task';
+import type { Task, CreateTaskDto, UpdateTaskDto } from '@/entities/task';
 
 export const tasksApi = {
   getAll: () => invokeCommand<Task[]>('get_all_tasks'),

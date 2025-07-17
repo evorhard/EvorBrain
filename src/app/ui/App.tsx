@@ -4,7 +4,7 @@
  * Root component with providers and routing
  */
 
-import React from 'react';
+import type React from 'react';
 import { Sidebar } from '@/widgets/Sidebar';
 import { DashboardPage } from '@/pages/dashboard';
 import '../styles/App.css';

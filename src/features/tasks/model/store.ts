@@ -6,8 +6,7 @@
 
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
-import { immer } from 'zustand/middleware/immer';
-import { Task, CreateTaskDto, UpdateTaskDto } from '@/entities/task';
+import type { Task, CreateTaskDto, UpdateTaskDto } from '@/entities/task';
 import { tasksApi } from '../api';
 
 interface TasksState {
@@ -28,52 +27,46 @@ interface TasksState {
 export const useTasksStore = create<TasksState>()(
   devtools(
     persist(
-      immer((set, get) => ({
+      (set, get) => ({
         tasks: new Map(),
         selectedTaskId: null,
         isLoading: false,
         error: null,
 
         loadTasks: async () => {
-          set((state) => {
-            state.isLoading = true;
-            state.error = null;
-          });
+          set({ isLoading: true, error: null });
           
           try {
             const tasks = await tasksApi.getAll();
-            set((state) => {
-              state.tasks = new Map(tasks.map(t => [t.id, t]));
-              state.isLoading = false;
+            set({ 
+              tasks: new Map(tasks.map(t => [t.id, t])),
+              isLoading: false 
             });
           } catch (error) {
-            set((state) => {
-              state.error = error instanceof Error ? error.message : 'Failed to load tasks';
-              state.isLoading = false;
+            set({ 
+              error: error instanceof Error ? error.message : 'Failed to load tasks',
+              isLoading: false 
             });
           }
         },
 
         loadTasksByProject: async (projectId) => {
-          set((state) => {
-            state.isLoading = true;
-            state.error = null;
-          });
+          set({ isLoading: true, error: null });
           
           try {
             const tasks = await tasksApi.getByProject(projectId);
-            set((state) => {
-              // Clear existing tasks and add project tasks
-              state.tasks.clear();
-              tasks.forEach(task => {
-                state.tasks.set(task.id, task);
-              });
-              state.isLoading = false;
+            const tasksMap = new Map<string, Task>();
+            tasks.forEach(task => {
+              tasksMap.set(task.id, task);
+            });
+            set({ 
+              tasks: tasksMap,
+              isLoading: false 
             });
           } catch (error) {
-            set((state) => {
-              state.error = error instanceof Error ? error.message : 'Failed to load tasks';
-              state.isLoading = false;
+            set({ 
+              error: error instanceof Error ? error.message : 'Failed to load tasks',
+              isLoading: false 
             });
           }
         },
@@ -81,12 +74,13 @@ export const useTasksStore = create<TasksState>()(
         createTask: async (dto) => {
           try {
             const task = await tasksApi.create(dto);
-            set((state) => {
-              state.tasks.set(task.id, task);
-            });
+            const currentTasks = get().tasks;
+            const newTasks = new Map(currentTasks);
+            newTasks.set(task.id, task);
+            set({ tasks: newTasks });
           } catch (error) {
-            set((state) => {
-              state.error = error instanceof Error ? error.message : 'Failed to create task';
+            set({ 
+              error: error instanceof Error ? error.message : 'Failed to create task' 
             });
             throw error;
           }
@@ -94,41 +88,46 @@ export const useTasksStore = create<TasksState>()(
 
         updateTask: async (id, updates) => {
           // Optimistic update
-          const originalTask = get().tasks.get(id);
+          const currentTasks = get().tasks;
+          const originalTask = currentTasks.get(id);
+          
           if (originalTask) {
-            set((state) => {
-              state.tasks.set(id, { ...originalTask, ...updates });
-            });
+            const newTasks = new Map(currentTasks);
+            newTasks.set(id, { ...originalTask, ...updates });
+            set({ tasks: newTasks });
           }
 
           try {
             const updatedTask = await tasksApi.update(id, updates);
-            set((state) => {
-              state.tasks.set(id, updatedTask);
-            });
+            const latestTasks = get().tasks;
+            const finalTasks = new Map(latestTasks);
+            finalTasks.set(id, updatedTask);
+            set({ tasks: finalTasks });
           } catch (error) {
             // Revert on error
             if (originalTask) {
-              set((state) => {
-                state.tasks.set(id, originalTask);
-              });
+              const revertTasks = get().tasks;
+              const revertedTasks = new Map(revertTasks);
+              revertedTasks.set(id, originalTask);
+              set({ tasks: revertedTasks });
             }
-            set((state) => {
-              state.error = error instanceof Error ? error.message : 'Failed to update task';
+            set({ 
+              error: error instanceof Error ? error.message : 'Failed to update task' 
             });
             throw error;
           }
         },
 
         deleteTask: async (id) => {
-          const originalTask = get().tasks.get(id);
+          const currentTasks = get().tasks;
+          const originalTask = currentTasks.get(id);
           
           // Optimistic delete
-          set((state) => {
-            state.tasks.delete(id);
-            if (state.selectedTaskId === id) {
-              state.selectedTaskId = null;
-            }
+          const newTasks = new Map(currentTasks);
+          newTasks.delete(id);
+          set({ 
+            tasks: newTasks,
+            selectedTaskId: get().selectedTaskId === id ? null : get().selectedTaskId
           });
 
           try {
@@ -136,19 +135,20 @@ export const useTasksStore = create<TasksState>()(
           } catch (error) {
             // Revert on error
             if (originalTask) {
-              set((state) => {
-                state.tasks.set(id, originalTask);
-              });
+              const revertTasks = get().tasks;
+              const revertedTasks = new Map(revertTasks);
+              revertedTasks.set(id, originalTask);
+              set({ tasks: revertedTasks });
             }
-            set((state) => {
-              state.error = error instanceof Error ? error.message : 'Failed to delete task';
+            set({ 
+              error: error instanceof Error ? error.message : 'Failed to delete task' 
             });
             throw error;
           }
         },
 
         selectTask: (id) => set({ selectedTaskId: id }),
-      })),
+      }),
       {
         name: 'tasks-storage',
         partialize: (state) => ({ selectedTaskId: state.selectedTaskId }),

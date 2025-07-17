@@ -4,7 +4,8 @@
  * Main dashboard view
  */
 
-import React, { useState, type FormEvent } from 'react';
+import { useState, type FormEvent } from 'react';
+import type React from 'react';
 import { invoke } from '@tauri-apps/api/core';
 
 export const DashboardPage: React.FC = () => {

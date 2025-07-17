@@ -4,7 +4,7 @@
  * Main navigation sidebar for the application
  */
 
-import React from 'react';
+import type React from 'react';
 import { cn } from '@/shared/lib';
 
 export const Sidebar: React.FC = () => {
