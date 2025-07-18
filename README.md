@@ -16,10 +16,6 @@
   <a href="#"><img src="https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey" alt="Platform"></a>
 </p>
 
-<p align="center">
-  <em>🧠 Own your productivity. Own your data. Work offline.</em>
-</p>
-
 ---
 
 ## Table of Contents
@@ -406,20 +402,13 @@ in the Software without restriction...
 ### Contact & Support
 
 - **GitHub**: [Project Repository](https://github.com/yourusername/evorbrain)
-- **Website**: *(coming soon)*
+<!-- **Website**: *(coming soon)*
 - **Email**: *(coming soon)*
 - **Discord**: *(coming soon)*
-- **Twitter**: *(coming soon)*
+- **Twitter**: *(coming soon)* -->
 
 ### Maintainers
 
-- **Lead Developer**: [Your Name](https://github.com/yourusername)
+- **Lead Developer**: [Your Name](https://github.com/evorhard)
 - **Contributors**: [See all contributors](https://github.com/yourusername/evorbrain/graphs/contributors)
 
----
-
-<p align="center">
-  Made with ❤️ by the EvorBrain community
-  <br />
-  <a href="#table-of-contents">Back to top ↑</a>
-</p>
