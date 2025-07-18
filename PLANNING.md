@@ -1,7 +1,7 @@
 # EvorBrain Planning Document
 
-**Document Version:** 1.1  
-**Last Updated:** 2025-01-16  
+**Document Version:** 1.2  
+**Last Updated:** 2025-07-18  
 **Project Status:** Development Phase - MVP Week 1
 
 ---
@@ -395,12 +395,15 @@ src/shared/ui/
 
 **Goal**: Basic functional productivity system
 
-- [-] **Week 1-2**: Project Setup & Core Infrastructure (In Progress)
+- [x] **Week 1-2**: Project Setup & Core Infrastructure (Completed)
 
   - [x] Tauri project initialization
   - [x] React + TypeScript setup (with strict mode and path aliases)
-  - [ ] SQLite integration
-  - [ ] Basic routing
+  - [x] SQLite integration with migrations
+  - [x] Basic routing
+  - [x] Complete backend CRUD operations
+  - [x] Tauri IPC commands implementation
+  - [x] Application startup issues fixed
 
 - [ ] **Week 3-4**: Core CRUD Operations
 
@@ -535,7 +538,7 @@ src/shared/ui/
 
 ## Decision Log
 
-### 2025-01-15: Initial Architecture Decisions
+### 2025-07-15: Initial Architecture Decisions
 
 - **Decision**: Adopt Tauri + React + SQLite stack
 - **Rationale**: Best balance of performance, developer experience, and user experience
@@ -544,7 +547,7 @@ src/shared/ui/
   - Native development (too slow)
   - Web-only (no offline capability)
 
-### 2025-01-15: Feature-Sliced Design Adoption
+### 2025-07-15: Feature-Sliced Design Adoption
 
 - **Decision**: Use FSD for frontend architecture
 - **Rationale**: Clear separation of concerns, scalable structure, prevents coupling
@@ -552,13 +555,13 @@ src/shared/ui/
   - Traditional MVC (less suitable for modern React)
   - Atomic Design (more complex for this use case)
 
-### 2025-01-15: Local-First Data Strategy
+### 2025-07-15: Local-First Data Strategy
 
 - **Decision**: All data stored locally with optional sync
 - **Rationale**: Privacy, performance, offline capability
 - **Trade-offs**: No built-in collaboration, manual backup needed
 
-### 2025-01-15: Calendar Library Selection
+### 2025-07-15: Calendar Library Selection
 
 - **Decision**: Use FullCalendar for calendar views
 - **Rationale**: Most features, good React integration, active development

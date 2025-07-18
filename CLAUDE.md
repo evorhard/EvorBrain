@@ -1,7 +1,7 @@
 # EvorBrain AI Assistant Guide (CLAUDE.md)
 
-**Document Version:** 1.0  
-**Last Updated:** 2025-01-15  
+**Document Version:** 1.1  
+**Last Updated:** 2025-07-18  
 **Purpose:** Comprehensive guide for AI assistants contributing to the EvorBrain project
 
 ---
