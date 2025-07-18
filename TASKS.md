@@ -101,7 +101,48 @@
   - **Dependencies**: Database schema created
   - **Testing**: Integration tests for each command
 
-#### Critical Security Fixes (Immediate)
+#### Critical Application Startup Fixes (2025-01-18)
+
+- [ ] **Fix application startup crash** 🔴 📌
+
+  - **Acceptance Criteria**:
+    - Application starts without crashing
+    - Window remains open and responsive
+    - No runtime panics in Rust backend
+  - **Dependencies**: None
+  - **Technical Notes**: Check Tauri window configuration, event loop, and async runtime setup
+  - **Debugging**: Run with `RUST_BACKTRACE=1 npm run tauri dev`
+
+- [ ] **Debug Tauri command registration** 🔴 📌
+
+  - **Acceptance Criteria**:
+    - All Tauri commands properly registered
+    - No duplicate command names
+    - Correct async handling
+  - **Dependencies**: Tauri commands implemented
+  - **Files to Check**: `src-tauri/src/main.rs`, command modules
+  - **Testing**: Verify each command can be invoked from frontend
+
+- [ ] **Fix database initialization on startup** 🔴 📐
+
+  - **Acceptance Criteria**:
+    - Database file created if not exists
+    - Migrations run successfully
+    - Connection pool initialized
+  - **Dependencies**: SQLite integration
+  - **Files to Fix**: `src-tauri/src/database/connection.rs`, `src-tauri/src/main.rs`
+  - **Technical Notes**: Ensure app data directory exists before creating database
+
+- [ ] **Resolve async runtime conflicts** 🔴 📌
+
+  - **Acceptance Criteria**:
+    - No tokio runtime panics
+    - Proper async/await handling
+    - State management thread-safe
+  - **Dependencies**: Tokio runtime setup
+  - **Technical Notes**: Check for blocking operations in async context
+
+#### Critical Security Fixes (After Startup Fixed)
 
 - [ ] **Fix SQL injection vulnerabilities** 🔴 📌
 
@@ -110,7 +151,7 @@
     - Remove direct SQL query construction
     - Audit all database queries
   - **Dependencies**: Database connection established
-  - **Files to Fix**: `src-tauri/src/main.rs:27`
+  - **Status**: Partially completed - moved to runtime queries
   - **Testing**: Security audit of all queries
 
 - [ ] **Implement path traversal protection** 🔴 📌
@@ -120,7 +161,7 @@
     - Validate database path construction
     - Prevent directory traversal attacks
   - **Dependencies**: Database module
-  - **Files to Fix**: `src-tauri/src/database/connection.rs:18`
+  - **Status**: Partially completed - basic validation added
   - **Technical Notes**: Use canonical path resolution
 
 - [ ] **Add input validation layer** 🔴 📐
@@ -130,7 +171,7 @@
     - Implement schema validation
     - Standardize error messages
   - **Dependencies**: Entity models complete
-  - **Files to Fix**: `src/features/tasks/model/store.ts`
+  - **Status**: Partially completed - basic validation in commands
   - **Technical Notes**: Consider zod for TypeScript, validator crate for Rust
 
 - [ ] **Configure Tauri security settings** 🔴 📌
@@ -1276,6 +1317,14 @@ _Tasks will be moved here upon completion with completion date_
 - [x] **Restore greeting functionality** - Moved greeting feature to Dashboard page with improved styling
 - [x] **Implement SQLite integration in Tauri backend** - Database connection with pooling (WAL mode), custom error types, sqlx/tokio dependencies, test command added
 - [x] **Create database schema and migrations** - All tables (life_areas, goals, projects, tasks, tags, task_tags), foreign key constraints, performance indexes, update triggers, SQLx migration system
+- [x] **Implement Tauri commands for Life Area CRUD operations** - All CRUD commands with input validation and error handling
+- [x] **Implement Tauri commands for Goal CRUD operations** - All CRUD commands with progress calculation and relationships
+- [x] **Implement Tauri commands for Project CRUD operations** - All CRUD commands with date validation and status management
+- [x] **Implement Tauri commands for Task CRUD operations** - All CRUD commands including bulk operations and time tracking
+- [x] **Fix SQLx type conversion issues** - Replaced compile-time macros with runtime queries, added type conversion utilities
+- [x] **Add basic input validation** - Added validation for all DTOs in Tauri commands (name length, date ranges, etc.)
+- [x] **Implement path validation** - Added basic path validation to prevent directory traversal
+- [x] **Convert to parameterized queries** - All database queries now use parameterized queries to prevent SQL injection
 
 ---
 

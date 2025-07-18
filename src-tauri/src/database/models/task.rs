@@ -3,9 +3,9 @@ use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use sqlx::FromRow;
 
-#[derive(Debug, Clone, Serialize, Deserialize, sqlx::Type)]
+#[derive(Debug, Clone, Serialize, Deserialize, sqlx::Type, PartialEq)]
 #[serde(rename_all = "lowercase")]
-#[sqlx(rename_all = "lowercase")]
+#[sqlx(rename_all = "lowercase", type_name = "TEXT")]
 pub enum TaskPriority {
     Low,
     Medium,
@@ -13,9 +13,9 @@ pub enum TaskPriority {
     Critical,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, sqlx::Type)]
+#[derive(Debug, Clone, Serialize, Deserialize, sqlx::Type, PartialEq)]
 #[serde(rename_all = "snake_case")]
-#[sqlx(rename_all = "snake_case")]
+#[sqlx(rename_all = "snake_case", type_name = "TEXT")]
 pub enum TaskStatus {
     Todo,
     InProgress,
@@ -53,7 +53,7 @@ pub struct CreateTaskDto {
     pub recurrence_rule: Option<String>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct UpdateTaskDto {
     pub name: Option<String>,

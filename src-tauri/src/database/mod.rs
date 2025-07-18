@@ -7,9 +7,8 @@ pub mod connection;
 pub mod error;
 pub mod models;
 pub mod migrations;
+pub mod queries;
+pub mod utils;
 
 pub use connection::Database;
 pub use error::{DatabaseError, DatabaseResult};
-
-// Re-export commonly used types
-pub use sqlx::{Pool, Sqlite};

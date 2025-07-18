@@ -6,8 +6,3 @@ pub mod life_area;
 pub mod goal;
 pub mod project;
 pub mod task;
-
-pub use life_area::LifeArea;
-pub use goal::Goal;
-pub use project::Project;
-pub use task::Task;

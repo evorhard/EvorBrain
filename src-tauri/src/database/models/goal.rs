@@ -1,11 +1,11 @@
 /// Goal model
-use chrono::{DateTime, NaiveDate, Utc};
+use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use sqlx::FromRow;
 
-#[derive(Debug, Clone, Serialize, Deserialize, sqlx::Type)]
+#[derive(Debug, Clone, Serialize, Deserialize, sqlx::Type, PartialEq)]
 #[serde(rename_all = "lowercase")]
-#[sqlx(rename_all = "lowercase")]
+#[sqlx(rename_all = "lowercase", type_name = "TEXT")]
 pub enum GoalStatus {
     Active,
     Completed,
@@ -20,7 +20,7 @@ pub struct Goal {
     pub life_area_id: String,
     pub name: String,
     pub description: Option<String>,
-    pub target_date: Option<NaiveDate>,
+    pub target_date: Option<DateTime<Utc>>,
     pub status: GoalStatus,
     pub progress: i32,
     pub created_at: DateTime<Utc>,
@@ -33,15 +33,16 @@ pub struct CreateGoalDto {
     pub life_area_id: String,
     pub name: String,
     pub description: Option<String>,
-    pub target_date: Option<NaiveDate>,
+    pub target_date: Option<DateTime<Utc>>,
+    pub status: GoalStatus,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct UpdateGoalDto {
     pub name: Option<String>,
     pub description: Option<String>,
-    pub target_date: Option<NaiveDate>,
+    pub life_area_id: Option<String>,
+    pub target_date: Option<DateTime<Utc>>,
     pub status: Option<GoalStatus>,
-    pub progress: Option<i32>,
 }
