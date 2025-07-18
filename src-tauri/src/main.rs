@@ -2,15 +2,10 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 mod database;
+mod commands;
 
 use database::Database;
-use std::sync::Arc;
-use tokio::sync::Mutex;
-
-// Application state
-pub struct AppState {
-    db: Arc<Mutex<Database>>,
-}
+use tauri::State;
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
@@ -20,9 +15,7 @@ fn greet(name: &str) -> String {
 
 // Test database connection command
 #[tauri::command]
-async fn test_database(state: tauri::State<'_, AppState>) -> Result<String, String> {
-    let db = state.db.lock().await;
-    
+async fn test_database(db: State<'_, Database>) -> Result<String, String> {
     // Test query to check if database is working
     let result = sqlx::query_scalar::<_, i32>("SELECT COUNT(*) FROM sqlite_master WHERE type='table'")
         .fetch_one(db.pool())
@@ -32,35 +25,68 @@ async fn test_database(state: tauri::State<'_, AppState>) -> Result<String, Stri
     Ok(format!("Database is working! Found {} tables.", result))
 }
 
-#[tokio::main]
-async fn main() {
-    // Initialize database
-    // In production, we'll use the app's data directory
-    // For now, let's use a local directory for development
-    let app_data_dir = std::env::current_dir()
-        .unwrap()
-        .join("data");
+fn main() {
+    // Initialize database before starting Tauri
+    let runtime = tokio::runtime::Runtime::new().expect("Failed to create runtime");
     
-    // Ensure the data directory exists
-    std::fs::create_dir_all(&app_data_dir)
-        .expect("Failed to create data directory");
+    // Get the app data directory - we'll create it in a standard location for now
+    let app_data_dir = dirs::data_dir()
+        .expect("Failed to get data directory")
+        .join("com.evorbrain.app");
     
-    let db = Database::new(app_data_dir)
-        .await
-        .expect("Failed to initialize database");
-    
-    // Run migrations
-    db.migrate()
-        .await
-        .expect("Failed to run database migrations");
-    
-    let app_state = AppState {
-        db: Arc::new(Mutex::new(db)),
-    };
+    // Initialize the database synchronously before Tauri starts
+    let db = runtime.block_on(async {
+        let database = Database::new(app_data_dir).await
+            .expect("Failed to initialize database");
+        
+        // Run migrations
+        database.migrate()
+            .await
+            .expect("Failed to run database migrations");
+        
+        database
+    });
     
     tauri::Builder::default()
-        .manage(app_state)
-        .invoke_handler(tauri::generate_handler![greet, test_database])
+        .manage(db)
+        .invoke_handler(tauri::generate_handler![
+            greet, 
+            test_database,
+            // Life Area commands
+            commands::get_life_areas,
+            commands::get_life_area,
+            commands::create_life_area,
+            commands::update_life_area,
+            commands::delete_life_area,
+            commands::reorder_life_areas,
+            // Goal commands
+            commands::get_goals,
+            commands::get_goals_by_life_area,
+            commands::get_goal,
+            commands::create_goal,
+            commands::update_goal,
+            commands::delete_goal,
+            commands::update_goal_progress,
+            // Project commands
+            commands::get_projects,
+            commands::get_projects_by_goal,
+            commands::get_project,
+            commands::create_project,
+            commands::update_project,
+            commands::delete_project,
+            commands::update_project_progress,
+            // Task commands
+            commands::get_tasks,
+            commands::get_tasks_by_project,
+            commands::get_tasks_due_today,
+            commands::get_overdue_tasks,
+            commands::get_task,
+            commands::create_task,
+            commands::update_task,
+            commands::delete_task,
+            commands::toggle_task_complete,
+            commands::bulk_update_tasks,
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

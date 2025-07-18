@@ -16,7 +16,6 @@ impl Database {
         
         // Construct database path
         let db_path = data_dir.join("evorbrain.db");
-        let db_url = format!("sqlite:{}", db_path.display());
         
         // Create connection pool with optimized settings
         let pool = SqlitePool::connect_with(

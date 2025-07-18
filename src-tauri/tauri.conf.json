@@ -13,6 +13,7 @@
     "withGlobalTauri": false,
     "windows": [
       {
+        "label": "main",
         "title": "EvorBrain",
         "width": 1200,
         "height": 800,
@@ -21,7 +22,9 @@
       }
     ],
     "security": {
-      "csp": null
+      "csp": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' ipc: http://ipc.localhost",
+      "dangerousDisableAssetCspModification": false,
+      "freezePrototype": true
     }
   },
   "bundle": {
