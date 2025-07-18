@@ -145,15 +145,16 @@
 
 #### Critical Security Fixes (After Startup Fixed)
 
-- [ ] **Fix SQL injection vulnerabilities** 🔴 📌
+- [x] **Fix SQL injection vulnerabilities** 🔴 📌
 
   - **Acceptance Criteria**:
-    - Use parameterized queries exclusively
-    - Remove direct SQL query construction
-    - Audit all database queries
+    - Use parameterized queries exclusively ✓
+    - Remove direct SQL query construction ✓
+    - Audit all database queries ✓
   - **Dependencies**: Database connection established
-  - **Status**: Partially completed - moved to runtime queries
+  - **Status**: Completed - all queries use parameterized statements
   - **Testing**: Security audit of all queries
+  - **Completed**: 2025-07-18
 
 - [ ] **Implement path traversal protection** 🔴 📌
 
@@ -1326,6 +1327,10 @@ _Tasks will be moved here upon completion with completion date_
 - [x] **Add basic input validation** - Added validation for all DTOs in Tauri commands (name length, date ranges, etc.)
 - [x] **Implement path validation** - Added basic path validation to prevent directory traversal
 - [x] **Convert to parameterized queries** - All database queries now use parameterized queries to prevent SQL injection
+
+### 2025-07-18
+
+- [x] **Fix SQL injection vulnerabilities** - Audited all database queries, removed unused dynamic query building code, verified all queries use parameterized statements
 
 ---
 

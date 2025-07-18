@@ -195,32 +195,12 @@ pub async fn update_life_area(
         }
     }
     
-    // Build dynamic update query based on provided fields
-    let mut query = String::from("UPDATE life_areas SET ");
-    let mut updates = vec![];
-    
-    if dto.name.is_some() {
-        updates.push("name = ?");
-    }
-    if dto.description.is_some() {
-        updates.push("description = ?");
-    }
-    if dto.color.is_some() {
-        updates.push("color = ?");
-    }
-    if dto.order_index.is_some() {
-        updates.push("sort_order = ?");
-    }
-    
-    if updates.is_empty() {
+    // Validate that at least one field is being updated
+    if dto.name.is_none() && dto.description.is_none() && dto.color.is_none() && dto.order_index.is_none() {
         return Err("No fields to update".to_string());
     }
     
-    updates.push("updated_at = ?");
-    query.push_str(&updates.join(", "));
-    query.push_str(" WHERE id = ? RETURNING id, name, description, color, icon, sort_order as order_index, created_at, updated_at");
-    
-    // For now, we'll use a simpler approach with individual field updates
+    // Use individual field updates with parameterized queries for security
     let now = Utc::now();
     
     // First, check if the life area exists
