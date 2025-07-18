@@ -562,6 +562,18 @@ src/shared/ui/
 - **Validation**: No dynamic SQL construction allowed
 - **Audit**: Regular security audits of all queries
 
+#### Input Validation Layer
+- **Module**: `src-tauri/src/validation/`
+- **Features**:
+  - Comprehensive DTO validation using validator crate
+  - Custom ValidationError types with field-level errors
+  - Regex patterns for hex colors and safe text validation
+  - UUID format validation
+  - Date range validation (not too far in past/future)
+  - Progress percentage validation (0-100)
+  - RRULE format validation for recurring tasks
+  - Standardized error messages via AppError enum
+
 #### Tauri Security Configuration
 - **CSP Headers**: Restrictive Content Security Policy
 - **Freeze Prototype**: Prevents prototype pollution attacks
@@ -570,10 +582,10 @@ src/shared/ui/
 
 ### Future Security Enhancements
 
-1. **Input Sanitization Framework**
-   - Comprehensive DTO validation
+1. **Additional Input Sanitization**
    - XSS prevention for user-generated content
-   - Size limits for all inputs
+   - HTML sanitization for rich text fields
+   - File upload validation and scanning
 
 2. **Encryption at Rest**
    - Optional database encryption

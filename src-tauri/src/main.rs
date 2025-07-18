@@ -3,6 +3,8 @@
 
 mod database;
 mod commands;
+mod validation;
+mod error;
 
 use database::Database;
 use tauri::State;

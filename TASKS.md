@@ -167,15 +167,16 @@
   - **Technical Notes**: Use canonical path resolution
   - **Completed**: 2025-07-18
 
-- [ ] **Add input validation layer** 🔴 📐
+- [x] **Add input validation layer** 🔴 📐
 
   - **Acceptance Criteria**:
-    - Validate all DTOs before operations
-    - Implement schema validation
-    - Standardize error messages
+    - Validate all DTOs before operations ✓
+    - Implement schema validation ✓
+    - Standardize error messages ✓
   - **Dependencies**: Entity models complete
-  - **Status**: Partially completed - basic validation in commands
-  - **Technical Notes**: Consider zod for TypeScript, validator crate for Rust
+  - **Status**: Completed - comprehensive validation using validator crate
+  - **Technical Notes**: Used validator crate with regex patterns for Rust backend
+  - **Completed**: 2025-07-18
 
 - [ ] **Configure Tauri security settings** 🔴 📌
 
@@ -1333,6 +1334,7 @@ _Tasks will be moved here upon completion with completion date_
 
 - [x] **Fix SQL injection vulnerabilities** - Audited all database queries, removed unused dynamic query building code, verified all queries use parameterized statements
 - [x] **Implement path traversal protection** - Created comprehensive path security module with validation functions, integrated into database connection, prevents directory traversal attacks and validates filenames
+- [x] **Add input validation layer** - Implemented comprehensive validation using validator crate with custom ValidationError types, regex patterns for hex colors and safe text, UUID validation, date range validation, progress percentage validation, and DTO validation trait for all entities
 
 ---
 

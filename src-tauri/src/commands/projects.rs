@@ -2,6 +2,7 @@
 use crate::database::Database;
 use crate::database::models::project::{Project, CreateProjectDto, UpdateProjectDto, ProjectStatus};
 use crate::database::utils::{to_datetime_utc, to_datetime_utc_opt, to_naive_datetime};
+use crate::validation::ValidateDto;
 use tauri::State;
 use uuid::Uuid;
 use chrono::{DateTime, Utc};
@@ -195,24 +196,9 @@ pub async fn create_project(
     db: State<'_, Database>,
     dto: CreateProjectDto
 ) -> Result<Project, String> {
-    // Validate input
-    if dto.name.trim().is_empty() {
-        return Err("Project name cannot be empty".to_string());
-    }
-    
-    if dto.name.len() > 100 {
-        return Err("Project name cannot exceed 100 characters".to_string());
-    }
-    
-    if let Some(ref desc) = dto.description {
-        if desc.len() > 500 {
-            return Err("Description cannot exceed 500 characters".to_string());
-        }
-    }
-    
-    // Validate goal ID
-    let _ = Uuid::parse_str(&dto.goal_id)
-        .map_err(|_| "Invalid goal ID format")?;
+    // Validate input using the validation layer
+    dto.validate()
+        .map_err(|e| format!("Validation error: {}", e))?;
     
     // Check if goal exists
     let goal_exists: i64 = sqlx::query_scalar("SELECT COUNT(*) FROM goals WHERE id = ?")
@@ -223,13 +209,6 @@ pub async fn create_project(
     
     if goal_exists == 0 {
         return Err("Goal not found".to_string());
-    }
-    
-    // Validate date range if both dates are provided
-    if let (Some(start), Some(end)) = (dto.start_date, dto.due_date) {
-        if end < start {
-            return Err("End date must be after start date".to_string());
-        }
     }
     
     let id = Uuid::new_v4().to_string();
@@ -278,21 +257,9 @@ pub async fn update_project(
     let _ = Uuid::parse_str(&id)
         .map_err(|_| "Invalid project ID format")?;
     
-    // Validate input if provided
-    if let Some(ref name) = dto.name {
-        if name.trim().is_empty() {
-            return Err("Project name cannot be empty".to_string());
-        }
-        if name.len() > 100 {
-            return Err("Project name cannot exceed 100 characters".to_string());
-        }
-    }
-    
-    if let Some(ref desc) = dto.description {
-        if desc.len() > 500 {
-            return Err("Description cannot exceed 500 characters".to_string());
-        }
-    }
+    // Validate input using the validation layer
+    dto.validate()
+        .map_err(|e| format!("Validation error: {}", e))?;
     
     if let Some(ref goal_id) = dto.goal_id {
         let _ = Uuid::parse_str(goal_id)

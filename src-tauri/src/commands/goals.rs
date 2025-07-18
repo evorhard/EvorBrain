@@ -2,6 +2,7 @@
 use crate::database::Database;
 use crate::database::models::goal::{Goal, CreateGoalDto, UpdateGoalDto, GoalStatus};
 use crate::database::utils::{to_datetime_utc, to_datetime_utc_opt, to_naive_datetime};
+use crate::validation::ValidateDto;
 use tauri::State;
 use uuid::Uuid;
 use chrono::Utc;
@@ -182,24 +183,9 @@ pub async fn create_goal(
     db: State<'_, Database>,
     dto: CreateGoalDto
 ) -> Result<Goal, String> {
-    // Validate input
-    if dto.name.trim().is_empty() {
-        return Err("Goal name cannot be empty".to_string());
-    }
-    
-    if dto.name.len() > 100 {
-        return Err("Goal name cannot exceed 100 characters".to_string());
-    }
-    
-    if let Some(ref desc) = dto.description {
-        if desc.len() > 500 {
-            return Err("Description cannot exceed 500 characters".to_string());
-        }
-    }
-    
-    // Validate life area ID
-    let _ = Uuid::parse_str(&dto.life_area_id)
-        .map_err(|_| "Invalid life area ID format")?;
+    // Validate input using the validation layer
+    dto.validate()
+        .map_err(|e| format!("Validation error: {}", e))?;
     
     // Check if life area exists
     let life_area_exists: i64 = sqlx::query_scalar("SELECT COUNT(*) FROM life_areas WHERE id = ?")
@@ -210,13 +196,6 @@ pub async fn create_goal(
     
     if life_area_exists == 0 {
         return Err("Life area not found".to_string());
-    }
-    
-    // Validate target date if provided
-    if let Some(target_date) = dto.target_date {
-        if target_date < Utc::now() {
-            return Err("Target date cannot be in the past".to_string());
-        }
     }
     
     let id = Uuid::new_v4().to_string();
@@ -263,21 +242,9 @@ pub async fn update_goal(
     let _ = Uuid::parse_str(&id)
         .map_err(|_| "Invalid goal ID format")?;
     
-    // Validate input if provided
-    if let Some(ref name) = dto.name {
-        if name.trim().is_empty() {
-            return Err("Goal name cannot be empty".to_string());
-        }
-        if name.len() > 100 {
-            return Err("Goal name cannot exceed 100 characters".to_string());
-        }
-    }
-    
-    if let Some(ref desc) = dto.description {
-        if desc.len() > 500 {
-            return Err("Description cannot exceed 500 characters".to_string());
-        }
-    }
+    // Validate input using the validation layer
+    dto.validate()
+        .map_err(|e| format!("Validation error: {}", e))?;
     
     if let Some(ref life_area_id) = dto.life_area_id {
         let _ = Uuid::parse_str(life_area_id)

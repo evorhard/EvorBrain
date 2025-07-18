@@ -1,6 +1,7 @@
 /// Life Area Tauri commands
 use crate::database::Database;
 use crate::database::models::life_area::{LifeArea, CreateLifeAreaDto, UpdateLifeAreaDto};
+use crate::validation::ValidateDto;
 use tauri::State;
 use uuid::Uuid;
 use chrono::{DateTime, Utc};
@@ -106,25 +107,9 @@ pub async fn create_life_area(
     db: State<'_, Database>,
     dto: CreateLifeAreaDto
 ) -> Result<LifeArea, String> {
-    // Validate input
-    if dto.name.trim().is_empty() {
-        return Err("Life area name cannot be empty".to_string());
-    }
-    
-    if dto.name.len() > 100 {
-        return Err("Life area name cannot exceed 100 characters".to_string());
-    }
-    
-    if let Some(ref desc) = dto.description {
-        if desc.len() > 500 {
-            return Err("Description cannot exceed 500 characters".to_string());
-        }
-    }
-    
-    // Validate color format (should be hex color)
-    if !is_valid_hex_color(&dto.color) {
-        return Err("Invalid color format. Please use hex format (e.g., #FF5733)".to_string());
-    }
+    // Validate input using the validation layer
+    dto.validate()
+        .map_err(|e| format!("Validation error: {}", e))?;
     
     let id = Uuid::new_v4().to_string();
     let now = Utc::now();
@@ -173,32 +158,9 @@ pub async fn update_life_area(
     let _ = Uuid::parse_str(&id)
         .map_err(|_| "Invalid life area ID format")?;
     
-    // Validate input if provided
-    if let Some(ref name) = dto.name {
-        if name.trim().is_empty() {
-            return Err("Life area name cannot be empty".to_string());
-        }
-        if name.len() > 100 {
-            return Err("Life area name cannot exceed 100 characters".to_string());
-        }
-    }
-    
-    if let Some(ref desc) = dto.description {
-        if desc.len() > 500 {
-            return Err("Description cannot exceed 500 characters".to_string());
-        }
-    }
-    
-    if let Some(ref color) = dto.color {
-        if !is_valid_hex_color(color) {
-            return Err("Invalid color format. Please use hex format (e.g., #FF5733)".to_string());
-        }
-    }
-    
-    // Validate that at least one field is being updated
-    if dto.name.is_none() && dto.description.is_none() && dto.color.is_none() && dto.order_index.is_none() {
-        return Err("No fields to update".to_string());
-    }
+    // Validate input using the validation layer
+    dto.validate()
+        .map_err(|e| format!("Validation error: {}", e))?;
     
     // Use individual field updates with parameterized queries for security
     let now = Utc::now();
@@ -327,13 +289,4 @@ pub async fn reorder_life_areas(
     }
     
     Ok(())
-}
-
-/// Helper function to validate hex color format
-fn is_valid_hex_color(color: &str) -> bool {
-    if !color.starts_with('#') || (color.len() != 7 && color.len() != 4) {
-        return false;
-    }
-    
-    color[1..].chars().all(|c| c.is_ascii_hexdigit())
 }

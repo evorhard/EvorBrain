@@ -45,4 +45,5 @@ pub struct UpdateGoalDto {
     pub life_area_id: Option<String>,
     pub target_date: Option<DateTime<Utc>>,
     pub status: Option<GoalStatus>,
+    pub progress: Option<i32>,
 }

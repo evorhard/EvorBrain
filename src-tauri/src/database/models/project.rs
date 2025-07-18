@@ -49,4 +49,5 @@ pub struct UpdateProjectDto {
     pub start_date: Option<DateTime<Utc>>,
     pub due_date: Option<DateTime<Utc>>,
     pub status: Option<ProjectStatus>,
+    pub progress: Option<i32>,
 }

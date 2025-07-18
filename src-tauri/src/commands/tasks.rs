@@ -2,6 +2,7 @@
 use crate::database::Database;
 use crate::database::models::task::{Task, CreateTaskDto, UpdateTaskDto, TaskStatus, TaskPriority};
 use crate::database::utils::{to_datetime_utc, to_datetime_utc_opt, to_naive_datetime};
+use crate::validation::ValidateDto;
 use tauri::State;
 use uuid::Uuid;
 use chrono::{DateTime, Utc};
@@ -360,24 +361,9 @@ pub async fn create_task(
     db: State<'_, Database>,
     dto: CreateTaskDto
 ) -> Result<Task, String> {
-    // Validate input
-    if dto.name.trim().is_empty() {
-        return Err("Task name cannot be empty".to_string());
-    }
-    
-    if dto.name.len() > 200 {
-        return Err("Task name cannot exceed 200 characters".to_string());
-    }
-    
-    if let Some(ref desc) = dto.description {
-        if desc.len() > 1000 {
-            return Err("Description cannot exceed 1000 characters".to_string());
-        }
-    }
-    
-    // Validate project ID
-    let _ = Uuid::parse_str(&dto.project_id)
-        .map_err(|_| "Invalid project ID format")?;
+    // Validate input using the validation layer
+    dto.validate()
+        .map_err(|e| format!("Validation error: {}", e))?;
     
     // Check if project exists
     let project_exists: i64 = sqlx::query_scalar("SELECT COUNT(*) FROM projects WHERE id = ?")
@@ -388,24 +374,6 @@ pub async fn create_task(
     
     if project_exists == 0 {
         return Err("Project not found".to_string());
-    }
-    
-    // Validate estimated minutes if provided
-    if let Some(minutes) = dto.estimated_minutes {
-        if minutes < 0 {
-            return Err("Estimated minutes cannot be negative".to_string());
-        }
-        if minutes > 10080 { // 1 week in minutes
-            return Err("Estimated minutes cannot exceed 1 week (10080 minutes)".to_string());
-        }
-    }
-    
-    // Validate recurrence rule if provided
-    if let Some(ref rrule) = dto.recurrence_rule {
-        if rrule.len() > 500 {
-            return Err("Recurrence rule too long".to_string());
-        }
-        // TODO: Add proper RRULE validation
     }
     
     let id = Uuid::new_v4().to_string();
@@ -453,36 +421,9 @@ pub async fn update_task(
     let _ = Uuid::parse_str(&id)
         .map_err(|_| "Invalid task ID format")?;
     
-    // Validate input if provided
-    if let Some(ref name) = dto.name {
-        if name.trim().is_empty() {
-            return Err("Task name cannot be empty".to_string());
-        }
-        if name.len() > 200 {
-            return Err("Task name cannot exceed 200 characters".to_string());
-        }
-    }
-    
-    if let Some(ref desc) = dto.description {
-        if desc.len() > 1000 {
-            return Err("Description cannot exceed 1000 characters".to_string());
-        }
-    }
-    
-    if let Some(minutes) = dto.estimated_minutes {
-        if minutes < 0 {
-            return Err("Estimated minutes cannot be negative".to_string());
-        }
-        if minutes > 10080 {
-            return Err("Estimated minutes cannot exceed 1 week (10080 minutes)".to_string());
-        }
-    }
-    
-    if let Some(minutes) = dto.actual_minutes {
-        if minutes < 0 {
-            return Err("Actual minutes cannot be negative".to_string());
-        }
-    }
+    // Validate input using the validation layer
+    dto.validate()
+        .map_err(|e| format!("Validation error: {}", e))?;
     
     // Check if the task exists
     let exists: i64 = sqlx::query_scalar("SELECT COUNT(*) FROM tasks WHERE id = ?")
