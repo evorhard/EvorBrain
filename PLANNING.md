@@ -536,6 +536,57 @@ src/shared/ui/
 
 ---
 
+## Security Architecture
+
+### Security Principles
+
+1. **Defense in Depth**: Multiple layers of security controls
+2. **Least Privilege**: Minimal permissions for all operations
+3. **Input Validation**: All user input validated and sanitized
+4. **Secure by Default**: Security features enabled by default
+
+### Implemented Security Measures
+
+#### Path Traversal Protection
+- **Module**: `src-tauri/src/database/path_security.rs`
+- **Features**:
+  - Canonical path resolution to prevent `../` attacks
+  - Absolute path rejection
+  - Filename validation (no directory separators)
+  - Windows reserved name checking (CON, PRN, etc.)
+  - Null byte prevention
+- **Integration**: All file operations validate paths through this module
+
+#### SQL Injection Prevention
+- **Implementation**: All database queries use parameterized statements
+- **Validation**: No dynamic SQL construction allowed
+- **Audit**: Regular security audits of all queries
+
+#### Tauri Security Configuration
+- **CSP Headers**: Restrictive Content Security Policy
+- **Freeze Prototype**: Prevents prototype pollution attacks
+- **Command Allowlist**: Only explicitly allowed commands can be invoked
+- **Asset CSP**: Not disabled for production builds
+
+### Future Security Enhancements
+
+1. **Input Sanitization Framework**
+   - Comprehensive DTO validation
+   - XSS prevention for user-generated content
+   - Size limits for all inputs
+
+2. **Encryption at Rest**
+   - Optional database encryption
+   - Secure key storage
+   - Encrypted backups
+
+3. **Audit Logging**
+   - Security event logging
+   - Failed authentication attempts
+   - Data access logging
+
+---
+
 ## Decision Log
 
 ### 2025-07-15: Initial Architecture Decisions

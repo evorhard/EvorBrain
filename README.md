@@ -122,7 +122,7 @@ Tasks (Monday workout, Study Chapter 3)
 - All CRUD operations for Life Areas, Goals, Projects, and Tasks
 - Tauri IPC layer with full type safety
 - Database migrations and schema management
-- Input validation and security measures
+- Comprehensive security measures (SQL injection protection, path traversal prevention)
 - Application successfully starts and runs
 
 ### 🔄 Currently Building
@@ -352,7 +352,7 @@ Please read our [Code of Conduct](CODE_OF_CONDUCT.md) before contributing.
 - [x] Database schema implementation
 - [x] Complete backend CRUD operations for all entities
 - [x] Tauri IPC commands with validation
-- [x] Security hardening (SQL injection protection, path validation)
+- [x] Security hardening (SQL injection protection, comprehensive path traversal protection)
 - [x] Fixed application startup issues
 
 #### 🔄 In Progress

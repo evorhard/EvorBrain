@@ -20,6 +20,9 @@ pub enum DatabaseError {
     
     #[error("Serialization error: {0}")]
     SerializationError(#[from] serde_json::Error),
+    
+    #[error("Security error: {0}")]
+    SecurityError(String),
 }
 
 pub type DatabaseResult<T> = Result<T, DatabaseError>;

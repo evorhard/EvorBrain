@@ -9,6 +9,7 @@ pub mod models;
 pub mod migrations;
 pub mod queries;
 pub mod utils;
+pub mod path_security;
 
 pub use connection::Database;
 pub use error::{DatabaseError, DatabaseResult};

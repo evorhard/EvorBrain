@@ -2,6 +2,7 @@
 use sqlx::{Pool, Sqlite, SqlitePool};
 use std::path::PathBuf;
 use crate::database::{DatabaseError, DatabaseResult};
+use crate::database::path_security::validate_path;
 
 pub struct Database {
     pool: Pool<Sqlite>,
@@ -14,8 +15,8 @@ impl Database {
         std::fs::create_dir_all(&data_dir)
             .map_err(|e| DatabaseError::ConnectionError(format!("Failed to create data directory: {}", e)))?;
         
-        // Construct database path
-        let db_path = data_dir.join("evorbrain.db");
+        // Validate and construct database path securely
+        let db_path = validate_path(&data_dir, std::path::Path::new("evorbrain.db"))?;
         
         // Create connection pool with optimized settings
         let pool = SqlitePool::connect_with(
