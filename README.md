@@ -409,6 +409,6 @@ in the Software without restriction...
 
 ### Maintainers
 
-- **Lead Developer**: [EvorBrain](https://github.com/evorhard)
+- **Lead Developer**: [Evorhard](https://github.com/evorhard)
 - **Contributors**: [See all contributors](https://github.com/yourusername/evorbrain/graphs/contributors)
 
