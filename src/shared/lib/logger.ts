@@ -94,3 +94,4 @@ export const logger = new Logger();
 export const apiLogger = logger.withContext('API');
 export const storeLogger = logger.withContext('Store');
 export const uiLogger = logger.withContext('UI');
+export const lifeAreasLogger = logger.withContext('LifeAreas');

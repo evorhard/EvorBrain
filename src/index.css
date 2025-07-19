@@ -16,9 +16,15 @@
 
 body {
   margin: 0;
+  background-color: #f3f4f6; /* gray-100 to match app background */
 }
 
 #root {
   width: 100%;
   height: 100vh;
+}
+
+/* Prevent flash of unstyled content */
+#root:empty {
+  background-color: #f3f4f6;
 }

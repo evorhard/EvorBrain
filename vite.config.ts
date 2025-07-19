@@ -5,6 +5,9 @@ import path from "path";
 // https://vitejs.dev/config/
 export default defineConfig(async () => ({
   plugins: [react()],
+  
+  // Set base to work with Tauri's asset protocol
+  base: "./",
 
   // Vite options tailored for Tauri development
   clearScreen: false,

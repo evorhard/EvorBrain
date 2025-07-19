@@ -1,5 +1,5 @@
-# Personal
-notes.md
+# Powershell scripts
+*.ps1
 
 # Claude AI Assistant
 .claude/settings.local.json
