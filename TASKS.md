@@ -475,6 +475,256 @@
 
 ---
 
+## Post-MVP Performance Optimization Phase
+
+### React Performance Enhancements
+
+#### Component-Level Optimizations
+
+- [ ] **Implement React.memo for list components** 🔴 📐
+
+  - **Acceptance Criteria**:
+    - Wrap LifeAreaCard with React.memo
+    - Wrap TaskCard with React.memo (when created)
+    - Add custom comparison functions where needed
+    - Measure re-render reduction with React DevTools
+  - **Dependencies**: MVP components complete
+  - **Files to Update**: 
+    - `src/features/life-areas/ui/LifeAreaCard.tsx`
+    - `src/features/tasks/ui/TaskCard.tsx` (future)
+  - **Technical Notes**: Use React DevTools Profiler to verify improvements
+  - **Expected Impact**: 40-60% reduction in re-renders for lists
+
+- [ ] **Add useCallback for event handlers** 🔴 📐
+
+  - **Acceptance Criteria**:
+    - Convert inline functions to useCallback in list components
+    - Stabilize event handler references
+    - Verify with React DevTools that callbacks are stable
+  - **Dependencies**: React.memo implementation
+  - **Files to Update**:
+    - `src/features/life-areas/ui/LifeAreasList.tsx`
+    - `src/widgets/Sidebar/ui/Sidebar.tsx`
+    - `src/pages/dashboard/ui/DashboardPage.tsx`
+  - **Technical Notes**: Focus on handlers passed to child components
+
+- [ ] **Optimize expensive computations with useMemo** 🟡 📐
+
+  - **Acceptance Criteria**:
+    - Identify expensive array operations (sorting, filtering)
+    - Wrap with useMemo with proper dependencies
+    - Add useMemo to progress calculations
+  - **Dependencies**: Component analysis complete
+  - **Areas to Optimize**:
+    - Task filtering and sorting logic
+    - Progress percentage calculations
+    - Grouped data transformations
+
+### Database Performance Optimization
+
+#### Index Strategy Implementation
+
+- [ ] **Create comprehensive database indexes** 🔴 📌
+
+  - **Acceptance Criteria**:
+    - Add index on life_areas(order_index)
+    - Add index on tasks(project_id, status)
+    - Add index on tasks(due_date) WHERE due_date IS NOT NULL
+    - Add index on goals(life_area_id)
+    - Add index on projects(goal_id, status)
+  - **Dependencies**: Database schema stable
+  - **Technical Notes**: 
+    ```sql
+    CREATE INDEX idx_life_areas_order ON life_areas(order_index);
+    CREATE INDEX idx_tasks_project_status ON tasks(project_id, status);
+    CREATE INDEX idx_tasks_due_date ON tasks(due_date) WHERE due_date IS NOT NULL;
+    CREATE INDEX idx_goals_life_area ON goals(life_area_id);
+    CREATE INDEX idx_projects_goal_status ON projects(goal_id, status);
+    ```
+  - **Testing**: Use EXPLAIN QUERY PLAN to verify index usage
+
+- [ ] **Implement query optimization** 🔴 📐
+
+  - **Acceptance Criteria**:
+    - Batch related queries to prevent N+1 problems
+    - Add query result caching for frequently accessed data
+    - Implement pagination for large result sets
+  - **Dependencies**: Index creation complete
+  - **Technical Notes**: Consider implementing DataLoader pattern
+
+### Bundle Size and Code Splitting
+
+#### Route-Based Code Splitting
+
+- [ ] **Implement lazy loading for routes** 🔴 📐
+
+  - **Acceptance Criteria**:
+    - Convert all page imports to React.lazy
+    - Add Suspense boundaries with loading states
+    - Verify separate chunks in build output
+  - **Dependencies**: Routing system implemented
+  - **Implementation**:
+    ```typescript
+    const DashboardPage = lazy(() => import('@/pages/dashboard'));
+    const TasksPage = lazy(() => import('@/pages/tasks'));
+    const CalendarPage = lazy(() => import('@/pages/calendar'));
+    ```
+  - **Expected Impact**: 30-40% reduction in initial bundle size
+
+- [ ] **Optimize Vite chunk splitting** 🟡 📐
+
+  - **Acceptance Criteria**:
+    - Configure manual chunks for large libraries
+    - Separate vendor chunks by update frequency
+    - Analyze and optimize chunk sizes
+  - **Dependencies**: Route splitting complete
+  - **Vite Config Updates**:
+    ```javascript
+    manualChunks: {
+      'react-vendor': ['react', 'react-dom'],
+      'ui-vendor': ['@radix-ui', '@heroicons/react'],
+      'state': ['zustand', 'immer'],
+      'utils': ['clsx', 'tailwind-merge']
+    }
+    ```
+
+### State Management Performance
+
+#### Zustand Store Optimizations
+
+- [ ] **Implement granular subscriptions** 🔴 📐
+
+  - **Acceptance Criteria**:
+    - Split large stores into smaller slices
+    - Use shallow equality checks where appropriate
+    - Implement selector patterns for fine-grained updates
+  - **Dependencies**: Store structure analysis
+  - **Technical Notes**: Use zustand's shallow compare for object selections
+
+- [ ] **Add computed values with proper memoization** 🟡 📐
+
+  - **Acceptance Criteria**:
+    - Move derived state calculations out of components
+    - Implement computed getters in stores
+    - Cache expensive computations
+  - **Dependencies**: Store optimization complete
+  - **Examples**: Task counts, completion percentages, filtered lists
+
+### Rendering Performance
+
+#### Virtual Scrolling Implementation
+
+- [ ] **Add virtualization for large lists** 🔴 🏗️
+
+  - **Acceptance Criteria**:
+    - Implement virtual scrolling for task lists >100 items
+    - Maintain scroll position on updates
+    - Support variable height items
+  - **Dependencies**: List components complete
+  - **Library Options**: @tanstack/react-virtual or react-window
+  - **Expected Impact**: Constant render time regardless of list size
+
+- [ ] **Implement progressive rendering** 🟡 📐
+
+  - **Acceptance Criteria**:
+    - Initial render of visible items only
+    - Progressive loading of off-screen content
+    - Smooth scrolling experience maintained
+  - **Dependencies**: Virtual scrolling implemented
+
+### Loading and Perceived Performance
+
+#### Skeleton Screens and Loading States
+
+- [ ] **Create skeleton components for all major views** 🔴 📐
+
+  - **Acceptance Criteria**:
+    - Skeleton for LifeAreaCard
+    - Skeleton for TaskList
+    - Skeleton for Dashboard widgets
+    - Smooth transition from skeleton to content
+  - **Dependencies**: Design system established
+  - **Technical Notes**: Match exact dimensions of loaded content
+
+- [ ] **Implement optimistic UI updates everywhere** 🔴 📐
+
+  - **Acceptance Criteria**:
+    - All CRUD operations show immediate feedback
+    - Rollback on server error with clear indication
+    - Loading states for async operations
+  - **Dependencies**: API error handling complete
+  - **Current Status**: Partially implemented for life areas
+
+### Performance Monitoring
+
+#### Metrics and Monitoring Setup
+
+- [ ] **Implement performance monitoring** 🔴 📐
+
+  - **Acceptance Criteria**:
+    - Add Web Vitals tracking (LCP, FID, CLS)
+    - Monitor React component render times
+    - Track Tauri command execution times
+    - Set up performance budgets
+  - **Dependencies**: Core app stable
+  - **Tools**: web-vitals library, custom performance marks
+
+- [ ] **Create performance dashboard** 🟡 📐
+
+  - **Acceptance Criteria**:
+    - Real-time performance metrics display
+    - Historical performance trends
+    - Alerts for performance regressions
+  - **Dependencies**: Monitoring implemented
+  - **Technical Notes**: Store metrics in SQLite for analysis
+
+### Memory Management
+
+#### Memory Leak Prevention
+
+- [ ] **Audit and fix memory leaks** 🔴 📐
+
+  - **Acceptance Criteria**:
+    - Proper cleanup in useEffect hooks
+    - Event listener removal
+    - Store subscription cleanup
+    - WebSocket/SSE cleanup (if applicable)
+  - **Dependencies**: All features implemented
+  - **Testing**: Use Chrome DevTools Memory Profiler
+
+- [ ] **Implement data pagination and limits** 🔴 📐
+
+  - **Acceptance Criteria**:
+    - Limit initial data loads to reasonable amounts
+    - Implement cursor-based pagination
+    - Add "load more" functionality
+  - **Dependencies**: Backend query optimization
+  - **Limits**: Max 100 items initial load, 50 items per page
+
+### Build and Development Performance
+
+#### Development Experience Optimization
+
+- [ ] **Optimize development build times** 🟡 📌
+
+  - **Acceptance Criteria**:
+    - Configure Vite optimizeDeps
+    - Implement proper caching strategies
+    - Reduce cold start time <3s
+  - **Dependencies**: Build configuration stable
+  - **Technical Notes**: Pre-bundle heavy dependencies
+
+- [ ] **Add build performance analytics** 🟢 📌
+
+  - **Acceptance Criteria**:
+    - Bundle size tracking over time
+    - Build time metrics
+    - Automated performance regression detection
+  - **Dependencies**: CI/CD pipeline setup
+  - **Tools**: size-limit, webpack-bundle-analyzer equivalent for Vite
+
+---
+
 ## Phase 2: Enhanced Features
 
 ### Advanced Task Management
