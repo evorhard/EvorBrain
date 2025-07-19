@@ -409,7 +409,7 @@ src/shared/ui/
 
   - [x] Life Areas management (UI completed 2025-07-19)
   - [x] Life Area sidebar navigation with drag-and-drop (completed 2025-07-19)
-  - [ ] Goals creation and linking
+  - [x] Goals creation and linking (completed 2025-07-19)
   - [ ] Projects under goals  
   - [ ] Tasks under projects
 

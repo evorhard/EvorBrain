@@ -7,7 +7,7 @@ export interface Goal {
   lifeAreaId: string;
   name: string;
   description?: string;
-  targetDate?: Date;
+  targetDate?: Date | string;
   progress: number; // 0-100
   status: 'active' | 'completed' | 'on_hold' | 'cancelled';
   createdAt: Date;
@@ -18,5 +18,6 @@ export interface CreateGoalDto {
   lifeAreaId: string;
   name: string;
   description?: string;
-  targetDate?: Date;
+  targetDate?: Date | string;
+  status: 'active' | 'completed' | 'on_hold' | 'cancelled';
 }

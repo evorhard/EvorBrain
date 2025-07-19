@@ -360,7 +360,8 @@ Please read our [Code of Conduct](CODE_OF_CONDUCT.md) before contributing.
 #### 🔄 In Progress
 
 - [x] Life Area CRUD UI with sidebar navigation
-- [ ] Goals, Projects, and Tasks UI components
+- [x] Goals CRUD UI with status management and progress tracking
+- [ ] Projects and Tasks UI components
 - [ ] Calendar integration
 - [ ] Testing and polish
 

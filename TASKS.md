@@ -255,14 +255,16 @@
   - **Reference**: [Core Workflow](PLANNING.md#core-workflow)
   - **Completed**: 2025-07-17 (partial - TypeScript interfaces only)
 
-- [ ] **Implement Goal CRUD operations** 🔴 📐
+- [x] **Implement Goal CRUD operations** 🔴 📐
 
   - **Acceptance Criteria**:
-    - Goal creation under Life Areas
-    - Progress tracking UI
-    - Target date picker
+    - Goal creation under Life Areas ✓
+    - Progress tracking UI ✓
+    - Target date picker ✓
   - **Dependencies**: Goal entity, Life Areas complete
-  - **Testing**: Integration tests for relationships
+  - **Status**: Completed - Full CRUD UI with forms, status management, and progress tracking
+  - **Technical Notes**: Created Zustand store, API layer, GoalForm, GoalCard, and GoalsList components. Integrated with dashboard. Fixed backend API mismatch where status field was required for create_goal command.
+  - **Completed**: 2025-07-19
 
 - [ ] **Create Goal progress visualization** 🟡 📌
   - **Acceptance Criteria**:
