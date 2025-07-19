@@ -139,6 +139,8 @@ _Screenshots will be added once the UI is implemented._
 
 ## Getting Started
 
+> ⚠️ **Development Status**: EvorBrain is currently in active development and **not yet ready for production use**. The MVP is still being built. For development setup, see the [Development Setup](#development-setup) section below.
+
 ### Prerequisites
 
 Before installing EvorBrain, ensure you have:
@@ -147,12 +149,14 @@ Before installing EvorBrain, ensure you have:
 - **Rust** (latest stable) - [Download](https://rustup.rs/)
 - **Git** - [Download](https://git-scm.com/)
 
-### Quick Install
+### Quick Install (Coming Soon)
+
+Once the MVP is complete, you'll be able to:
 
 1. **Download the latest release** for your platform:
-   - [Windows (.msi)](https://github.com/yourusername/evorbrain/releases)
-   - [macOS (.dmg)](https://github.com/yourusername/evorbrain/releases)
-   - [Linux (.AppImage)](https://github.com/yourusername/evorbrain/releases)
+   - Windows (.msi) - _Coming soon_
+   - macOS (.dmg) - _Coming soon_
+   - Linux (.AppImage) - _Coming soon_
 
 2. **Install and launch** EvorBrain
 
@@ -162,7 +166,7 @@ Before installing EvorBrain, ensure you have:
    - Choose a color
    - Start adding goals!
 
-### First Steps
+### First Steps (When Available)
 
 1. **Set up your Life Areas**: Think about the major areas of your life
 2. **Create Goals**: Add 1-2 goals per life area to start
