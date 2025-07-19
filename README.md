@@ -72,7 +72,7 @@ Tasks (Monday workout, Study Chapter 3)
   <em>Calendar - Visualize tasks and deadlines</em>
 </p> -->
 
-*Screenshots will be added once the UI is implemented.*
+_Screenshots will be added once the UI is implemented._
 
 ---
 
@@ -114,6 +114,7 @@ Tasks (Monday workout, Study Chapter 3)
 **Last Updated**: July 18, 2025
 
 ### ✅ What's Working
+
 - Complete backend infrastructure with SQLite database
 - All CRUD operations for Life Areas, Goals, Projects, and Tasks
 - Tauri IPC layer with full type safety
@@ -122,11 +123,13 @@ Tasks (Monday workout, Study Chapter 3)
 - Application successfully starts and runs
 
 ### 🔄 Currently Building
+
 - Frontend UI components for all entities
 - Calendar view with drag-and-drop
 - Task list and management views
 
 ### ⏳ Next Up
+
 - Complete MVP frontend implementation
 - Add unit and integration tests
 - Polish UI/UX with loading states
@@ -147,7 +150,6 @@ Before installing EvorBrain, ensure you have:
 ### Quick Install
 
 1. **Download the latest release** for your platform:
-
    - [Windows (.msi)](https://github.com/yourusername/evorbrain/releases)
    - [macOS (.dmg)](https://github.com/yourusername/evorbrain/releases)
    - [Linux (.AppImage)](https://github.com/yourusername/evorbrain/releases)
@@ -322,9 +324,9 @@ We welcome contributions! EvorBrain is built by the community, for the community
 ### Where to Get Help
 
 - 🐛 [Issue Tracker](https://github.com/yourusername/evorbrain/issues)
-- 📖 [Developer Docs](docs/CONTRIBUTING.md) *(coming soon)*
-- 💬 Discord Community *(coming soon)*
-- 📧 Email Support *(coming soon)*
+- 📖 [Developer Docs](docs/CONTRIBUTING.md) _(coming soon)_
+- 💬 Discord Community _(coming soon)_
+- 📧 Email Support _(coming soon)_
 
 ### Code of Conduct
 
@@ -337,6 +339,7 @@ Please read our [Code of Conduct](CODE_OF_CONDUCT.md) before contributing.
 ### 🎯 Current Phase: Development Phase - MVP Week 1
 
 #### ✅ Completed
+
 - [x] Architecture planning
 - [x] Development environment setup
 - [x] Tauri project initialization
@@ -352,6 +355,7 @@ Please read our [Code of Conduct](CODE_OF_CONDUCT.md) before contributing.
 - [x] Fixed application startup issues
 
 #### 🔄 In Progress
+
 - [ ] Frontend UI components for CRUD operations
 - [ ] Calendar integration
 - [ ] Testing and polish
@@ -403,12 +407,11 @@ in the Software without restriction...
 
 - **GitHub**: [Project Repository](https://github.com/yourusername/evorbrain)
 <!-- **Website**: *(coming soon)*
-- **Email**: *(coming soon)*
-- **Discord**: *(coming soon)*
-- **Twitter**: *(coming soon)* -->
+- **Email**: _(coming soon)_
+- **Discord**: _(coming soon)_
+- **Twitter**: _(coming soon)_ -->
 
 ### Maintainers
 
-- **Lead Developer**: [Your Name](https://github.com/evorhard)
+- **Lead Developer**: [Evorhard](https://github.com/evorhard)
 - **Contributors**: [See all contributors](https://github.com/yourusername/evorbrain/graphs/contributors)
-
