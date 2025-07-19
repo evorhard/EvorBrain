@@ -6,5 +6,3 @@
  */
 
 export * from './Sidebar';
-// export * from './TaskCalendar';
-// export * from './GoalOverview';

@@ -5,8 +5,6 @@
  * It should not depend on any other layers.
  */
 
-// UI Components
-// export * from './ui';
 
 // API utilities
 export * from './api';

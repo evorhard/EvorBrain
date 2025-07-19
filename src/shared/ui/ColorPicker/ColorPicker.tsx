@@ -5,7 +5,7 @@
  */
 
 import { useState, useRef, useEffect } from 'react';
-import { cn } from '@/shared/lib';
+import { cn } from '@/shared/lib/utils';
 
 interface ColorPickerProps {
   value: string;
