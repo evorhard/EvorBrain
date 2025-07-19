@@ -348,7 +348,7 @@ Please read our [Code of Conduct](CODE_OF_CONDUCT.md) before contributing.
 - [x] Database schema implementation
 - [x] Complete backend CRUD operations for all entities
 - [x] Tauri IPC commands with validation
-- [x] Security hardening (SQL injection protection, comprehensive path traversal protection, input validation layer)
+- [x] Security hardening (SQL injection protection, comprehensive path traversal protection, input validation layer, Tauri v2 security configuration)
 - [x] Fixed application startup issues
 
 #### 🔄 In Progress

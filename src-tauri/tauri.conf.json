@@ -22,9 +22,19 @@
       }
     ],
     "security": {
-      "csp": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' ipc: http://ipc.localhost",
-      "dangerousDisableAssetCspModification": false,
-      "freezePrototype": true
+      "csp": {
+        "default-src": "'self'",
+        "script-src": "'self' 'unsafe-eval'",
+        "style-src": "'self' 'unsafe-inline'",
+        "img-src": "'self' data:",
+        "font-src": "'self' data:",
+        "connect-src": "'self' ipc: http://ipc.localhost asset: http://asset.localhost"
+      },
+      "freezePrototype": true,
+      "assetProtocol": {
+        "enable": true,
+        "scope": ["**"]
+      }
     }
   },
   "bundle": {

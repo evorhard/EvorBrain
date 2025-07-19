@@ -574,11 +574,16 @@ src/shared/ui/
   - RRULE format validation for recurring tasks
   - Standardized error messages via AppError enum
 
-#### Tauri Security Configuration
-- **CSP Headers**: Restrictive Content Security Policy
+#### Tauri Security Configuration (v2)
+- **CSP Headers**: Restrictive Content Security Policy with:
+  - `default-src 'self'`: Only allow resources from the same origin
+  - `script-src 'self' 'unsafe-eval'`: Scripts only from same origin (unsafe-eval for development)
+  - `style-src 'self' 'unsafe-inline'`: Styles from same origin with inline styles allowed
+  - `connect-src 'self' ipc: http://ipc.localhost asset: http://asset.localhost`: API connections restricted
 - **Freeze Prototype**: Prevents prototype pollution attacks
-- **Command Allowlist**: Only explicitly allowed commands can be invoked
-- **Asset CSP**: Not disabled for production builds
+- **Window Permissions**: Explicitly defined capabilities for window operations
+- **Asset Protocol**: Secure asset loading with scope restrictions
+- **Capabilities System**: Fine-grained permission control via `capabilities/default.json`
 
 ### Future Security Enhancements
 

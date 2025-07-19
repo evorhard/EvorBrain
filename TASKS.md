@@ -178,15 +178,17 @@
   - **Technical Notes**: Used validator crate with regex patterns for Rust backend
   - **Completed**: 2025-07-18
 
-- [ ] **Configure Tauri security settings** 🔴 📌
+- [x] **Configure Tauri security settings** 🔴 📌
 
   - **Acceptance Criteria**:
-    - Configure command allowlist
-    - Implement CSP headers
-    - Enable security features
+    - Configure command allowlist ✓
+    - Implement CSP headers ✓
+    - Enable security features ✓
   - **Dependencies**: Tauri setup
-  - **Files to Fix**: `tauri.conf.json`
-  - **Reference**: [Tauri Security Guide](https://tauri.app/v1/guides/distribution/hardening)
+  - **Status**: Completed - using Tauri v2 security configuration
+  - **Files Modified**: `tauri.conf.json`, `capabilities/default.json`
+  - **Technical Notes**: Configured CSP with strict policies, enabled freezePrototype, set up window permissions in capabilities
+  - **Completed**: 2025-07-19
 
 #### State Management Setup
 
@@ -1335,6 +1337,10 @@ _Tasks will be moved here upon completion with completion date_
 - [x] **Fix SQL injection vulnerabilities** - Audited all database queries, removed unused dynamic query building code, verified all queries use parameterized statements
 - [x] **Implement path traversal protection** - Created comprehensive path security module with validation functions, integrated into database connection, prevents directory traversal attacks and validates filenames
 - [x] **Add input validation layer** - Implemented comprehensive validation using validator crate with custom ValidationError types, regex patterns for hex colors and safe text, UUID validation, date range validation, progress percentage validation, and DTO validation trait for all entities
+
+### 2025-07-19
+
+- [x] **Configure Tauri security settings** - Implemented Tauri v2 security configuration with CSP headers (strict default-src 'self' policy), enabled freezePrototype for JS security, configured window permissions in capabilities/default.json, removed deprecated allowlist configuration from Tauri v1
 
 ---
 
