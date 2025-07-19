@@ -9,20 +9,20 @@ import type { LifeArea, CreateLifeAreaDto } from '@/entities/life-area';
 
 export const lifeAreasApi = {
   getAll: () => 
-    invokeCommand<LifeArea[]>('get_all_life_areas'),
+    invokeCommand<LifeArea[]>('get_life_areas'),
     
   getById: (id: string) => 
     invokeCommand<LifeArea>('get_life_area', { id }),
     
   create: (lifeArea: CreateLifeAreaDto) => 
-    invokeCommand<LifeArea>('create_life_area', { lifeArea }),
+    invokeCommand<LifeArea>('create_life_area', { dto: lifeArea }),
     
   update: (id: string, updates: Partial<LifeArea>) => 
-    invokeCommand<LifeArea>('update_life_area', { id, updates }),
+    invokeCommand<LifeArea>('update_life_area', { id, dto: updates }),
     
   delete: (id: string) => 
     invokeCommand<void>('delete_life_area', { id }),
     
-  updateOrder: (id: string, sortOrder: number) =>
-    invokeCommand<LifeArea>('update_life_area', { id, updates: { sortOrder } })
+  updateOrder: (id: string, orderIndex: number) =>
+    invokeCommand<LifeArea>('update_life_area', { id, dto: { orderIndex } })
 };

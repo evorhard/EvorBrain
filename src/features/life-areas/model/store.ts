@@ -8,10 +8,14 @@ import React from 'react';
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
+import { enableMapSet } from 'immer';
 import type { LifeArea, CreateLifeAreaDto } from '@/entities/life-area';
 import { lifeAreasApi } from '../api';
 import { toast } from '@/shared/ui/toast';
 import { lifeAreasLogger } from '@/shared/lib/logger';
+
+// Enable Immer MapSet plugin to work with Maps
+enableMapSet();
 
 interface LifeAreasState {
   lifeAreas: Map<string, LifeArea>;
@@ -23,6 +27,7 @@ interface LifeAreasState {
   loadLifeAreas: () => Promise<void>;
   createLifeArea: (dto: CreateLifeAreaDto) => Promise<LifeArea | null>;
   updateLifeArea: (id: string, updates: Partial<LifeArea>) => Promise<void>;
+  updateLifeAreaOrder: (id: string, orderIndex: number) => Promise<void>;
   deleteLifeArea: (id: string) => Promise<void>;
   selectLifeArea: (id: string | null) => void;
   reorderLifeAreas: (draggedId: string, targetId: string) => Promise<void>;
@@ -48,7 +53,7 @@ export const useLifeAreasStore = create<LifeAreasState>()(
             set((state) => {
               state.lifeAreas = new Map(
                 lifeAreas
-                  .sort((a, b) => a.sortOrder - b.sortOrder)
+                  .sort((a, b) => a.orderIndex - b.orderIndex)
                   .map((la) => [la.id, la])
               );
               state.isLoading = false;
@@ -110,6 +115,19 @@ export const useLifeAreasStore = create<LifeAreasState>()(
           }
         },
 
+        updateLifeAreaOrder: async (id, orderIndex) => {
+          try {
+            const updatedLifeArea = await lifeAreasApi.updateOrder(id, orderIndex);
+            set((state) => {
+              state.lifeAreas.set(id, updatedLifeArea);
+            });
+          } catch (error) {
+            lifeAreasLogger.error('Failed to update life area order:', error);
+            toast.error('Failed to update life area order');
+            throw error;
+          }
+        },
+
         deleteLifeArea: async (id) => {
           const lifeArea = get().lifeAreas.get(id);
           if (!lifeArea) return;
@@ -137,7 +155,7 @@ export const useLifeAreasStore = create<LifeAreasState>()(
 
         reorderLifeAreas: async (draggedId, targetId) => {
           const lifeAreasArray = Array.from(get().lifeAreas.values())
-            .sort((a, b) => a.sortOrder - b.sortOrder);
+            .sort((a, b) => a.orderIndex - b.orderIndex);
           
           const draggedIndex = lifeAreasArray.findIndex(la => la.id === draggedId);
           const targetIndex = lifeAreasArray.findIndex(la => la.id === targetId);
@@ -153,15 +171,15 @@ export const useLifeAreasStore = create<LifeAreasState>()(
           // Update sort orders
           const updates = lifeAreasArray.map((la, index) => ({
             id: la.id,
-            sortOrder: index
+            orderIndex: index
           }));
 
           // Optimistic update
           set((state) => {
-            updates.forEach(({ id, sortOrder }) => {
+            updates.forEach(({ id, orderIndex }) => {
               const lifeArea = state.lifeAreas.get(id);
               if (lifeArea) {
-                lifeArea.sortOrder = sortOrder;
+                lifeArea.orderIndex = orderIndex;
               }
             });
           });
@@ -169,8 +187,8 @@ export const useLifeAreasStore = create<LifeAreasState>()(
           try {
             // Update in backend
             await Promise.all(
-              updates.map(({ id, sortOrder }) =>
-                lifeAreasApi.updateOrder(id, sortOrder)
+              updates.map(({ id, orderIndex }) =>
+                lifeAreasApi.updateOrder(id, orderIndex)
               )
             );
           } catch (error) {
@@ -197,7 +215,7 @@ export const useLifeAreasList = (): LifeArea[] => {
   
   // Use React.useMemo to cache the sorted array
   return React.useMemo(() => {
-    return Array.from(lifeAreas.values()).sort((a, b) => a.sortOrder - b.sortOrder);
+    return Array.from(lifeAreas.values()).sort((a, b) => a.orderIndex - b.orderIndex);
   }, [lifeAreas]);
 };
 

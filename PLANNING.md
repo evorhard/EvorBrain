@@ -408,6 +408,7 @@ src/shared/ui/
 - [-] **Core CRUD Operations** (In Progress)
 
   - [x] Life Areas management (UI completed 2025-07-19)
+  - [x] Life Area sidebar navigation with drag-and-drop (completed 2025-07-19)
   - [ ] Goals creation and linking
   - [ ] Projects under goals  
   - [ ] Tasks under projects

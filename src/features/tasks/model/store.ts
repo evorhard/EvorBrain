@@ -7,9 +7,13 @@
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
+import { enableMapSet } from 'immer';
 import type { Task, CreateTaskDto, UpdateTaskDto } from '@/entities/task';
 import { tasksApi } from '../api';
 import { createMigration } from '@/shared/lib/store-persistence';
+
+// Enable Immer MapSet plugin to work with Maps
+enableMapSet();
 
 interface TasksState {
   tasks: Map<string, Task>;

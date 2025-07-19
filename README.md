@@ -355,7 +355,7 @@ Please read our [Code of Conduct](CODE_OF_CONDUCT.md) before contributing.
 
 #### 🔄 In Progress
 
-- [x] Life Area CRUD UI
+- [x] Life Area CRUD UI with sidebar navigation
 - [ ] Goals, Projects, and Tasks UI components
 - [ ] Calendar integration
 - [ ] Testing and polish

@@ -17,7 +17,7 @@ import { LifeAreaForm } from './LifeAreaForm';
 import { useLifeAreasStore, useLifeAreasList } from '../model';
 import type { LifeArea, CreateLifeAreaDto } from '@/entities/life-area';
 
-export const LifeAreasList = (): JSX.Element => {
+export const LifeAreasList = () => {
   const lifeAreas = useLifeAreasList();
   const selectedLifeAreaId = useLifeAreasStore((state) => state.selectedLifeAreaId);
   const isLoading = useLifeAreasStore((state) => state.isLoading);

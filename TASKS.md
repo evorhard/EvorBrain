@@ -235,12 +235,14 @@
   - **Completed**: 2025-07-19
   - **Technical Notes**: Created full CRUD UI with Zustand store, form validation, color picker, and toast notifications
 
-- [ ] **Add Life Area sidebar navigation** 🔴 📌
+- [x] **Add Life Area sidebar navigation** 🔴 📌
   - **Acceptance Criteria**:
-    - Collapsible sidebar
-    - Active state indication
-    - Drag to reorder
+    - Collapsible sidebar ✓
+    - Active state indication ✓
+    - Drag to reorder ✓
   - **Dependencies**: Life Area CRUD UI
+  - **Completed**: 2025-07-19
+  - **Technical Notes**: Implemented with @dnd-kit for drag-and-drop, collapsible state with animations, active state highlighting, and color-coded life areas. Fixed Immer MapSet plugin issue for drag-and-drop functionality.
 
 #### Goals Management
 
@@ -1349,6 +1351,7 @@ _Tasks will be moved here upon completion with completion date_
 - [x] **Implement Life Area CRUD UI** - Created complete CRUD UI with create/edit dialog using forms with validation, list view with cards displaying colors and descriptions, delete confirmation dialog, Zustand store with optimistic updates, color picker component, toast notification system, and full integration with Tauri backend commands
 - [x] **Fix TypeScript build errors** - Fixed missing logger export, undefined type issues, useEffect return value, and toast duration types. Installed immer dependency. Application now builds successfully with both MSI and NSIS installers.
 - [x] **Fix blank canvas issue** - Fixed production build asset loading by setting base: "./" in vite.config.ts to ensure proper path resolution with Tauri's asset protocol. The app now displays correctly in both development and production builds.
+- [x] **Add Life Area sidebar navigation** - Implemented collapsible sidebar with animation transitions, active state indication for selected life area, drag-to-reorder functionality using @dnd-kit library, color-coded life area display, and integrated create life area dialog within sidebar. Fixed Immer MapSet plugin issue to enable drag-and-drop with Map data structures in Zustand stores.
 
 ---
 

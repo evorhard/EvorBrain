@@ -8,7 +8,7 @@ export interface LifeArea {
   description?: string;
   color: string; // Hex color code
   icon?: string;
-  sortOrder: number;
+  orderIndex: number;
   createdAt: Date;
   updatedAt: Date;
 }

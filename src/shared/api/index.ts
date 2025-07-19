@@ -25,7 +25,7 @@ interface MockLifeArea {
   description: string;
   color: string;
   icon: string;
-  sortOrder: number;
+  orderIndex: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -43,7 +43,7 @@ const mockData: MockData = {
       description: 'Physical and mental wellness',
       color: '#10B981',
       icon: '💪',
-      sortOrder: 0,
+      orderIndex: 0,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     },
@@ -53,7 +53,7 @@ const mockData: MockData = {
       description: 'Professional development and work goals',
       color: '#3B82F6',
       icon: '💼',
-      sortOrder: 1,
+      orderIndex: 1,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     },
@@ -63,7 +63,7 @@ const mockData: MockData = {
       description: 'Family, friends, and social connections',
       color: '#EF4444',
       icon: '❤️',
-      sortOrder: 2,
+      orderIndex: 2,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     }
@@ -72,36 +72,42 @@ const mockData: MockData = {
 
 // Mock command implementations for development
 const mockCommands: Record<string, (args?: Record<string, unknown>) => Promise<unknown>> = {
-  get_all_life_areas: () => {
+  get_life_areas: () => {
     return Promise.resolve(mockData.life_areas);
   },
   
-  create_life_area: ({ lifeArea }: Record<string, unknown>) => {
-    const newLifeArea = {
-      ...(lifeArea as MockLifeArea),
+  create_life_area: (args) => {
+    if (!args) return Promise.reject(new Error('No arguments provided'));
+    const { dto } = args;
+    const newLifeArea: MockLifeArea = {
+      ...(dto as MockLifeArea),
       id: String(Date.now()),
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      sortOrder: mockData.life_areas.length
+      orderIndex: mockData.life_areas.length
     };
     mockData.life_areas.push(newLifeArea);
     return Promise.resolve(newLifeArea);
   },
   
-  update_life_area: ({ id, updates }: Record<string, unknown>) => {
+  update_life_area: (args) => {
+    if (!args) return Promise.reject(new Error('No arguments provided'));
+    const { id, updates } = args;
     const index = mockData.life_areas.findIndex((la) => la.id === id);
     if (index !== -1) {
       mockData.life_areas[index] = {
         ...mockData.life_areas[index],
         ...(updates as Partial<MockLifeArea>),
         updatedAt: new Date().toISOString()
-      };
+      } as MockLifeArea;
       return Promise.resolve(mockData.life_areas[index]);
     }
     return Promise.reject(new Error('Life area not found'));
   },
   
-  delete_life_area: ({ id }: Record<string, unknown>) => {
+  delete_life_area: (args) => {
+    if (!args) return Promise.reject(new Error('No arguments provided'));
+    const { id } = args;
     const index = mockData.life_areas.findIndex((la) => la.id === id);
     if (index !== -1) {
       mockData.life_areas.splice(index, 1);
