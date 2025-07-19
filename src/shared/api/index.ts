@@ -5,6 +5,7 @@
  */
 
 import { invoke } from '@tauri-apps/api/core';
+import { apiLogger } from '../lib/logger';
 
 // Type-safe invoke wrapper
 export async function invokeCommand<T>(
@@ -14,7 +15,7 @@ export async function invokeCommand<T>(
   try {
     return await invoke<T>(command, args);
   } catch (error) {
-    console.error(`Error invoking command ${command}:`, error);
+    apiLogger.error(`Error invoking command ${command}:`, error);
     throw error;
   }
 }

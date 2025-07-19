@@ -7,6 +7,7 @@
 import { useState, type FormEvent } from 'react';
 import type React from 'react';
 import { invoke } from '@tauri-apps/api/core';
+import { uiLogger } from '@/shared/lib/logger';
 
 export const DashboardPage: React.FC = () => {
   const [greetMsg, setGreetMsg] = useState("");
@@ -17,7 +18,7 @@ export const DashboardPage: React.FC = () => {
       const message = await invoke<string>("greet", { name });
       setGreetMsg(message);
     } catch (error) {
-      console.error("Failed to greet:", error);
+      uiLogger.error("Failed to greet:", error);
       setGreetMsg("Failed to connect to the backend. Please ensure the app is running properly.");
     }
   }
@@ -62,13 +63,15 @@ export const DashboardPage: React.FC = () => {
       <div className="mt-8 bg-white rounded-lg shadow-md p-6 max-w-md">
         <h2 className="text-xl font-semibold mb-4">Database Test</h2>
         <button
-          onClick={async () => {
-            try {
-              const result = await invoke<string>("test_database");
-              alert(result);
-            } catch (error) {
-              alert(`Database test failed: ${error}`);
-            }
+          onClick={() => {
+            void (async () => {
+              try {
+                const result = await invoke<string>("test_database");
+                alert(result);
+              } catch (error) {
+                alert(`Database test failed: ${String(error)}`);
+              }
+            })();
           }}
           className="w-full bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition-colors"
         >

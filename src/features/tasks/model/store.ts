@@ -31,22 +31,36 @@ interface TasksState {
 const STORE_VERSION = 1;
 
 // Migration functions
+interface V0State {
+  tasks: Task[] | Map<string, Task>;
+  selectedTaskId: string | null;
+  isLoading: boolean;
+  error: string | null;
+  version?: number;
+}
+
 const migrations = {
-  1: (state: any) => {
+  1: (state: unknown) => {
+    const oldState = state as V0State;
     // Initial version - convert old array format to Map if needed
-    if (Array.isArray(state.tasks)) {
+    if (Array.isArray(oldState.tasks)) {
       return {
-        ...state,
-        tasks: new Map(state.tasks.map((t: Task) => [t.id, t])),
+        ...oldState,
+        tasks: new Map(oldState.tasks.map((t: Task) => [t.id, t])),
+        version: 1,
       };
     }
-    return state;
+    return {
+      ...oldState,
+      version: 1,
+    };
   },
 };
 
 export const useTasksStore = create<TasksState>()(
   devtools(
     persist(
+      /* eslint-disable @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment */
       immer((set, get) => ({
         tasks: new Map(),
         selectedTaskId: null,
@@ -167,7 +181,8 @@ export const useTasksStore = create<TasksState>()(
         selectTask: (id) => set((state) => {
           state.selectedTaskId = id;
         }),
-      })),
+      }))
+      /* eslint-enable @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment */,
       {
         name: 'tasks-storage',
         partialize: (state) => ({ 
