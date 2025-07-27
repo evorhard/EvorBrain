@@ -1,0 +1,511 @@
+{
+  "master": {
+    "tasks": [
+      {
+        "id": 1,
+        "title": "Initialize Tauri Project with Vite and SolidJS",
+        "description": "Set up the foundational Tauri 2.0 desktop application with Vite build system, Bun package manager, and SolidJS frontend framework",
+        "details": "Execute: bunx create-tauri-app evorbrain --template solid-ts. Configure Vite with the provided configuration including HMR settings, SolidJS plugin, and Tailwind CSS. Set up TypeScript with strict mode. Initialize Bun as the package manager. Configure Tauri with proper permissions for file system access, git operations, and system notifications. Set up the basic window configuration with system tray support.",
+        "testStrategy": "Verify successful application launch with bun run tauri dev. Ensure HMR works by modifying a component and seeing instant updates. Test that the window opens with correct dimensions and system tray icon appears. Validate TypeScript compilation and Vite build process completes without errors.",
+        "priority": "high",
+        "dependencies": [],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create Tauri App with Basic Configuration",
+            "description": "Initialize Tauri 2.0 application using the SolidJS TypeScript template and configure basic app settings",
+            "dependencies": [],
+            "details": "Execute 'bunx create-tauri-app evorbrain --template solid-ts' to create the project. Configure basic Tauri settings in src-tauri/tauri.conf.json including app identifier, version, and build configuration. Set up initial window properties (dimensions, resizable, title). Configure Bun as the package manager by ensuring package.json has proper packageManager field.\n<info added on 2025-07-26T19:03:43.489Z>\nProject successfully initialized with Tauri app using SolidJS TypeScript template. All dependencies installed via Bun package manager. Basic window configuration set to 1200x800 pixels, resizable and centered. Tauri configuration files generated with proper app identifier and build settings. Development environment ready for TypeScript strict mode configuration and Tailwind CSS integration.\n</info added on 2025-07-26T19:03:43.489Z>",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "Configure Vite and TypeScript with Strict Mode",
+            "description": "Set up Vite build system with HMR and configure TypeScript with strict compilation settings",
+            "dependencies": [
+              "1.1"
+            ],
+            "details": "Configure vite.config.ts with SolidJS plugin, HMR settings, and build optimizations. Set up tsconfig.json with strict mode enabled, proper module resolution, and path mapping. Configure TypeScript for both frontend and Tauri backend. Ensure hot module replacement works correctly during development. Set up proper build scripts in package.json.\n<info added on 2025-07-26T19:30:29.705Z>\nSuccessfully configured Vite and TypeScript with strict mode implementation completed. Enhanced vite.config.ts with comprehensive path aliases (@, @components, @utils, @types), advanced build optimizations including source maps, code splitting, and vendor chunks, and improved HMR settings for better developer experience. Updated tsconfig.json with the strictest TypeScript settings including noUncheckedIndexedAccess and strictPropertyInitialization alongside all strict mode checks. Added path mappings that mirror Vite aliases ensuring consistent import paths across the codebase. Created dedicated src-tauri/tsconfig.json for Tauri backend type generation maintaining separation of concerns. Expanded package.json with comprehensive scripts: tauri:dev for development, tauri:build for production builds, typecheck and typecheck:watch for continuous type validation, preview for production build testing, and clean for build artifact removal. Installed @types/node dependency to provide Node.js type definitions required for Vite configuration. Verified TypeScript compilation passes without errors across both frontend and backend code. Confirmed Vite development server starts successfully with the new configuration and HMR responds instantly to file changes.\n</info added on 2025-07-26T19:30:29.705Z>",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "Integrate SolidJS and Tailwind CSS",
+            "description": "Install and configure SolidJS framework with Tailwind CSS for styling",
+            "dependencies": [
+              "1.2"
+            ],
+            "details": "Install SolidJS dependencies and configure the framework for the frontend. Set up Tailwind CSS with PostCSS configuration. Create initial CSS file with Tailwind directives. Configure Tailwind with custom theme settings matching Obsidian's aesthetic (dark mode support, custom colors). Create basic app structure with SolidJS components and verify styling works correctly.\n<info added on 2025-07-26T20:14:05.714Z>\nImplementation completed successfully. All SolidJS dependencies installed including solid-js and @solidjs/router. Tailwind CSS fully integrated with PostCSS using autoprefixer and postcss-import plugins. Created comprehensive Obsidian-inspired theme configuration in tailwind.config.js with custom color palette (dark grays, accent colors), typography settings (Inter and JetBrains Mono fonts), and utility classes for common UI patterns. Set up index.css with Tailwind directives and custom base styles. Updated App.tsx to demonstrate Tailwind integration with proper dark mode support and responsive design. Verified entire build pipeline works correctly with zero TypeScript errors and proper HMR functionality. The application now has a solid foundation for building an Obsidian-like interface with consistent theming and styling capabilities.\n</info added on 2025-07-26T20:14:05.714Z>",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 4,
+            "title": "Configure System Permissions and Tray Setup",
+            "description": "Set up Tauri permissions for file system access and configure system tray functionality",
+            "dependencies": [
+              "1.1"
+            ],
+            "details": "Configure Tauri capabilities in src-tauri/capabilities/ for file system access, git operations, and system notifications. Set up system tray icon and menu in Tauri configuration. Configure window management settings (minimize to tray, close behavior). Test permissions are properly granted and tray functionality works on target platforms. Ensure application can access local file system for data storage.\n<info added on 2025-07-26T19:37:44.470Z>\nConfigured file system plugin dependency and Tauri capabilities. Added fs plugin to Cargo.toml and created filesystem.json capability configuration. Set up system tray with menu containing Show/Hide/Quit options and minimize-to-tray functionality. Modified window close behavior to hide to tray instead of exiting the application. All permissions are properly granted and the application compiles successfully. GTK warnings appear on Linux but are purely cosmetic and do not impact functionality. Tray icon and menu work correctly across platforms.\n</info added on 2025-07-26T19:37:44.470Z>",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 9,
+            "title": "Fix GTK warnings for tray icon on Linux",
+            "description": "Research and resolve 'gtk_widget_get_scale_factor' assertion warnings that appear when creating the tray icon. This is a cosmetic polish issue that doesn't affect functionality but should be resolved for a professional appearance.",
+            "details": "<info added on 2025-07-26T20:35:25.550Z>\nImplemented a fix for GTK warnings by:\n1. Added platform-specific handling for Linux tray icon creation\n2. Wrapped tray icon creation in error handling to gracefully handle missing system tray support\n3. Added informative error messages that guide users to install libappindicator-gtk3\n4. Created LINUX_SETUP.md documentation with dependency installation instructions for various distributions\n5. The app now continues to run even if the tray icon cannot be created, preventing crashes\n\nThe solution addresses the root cause: GTK warnings occur when the tray icon tries to access widgets before GTK is fully initialized or when system tray support is missing. The implementation now handles these cases gracefully.\n</info added on 2025-07-26T20:35:25.550Z>\n<info added on 2025-07-26T20:49:14.343Z>\nFinal implementation:\n1. Created modular tray.rs file with better error handling\n2. Added environment checks for Linux to detect if tray is supported\n3. Made tray creation fail gracefully without crashing the app\n4. Fixed PostCSS configuration for Tailwind CSS v4\n5. Updated Vite config to handle SVG MIME types\n6. Created comprehensive LINUX_SETUP.md with all required dependencies\n\nThe GTK warnings are a known issue with the underlying GTK/AppIndicator libraries and cannot be completely eliminated, but the app now handles them gracefully. The warnings are cosmetic and don't affect functionality. Users can install the documented dependencies to minimize warnings.\n</info added on 2025-07-26T20:49:14.343Z>",
+            "status": "pending",
+            "dependencies": [],
+            "parentTaskId": 1
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Implement Core Data Models and File System Layer",
+        "description": "Create TypeScript interfaces for Life Area, Goal, Project, and Task entities, and implement Rust file system operations for local storage",
+        "details": "Define TypeScript interfaces in src/types/models.ts for LifeArea, Goal, Project, Task with all specified fields. Implement Rust file system module in src-tauri/src/fs.rs with functions for reading/writing JSON files following the naming convention (YYYY-MM-DD-task-id.json for tasks, etc.). Create directory structure: areas/, goals/, projects/, tasks/. Implement error handling for file operations. Set up IPC commands: fs:read_item, fs:write_item, fs:delete_item using Tauri's command macro.",
+        "testStrategy": "Unit tests for Rust file operations using cargo test. Integration tests for IPC commands ensuring data can be saved and retrieved correctly. Validate JSON serialization/deserialization. Test file naming conventions and directory structure creation.",
+        "priority": "high",
+        "dependencies": [
+          1
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "TypeScript interface definitions and validation",
+            "description": "Define TypeScript interfaces for LifeArea, Goal, Project, and Task entities with comprehensive field definitions and validation schemas",
+            "dependencies": [],
+            "details": "Create src/types/models.ts with complete TypeScript interfaces for all core entities. Include all specified fields for each type with proper typing. Implement validation schemas using a library like zod or yup for runtime validation. Define common types for dates, priorities, and relationships. Add JSDoc comments for all interfaces. Create utility types for partial updates and creation payloads.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "Rust file system module with error handling",
+            "description": "Implement comprehensive Rust file system operations module for JSON-based local storage with robust error handling",
+            "dependencies": [],
+            "details": "Create src-tauri/src/fs.rs module with functions for reading, writing, and deleting JSON files. Implement custom error types for different failure scenarios (file not found, permission denied, invalid JSON, etc.). Add file locking mechanism to prevent concurrent access issues. Implement atomic write operations using temporary files. Create utility functions for directory creation and file path validation. Add comprehensive logging for all file operations.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "Directory structure and naming conventions",
+            "description": "Establish and implement the file system directory structure with consistent naming conventions for all entity types",
+            "dependencies": [
+              "2.2"
+            ],
+            "details": "Create directory structure: areas/, goals/, projects/, tasks/ within the data directory. Implement naming convention: YYYY-MM-DD-{entity-type}-{id}.json for all files. Create index files for each directory to track entities. Implement directory initialization logic that creates required folders on first run. Add validation for file naming patterns. Create utility functions for generating file paths and ensuring directory existence.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 4,
+            "title": "IPC command implementation",
+            "description": "Implement Tauri IPC commands for frontend-backend communication with comprehensive data operations",
+            "dependencies": [
+              "2.1",
+              "2.2",
+              "2.3"
+            ],
+            "details": "Create IPC commands: fs:read_item, fs:write_item, fs:delete_item, fs:list_items using Tauri's command macro. Implement proper serialization/deserialization between TypeScript and Rust types. Add command validation and error propagation to frontend. Create batch operations for efficient bulk data operations. Implement file watching capabilities for real-time updates. Add commands for directory operations and file metadata retrieval.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 5,
+            "title": "Integration testing between frontend and backend",
+            "description": "Create comprehensive integration tests ensuring data consistency and proper error handling across the TypeScript-Rust boundary",
+            "dependencies": [
+              "2.4"
+            ],
+            "details": "Write integration tests using cargo test for Rust file operations. Create TypeScript tests for IPC command interaction. Test complete data flow: TypeScript object → IPC → Rust → file system → read back → TypeScript. Verify JSON serialization/deserialization maintains data integrity. Test error scenarios: invalid data, file permission issues, corrupted files. Create test data fixtures and cleanup utilities. Test concurrent access scenarios and file locking behavior.",
+            "status": "pending",
+            "testStrategy": ""
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Build SQLite Database Layer for Indexing",
+        "description": "Implement SQLite database using rusqlite for fast queries and indexing of the file-based data",
+        "details": "Add rusqlite dependency to Cargo.toml. Create database schema with tables for life_areas, goals, projects, tasks including all fields and indexes on common query patterns. Implement Rust module for database operations including initialization, CRUD operations, and index management. Create sync mechanism to update SQLite when files change. Implement fs:query_items IPC command for complex filtering and sorting. Add database migration system for future schema changes.",
+        "testStrategy": "Test database initialization and schema creation. Verify CRUD operations maintain consistency between files and database. Performance test queries with 10,000+ items to ensure <100ms response times. Test index effectiveness and query optimization.",
+        "priority": "high",
+        "dependencies": [
+          2
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Database schema design and migration system",
+            "description": "Design SQLite database schema with tables for life_areas, goals, projects, tasks and implement migration system for future schema changes",
+            "dependencies": [],
+            "details": "Create database schema with proper field types, constraints, and relationships. Design tables: life_areas (id, title, description, created_at, updated_at), goals (id, title, description, life_area_id, target_date, status, created_at, updated_at), projects (id, title, description, goal_id, status, created_at, updated_at), tasks (id, title, description, project_id, status, priority, due_date, created_at, updated_at, file_path). Add indexes on common query patterns (status, created_at, due_date). Implement migration system with version tracking and rollback capability.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "Rusqlite integration and connection management",
+            "description": "Set up rusqlite dependency and implement database connection management with proper error handling",
+            "dependencies": [
+              "3.1"
+            ],
+            "details": "Add rusqlite to Cargo.toml with features for bundled SQLite. Create database module with connection pool management. Implement database initialization that creates schema if not exists and runs migrations. Add proper error handling with custom error types for database operations. Create connection lifecycle management ensuring connections are properly closed. Implement database file location in application data directory.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "CRUD operations with transaction handling",
+            "description": "Implement comprehensive CRUD operations for all entity types with proper transaction management",
+            "dependencies": [
+              "3.2"
+            ],
+            "details": "Create CRUD functions for each entity type: create_item, read_item, update_item, delete_item. Implement batch operations for multiple items. Add transaction support for complex operations maintaining ACID properties. Create helper functions for common queries (get_by_status, get_by_date_range). Implement proper SQL parameter binding to prevent injection attacks. Add validation for data integrity constraints.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 4,
+            "title": "File-database synchronization mechanism",
+            "description": "Build synchronization system to keep file system and database in sync with conflict resolution",
+            "dependencies": [
+              "3.3"
+            ],
+            "details": "Implement sync service that monitors file system changes and updates database accordingly. Create bidirectional sync ensuring changes in database reflect in files and vice versa. Add conflict detection when both file and database are modified. Implement last-modified timestamp comparison for conflict resolution. Create background sync process that periodically validates consistency. Add manual sync trigger for user-initiated synchronization.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 5,
+            "title": "Query optimization and indexing",
+            "description": "Implement advanced querying capabilities with proper indexing for optimal performance",
+            "dependencies": [
+              "3.4"
+            ],
+            "details": "Create indexes on frequently queried columns (status, priority, due_date, created_at). Implement complex query builder for filtering and sorting operations. Add full-text search using SQLite FTS5 extension. Create query optimization analyzer to identify slow queries. Implement pagination for large result sets. Add query caching for frequently accessed data. Create explain query functionality for performance debugging.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 6,
+            "title": "Performance testing and benchmarking",
+            "description": "Conduct comprehensive performance testing and establish benchmarks for database operations",
+            "dependencies": [
+              "3.5"
+            ],
+            "details": "Create performance test suite with 10,000+ items to verify <100ms response times. Implement benchmark tests for all CRUD operations measuring latency and throughput. Test query performance under various load conditions. Create memory usage profiling for database operations. Establish performance regression testing in CI pipeline. Add monitoring and alerting for performance degradation. Document performance characteristics and optimization recommendations.",
+            "status": "pending",
+            "testStrategy": ""
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "title": "Create SolidJS Component Library and State Management",
+        "description": "Build reusable UI components with SolidJS and implement state management with persistence",
+        "details": "Set up component structure in src/components/ with atomic design principles. Create base components: Button, Input, TextArea, Select, Card, Modal. Implement layout components: Sidebar, Header, MainContent. Build entity-specific components: TaskItem, ProjectCard, GoalWidget. Set up SolidJS stores for global state management with createStore. Implement persistence layer that syncs with IPC backend. Configure Tailwind CSS with custom theme matching Obsidian's aesthetic.",
+        "testStrategy": "Component testing with Vitest and @solidjs/testing-library. Visual regression tests for UI components. Test state persistence across application restarts. Verify component reactivity and performance with large lists.",
+        "priority": "high",
+        "dependencies": [
+          1
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Set up Base UI Components with Tailwind Styling",
+            "description": "Create foundational atomic components including Button, Input, TextArea, Select, Card, and Modal with consistent Tailwind CSS styling and theming",
+            "dependencies": [],
+            "details": "Create src/components/base/ directory. Implement Button component with variants (primary, secondary, danger) and sizes. Build Input, TextArea, and Select components with proper validation states. Create Card component for content containers. Implement Modal component with backdrop and focus management. Apply Tailwind classes following atomic design principles with consistent spacing, colors, and typography.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "Build Layout Components and Responsive Design",
+            "description": "Implement layout components including Sidebar, Header, and MainContent with responsive behavior and proper grid systems",
+            "dependencies": [
+              "4.1"
+            ],
+            "details": "Create src/components/layout/ directory. Build Sidebar component with navigation items and collapsible behavior. Implement Header component with title, search, and user actions. Create MainContent wrapper with proper scrolling and padding. Set up responsive grid system using CSS Grid and Flexbox. Ensure mobile-first design approach with proper breakpoints.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "Create Entity-Specific Components with Data Binding",
+            "description": "Build domain-specific components for TaskItem, ProjectCard, and GoalWidget with proper data binding and interactive features",
+            "dependencies": [
+              "4.1"
+            ],
+            "details": "Create src/components/entities/ directory. Build TaskItem component with checkbox, priority indicator, and due date display. Implement ProjectCard with progress bar, task count, and status indicators. Create GoalWidget showing goal progress and related metrics. Add interactive features like click handlers, hover states, and status updates. Implement proper TypeScript props interfaces for data binding.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 4,
+            "title": "Set up SolidJS Store and State Management",
+            "description": "Implement global state management using SolidJS createStore with reactive patterns and proper TypeScript support",
+            "dependencies": [],
+            "details": "Create src/stores/ directory with separate stores for tasks, projects, goals, and areas. Use createStore for reactive state management. Implement store actions for CRUD operations with proper TypeScript interfaces. Set up computed values and derived state. Create store providers and context for component access. Implement state normalization for efficient updates and queries.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 5,
+            "title": "Implement Persistence Layer and IPC Integration",
+            "description": "Create persistence layer connecting SolidJS stores to Tauri IPC backend with automatic synchronization and error handling",
+            "dependencies": [
+              "4.4"
+            ],
+            "details": "Create src/services/persistence.ts module. Implement IPC command wrappers for fs:read_item, fs:write_item, fs:delete_item. Set up automatic store persistence with debounced saves. Implement error handling and retry logic for IPC failures. Create sync mechanism ensuring stores stay updated with file system changes. Add loading states and optimistic updates for better UX.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 6,
+            "title": "Configure Component Testing and Visual Regression Setup",
+            "description": "Set up comprehensive testing infrastructure for components including unit tests, integration tests, and visual regression testing",
+            "dependencies": [
+              "4.1",
+              "4.2",
+              "4.3"
+            ],
+            "details": "Configure Vitest with @solidjs/testing-library for component testing. Create test utilities for store mocking and IPC command simulation. Write unit tests for all base components testing props, events, and accessibility. Set up visual regression testing with component snapshots. Implement performance tests for large list rendering. Create test data factories and fixtures for consistent testing scenarios.",
+            "status": "pending",
+            "testStrategy": ""
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "title": "Implement Core CRUD Operations and Navigation",
+        "description": "Build the main application interface with navigation between Life Areas, Goals, Projects, and Tasks with full CRUD functionality",
+        "details": "Create main application layout with sidebar navigation. Implement routing with @solidjs/router for different views. Build forms for creating/editing each entity type with validation. Implement list views with sorting and filtering capabilities. Add context menus for quick actions. Create hierarchical navigation showing relationships between entities. Implement the flexible linking system allowing items to exist independently or connected.",
+        "testStrategy": "E2E tests with Playwright for complete user flows: create life area → add goal → create project → add tasks. Test all CRUD operations for each entity type. Verify navigation maintains state. Test form validation and error handling.",
+        "priority": "high",
+        "dependencies": [
+          2,
+          3,
+          4
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Set up routing infrastructure and navigation components",
+            "description": "Configure @solidjs/router, create main layout with sidebar navigation, and implement route definitions for all entity types",
+            "dependencies": [],
+            "details": "Install and configure @solidjs/router. Create App.tsx with Router setup. Build Sidebar component with navigation links for Life Areas, Goals, Projects, and Tasks. Implement MainLayout component with header and content areas. Define routes for list views and detail views of each entity type. Add active route highlighting and breadcrumb navigation.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "Build form components with validation",
+            "description": "Create reusable form components for creating and editing all entity types with comprehensive validation",
+            "dependencies": [
+              "5.1"
+            ],
+            "details": "Build EntityForm component that can handle Life Area, Goal, Project, and Task creation/editing. Implement field validation for required fields, date formats, and text limits. Create form state management with SolidJS createStore. Add error display and success feedback. Implement auto-save functionality for drafts. Create specialized field components for dates, priorities, and status selection.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "Implement list views with filtering and sorting",
+            "description": "Create list view components for each entity type with advanced filtering, sorting, and search capabilities",
+            "dependencies": [
+              "5.1"
+            ],
+            "details": "Build EntityList component with virtualization for large datasets. Implement column sorting (by name, date, priority, status). Create filter controls for status, priority, date ranges, and tags. Add search functionality within lists. Implement view options (card view, table view, compact view). Create pagination or infinite scroll for performance. Add bulk selection and actions.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 4,
+            "title": "Create CRUD operations for each entity type",
+            "description": "Implement create, read, update, and delete operations for Life Areas, Goals, Projects, and Tasks with proper state management",
+            "dependencies": [
+              "5.2"
+            ],
+            "details": "Create service functions for each entity type (lifeAreaService, goalService, projectService, taskService). Implement full CRUD operations using IPC commands to backend. Add optimistic updates for better UX. Implement undo/redo functionality for critical operations. Create data validation at service layer. Add batch operations for efficiency. Implement data caching and synchronization strategies.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 5,
+            "title": "Add context menus and quick actions",
+            "description": "Implement right-click context menus and quick action buttons for efficient entity management",
+            "dependencies": [
+              "5.3",
+              "5.4"
+            ],
+            "details": "Create ContextMenu component with proper positioning and keyboard navigation. Implement entity-specific context actions (edit, delete, duplicate, archive, move). Add quick action buttons on hover for list items. Create drag-and-drop functionality for reordering and moving items between containers. Implement keyboard shortcuts for common actions. Add confirmation dialogs for destructive actions.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 6,
+            "title": "Build hierarchical relationship management",
+            "description": "Implement the flexible linking system allowing entities to exist independently or in hierarchical relationships",
+            "dependencies": [
+              "5.4"
+            ],
+            "details": "Create relationship management UI showing parent-child connections. Implement linking/unlinking functionality between entities. Build tree view components for hierarchical display. Create relationship validation to prevent circular dependencies. Add visual indicators for linked vs independent items. Implement cascading operations (e.g., archive goal archives related projects). Create relationship browser for exploring connections.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 7,
+            "title": "Set up end-to-end testing framework",
+            "description": "Configure Playwright testing suite and create comprehensive E2E tests for all CRUD operations and user flows",
+            "dependencies": [
+              "5.6"
+            ],
+            "details": "Install and configure Playwright with Tauri testing setup. Create test fixtures for seeding test data. Write E2E tests for complete user flows: create life area → add goal → create project → add tasks. Test all CRUD operations for each entity type. Verify navigation state persistence and routing. Test form validation and error handling scenarios. Create performance tests for large datasets. Set up CI integration for automated testing.",
+            "status": "pending",
+            "testStrategy": ""
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "title": "Build Priority System and Visual Indicators",
+        "description": "Implement the configurable priority system with visual indicators across all entity types",
+        "details": "Add priority field UI to all entity forms with customizable levels (1-5 or low/medium/high). Create visual system with colors/icons for priority indication. Implement sorting by priority in all list views. Add priority filters to navigation sidebar. Create priority matrix component for dashboard showing urgent/important quadrants. Store priority configuration in user settings. Add keyboard shortcuts for quick priority assignment (1-5 keys).",
+        "testStrategy": "Test priority assignment for all entity types. Verify visual indicators appear correctly and consistently. Test sorting and filtering by priority. Validate priority persistence and updates. Test keyboard shortcuts functionality.",
+        "priority": "medium",
+        "dependencies": [
+          5
+        ],
+        "status": "pending",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Implement Priority Configuration UI and User Settings",
+            "description": "Build priority configuration interface and store settings in user preferences",
+            "dependencies": [],
+            "details": "Create priority configuration modal/panel with options for priority levels (1-5 or low/medium/high), customizable colors, and icon selection. Implement user settings storage with IPC backend. Build UI for managing priority presets and custom configurations. Add validation for priority configuration changes.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 2,
+            "title": "Create Visual Indicator System with Colors and Icons",
+            "description": "Implement consistent visual priority indicators across all entity types",
+            "dependencies": [
+              "6.1"
+            ],
+            "details": "Design and implement priority color system with accessible color palette. Create icon system for priority levels with consistent visual language. Build priority badge/indicator components that work across all entity cards and list items. Ensure proper contrast ratios and accessibility compliance.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 3,
+            "title": "Implement Priority-Based Sorting and Filtering",
+            "description": "Add priority sorting and filtering capabilities to all list views",
+            "dependencies": [
+              "6.2"
+            ],
+            "details": "Implement sorting algorithms for priority ordering in all entity list views. Create priority filter controls in navigation sidebar with multi-select options. Build priority matrix component for dashboard showing urgent/important quadrants. Add sort persistence to maintain user preferences across sessions.",
+            "status": "pending",
+            "testStrategy": ""
+          },
+          {
+            "id": 4,
+            "title": "Add Keyboard Shortcuts and Quick Priority Assignment",
+            "description": "Implement keyboard shortcuts for rapid priority assignment and navigation",
+            "dependencies": [
+              "6.3"
+            ],
+            "details": "Create keyboard shortcut system using number keys (1-5) for quick priority assignment. Implement context-aware shortcuts that work when entity is selected or focused. Add visual feedback for keyboard shortcuts with tooltip hints. Create keyboard shortcut help modal and integrate with application help system.",
+            "status": "pending",
+            "testStrategy": ""
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "title": "Develop Calendar View with Drag-and-Drop",
+        "description": "Create interactive calendar view with day/week/month modes and drag-and-drop task scheduling",
+        "details": "Build calendar grid components for day/week/month views using CSS Grid. Implement date navigation controls and view switcher. Create draggable task components using SolidJS drag-and-drop primitives. Add drop zones for each calendar cell with visual feedback. Implement task scheduling logic updating scheduledDate field. Add sidebar showing unscheduled tasks. Create quick-add functionality for clicking empty calendar slots. Implement visual timeline for multi-day tasks.",
+        "testStrategy": "Test calendar rendering in all view modes. Verify drag-and-drop updates task dates correctly. Test boundary conditions (month transitions, year changes). Test quick-add task creation. Verify performance with 100+ tasks visible.",
+        "priority": "medium",
+        "dependencies": [
+          5
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 8,
+        "title": "Create Dashboard with Widgets and Quick Actions",
+        "description": "Build the main dashboard/homepage with customizable widgets showing overview information and quick actions",
+        "details": "Design dashboard layout with responsive grid system. Create widgets: Due Today tasks, Active Projects with progress bars, Priority Matrix, Recent Items, Quick Stats. Implement quick action buttons for common operations. Add customization system for widget placement and visibility. Create progress indicators showing completion percentages. Implement real-time updates when data changes. Add mini calendar widget and upcoming deadlines.",
+        "testStrategy": "Test dashboard loads quickly with all widgets. Verify real-time updates when data changes. Test widget customization and persistence. Test quick actions create/update data correctly. Performance test with large datasets.",
+        "priority": "medium",
+        "dependencies": [
+          5,
+          6
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 9,
+        "title": "Implement Git Auto-Backup System",
+        "description": "Build automatic git commit functionality with configurable frequency and remote repository integration",
+        "details": "Implement Rust git module using git2 crate for git operations. Create IPC commands: git:commit, git:sync, git:configure. Build auto-commit scheduler with configurable intervals (every change, 5min, hourly, daily). Implement commit message generation with meaningful descriptions. Add UI for git configuration including remote URL and credentials. Create conflict detection mechanism for multi-device usage. Implement manual sync button and status indicator.",
+        "testStrategy": "Test git initialization in data directory. Verify auto-commits trigger at configured intervals. Test remote push/pull operations. Test conflict detection and user notification. Verify credentials are stored securely.",
+        "priority": "medium",
+        "dependencies": [
+          2
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 10,
+        "title": "Add Search, Keyboard Shortcuts, and System Integration",
+        "description": "Implement full-text search, comprehensive keyboard shortcuts, and native OS integration features",
+        "details": "Build search interface with instant results using SQLite FTS5. Implement quick switcher (Cmd/Ctrl+K) for navigating between items. Create keyboard shortcut system with customizable bindings. Add global hotkey for quick task capture from any application. Implement system tray menu with quick actions. Add native notifications for due tasks and reminders. Create context menus matching OS conventions. Implement file system watcher for external changes.",
+        "testStrategy": "Test search returns relevant results quickly. Verify all keyboard shortcuts work correctly. Test global hotkey captures tasks from outside app. Test system tray functionality on all platforms. Verify notifications appear correctly.",
+        "priority": "low",
+        "dependencies": [
+          5
+        ],
+        "status": "pending",
+        "subtasks": []
+      },
+      {
+        "id": 11,
+        "title": "Fix GTK warnings for tray icon on Linux",
+        "description": "Research and implement proper tray icon initialization for Linux/GTK environments to eliminate assertion warnings that appear when the tray icon is created",
+        "details": "Investigate the root cause of 'gtk_widget_get_scale_factor: assertion GTK_IS_WIDGET (widget) failed' warnings. Research Tauri's system tray implementation on Linux and GTK widget lifecycle requirements. Identify if the issue stems from early widget access before GTK initialization completes. Implement proper initialization sequence ensuring GTK context is fully ready before tray icon creation. Consider using gtk::init_check() or similar validation before tray operations. Add platform-specific initialization code for Linux in the Rust backend. Implement error handling to gracefully manage GTK initialization failures. Test with different Linux distributions and desktop environments (GNOME, KDE, XFCE). Document the fix for future reference and potential upstream contribution to Tauri if applicable.",
+        "testStrategy": "Launch application on various Linux distributions and monitor console output for GTK warnings. Verify tray icon appears correctly without assertion failures. Test rapid application start/stop cycles to ensure initialization is robust. Test on different desktop environments including GNOME Shell, KDE Plasma, and XFCE. Verify tray icon functionality remains intact (click events, menu, etc.). Run with GTK_DEBUG environment variable to capture detailed GTK diagnostics. Test on both X11 and Wayland sessions to ensure compatibility.",
+        "status": "cancelled",
+        "dependencies": [
+          1
+        ],
+        "priority": "medium",
+        "subtasks": []
+      }
+    ],
+    "metadata": {
+      "created": "2025-07-26T18:40:47.765Z",
+      "updated": "2025-07-26T23:56:46.818Z",
+      "description": "Tasks for master context"
+    }
+  }
+}
