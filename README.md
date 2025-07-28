@@ -11,6 +11,8 @@
 
 **A local-first, hierarchical task management system that combines the best of Notion and Obsidian into a blazing-fast desktop application.**
 
+> ⚠️ **IMPORTANT: This project is currently in early development and is NOT functional yet.** The documentation below describes the planned features and architecture. Please check the [Current Status](#-current-status) section for development progress.
+
 [![Tauri](https://img.shields.io/badge/Tauri-2.0-24C8DB?style=for-the-badge&logo=tauri&logoColor=white)](https://tauri.app)
 [![SolidJS](https://img.shields.io/badge/SolidJS-1.8-2C4F7C?style=for-the-badge&logo=solid&logoColor=white)](https://solidjs.com)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.3-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://typescriptlang.org)
@@ -24,6 +26,7 @@
 ## 📋 Table of Contents
 
 - [What Does This Do?](#-what-does-this-do)
+- [Current Status](#-current-status)
 - [Key Features](#-key-features)
 - [Tech Stack](#-tech-stack)
 - [Prerequisites](#-prerequisites)
@@ -35,6 +38,45 @@
 - [Contributing](#-contributing)
 - [License](#-license)
 - [Support](#-support)
+
+---
+
+## 🚧 Current Status
+
+EvorBrain is currently in the initial development phase. Here's the development progress:
+
+### Development Checklist
+
+#### ✅ Completed
+
+- [x] Project initialization and documentation
+- [x] Technology stack selection
+- [x] High-level architecture planning
+- [x] Development environment setup
+
+#### 🔄 In Progress
+
+- [ ] Basic Tauri application scaffold
+- [ ] Core data models and database schema
+- [ ] Initial UI component library setup
+
+#### 📋 Pending
+
+- [ ] SQLite database integration
+- [ ] Basic CRUD operations for tasks
+- [ ] Frontend routing and navigation
+- [ ] Life Area management implementation
+- [ ] Goal and Project hierarchies
+- [ ] Task management features
+- [ ] Git integration for backup/sync
+- [ ] Calendar view implementation
+- [ ] Search functionality
+- [ ] Keyboard shortcuts
+- [ ] Cross-platform testing
+- [ ] Performance optimization
+- [ ] Production build pipeline
+
+**Estimated Timeline**: This is a solo developer project in early stages. Core functionality is expected to be ready for alpha testing in Q2 2025.
 
 ---
 
@@ -56,7 +98,9 @@ Perfect for anyone who wants the power of Notion's organization with Obsidian's 
 
 ## ✨ Key Features
 
-### 🚀 Available Now
+### 🚀 Currently In Development
+
+> **Note**: These features represent the planned functionality. None of these features are implemented yet.
 
 - **Hierarchical Organization**: Life Areas → Goals → Projects → Tasks → Subtasks
 - **Local-First Storage**: All data stored in SQLite + markdown files on your computer
@@ -133,6 +177,8 @@ Before you begin, ensure you have the following installed:
 
 ## 🚀 Installation
 
+> ⚠️ **Developer Notice**: The application is not functional yet. These installation steps are for developers who want to contribute to the project or follow along with development.
+
 ### 1. Clone the Repository
 
 ```bash
@@ -152,47 +198,50 @@ bun install
 ### 3. Set Up Development Environment
 
 ```bash
-# Initialize the database and file structure
+# Note: These commands may not work yet as the application is still being developed
+# Initialize the database and file structure (NOT IMPLEMENTED)
 bun run init
 
-# Start the development server
+# Start the development server (MAY NOT LAUNCH PROPERLY)
 bun run dev
 ```
 
-That's it! The app should now be running in development mode.
+**Current State**: The basic project structure is in place, but the application won't run properly yet. Check the [Current Status](#-current-status) section for development progress.
 
 ---
 
 ## 🎯 Getting Started
 
-### Quick Start Guide
+> 📝 **Note**: This section describes the planned user experience once the application is functional. It's currently here as a reference for the intended workflow.
+
+### Quick Start Guide (Planned Experience)
 
 1. **Launch the App**
 
    ```bash
-   bun run dev
+   bun run dev  # This command doesn't work yet
    ```
 
-2. **Create Your First Life Area**
+2. **Create Your First Life Area** _(Not implemented)_
 
    - Click the "+" button in the sidebar
    - Name it (e.g., "Career", "Health", "Personal")
    - Choose a color and icon
 
-3. **Add a Goal**
+3. **Add a Goal** _(Not implemented)_
 
    - Select your life area
    - Click "Add Goal"
    - Define what you want to achieve
    - Set a target date
 
-4. **Create a Project**
+4. **Create a Project** _(Not implemented)_
 
    - Within your goal, create a project
    - Break it down into actionable tasks
    - Set priorities and deadlines
 
-5. **Start Working!**
+5. **Start Working!** _(Not implemented)_
    - Check off tasks as you complete them
    - Watch your progress automatically update
    - Your data is saved locally and backed up via Git
@@ -263,17 +312,19 @@ evorbrain/
 
 ### Running the App
 
+> ⚠️ **Note**: Many of these commands are defined but may not work properly yet as the application is still being built.
+
 ```bash
-# Development mode with hot reload
+# Development mode with hot reload (NOT FULLY FUNCTIONAL)
 bun run dev
 
-# Build for production
+# Build for production (NOT CONFIGURED)
 bun run build
 
-# Run tests
+# Run tests (NO TESTS WRITTEN YET)
 bun run test
 
-# Lint and format code
+# Lint and format code (BASIC CONFIG ONLY)
 bun run lint
 bun run format
 ```
