@@ -76,7 +76,7 @@ EvorBrain is currently in the initial development phase. Here's the development 
 - [ ] Performance optimization
 - [ ] Production build pipeline
 
-**Estimated Timeline**: This is a solo developer project in early stages. Core functionality is expected to be ready for alpha testing in Q2 2025.
+**Development Status**: This is a solo developer project in the planning phase. Check the development documents for detailed architecture and task tracking.
 
 ---
 
@@ -135,11 +135,13 @@ Perfect for anyone who wants the power of Notion's organization with Obsidian's 
 | **Styling**            | [Tailwind CSS](https://tailwindcss.com)                    | Utility-first, great DX, perfect for rapid development |
 | **UI Components**      | [Kobalte](https://kobalte.dev)                             | Accessible, unstyled components for SolidJS            |
 | **Database**           | [SQLite](https://sqlite.org)                               | Fast, reliable, zero-config embedded database          |
+| **ORM**                | [SQLx](https://github.com/launchbadge/sqlx)                | Compile-time checked SQL queries in Rust              |
 | **Language**           | [TypeScript](https://typescriptlang.org)                   | Type safety, better DX, fewer runtime errors           |
 | **Backend Language**   | [Rust](https://rust-lang.org)                              | Memory safe, blazing fast, excellent for native apps   |
-| **Runtime**            | [Bun](https://bun.sh)                                      | Fast all-in-one JavaScript runtime and toolkit         |
+| **Package Manager**    | [Bun](https://bun.sh)                                      | Fast all-in-one JavaScript runtime and toolkit         |
 | **State Management**   | [Solid Stores](https://www.solidjs.com/docs/latest#stores) | Built-in reactive state management                     |
-| **Data Fetching**      | [TanStack Query](https://tanstack.com/query)               | Powerful async state management                        |
+| **Router**             | [@solidjs/router](https://github.com/solidjs/solid-router) | Official SolidJS routing solution                      |
+| **Build Tool**         | [Vite](https://vitejs.dev)                                 | Fast frontend build tool with HMR                      |
 
 ---
 
@@ -303,6 +305,7 @@ evorbrain/
 │
 ├── PLANNING.md         # Architecture and planning document
 ├── TASKS.md           # Development task tracking
+├── ARCHITECTURE.md    # Technical specifications
 └── README.md          # You are here! 👋
 ```
 
@@ -372,10 +375,10 @@ bun run format
 
 ## 📚 Documentation
 
-- **[Planning Document](PLANNING.md)** - Detailed architecture, design decisions, and technical specifications
+- **[Planning Document](PLANNING.md)** - Project vision, design decisions, and development phases
+- **[Architecture Document](ARCHITECTURE.md)** - Detailed technical architecture and implementation specs
 - **[Task Tracking](TASKS.md)** - Current development status, upcoming features, and task assignments
 - **[API Documentation](docs/api.md)** - Tauri command reference (coming soon)
-- **[Plugin Development](docs/plugins.md)** - Guide to creating EvorBrain plugins (coming soon)
 - **[User Guide](docs/user-guide.md)** - Comprehensive user documentation (coming soon)
 
 ---

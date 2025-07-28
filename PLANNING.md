@@ -1,217 +1,236 @@
-# EvorBrain Planning Document
-
-**Last Updated:** 2025-07-27  
-**Version:** 1.0.0  
-**Status:** Active Development
-
----
+# 🧠 EvorBrain Planning Document
 
 ## Table of Contents
 
-1. [Project Overview](#project-overview)
-2. [Core Objectives](#core-objectives)
-3. [Architecture Decisions](#architecture-decisions)
-4. [System Architecture](#system-architecture)
-5. [Database Schema Design](#database-schema-design)
-6. [File System Organization](#file-system-organization)
-7. [API Design and Data Flow](#api-design-and-data-flow)
-8. [Security Considerations](#security-considerations)
-9. [Performance Requirements](#performance-requirements)
-10. [Extensibility Strategy](#extensibility-strategy)
-11. [Technology Stack](#technology-stack)
-12. [Development Phases](#development-phases)
-13. [Risk Assessment](#risk-assessment)
-14. [Decision Log](#decision-log)
+- [Project Vision](#project-vision)
+- [Target Users](#target-users)
+- [Core Requirements](#core-requirements)
+- [Tech Stack Selection](#tech-stack-selection)
+- [Architecture Overview](#architecture-overview)
+- [Data Models](#data-models)
+- [Development Phases](#development-phases)
+- [Extensibility Strategy](#extensibility-strategy)
+- [Security Considerations](#security-considerations)
+- [Performance Targets](#performance-targets)
+- [Coding Standards](#coding-standards)
 
 ---
 
-## Project Overview
+## Project Vision
 
-EvorBrain is a hybrid desktop/web application that combines the best features of Notion and Obsidian, providing a hierarchical task management system with local file storage, automatic backups, and a powerful dashboard interface.
+EvorBrain is a local-first, hierarchical task management system that combines the organizational power of Notion with the data ownership philosophy of Obsidian. The goal is to create a blazing-fast desktop application that helps users organize their entire life through a structured hierarchy while maintaining complete control over their data.
 
-### What Does This Do?
+### Core Philosophy
 
-EvorBrain helps users organize their entire life through a structured hierarchy:
+- **Local-First**: All data lives on the user's machine with optional sync
+- **Hierarchical Organization**: Clear structure from life areas down to subtasks
+- **Speed**: Native performance with instant interactions
+- **Extensibility**: Built for personal customization without plugin complexity
+- **Privacy**: Your data never leaves your control unless you choose to sync
 
-- **Life Areas** (e.g., Career, Health, Finance)
-- **Goals** within each life area
-- **Projects** to achieve those goals
-- **Tasks** and subtasks to complete projects
+## Target Users
 
-All data is stored locally in human-readable files (like Obsidian), with automatic git backups and a beautiful, responsive interface powered by modern web technologies.
+### Primary User
 
----
+I am building this application primarily for my own use as a developer who needs:
 
-## Core Objectives
+- Complete control over my task management system
+- The ability to extend functionality as needed
+- Local storage with Git-based backup
+- A fast, responsive interface that doesn't rely on internet connectivity
 
-### Primary Goals
+### Secondary Users
 
-1. **Local-First Architecture**: All data stored locally with full user control
-2. **Hierarchical Organization**: Clear structure from life areas down to subtasks
-3. **Automatic Backups**: Git integration for version control and cloud sync
-4. **Fast Performance**: Native desktop performance with web flexibility
-5. **Beautiful UI**: Modern, responsive interface with calendar views and dashboards
+Power users who:
 
-### Secondary Goals
+- Value data ownership and privacy
+- Want Notion-like organization with Obsidian-like control
+- Need offline-first functionality
+- Appreciate open-source software they can modify
 
-1. **Cross-Platform Support**: Start with Windows, expand to macOS/Linux
-2. **Extensibility**: Plugin system for future features
-3. **AI Integration**: Intelligent priority setting and suggestions
-4. **Advanced Tracking**: Habits, health metrics, and progress visualization
+## Core Requirements
 
----
+### MVP Features
 
-## Architecture Decisions
+1. **Hierarchical Structure**
 
-### Decision: Tauri over Electron
+   - Life Areas (e.g., Career, Health, Personal)
+   - Goals linked to life areas
+   - Projects linked to goals
+   - Tasks linked to projects
+   - Subtasks for granular breakdown
+   - Standalone tasks/chores not linked to projects
 
-**Date:** 2025-07-27  
-**Rationale:**
+2. **Views & Navigation**
 
-- **Performance**: Tauri uses native WebView2 on Windows, resulting in ~50MB apps vs Electron's ~150MB+
-- **Security**: Rust backend provides memory safety and better security isolation
-- **Resource Usage**: Lower RAM usage (200-300MB vs Electron's 500MB+)
-- **Native APIs**: Better access to OS features through Rust
-- **Future-Proof**: Growing ecosystem, excellent TypeScript support
+   - Dashboard/Homepage with at-a-glance overview
+   - Calendar view (day/week/month)
+   - List views with filtering and sorting
+   - Quick search across all content
 
-### Decision: SolidJS over React/Vue
+3. **Task Management**
 
-**Date:** 2025-07-27  
-**Rationale:**
+   - Priority levels (Critical/High/Medium/Low)
+   - Due dates (optional)
+   - Status tracking
+   - Notes/descriptions with markdown support
 
-- **Performance**: No virtual DOM, fine-grained reactivity
-- **Bundle Size**: ~7KB vs React's ~45KB
-- **Simplicity**: Less boilerplate, more intuitive reactivity model
-- **TypeScript**: First-class TypeScript support
-- **Compatibility**: Works excellently with Vite and modern tooling
+4. **Data Storage**
+   - Local SQLite database
+   - Markdown files for content
+   - Automatic Git commits for backup
+   - Human-readable file structure
 
-### Decision: SQLite + File System Hybrid Storage
+### Post-MVP Features
 
-**Date:** 2025-07-27  
-**Rationale:**
+1. **AI Integration**
 
-- **SQLite**: Fast queries, ACID compliance, relationships, full-text search
-- **File System**: Human-readable markdown files, git-friendly, user accessibility
-- **Hybrid Benefits**: Query performance + data portability
+   - Claude-powered priority suggestions
+   - Smart task scheduling
+   - Natural language task creation
 
----
+2. **Tracking Systems**
 
-## System Architecture
+   - Habit tracker with streaks
+   - Health metrics (weight, sleep, etc.)
+   - Progress visualization and analytics
 
-```mermaid
-graph TB
-    subgraph "Frontend [SolidJS]"
-        UI[UI Components]
-        Store[Solid Stores]
-        Query[Tanstack Query]
-    end
+3. **Cross-Platform**
+   - macOS support
+   - Linux support
+   - Mobile companion app
+   - Web access (read-only)
 
-    subgraph "Tauri Bridge"
-        IPC[IPC Commands]
-        Events[Event System]
-    end
+## Tech Stack Selection
 
-    subgraph "Backend [Rust]"
-        API[API Handlers]
-        DB[Database Layer]
-        FS[File System Layer]
-        Git[Git Integration]
-    end
+Based on research of local-first applications and modern desktop development in 2024, I've selected the following technologies:
 
-    subgraph "Storage"
-        SQLite[(SQLite DB)]
-        Files[Markdown Files]
-        Config[Config Files]
-    end
+### Core Stack
 
-    UI --> Store
-    Store --> Query
-    Query --> IPC
-    IPC --> API
-    API --> DB
-    API --> FS
-    API --> Git
-    DB --> SQLite
-    FS --> Files
-    FS --> Config
+| Component              | Technology                                                 | Justification                                                                                                              |
+| ---------------------- | ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| **Desktop Framework**  | [Tauri 2.0](https://tauri.app)                             | - 50MB apps vs Electron's 150MB+<br>- Rust backend for performance<br>- Better security model<br>- Native OS integration   |
+| **Frontend Framework** | [SolidJS](https://solidjs.com)                             | - No virtual DOM (blazing fast)<br>- Fine-grained reactivity<br>- 7KB runtime<br>- Similar to React but better performance |
+| **UI Library**         | [Kobalte](https://kobalte.dev)                             | - Accessible by default<br>- Unstyled components<br>- SolidJS native<br>- Flexible styling                                 |
+| **Styling**            | [Tailwind CSS](https://tailwindcss.com)                    | - Rapid development<br>- Consistent design system<br>- Small production builds<br>- Great DX                               |
+| **Database**           | [SQLite](https://sqlite.org)                               | - Zero configuration<br>- Embedded database<br>- Fast performance<br>- Reliable                                            |
+| **State Management**   | [Solid Stores](https://www.solidjs.com/docs/latest#stores) | - Built into SolidJS<br>- Reactive by design<br>- Simple API                                                               |
+| **Data Sync**          | Custom Git Integration                                     | - Version control built-in<br>- Works with any Git provider<br>- Conflict resolution<br>- History tracking                 |
+| **Build Tool**         | [Bun](https://bun.sh)                                      | - Fast package management<br>- Built-in bundler<br>- TypeScript support<br>- Better DX than npm                            |
 
-    Events --> Store
-    API --> Events
-```
+### Additional Libraries
 
-### Component Architecture
+- **Markdown**: [markdown-it](https://github.com/markdown-it/markdown-it) with plugins
+- **Icons**: [Lucide](https://lucide.dev) (successor to Feather icons)
+- **Date Handling**: [date-fns](https://date-fns.org)
+- **Charts**: [Chart.js](https://www.chartjs.org) or [D3.js](https://d3js.org) for analytics
+- **Testing**: [Vitest](https://vitest.dev) for unit tests, [Playwright](https://playwright.dev) for E2E
+
+## Architecture Overview
+
+### System Architecture
 
 ```
-evorbrain/
-├── src-tauri/          # Rust backend
-│   ├── src/
-│   │   ├── main.rs     # Entry point
-│   │   ├── commands/   # IPC command handlers
-│   │   ├── db/         # Database operations
-│   │   ├── storage/    # File system operations
-│   │   ├── sync/       # Git synchronization
-│   │   └── utils/      # Shared utilities
-│   └── Cargo.toml
-├── src/                # SolidJS frontend
-│   ├── components/     # UI components
-│   ├── stores/         # State management
-│   ├── hooks/          # Custom hooks
-│   ├── api/            # Tauri command wrappers
-│   ├── types/          # TypeScript types
-│   └── styles/         # Global styles
-└── data/               # User data directory
-    ├── evorbrain.db    # SQLite database
-    ├── areas/          # Life area markdown files
-    ├── attachments/    # File attachments
-    └── .git/           # Git repository
+┌─────────────────────────────────────────────────────────────┐
+│                        User Interface                       │
+│                      (SolidJS + Kobalte)                    │
+├─────────────────────────────────────────────────────────────┤
+│                      Frontend Logic                         │
+│              (Stores, Routing, State Management)            │
+├─────────────────────────────────────────────────────────────┤
+│                       Tauri IPC Bridge                      │
+│                    (Command Invocation)                     │
+├─────────────────────────────────────────────────────────────┤
+│                      Rust Backend                           │
+│        (Business Logic, Data Access, Git Operations)        │
+├─────────────────────────────────────────────────────────────┤
+│                     Data Storage Layer                      │
+│                 SQLite │ File System │ Git                  │
+└─────────────────────────────────────────────────────────────┘
 ```
 
----
+### Data Flow
 
-## Database Schema Design
+1. **User Action** → UI Component → Store Action → Tauri Command
+2. **Tauri Command** → Rust Handler → Database/File Operation
+3. **Response** → Store Update → UI Re-render
 
-### Core Tables
+### File Structure Strategy
+
+```
+~/EvorBrain/
+├── .evorbrain/
+│   ├── config.json         # User preferences
+│   ├── evorbrain.db       # SQLite database
+│   └── cache/             # Temporary files
+├── areas/
+│   ├── career/
+│   │   ├── _meta.json     # Area metadata
+│   │   └── notes.md       # Area notes
+│   └── health/
+│       ├── _meta.json
+│       └── notes.md
+├── projects/
+│   ├── evorbrain-dev/
+│   │   ├── _meta.json     # Project metadata
+│   │   ├── tasks.json     # Task list
+│   │   └── notes.md       # Project notes
+│   └── fitness-routine/
+│       ├── _meta.json
+│       ├── tasks.json
+│       └── notes.md
+└── archive/               # Completed items
+```
+
+## Data Models
+
+### Database Schema
 
 ```sql
--- Life Areas (top level)
-CREATE TABLE life_areas (
+-- Life Areas
+CREATE TABLE areas (
     id TEXT PRIMARY KEY,
     name TEXT NOT NULL,
     description TEXT,
     color TEXT,
     icon TEXT,
-    position INTEGER NOT NULL,
+    priority INTEGER DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    archived BOOLEAN DEFAULT FALSE
 );
 
 -- Goals
 CREATE TABLE goals (
     id TEXT PRIMARY KEY,
-    life_area_id TEXT NOT NULL,
-    title TEXT NOT NULL,
+    area_id TEXT,
+    name TEXT NOT NULL,
     description TEXT,
     target_date DATE,
-    status TEXT CHECK(status IN ('active', 'completed', 'archived')),
-    progress REAL DEFAULT 0,
+    progress INTEGER DEFAULT 0,
+    status TEXT DEFAULT 'active',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (life_area_id) REFERENCES life_areas(id) ON DELETE CASCADE
+    archived BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (area_id) REFERENCES areas(id)
 );
 
 -- Projects
 CREATE TABLE projects (
     id TEXT PRIMARY KEY,
-    goal_id TEXT NOT NULL,
-    title TEXT NOT NULL,
+    goal_id TEXT,
+    area_id TEXT,
+    name TEXT NOT NULL,
     description TEXT,
-    status TEXT CHECK(status IN ('planning', 'active', 'completed', 'archived')),
-    priority INTEGER CHECK(priority BETWEEN 1 AND 5),
+    priority INTEGER DEFAULT 0,
+    status TEXT DEFAULT 'active',
     start_date DATE,
     end_date DATE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (goal_id) REFERENCES goals(id) ON DELETE CASCADE
+    archived BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (goal_id) REFERENCES goals(id),
+    FOREIGN KEY (area_id) REFERENCES areas(id)
 );
 
 -- Tasks
@@ -219,521 +238,321 @@ CREATE TABLE tasks (
     id TEXT PRIMARY KEY,
     project_id TEXT,
     parent_task_id TEXT,
-    title TEXT NOT NULL,
+    name TEXT NOT NULL,
     description TEXT,
-    status TEXT CHECK(status IN ('todo', 'in_progress', 'completed', 'cancelled')),
-    priority INTEGER CHECK(priority BETWEEN 1 AND 5),
-    due_date TIMESTAMP,
+    priority INTEGER DEFAULT 0,
+    due_date DATE,
+    completed BOOLEAN DEFAULT FALSE,
     completed_at TIMESTAMP,
-    estimated_minutes INTEGER,
-    actual_minutes INTEGER,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE,
-    FOREIGN KEY (parent_task_id) REFERENCES tasks(id) ON DELETE CASCADE
+    archived BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (project_id) REFERENCES projects(id),
+    FOREIGN KEY (parent_task_id) REFERENCES tasks(id)
 );
 
--- Tags for flexible categorization
+-- Notes (Markdown content)
+CREATE TABLE notes (
+    id TEXT PRIMARY KEY,
+    entity_type TEXT NOT NULL, -- 'area', 'goal', 'project', 'task'
+    entity_id TEXT NOT NULL,
+    content TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tags (for future extensibility)
 CREATE TABLE tags (
     id TEXT PRIMARY KEY,
-    name TEXT UNIQUE NOT NULL,
+    name TEXT NOT NULL UNIQUE,
     color TEXT
 );
 
--- Many-to-many relationships for tags
-CREATE TABLE task_tags (
-    task_id TEXT,
-    tag_id TEXT,
-    PRIMARY KEY (task_id, tag_id),
-    FOREIGN KEY (task_id) REFERENCES tasks(id) ON DELETE CASCADE,
-    FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE
-);
-
--- File attachments
-CREATE TABLE attachments (
-    id TEXT PRIMARY KEY,
+-- Entity Tags (many-to-many)
+CREATE TABLE entity_tags (
     entity_type TEXT NOT NULL,
     entity_id TEXT NOT NULL,
-    file_path TEXT NOT NULL,
-    file_name TEXT NOT NULL,
-    file_size INTEGER,
-    mime_type TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    tag_id TEXT NOT NULL,
+    PRIMARY KEY (entity_type, entity_id, tag_id),
+    FOREIGN KEY (tag_id) REFERENCES tags(id)
 );
-
--- Indexes for performance
-CREATE INDEX idx_goals_life_area ON goals(life_area_id);
-CREATE INDEX idx_projects_goal ON projects(goal_id);
-CREATE INDEX idx_tasks_project ON tasks(project_id);
-CREATE INDEX idx_tasks_parent ON tasks(parent_task_id);
-CREATE INDEX idx_tasks_due_date ON tasks(due_date);
-CREATE INDEX idx_tasks_status ON tasks(status);
 ```
 
----
-
-## File System Organization
-
-### Directory Structure
-
-```
-data/
-├── evorbrain.db                    # Main SQLite database
-├── areas/                          # Life area folders
-│   ├── career/
-│   │   ├── _meta.json             # Area metadata
-│   │   ├── goals/
-│   │   │   ├── become-senior-dev/
-│   │   │   │   ├── _meta.json    # Goal metadata
-│   │   │   │   ├── README.md     # Goal description
-│   │   │   │   └── projects/
-│   │   │   │       └── learn-rust/
-│   │   │   │           ├── _meta.json
-│   │   │   │           ├── README.md
-│   │   │   │           └── tasks.md
-│   │   │   └── ...
-│   │   └── ...
-│   └── ...
-├── attachments/                    # Binary files
-│   ├── 2025/
-│   │   ├── 01/
-│   │   │   └── file-uuid.ext
-│   │   └── ...
-│   └── ...
-├── templates/                      # User templates
-│   ├── project-template.md
-│   └── task-template.md
-└── config/
-    ├── settings.json              # Application settings
-    └── shortcuts.json             # Keyboard shortcuts
-```
-
-### File Formats
-
-**\_meta.json** (Area/Goal/Project metadata):
-
-```json
-{
-  "id": "uuid",
-  "type": "area|goal|project",
-  "created": "2025-07-27T10:00:00Z",
-  "updated": "2025-07-27T10:00:00Z",
-  "color": "#3B82F6",
-  "icon": "briefcase",
-  "tags": ["work", "priority"]
-}
-```
-
-**tasks.md** (Human-readable task list):
-
-```markdown
-# Project: Learn Rust
-
-## Tasks
-
-- [x] Set up development environment
-- [x] Complete Rust book chapters 1-3
-- [ ] Build CLI todo app
-  - [x] Parse command line arguments
-  - [ ] Implement storage
-  - [ ] Add list/add/remove commands
-- [ ] Contribute to open source Rust project
-```
-
----
-
-## API Design and Data Flow
-
-### Tauri Commands (IPC)
+### TypeScript Interfaces
 
 ```typescript
-// Life Area Commands
-interface LifeAreaCommands {
-  create_life_area: (name: string, description?: string) => LifeArea;
-  get_life_areas: () => LifeArea[];
-  update_life_area: (id: string, updates: Partial<LifeArea>) => LifeArea;
-  delete_life_area: (id: string) => void;
-  reorder_life_areas: (ids: string[]) => void;
-}
-
-// Goal Commands
-interface GoalCommands {
-  create_goal: (lifeAreaId: string, goal: NewGoal) => Goal;
-  get_goals: (lifeAreaId?: string) => Goal[];
-  update_goal: (id: string, updates: Partial<Goal>) => Goal;
-  delete_goal: (id: string) => void;
-  calculate_goal_progress: (id: string) => number;
-}
-
-// Project Commands
-interface ProjectCommands {
-  create_project: (goalId: string, project: NewProject) => Project;
-  get_projects: (goalId?: string) => Project[];
-  update_project: (id: string, updates: Partial<Project>) => Project;
-  delete_project: (id: string) => void;
-  move_project: (id: string, newGoalId: string) => Project;
-}
-
-// Task Commands
-interface TaskCommands {
-  create_task: (projectId: string, task: NewTask) => Task;
-  get_tasks: (filters: TaskFilters) => Task[];
-  update_task: (id: string, updates: Partial<Task>) => Task;
-  delete_task: (id: string) => void;
-  complete_task: (id: string) => Task;
-  create_subtask: (parentId: string, task: NewTask) => Task;
-  get_calendar_tasks: (start: Date, end: Date) => CalendarTask[];
-}
-
-// Sync Commands
-interface SyncCommands {
-  init_git_repo: (remote?: string) => void;
-  commit_changes: (message?: string) => void;
-  push_changes: () => void;
-  pull_changes: () => void;
-  get_sync_status: () => SyncStatus;
-}
-```
-
-### Data Flow Patterns
-
-1. **Command Pattern**: Frontend sends commands through Tauri IPC
-2. **Event System**: Backend emits events for data changes
-3. **Optimistic Updates**: UI updates immediately, rolls back on error
-4. **Background Sync**: Periodic git commits and pushes
-
-```typescript
-// Frontend data flow example
-const createTask = async (projectId: string, task: NewTask) => {
-  // Optimistic update
-  queryClient.setQueryData(["tasks", projectId], (old) => [...old, tempTask]);
-
-  try {
-    const newTask = await invoke("create_task", { projectId, task });
-    // Update with real data
-    queryClient.setQueryData(["tasks", projectId], (old) =>
-      old.map((t) => (t.id === tempTask.id ? newTask : t))
-    );
-  } catch (error) {
-    // Rollback on error
-    queryClient.invalidateQueries(["tasks", projectId]);
-    throw error;
-  }
-};
-```
-
----
-
-## Security Considerations
-
-### Application Security
-
-1. **File System Access**
-
-   - Restrict file operations to app data directory
-   - Validate all file paths to prevent directory traversal
-   - Use Tauri's allowlist for command permissions
-
-2. **Database Security**
-
-   - Use parameterized queries (SQLite prepared statements)
-   - Encrypt sensitive data at rest (future feature)
-   - Regular database backups
-
-3. **Git Integration**
-
-   - Store credentials in system keychain
-   - Use SSH keys over HTTPS when possible
-   - Validate remote URLs before operations
-
-4. **Input Validation**
-   - Sanitize all user inputs
-   - Validate data types and formats
-   - Implement rate limiting for commands
-
-### Code Security
-
-```rust
-// Example: Safe file path handling
-use std::path::{Path, PathBuf};
-
-fn validate_file_path(requested: &str, base_dir: &Path) -> Result<PathBuf> {
-    let path = base_dir.join(requested);
-    let canonical = path.canonicalize()?;
-
-    // Ensure path is within base directory
-    if !canonical.starts_with(base_dir) {
-        return Err(Error::InvalidPath);
-    }
-
-    Ok(canonical)
-}
-```
-
----
-
-## Performance Requirements
-
-### Target Metrics
-
-| Metric                    | Target  | Critical |
-| ------------------------- | ------- | -------- |
-| Application startup       | < 2s    | < 5s     |
-| Task creation             | < 100ms | < 500ms  |
-| Search (1000 items)       | < 200ms | < 1s     |
-| Calendar view load        | < 300ms | < 1s     |
-| File sync (100 files)     | < 5s    | < 30s    |
-| Memory usage              | < 200MB | < 500MB  |
-| Database size (10k tasks) | < 50MB  | < 200MB  |
-
-### Optimization Strategies
-
-1. **Database**
-
-   - Use indexes on frequently queried columns
-   - Implement query result caching
-   - Batch operations where possible
-   - Use full-text search for content
-
-2. **Frontend**
-
-   - Virtual scrolling for large lists
-   - Lazy load components
-   - Debounce search inputs
-   - Memoize expensive computations
-
-3. **File Operations**
-   - Async I/O for all file operations
-   - Queue and batch git operations
-   - Cache frequently accessed files
-   - Use file watchers for change detection
-
----
-
-## Extensibility Strategy
-
-### Plugin Architecture (Future)
-
-```typescript
-interface Plugin {
+interface LifeArea {
   id: string;
   name: string;
-  version: string;
-  hooks: {
-    onTaskCreate?: (task: Task) => Task;
-    onTaskComplete?: (task: Task) => void;
-    registerCommands?: () => Command[];
-    registerViews?: () => ViewComponent[];
-  };
+  description?: string;
+  color: string;
+  icon: string;
+  priority: number;
+  createdAt: Date;
+  updatedAt: Date;
+  archived: boolean;
 }
+
+interface Goal {
+  id: string;
+  areaId?: string;
+  name: string;
+  description?: string;
+  targetDate?: Date;
+  progress: number;
+  status: "active" | "completed" | "paused";
+  createdAt: Date;
+  updatedAt: Date;
+  archived: boolean;
+}
+
+interface Project {
+  id: string;
+  goalId?: string;
+  areaId?: string;
+  name: string;
+  description?: string;
+  priority: Priority;
+  status: "planning" | "active" | "completed" | "paused";
+  startDate?: Date;
+  endDate?: Date;
+  createdAt: Date;
+  updatedAt: Date;
+  archived: boolean;
+}
+
+interface Task {
+  id: string;
+  projectId?: string;
+  parentTaskId?: string;
+  name: string;
+  description?: string;
+  priority: Priority;
+  dueDate?: Date;
+  completed: boolean;
+  completedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
+  archived: boolean;
+}
+
+type Priority = 0 | 1 | 2 | 3; // 0: Low, 1: Medium, 2: High, 3: Critical
 ```
-
-### Extension Points
-
-1. **Custom Views**: Register new dashboard widgets
-2. **Data Processors**: Transform data on save/load
-3. **Integrations**: Connect external services
-4. **Themes**: Custom UI themes and styles
-5. **Commands**: Add new keyboard commands
-
-### Future Features Architecture
-
-**AI Integration**
-
-- Separate AI module with provider abstraction
-- Local LLM support (Ollama)
-- Cloud provider options (OpenAI, Anthropic)
-- Priority suggestion API
-
-**Habit Tracker**
-
-- New database tables for habits and tracking
-- Streak calculation service
-- Integration with task system
-- Visual habit charts
-
-**Health Tracker**
-
-- Modular health metric system
-- Integration with wearables API
-- Data visualization components
-- Correlation analysis with productivity
-
----
-
-## Technology Stack
-
-### Core Technologies
-
-| Layer            | Technology     | Version   | Alternatives Considered      |
-| ---------------- | -------------- | --------- | ---------------------------- |
-| Desktop          | Tauri          | 2.0       | Electron, Wails, Flutter     |
-| Frontend         | SolidJS        | 1.8       | React, Vue, Svelte           |
-| Styling          | Tailwind CSS   | 3.4       | CSS Modules, Emotion, UnoCSS |
-| UI Components    | Kobalte        | 0.9       | Headless UI, Radix, Custom   |
-| Build Tool       | Vite + Bun     | 5.0 + 1.0 | Webpack, Rollup, esbuild     |
-| Language         | TypeScript     | 5.3       | JavaScript, ReScript         |
-| Backend Language | Rust           | 1.75      | Go, C++, Zig                 |
-| Database         | SQLite         | 3.44      | PostgreSQL, DuckDB           |
-| State Management | Solid Stores   | -         | Zustand, Valtio, Jotai       |
-| Data Fetching    | Tanstack Query | 5.0       | SWR, Custom hooks            |
-
-### Development Tools
-
-- **Linting**: ESLint + Biome
-- **Formatting**: Prettier
-- **Testing**: Vitest + Testing Library
-- **E2E Testing**: Playwright
-- **Git Hooks**: Husky + lint-staged
-- **CI/CD**: GitHub Actions
-
----
 
 ## Development Phases
 
-### Phase 1: Foundation (Complexity: Low)
+### Phase 1: Foundation (Difficulty: Medium)
 
-- [x] Project setup and configuration
-- [ ] Basic Tauri + SolidJS integration
-- [ ] Core database schema implementation
-- [ ] File system structure setup
-- [ ] Basic CRUD operations for all entities
-- [ ] Simple task list UI
+- [ ] Project setup with Tauri + SolidJS
+- [ ] Basic UI component library
+- [ ] SQLite database integration
+- [ ] Core data models implementation
+- [ ] Basic CRUD operations
 
-### Phase 2: Core Features (Complexity: Medium)
+### Phase 2: Core Features (Difficulty: High)
 
-- [ ] Hierarchical navigation UI
-- [ ] Task management with subtasks
-- [ ] Calendar view implementation
-- [ ] Priority system
-- [ ] Basic search functionality
-- [ ] Markdown file generation
+- [ ] Hierarchical navigation
+- [ ] Dashboard/Homepage
+- [ ] Task management UI
+- [ ] Calendar view
+- [ ] Search functionality
+- [ ] Markdown editor integration
 
-### Phase 3: Sync & Backup (Complexity: Medium)
+### Phase 3: Data Persistence (Difficulty: Medium)
 
-- [ ] Git repository initialization
-- [ ] Automatic commit system
-- [ ] Remote push/pull functionality
-- [ ] Conflict resolution UI
-- [ ] Backup scheduling
+- [ ] File system structure
+- [ ] Git integration
+- [ ] Automatic backup system
+- [ ] Import/Export functionality
+- [ ] Settings management
 
-### Phase 4: Dashboard & Polish (Complexity: Medium)
+### Phase 4: Polish & Performance (Difficulty: Medium)
 
-- [ ] Overview dashboard design
-- [ ] Progress tracking visualizations
 - [ ] Keyboard shortcuts
-- [ ] Settings and preferences
+- [ ] UI animations
 - [ ] Performance optimization
-- [ ] Beta testing
+- [ ] Error handling
+- [ ] User onboarding
 
-### Phase 5: Advanced Features (Complexity: High)
+### Phase 5: Advanced Features (Difficulty: High)
 
-- [ ] AI priority suggestions
-- [ ] Habit tracker module
-- [ ] Health metrics integration
-- [ ] Progress graphing
+- [ ] AI integration with Claude
+- [ ] Habit tracker
+- [ ] Analytics dashboard
 - [ ] Template system
-- [ ] Plugin architecture
+- [ ] Advanced filtering
 
-### Phase 6: Cross-Platform (Complexity: High)
+### Phase 6: Platform Expansion (Difficulty: Very High)
 
-- [ ] macOS support and testing
-- [ ] Linux support and testing
-- [ ] Mobile companion app planning
-- [ ] Cloud sync option
-- [ ] Public release preparation
+- [ ] macOS support
+- [ ] Linux support
+- [ ] Mobile companion app
+- [ ] Sync server (optional)
+- [ ] Web viewer
+
+## Extensibility Strategy
+
+### Personal Extensibility Approach
+
+Since this is a personal project without a plugin system, extensibility is achieved through:
+
+1. **Modular Architecture**
+
+   - Clear separation of concerns
+   - Well-defined interfaces
+   - Easy to add new modules
+
+2. **Configuration Options**
+
+   - Extensive settings
+   - Custom themes
+   - Workflow customization
+
+3. **Open Source**
+   - MIT license
+   - Well-documented code
+   - Fork-friendly structure
+
+### Extension Points
+
+1. **Custom Views**: Add new ways to visualize data
+2. **Integrations**: Connect with external services
+3. **Automation**: Add rules and triggers
+4. **Data Sources**: Import from other tools
+5. **Export Formats**: Support more output types
+
+## Security Considerations
+
+### Local Security
+
+1. **Data Encryption**
+
+   - Optional database encryption
+   - Secure credential storage
+   - Protected configuration files
+
+2. **Access Control**
+
+   - OS-level file permissions
+   - Application-level authentication (optional)
+
+3. **Safe File Operations**
+   - Sandboxed file access
+   - Validation of all inputs
+   - Safe path handling
+
+### Sync Security
+
+1. **Git Operations**
+
+   - SSH key authentication
+   - HTTPS with tokens
+   - No sensitive data in commits
+
+2. **Data Privacy**
+   - All processing local
+   - No telemetry
+   - No external API calls without consent
+
+## Performance Targets
+
+### Metrics
+
+| Metric         | Target      | Measurement            |
+| -------------- | ----------- | ---------------------- |
+| Startup Time   | < 2 seconds | Time to interactive UI |
+| Task Creation  | < 100ms     | Click to saved         |
+| Search Results | < 50ms      | Keystroke to results   |
+| Memory Usage   | < 200MB     | Typical session        |
+| Database Size  | < 100MB     | 10,000 tasks           |
+| Bundle Size    | < 10MB      | Installer size         |
+
+### Optimization Strategies
+
+1. **Frontend**
+
+   - Lazy loading of views
+   - Virtual scrolling for lists
+   - Debounced search
+   - Optimistic updates
+
+2. **Backend**
+   - Indexed database queries
+   - Cached frequent operations
+   - Batch updates
+   - Background sync
+
+## Coding Standards
+
+### General Principles
+
+1. **Clarity over Cleverness**: Write code that's easy to understand
+2. **Consistency**: Follow established patterns throughout
+3. **Documentation**: Comment the why, not the what
+4. **Testing**: Aim for 80% coverage on critical paths
+
+### TypeScript/JavaScript
+
+```typescript
+// Use functional components with TypeScript
+interface TaskItemProps {
+  task: Task;
+  onComplete: (id: string) => void;
+}
+
+// Prefer function declarations for components
+function TaskItem(props: TaskItemProps) {
+  // Use destructuring
+  const { task, onComplete } = props;
+
+  // Early returns for clarity
+  if (task.archived) return null;
+
+  // Clear event handlers
+  const handleComplete = () => {
+    onComplete(task.id);
+  };
+
+  return <div class="task-item">{/* Component implementation */}</div>;
+}
+```
+
+### Rust
+
+```rust
+// Use descriptive names and proper error handling
+#[tauri::command]
+async fn create_task(
+    task_data: CreateTaskRequest,
+    db: State<'_, Database>,
+) -> Result<Task, AppError> {
+    // Validate input
+    task_data.validate()?;
+
+    // Perform operation with proper error handling
+    let task = db
+        .create_task(task_data)
+        .await
+        .map_err(|e| AppError::Database(e.to_string()))?;
+
+    Ok(task)
+}
+```
+
+### File Organization
+
+```
+src/
+├── components/       # UI components
+│   ├── common/      # Shared components
+│   ├── tasks/       # Task-related components
+│   └── layout/      # Layout components
+├── stores/          # State management
+├── utils/           # Helper functions
+├── types/           # TypeScript types
+└── api/             # Tauri command wrappers
+```
 
 ---
 
-## Risk Assessment
-
-### Technical Risks
-
-| Risk                                          | Probability | Impact   | Mitigation Strategy                                                      |
-| --------------------------------------------- | ----------- | -------- | ------------------------------------------------------------------------ |
-| SQLite performance issues with large datasets | Medium      | High     | Implement pagination, indexes, and consider migration path to PostgreSQL |
-| Tauri 2.0 stability issues                    | Low         | High     | Monitor Tauri releases, maintain fallback to stable version              |
-| Git conflicts in automated sync               | Medium      | Medium   | Implement robust conflict detection and user-friendly resolution UI      |
-| File system corruption                        | Low         | Critical | Regular backups, atomic writes, integrity checks                         |
-| Cross-platform compatibility                  | Medium      | Medium   | Early testing on all platforms, CI/CD for each OS                        |
-
-### Business Risks
-
-| Risk                               | Probability | Impact | Mitigation Strategy                                         |
-| ---------------------------------- | ----------- | ------ | ----------------------------------------------------------- |
-| User adoption challenges           | Medium      | High   | Focus on UX, provide migration tools from other apps        |
-| Competition from established tools | High        | Medium | Differentiate with local-first approach and unique features |
-| Scope creep                        | High        | Medium | Strict phase planning, MVP focus                            |
-| Maintenance burden                 | Medium      | Medium | Modular architecture, comprehensive testing                 |
-
----
-
-## Decision Log
-
-### 2025-07-27: Initial Architecture Decisions
-
-- Chose Tauri 2.0 for performance and security benefits
-- Selected SolidJS for its fine-grained reactivity
-- Decided on SQLite + file system hybrid approach
-- Established hierarchical data model
-
-### Future Decisions Pending
-
-- [ ] Exact markdown format for task files
-- [ ] Plugin API design
-- [ ] Mobile app technology choice
-- [ ] Cloud sync provider selection
-- [ ] Licensing model
-
----
-
-## Deployment and Infrastructure
-
-### Desktop Application
-
-1. **Build Process**
-
-   - GitHub Actions for CI/CD
-   - Code signing for Windows/macOS
-   - Auto-updater integration
-   - Installer generation (MSI/DMG/AppImage)
-
-2. **Distribution**
-
-   - GitHub Releases for direct downloads
-   - Microsoft Store (Windows)
-   - Future: Mac App Store, Linux package managers
-
-3. **Update Mechanism**
-   - Built-in auto-updater using Tauri
-   - Differential updates to minimize bandwidth
-   - Rollback capability for failed updates
-
-### Support Infrastructure
-
-1. **Documentation Site**
-
-   - Static site with usage guides
-   - API documentation for plugins
-   - Video tutorials
-
-2. **Community**
-   - GitHub Discussions for support
-   - Discord server for real-time help
-   - Feature request tracking
-
----
-
-## Conclusion
-
-This planning document establishes the foundation for EvorBrain's development. The architecture prioritizes local-first principles, performance, and extensibility while maintaining a beautiful user experience. Regular updates to this document will track decisions and evolving requirements throughout the development lifecycle.
-
-### Next Steps
-
-1. Set up development environment
-2. Initialize project structure
-3. Implement Phase 1 foundation
-4. Create initial UI mockups
-5. Begin development blog/documentation
-
-**Document Status**: This is a living document that will be updated as the project evolves.
+_This planning document is a living document and will be updated as the project evolves._
