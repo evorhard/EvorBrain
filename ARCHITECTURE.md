@@ -29,39 +29,39 @@ EvorBrain is built as a local-first desktop application using a modern web-based
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│                          Presentation Layer                          │
-│                                                                      │
-│  ┌─────────────┐  ┌──────────────┐  ┌──────────────┐  ┌─────────┐ │
-│  │   SolidJS   │  │   Kobalte    │  │  Tailwind    │  │  Icons  │ │
-│  │ Components  │  │ UI Library   │  │    CSS       │  │ Lucide  │ │
-│  └─────────────┘  └──────────────┘  └──────────────┘  └─────────┘ │
-│                                                                      │
+│                          Presentation Layer                         │
+│                                                                     │
+│  ┌─────────────┐  ┌──────────────┐  ┌──────────────┐  ┌─────────┐   │
+│  │   SolidJS   │  │   Kobalte    │  │  Tailwind    │  │  Icons  │   │
+│  │ Components  │  │ UI Library   │  │    CSS       │  │ Lucide  │   │
+│  └─────────────┘  └──────────────┘  └──────────────┘  └─────────┘   │
+│                                                                     │
 ├─────────────────────────────────────────────────────────────────────┤
-│                         Application Layer                            │
-│                                                                      │
-│  ┌─────────────┐  ┌──────────────┐  ┌──────────────┐  ┌─────────┐ │
-│  │   Stores    │  │   Routing    │  │   Commands   │  │  Utils  │ │
-│  │(Solid Store)│  │(@solidjs/    │  │   (Tauri)    │  │         │ │
-│  └─────────────┘  │   router)    │  └──────────────┘  └─────────┘ │
+│                         Application Layer                           │
+│                                                                     │
+│  ┌─────────────┐  ┌──────────────┐  ┌──────────────┐  ┌─────────┐   │
+│  │   Stores    │  │   Routing    │  │   Commands   │  │  Utils  │   │
+│  │(Solid Store)│  │(@solidjs/    │  │   (Tauri)    │  │         │   │
+│  └─────────────┘  │   router)    │  └──────────────┘  └─────────┘   │
 │                   └──────────────┘                                  │
 ├─────────────────────────────────────────────────────────────────────┤
-│                            IPC Bridge                                │
-│                         (Tauri Commands)                             │
+│                            IPC Bridge                               │
+│                         (Tauri Commands)                            │
 ├─────────────────────────────────────────────────────────────────────┤
-│                          Backend Layer                               │
-│                                                                      │
-│  ┌─────────────┐  ┌──────────────┐  ┌──────────────┐  ┌─────────┐ │
-│  │  Business   │  │     Data     │  │     Git      │  │  File   │ │
-│  │   Logic     │  │    Access    │  │ Integration  │  │ System  │ │
-│  └─────────────┘  └──────────────┘  └──────────────┘  └─────────┘ │
-│                                                                      │
+│                          Backend Layer                              │
+│                                                                     │
+│  ┌─────────────┐  ┌──────────────┐  ┌──────────────┐  ┌─────────┐   │
+│  │  Business   │  │     Data     │  │     Git      │  │  File   │   │
+│  │   Logic     │  │    Access    │  │ Integration  │  │ System  │   │
+│  └─────────────┘  └──────────────┘  └──────────────┘  └─────────┘   │
+│                                                                     │
 ├─────────────────────────────────────────────────────────────────────┤
-│                          Storage Layer                               │
-│                                                                      │
-│  ┌─────────────┐  ┌──────────────┐  ┌──────────────┐              │
-│  │   SQLite    │  │  File System │  │     Git      │              │
-│  │  Database   │  │   (MD/JSON)  │  │ Repository   │              │
-│  └─────────────┘  └──────────────┘  └──────────────┘              │
+│                          Storage Layer                              │
+│                                                                     │
+│  ┌─────────────┐  ┌──────────────┐  ┌──────────────┐                │
+│  │   SQLite    │  │  File System │  │     Git      │                │
+│  │  Database   │  │   (MD/JSON)  │  │ Repository   │                │
+│  └─────────────┘  └──────────────┘  └──────────────┘                │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -70,6 +70,7 @@ EvorBrain is built as a local-first desktop application using a modern web-based
 ### Frontend Technologies
 
 #### SolidJS (UI Framework)
+
 - **Version**: 1.8+
 - **Why**: Fine-grained reactivity without virtual DOM
 - **Key Features Used**:
@@ -79,6 +80,7 @@ EvorBrain is built as a local-first desktop application using a modern web-based
   - Error boundaries
 
 #### Kobalte (Component Library)
+
 - **Version**: Latest
 - **Why**: Accessible, unstyled components for SolidJS
 - **Components Used**:
@@ -89,6 +91,7 @@ EvorBrain is built as a local-first desktop application using a modern web-based
   - Tooltips
 
 #### Tailwind CSS (Styling)
+
 - **Version**: 3.x
 - **Configuration**:
   ```javascript
@@ -115,6 +118,7 @@ EvorBrain is built as a local-first desktop application using a modern web-based
 ### Backend Technologies
 
 #### Tauri (Desktop Framework)
+
 - **Version**: 2.0
 - **Configuration**:
   ```json
@@ -146,6 +150,7 @@ EvorBrain is built as a local-first desktop application using a modern web-based
   ```
 
 #### Rust (System Programming)
+
 - **Version**: 1.75+
 - **Key Crates**:
   - `tauri`: Desktop app framework
@@ -159,6 +164,7 @@ EvorBrain is built as a local-first desktop application using a modern web-based
 ### Data Technologies
 
 #### SQLite (Embedded Database)
+
 - **Version**: 3.44+
 - **Configuration**:
   - WAL mode for better concurrency
@@ -167,6 +173,7 @@ EvorBrain is built as a local-first desktop application using a modern web-based
   - JSON1 extension for flexible data storage
 
 #### Storage Strategy
+
 ```
 ~/EvorBrain/
 ├── .evorbrain/
@@ -186,6 +193,7 @@ EvorBrain is built as a local-first desktop application using a modern web-based
 ### Frontend Architecture
 
 #### Component Structure
+
 ```typescript
 // Component hierarchy
 App
@@ -208,6 +216,7 @@ App
 ```
 
 #### State Management
+
 ```typescript
 // Store architecture using Solid's reactive system
 interface AppStore {
@@ -216,12 +225,12 @@ interface AppStore {
   goals: () => Goal[];
   projects: () => Project[];
   tasks: () => Task[];
-  
+
   // UI state
   selectedArea: () => string | null;
   selectedProject: () => string | null;
   viewMode: () => ViewMode;
-  
+
   // Actions
   createArea: (area: CreateAreaInput) => Promise<void>;
   updateArea: (id: string, updates: Partial<LifeArea>) => Promise<void>;
@@ -240,22 +249,24 @@ const [store, setStore] = createStore<AppStore>({
 ```
 
 #### Routing Strategy
+
 ```typescript
 // Route configuration
 const routes = [
-  { path: '/', component: Dashboard },
-  { path: '/areas/:id', component: AreaView },
-  { path: '/projects/:id', component: ProjectView },
-  { path: '/tasks/:id', component: TaskView },
-  { path: '/calendar', component: CalendarView },
-  { path: '/search', component: SearchView },
-  { path: '/settings', component: SettingsView },
+  { path: "/", component: Dashboard },
+  { path: "/areas/:id", component: AreaView },
+  { path: "/projects/:id", component: ProjectView },
+  { path: "/tasks/:id", component: TaskView },
+  { path: "/calendar", component: CalendarView },
+  { path: "/search", component: SearchView },
+  { path: "/settings", component: SettingsView },
 ];
 ```
 
 ### Backend Architecture
 
 #### Command Structure
+
 ```rust
 // Tauri command pattern
 #[tauri::command]
@@ -265,7 +276,7 @@ async fn get_areas(
 ) -> Result<Vec<Area>, AppError> {
     // Verify permissions
     auth.verify_access()?;
-    
+
     // Query database
     let areas = sqlx::query_as!(
         Area,
@@ -273,12 +284,13 @@ async fn get_areas(
     )
     .fetch_all(&**db)
     .await?;
-    
+
     Ok(areas)
 }
 ```
 
 #### Service Layer
+
 ```rust
 // Business logic organization
 pub struct AreaService {
@@ -289,7 +301,7 @@ impl AreaService {
     pub async fn create(&self, input: CreateAreaInput) -> Result<Area> {
         // Validation
         input.validate()?;
-        
+
         // Business logic
         let area = Area {
             id: Uuid::new_v4().to_string(),
@@ -302,13 +314,13 @@ impl AreaService {
             updated_at: Utc::now(),
             archived: false,
         };
-        
+
         // Persist
         self.save(area).await?;
-        
+
         // Trigger events
         EventBus::emit(Event::AreaCreated(area.clone()));
-        
+
         Ok(area)
     }
 }
@@ -317,23 +329,26 @@ impl AreaService {
 ### Communication Architecture
 
 #### IPC Communication
+
 ```typescript
 // Frontend command invocation
-import { invoke } from '@tauri-apps/api/core';
+import { invoke } from "@tauri-apps/api/core";
 
 export const api = {
   areas: {
-    list: () => invoke<LifeArea[]>('get_areas'),
-    create: (input: CreateAreaInput) => invoke<LifeArea>('create_area', { input }),
-    update: (id: string, updates: Partial<LifeArea>) => 
-      invoke<LifeArea>('update_area', { id, updates }),
-    delete: (id: string) => invoke<void>('delete_area', { id }),
+    list: () => invoke<LifeArea[]>("get_areas"),
+    create: (input: CreateAreaInput) =>
+      invoke<LifeArea>("create_area", { input }),
+    update: (id: string, updates: Partial<LifeArea>) =>
+      invoke<LifeArea>("update_area", { id, updates }),
+    delete: (id: string) => invoke<void>("delete_area", { id }),
   },
   // ... more API methods
 };
 ```
 
 #### Event System
+
 ```rust
 // Event-driven updates
 #[derive(Clone, Serialize)]
@@ -357,6 +372,7 @@ app.emit("app-event", AppEvent::AreaCreated(area))?;
 ### Database Schema Design
 
 #### Core Tables
+
 ```sql
 -- Optimized schema with indexes
 CREATE TABLE areas (
@@ -378,6 +394,7 @@ CREATE INDEX idx_areas_name ON areas(name);
 ```
 
 #### Full-Text Search
+
 ```sql
 -- FTS5 virtual table for search
 CREATE VIRTUAL TABLE search_index USING fts5(
@@ -400,18 +417,19 @@ END;
 ### Data Flow Architecture
 
 ```
-User Action → UI Component → Store Action → Tauri Command → 
-Rust Handler → Service Layer → Database → Response → 
+User Action → UI Component → Store Action → Tauri Command →
+Rust Handler → Service Layer → Database → Response →
 Store Update → UI Re-render
 ```
 
 ### Caching Strategy
 
 #### Frontend Caching
+
 ```typescript
 // Query caching with TanStack Query
 const areaQuery = createQuery(() => ({
-  queryKey: ['areas'],
+  queryKey: ["areas"],
   queryFn: api.areas.list,
   staleTime: 5 * 60 * 1000, // 5 minutes
   cacheTime: 10 * 60 * 1000, // 10 minutes
@@ -419,6 +437,7 @@ const areaQuery = createQuery(() => ({
 ```
 
 #### Backend Caching
+
 ```rust
 // In-memory cache for frequently accessed data
 pub struct Cache {
@@ -444,11 +463,13 @@ impl Cache {
 ### Application Security
 
 #### Data Protection
+
 1. **Database Encryption** (Optional)
+
    ```rust
    // SQLCipher integration
-   let db_url = format!("sqlite://{}?cipher=sqlcipher&key={}", 
-                       db_path.display(), 
+   let db_url = format!("sqlite://{}?cipher=sqlcipher&key={}",
+                       db_path.display(),
                        encrypted_key);
    ```
 
@@ -458,19 +479,20 @@ impl Cache {
    - Memory wiped after use
 
 #### Input Validation
+
 ```rust
 // Comprehensive input validation
 #[derive(Deserialize, Validate)]
 pub struct CreateTaskInput {
     #[validate(length(min = 1, max = 200))]
     pub name: String,
-    
+
     #[validate(length(max = 5000))]
     pub description: Option<String>,
-    
+
     #[validate(range(min = 0, max = 3))]
     pub priority: Option<i32>,
-    
+
     #[validate(custom = "validate_future_date")]
     pub due_date: Option<DateTime<Utc>>,
 }
@@ -479,6 +501,7 @@ pub struct CreateTaskInput {
 ### Git Security
 
 #### Safe Git Operations
+
 ```rust
 // Secure Git integration
 pub struct GitManager {
@@ -496,17 +519,17 @@ impl GitManager {
             "config.json",
             ".env*",
         ];
-        
+
         // Add .gitignore if not exists
         self.ensure_gitignore(&patterns)?;
-        
+
         // Stage only content files
         self.stage_content_files()?;
-        
+
         // Commit with generated message
         let message = self.generate_commit_message()?;
         self.commit(&message)?;
-        
+
         Ok(())
     }
 }
@@ -517,12 +540,15 @@ impl GitManager {
 ### Frontend Performance
 
 #### Optimization Strategies
+
 1. **Component Lazy Loading**
+
    ```typescript
-   const CalendarView = lazy(() => import('./views/CalendarView'));
+   const CalendarView = lazy(() => import("./views/CalendarView"));
    ```
 
 2. **Virtual Scrolling**
+
    ```typescript
    // For large lists
    <VirtualList
@@ -535,9 +561,9 @@ impl GitManager {
 
 3. **Memoization**
    ```typescript
-   const sortedTasks = createMemo(() => 
+   const sortedTasks = createMemo(() =>
      tasks()
-       .filter(t => !t.archived)
+       .filter((t) => !t.archived)
        .sort((a, b) => b.priority - a.priority)
    );
    ```
@@ -545,17 +571,19 @@ impl GitManager {
 ### Backend Performance
 
 #### Database Optimization
+
 ```sql
 -- Composite indexes for common queries
-CREATE INDEX idx_tasks_project_status 
+CREATE INDEX idx_tasks_project_status
   ON tasks(project_id, completed, archived);
 
-CREATE INDEX idx_tasks_due_date 
-  ON tasks(due_date) 
+CREATE INDEX idx_tasks_due_date
+  ON tasks(due_date)
   WHERE due_date IS NOT NULL AND completed = FALSE;
 ```
 
 #### Query Optimization
+
 ```rust
 // Batch operations
 pub async fn get_dashboard_data(&self) -> Result<DashboardData> {
@@ -563,26 +591,26 @@ pub async fn get_dashboard_data(&self) -> Result<DashboardData> {
     let result = sqlx::query!(
         r#"
         WITH today_tasks AS (
-            SELECT * FROM tasks 
-            WHERE due_date = date('now') 
+            SELECT * FROM tasks
+            WHERE due_date = date('now')
               AND completed = false
               AND archived = false
         ),
         active_projects AS (
-            SELECT p.*, COUNT(t.id) as task_count 
+            SELECT p.*, COUNT(t.id) as task_count
             FROM projects p
             LEFT JOIN tasks t ON t.project_id = p.id
             WHERE p.status = 'active'
             GROUP BY p.id
         )
-        SELECT 
+        SELECT
             (SELECT json_group_array(json_object(...)) FROM today_tasks) as today_tasks,
             (SELECT json_group_array(json_object(...)) FROM active_projects) as active_projects
         "#
     )
     .fetch_one(&self.db)
     .await?;
-    
+
     Ok(parse_dashboard_result(result))
 }
 ```
@@ -590,18 +618,19 @@ pub async fn get_dashboard_data(&self) -> Result<DashboardData> {
 ### Resource Management
 
 #### Memory Management
+
 ```rust
 // Streaming large exports
 pub async fn export_data(&self, writer: impl AsyncWrite) -> Result<()> {
     let mut stream = sqlx::query!("SELECT * FROM tasks")
         .fetch(&self.db);
-    
+
     let mut csv_writer = csv_async::AsyncWriter::from_writer(writer);
-    
+
     while let Some(record) = stream.try_next().await? {
         csv_writer.write_record(&record.into_csv_record()?).await?;
     }
-    
+
     csv_writer.flush().await?;
     Ok(())
 }
@@ -612,6 +641,7 @@ pub async fn export_data(&self, writer: impl AsyncWrite) -> Result<()> {
 ### Module System
 
 #### Plugin-like Structure (Without Actual Plugins)
+
 ```typescript
 // Modular feature registration
 interface Feature {
@@ -635,6 +665,7 @@ const features: Feature[] = [
 ### Data Extension Points
 
 #### Custom Fields (Future)
+
 ```sql
 -- Flexible data storage
 CREATE TABLE custom_fields (
@@ -651,6 +682,7 @@ CREATE TABLE custom_fields (
 ### Integration Points
 
 #### External Service Integration
+
 ```rust
 // Extensible service registry
 pub trait ExternalService: Send + Sync {
@@ -672,6 +704,7 @@ registry.register(Box::new(CalDavIntegration::new(config)));
 ### Build Configuration
 
 #### Multi-Platform Builds
+
 ```toml
 # Cargo.toml
 [package]
@@ -694,12 +727,15 @@ gtk = "0.18"
 ### Distribution Strategy
 
 #### Platform-Specific Packages
+
 1. **Windows**
+
    - MSI installer via WiX
    - Portable ZIP
    - Microsoft Store (future)
 
 2. **macOS**
+
    - DMG with code signing
    - Homebrew cask (future)
    - Mac App Store (future)
@@ -713,6 +749,7 @@ gtk = "0.18"
 ### Update Mechanism
 
 #### Auto-Update Architecture
+
 ```rust
 // Built-in updater
 use tauri::updater::builder;
@@ -731,4 +768,4 @@ if let Some(update) = updater.check().await? {
 
 ---
 
-*This architecture document provides the technical foundation for EvorBrain development and will be updated as implementation progresses.*
+_This architecture document provides the technical foundation for EvorBrain development and will be updated as implementation progresses._
