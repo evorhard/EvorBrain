@@ -30,7 +30,7 @@ This document tracks all development tasks for the EvorBrain project. Tasks are 
 - [x] ✅ [P1.1.6] Configure Git with .gitignore 🟢
 
 ### [P1.2] UI Foundation
-- [ ] 📋 [P1.2.1] Create base layout components 🟡
+- [x] ✅ [P1.2.1] Create base layout components 🟡
 - [ ] 📋 [P1.2.2] Implement navigation sidebar 🟡
 - [ ] 📋 [P1.2.3] Design color scheme and theme system 🟡
 - [ ] 📋 [P1.2.4] Set up Kobalte component library 🟢
