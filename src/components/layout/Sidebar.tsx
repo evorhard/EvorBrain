@@ -60,7 +60,7 @@ const Sidebar: Component = () => {
     return (
       <>
         <button
-          class={`w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-700 dark:text-gray-300 ${
+          class={`w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-surface-100 dark:hover:bg-surface-200 transition-colors text-content ${
             level > 0 ? "pl-8" : ""
           }`}
           onClick={() => hasChildren && toggleExpanded(item.id)}
@@ -96,16 +96,16 @@ const Sidebar: Component = () => {
     <aside
       class={`${
         collapsed() ? "w-16" : "w-64"
-      } bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-all duration-300 hidden lg:block`}
+      } bg-surface border-r border-border transition-all duration-300 hidden lg:block`}
     >
       <div class="flex flex-col h-full">
         <div class="p-4">
           <button
             onClick={() => setCollapsed(!collapsed())}
-            class="w-full flex items-center justify-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+            class="w-full flex items-center justify-center p-2 rounded-lg hover:bg-surface-100 dark:hover:bg-surface-200 transition-colors focus-ring"
             aria-label={collapsed() ? "Expand sidebar" : "Collapse sidebar"}
           >
-            <HiOutlineBars3 class="w-5 h-5 text-gray-600 dark:text-gray-400" />
+            <HiOutlineBars3 class="w-5 h-5 text-content-secondary" />
           </button>
         </div>
 
@@ -113,15 +113,15 @@ const Sidebar: Component = () => {
           <For each={navItems}>{(item) => renderNavItem(item)}</For>
         </nav>
 
-        <div class="p-4 border-t border-gray-200 dark:border-gray-700">
+        <div class="p-4 border-t border-border">
           <div class="flex items-center gap-3">
-            <div class="w-8 h-8 bg-evorbrain-500 rounded-full flex items-center justify-center text-white font-semibold">
+            <div class="w-8 h-8 bg-primary-500 rounded-full flex items-center justify-center text-content-inverse font-semibold">
               U
             </div>
             {!collapsed() && (
               <div class="flex-1">
-                <p class="text-sm font-medium text-gray-900 dark:text-white">User</p>
-                <p class="text-xs text-gray-500 dark:text-gray-400">user@example.com</p>
+                <p class="text-sm font-medium text-content">User</p>
+                <p class="text-xs text-content-tertiary">user@example.com</p>
               </div>
             )}
           </div>

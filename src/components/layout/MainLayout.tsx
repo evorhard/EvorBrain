@@ -12,7 +12,7 @@ const MainLayout: Component<MainLayoutProps> = (props) => {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = createSignal(false);
 
   return (
-    <div class="flex h-screen bg-gray-50 dark:bg-gray-900">
+    <div class="flex h-screen bg-background">
       <Sidebar />
       <MobileSidebar 
         isOpen={isMobileSidebarOpen()} 
