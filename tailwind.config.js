@@ -6,7 +6,22 @@ export default {
   ],
   darkMode: 'class',
   theme: {
+    screens: {
+      'xs': '475px',
+      'sm': '640px',
+      'md': '768px',
+      'lg': '1024px',
+      'xl': '1280px',
+      '2xl': '1536px',
+      '3xl': '1920px',
+    },
     extend: {
+      screens: {
+        'touch': {'raw': '(hover: none) and (pointer: coarse)'},
+        'stylus': {'raw': '(hover: none) and (pointer: fine)'},
+        'mouse': {'raw': '(hover: hover) and (pointer: fine)'},
+        'can-hover': {'raw': '(hover: hover)'},
+      },
       colors: {
         // Primary brand colors - Blue theme for productivity
         'primary': {
