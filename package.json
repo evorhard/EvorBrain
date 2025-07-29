@@ -1,0 +1,31 @@
+{
+  "name": "evorbrain",
+  "version": "0.1.0",
+  "description": "A life management system that integrates seamlessly with how you think and work",
+  "type": "module",
+  "scripts": {
+    "start": "tauri dev",
+    "dev": "tauri dev",
+    "build": "tauri build",
+    "serve": "vite preview",
+    "tauri": "tauri",
+    "test": "./scripts/test.sh",
+    "clean": "./scripts/clean.sh",
+    "clean:all": "./scripts/clean.sh --all"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "solid-js": "^1.9.3",
+    "@tauri-apps/api": "^2",
+    "@tauri-apps/plugin-opener": "^2"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.0.0",
+    "typescript": "~5.6.2",
+    "vite": "^6.0.3",
+    "vite-plugin-solid": "^2.11.0"
+  }
+}

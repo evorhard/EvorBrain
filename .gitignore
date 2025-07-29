@@ -1,32 +1,149 @@
+#AI Stuff
+.claude/
+
+# Dependencies
+node_modules/
+.npm
+.yarn
+
+# Build outputs
+dist/
+dist-ssr/
+build/
+out/
+*.local
+
+# Tauri
+src-tauri/target/
+src-tauri/WixTools/
+
+# Database
+*.db
+*.db-journal
+*.sqlite
+*.sqlite-journal
+
 # Logs
-logs
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-dev-debug.log
+pnpm-debug.log*
+lerna-debug.log*
+.pnpm-debug.log*
 
-# Dependency directories
-node_modules/
-
-# Environment variables
-.env
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+._*
 
 # Editor directories and files
-.idea
-.vscode
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+.vscode/*
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/settings.json
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+*.sublime-project
 
-# AI Files
-CLAUDE.md
+# Environment files
+.env
+.env.local
+.env.*.local
 
-# OS specific
-.DS_Store
+# Test coverage
+coverage/
+*.lcov
+.nyc_output/
 
-# Task files
-# tasks.json
-# tasks/ 
+# Package manager lock files (keep one, ignore others)
+# We're using bun, so keep bun.lockb
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+*.cache
+.cache/
+
+# User data (will be in app data directory in production)
+user-data/
+*.backup
+
+# Generated files
+*.pid
+*.seed
+*.pid.lock
+
+# Debug
+.vscode-test/
+*.stackdump
+
+# Optional npm cache directory
+.npm/
+
+# Optional eslint cache
+.eslintcache
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# Rust
+**/*.rs.bk
+
+# macOS specific
+.AppleDouble
+.LSOverride
+Icon
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Windows specific
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux specific
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*

@@ -769,3 +769,5 @@ if let Some(update) = updater.check().await? {
 ---
 
 _This architecture document provides the technical foundation for EvorBrain development and will be updated as implementation progresses._
+
+*Last updated: 2025-07-29*

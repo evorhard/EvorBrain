@@ -103,7 +103,7 @@ Power users who:
 
 ## Tech Stack Selection
 
-Based on research of local-first applications and modern desktop development in 2024, I've selected the following technologies:
+Based on research of local-first applications and modern desktop development in 2025, I've selected the following technologies:
 
 ### Core Stack
 
@@ -556,3 +556,5 @@ src/
 ---
 
 _This planning document is a living document and will be updated as the project evolves._
+
+*Last updated: 2025-07-29*
