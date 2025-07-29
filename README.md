@@ -53,16 +53,19 @@ EvorBrain is currently in the initial development phase. Here's the development 
 - [x] Technology stack selection
 - [x] High-level architecture planning
 - [x] Development environment setup
+- [x] Basic Tauri application scaffold
+- [x] Initial UI component library setup (Kobalte)
+- [x] Theme system with dark mode support
+- [x] Responsive design system with breakpoints
+- [x] Base layout components (Header, Sidebar, Content Area)
+- [x] Core UI components (Button, Input, Modal, Card, etc.)
 
 #### 🔄 In Progress
 
-- [ ] Basic Tauri application scaffold
 - [ ] Core data models and database schema
-- [ ] Initial UI component library setup
+- [ ] SQLite database integration
 
 #### 📋 Pending
-
-- [ ] SQLite database integration
 - [ ] Basic CRUD operations for tasks
 - [ ] Frontend routing and navigation
 - [ ] Life Area management implementation
@@ -76,7 +79,7 @@ EvorBrain is currently in the initial development phase. Here's the development 
 - [ ] Performance optimization
 - [ ] Production build pipeline
 
-**Development Status**: This is a solo developer project in the planning phase. Check the development documents for detailed architecture and task tracking.
+**Development Status**: The foundation is now in place! The app runs in development mode with a working UI framework, theme system, and responsive design. Database integration is the next major milestone.
 
 ---
 
@@ -106,6 +109,7 @@ Perfect for anyone who wants the power of Notion's organization with Obsidian's 
 - **Local-First Storage**: All data stored in SQLite + markdown files on your computer
 - **Git Integration**: Automatic version control and backup to GitHub/GitLab
 - **Beautiful UI**: Modern, responsive interface built with SolidJS and Tailwind CSS
+- **Responsive Design**: Mobile-first design with custom breakpoint system and responsive utilities
 - **Fast Performance**: Native desktop app performance with <2s startup time
 - **Calendar View**: Visualize tasks and deadlines in month/week/day views
 - **Full-Text Search**: Instantly find any task, project, or goal
@@ -133,6 +137,7 @@ Perfect for anyone who wants the power of Notion's organization with Obsidian's 
 | **Desktop Framework**  | [Tauri 2.0](https://tauri.app)                             | Rust-powered, secure, 50MB apps vs Electron's 150MB+   |
 | **Frontend Framework** | [SolidJS](https://solidjs.com)                             | No virtual DOM, fine-grained reactivity, 7KB runtime   |
 | **Styling**            | [Tailwind CSS](https://tailwindcss.com)                    | Utility-first, great DX, perfect for rapid development |
+| **Responsive Design**  | Custom Breakpoint System                                    | Mobile-first with useBreakpoint hook & responsive utils|
 | **UI Components**      | [Kobalte](https://kobalte.dev)                             | Accessible, unstyled components for SolidJS            |
 | **Database**           | [SQLite](https://sqlite.org)                               | Fast, reliable, zero-config embedded database          |
 | **ORM**                | [SQLx](https://github.com/launchbadge/sqlx)                | Compile-time checked SQL queries in Rust              |
@@ -179,7 +184,7 @@ Before you begin, ensure you have the following installed:
 
 ## 🚀 Installation
 
-> ⚠️ **Developer Notice**: The application is not functional yet. These installation steps are for developers who want to contribute to the project or follow along with development.
+> 🚀 **Developer Notice**: The application now runs in development mode! While core functionality like task management isn't implemented yet, you can explore the UI framework and responsive design system.
 
 ### 1. Clone the Repository
 
@@ -200,15 +205,19 @@ bun install
 ### 3. Set Up Development Environment
 
 ```bash
-# Note: These commands may not work yet as the application is still being developed
-# Initialize the database and file structure (NOT IMPLEMENTED)
-bun run init
+# Start the Tauri development server
+bun run tauri:dev
+# or
+bun run start
 
-# Start the development server (MAY NOT LAUNCH PROPERLY)
-bun run dev
+# The app will launch with:
+# - Working UI framework with theme switching
+# - Responsive design system
+# - Demo components showcasing the design system
+# - Hot module replacement for development
 ```
 
-**Current State**: The basic project structure is in place, but the application won't run properly yet. Check the [Current Status](#-current-status) section for development progress.
+**Current State**: The UI foundation is complete! You can run the app and explore the component library, theme system, and responsive design. Database functionality is coming next.
 
 ---
 
@@ -315,21 +324,26 @@ evorbrain/
 
 ### Running the App
 
-> ⚠️ **Note**: Many of these commands are defined but may not work properly yet as the application is still being built.
+> ℹ️ **Note**: Some commands are still being configured as development progresses.
 
 ```bash
-# Development mode with hot reload (NOT FULLY FUNCTIONAL)
-bun run dev
+# Development mode with hot reload ✅ WORKING
+bun run tauri:dev
+# or
+bun run start
 
-# Build for production (NOT CONFIGURED)
-bun run build
+# Build for production ✅ WORKING
+bun run tauri:build
 
-# Run tests (NO TESTS WRITTEN YET)
+# Run tests ⚠️ NO TESTS YET
 bun run test
 
-# Lint and format code (BASIC CONFIG ONLY)
-bun run lint
-bun run format
+# Clean build artifacts ✅ WORKING
+bun run clean
+bun run clean:all  # Deep clean including node_modules
+
+# Lint and format code ⚠️ NOT CONFIGURED
+# No linting or formatting scripts set up yet
 ```
 
 ### Making Changes
