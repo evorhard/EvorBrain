@@ -5,21 +5,25 @@
   "type": "module",
   "scripts": {
     "start": "tauri dev",
-    "dev": "tauri dev",
-    "build": "tauri build",
+    "dev": "vite",
+    "build": "vite build",
     "serve": "vite preview",
     "tauri": "tauri",
+    "tauri:dev": "tauri dev",
+    "tauri:build": "tauri build",
     "test": "./scripts/test.sh",
     "clean": "./scripts/clean.sh",
     "clean:all": "./scripts/clean.sh --all"
   },
   "license": "MIT",
   "dependencies": {
-    "solid-js": "^1.9.3",
     "@tauri-apps/api": "^2",
-    "@tauri-apps/plugin-opener": "^2"
+    "@tauri-apps/plugin-opener": "^2",
+    "solid-icons": "^1.1.0",
+    "solid-js": "^1.9.3"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.11",
     "@tauri-apps/cli": "^2",
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.6",
