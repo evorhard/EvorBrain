@@ -160,5 +160,7 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@kobalte/tailwindcss'),
+  ],
 }
