@@ -27,6 +27,134 @@ import { Button } from "@/components/ui";
 **Variants**: `default`, `secondary`, `outline`, `ghost`, `danger`, `success`
 **Sizes**: `sm`, `default`, `lg`, `icon`
 
+### Input
+Text input field with label, error, and helper text support.
+
+```tsx
+import { Input } from "@/components/ui";
+
+<Input 
+  label="Email" 
+  type="email"
+  placeholder="you@example.com"
+  error="Invalid email address"
+  helperText="We'll never share your email"
+/>
+```
+
+**Props**: `label`, `error`, `helperText`, all standard input attributes
+**Sizes**: `sm`, `default`, `lg`
+
+### Textarea
+Multi-line text input with label and validation support.
+
+```tsx
+import { Textarea } from "@/components/ui";
+
+<Textarea 
+  label="Description" 
+  placeholder="Tell us more..."
+  rows={4}
+  error="Description is required"
+/>
+```
+
+### Select
+Dropdown selection component with search and custom styling.
+
+```tsx
+import { 
+  Select, 
+  SelectTrigger, 
+  SelectContent, 
+  SelectItem 
+} from "@/components/ui";
+
+<Select value={value()} onChange={setValue}>
+  <SelectTrigger label="Priority" />
+  <SelectPortal>
+    <SelectContent>
+      <SelectItem value="low">Low</SelectItem>
+      <SelectItem value="high">High</SelectItem>
+    </SelectContent>
+  </SelectPortal>
+</Select>
+```
+
+### Modal
+Dialog component for overlays and popups.
+
+```tsx
+import { 
+  Modal,
+  ModalTrigger,
+  ModalContent,
+  ModalHeader,
+  ModalTitle,
+  ModalDescription,
+  ModalFooter
+} from "@/components/ui";
+
+<Modal>
+  <ModalTrigger asChild>
+    <Button>Open Modal</Button>
+  </ModalTrigger>
+  <ModalContent>
+    <ModalHeader>
+      <ModalTitle>Title</ModalTitle>
+      <ModalDescription>Description</ModalDescription>
+    </ModalHeader>
+    <div>Content</div>
+    <ModalFooter>
+      <Button>Close</Button>
+    </ModalFooter>
+  </ModalContent>
+</Modal>
+```
+
+**Sizes**: `sm`, `md`, `lg`, `xl`, `full`
+
+### Card
+Container component for grouped content.
+
+```tsx
+import { 
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter
+} from "@/components/ui";
+
+<Card variant="default">
+  <CardHeader>
+    <CardTitle>Title</CardTitle>
+    <CardDescription>Description</CardDescription>
+  </CardHeader>
+  <CardContent>
+    Content goes here
+  </CardContent>
+  <CardFooter>
+    <Button>Action</Button>
+  </CardFooter>
+</Card>
+```
+
+**Variants**: `default`, `outline`, `ghost`
+**Padding**: `none`, `sm`, `default`, `lg`
+
+### Label
+Form label component with error state support.
+
+```tsx
+import { Label } from "@/components/ui";
+
+<Label for="email" error={hasError}>
+  Email Address
+</Label>
+```
+
 ### Checkbox
 An accessible checkbox with optional label.
 
