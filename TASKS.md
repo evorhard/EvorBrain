@@ -52,6 +52,30 @@ This document tracks all development tasks for the EvorBrain project. Tasks are 
 - [ ] 📋 [P1.4.4] Build frontend API client 🟡
 - [ ] 📋 [P1.4.5] Create TypeScript type definitions 🟢
 - [ ] 📋 [P1.4.6] Set up state management structure 🟡
+- [ ] 📋 [P1.4.7] Replace all `any` types with proper TypeScript types 🟢
+- [ ] 📋 [P1.4.8] Fix memory leaks in theme system 🟢
+
+### [P1.5] Testing Setup
+- [ ] 📋 [P1.5.1] Set up Vitest for unit testing 🟡
+- [ ] 📋 [P1.5.2] Configure Testing Library for component tests 🟡
+- [ ] 📋 [P1.5.3] Set up e2e testing with Playwright 🔴
+- [ ] 📋 [P1.5.4] Create test utilities and helpers 🟡
+- [ ] 📋 [P1.5.5] Write initial test suite for existing components 🟡
+- [ ] 📋 [P1.5.6] Add test coverage reporting 🟢
+
+### [P1.6] Development Tooling
+- [ ] 📋 [P1.6.1] Set up ESLint with TypeScript rules 🟢
+- [ ] 📋 [P1.6.2] Configure Prettier for code formatting 🟢
+- [ ] 📋 [P1.6.3] Create pre-commit hooks with Husky 🟢
+- [ ] 📋 [P1.6.4] Set up GitHub Actions for CI 🟡
+- [ ] 📋 [P1.6.5] Add automated build and test pipeline 🟡
+- [ ] 📋 [P1.6.6] Configure Dependabot for dependency updates 🟢
+
+### [P1.7] Documentation Standards
+- [ ] 📋 [P1.7.1] Add JSDoc comments to all public APIs 🟢
+- [ ] 📋 [P1.7.2] Create component documentation standards 🟢
+- [ ] 📋 [P1.7.3] Document complex business logic 🟢
+- [ ] 📋 [P1.7.4] Set up automated documentation generation 🟡
 
 ---
 
@@ -156,6 +180,7 @@ This document tracks all development tasks for the EvorBrain project. Tasks are 
 - [ ] 📋 [P3.5.4] Build hotkey configuration 🟡
 - [ ] 📋 [P3.5.5] Create backup settings 🟢
 - [ ] 📋 [P3.5.6] Add advanced options panel 🟡
+- [ ] 📋 [P3.5.7] Implement secure storage patterns 🟡
 
 ---
 
@@ -316,4 +341,4 @@ This document tracks all development tasks for the EvorBrain project. Tasks are 
 
 ---
 
-*Last updated: 2025-07-29*
+*Last updated: 2025-01-29*
