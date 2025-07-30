@@ -1,7 +1,9 @@
 import MainLayout from "./components/layout/MainLayout";
 import { Container } from "./components/ui/Container";
 import { invoke } from "@tauri-apps/api/core";
-import { createSignal } from "solid-js";
+import { createSignal, onMount } from "solid-js";
+import { StoreProvider } from "./stores";
+import { uiActions } from "./stores/uiStore";
 
 function App() {
   const [dbStatus, setDbStatus] = createSignal<string>("");
@@ -14,8 +16,15 @@ function App() {
       setDbStatus(`Error: ${error}`);
     }
   };
+  
+  onMount(() => {
+    // Initialize theme on app start
+    uiActions.initializeTheme();
+  });
+  
   return (
-    <MainLayout>
+    <StoreProvider>
+      <MainLayout>
       <Container class="py-4 sm:py-6 lg:py-8">
         <div class="space-y-4 sm:space-y-6">
           <div class="bg-surface rounded-lg shadow-card p-4 sm:p-6 transition-shadow hover:shadow-card-hover">
@@ -77,6 +86,7 @@ function App() {
         </div>
       </Container>
     </MainLayout>
+    </StoreProvider>
   );
 }
 
