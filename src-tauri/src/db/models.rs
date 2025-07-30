@@ -90,7 +90,7 @@ pub struct ProjectTag {
     pub tag_id: String,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, Type)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Type)]
 #[sqlx(type_name = "TEXT")]
 #[serde(rename_all = "lowercase")]
 pub enum ProjectStatus {

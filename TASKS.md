@@ -46,14 +46,15 @@ This document tracks all development tasks for the EvorBrain project. Tasks are 
 - [x] ✅ [P1.3.6] Add database initialization on first run 🟡
 
 ### [P1.4] Core Infrastructure
-- [ ] 📋 [P1.4.1] Set up Tauri IPC commands structure 🟡
+- [x] ✅ [P1.4.1] Set up Tauri IPC commands structure 🟡
 - [ ] 📋 [P1.4.2] Create error handling system 🟡
 - [ ] 📋 [P1.4.3] Implement logging infrastructure 🟡
-- [ ] 📋 [P1.4.4] Build frontend API client 🟡
-- [ ] 📋 [P1.4.5] Create TypeScript type definitions 🟢
+- [x] ✅ [P1.4.4] Build frontend API client 🟡
+- [x] ✅ [P1.4.5] Create TypeScript type definitions 🟢
 - [ ] 📋 [P1.4.6] Set up state management structure 🟡
 - [ ] 📋 [P1.4.7] Replace all `any` types with proper TypeScript types 🟢
 - [ ] 📋 [P1.4.8] Fix memory leaks in theme system 🟢
+- [ ] 📋 [P1.4.9] Create Tauri commands for repository operations 🟡
 
 ### [P1.5] Testing Setup
 - [ ] 📋 [P1.5.1] Set up Vitest for unit testing 🟡
@@ -82,12 +83,12 @@ This document tracks all development tasks for the EvorBrain project. Tasks are 
 ## Phase 2: Core Features [P2]
 
 ### [P2.1] Data Models & CRUD
-- [ ] 📋 [P2.1.1] Implement Life Area CRUD operations 🟡
+- [ ] 🔄 [P2.1.1] Implement Life Area CRUD operations 🟡 (partial - create/read done)
 - [ ] 📋 [P2.1.2] Implement Goal CRUD operations 🟡
 - [ ] 📋 [P2.1.3] Implement Project CRUD operations 🟡
-- [ ] 📋 [P2.1.4] Implement Task CRUD operations 🟡
-- [ ] 📋 [P2.1.5] Add subtask support 🟡
-- [ ] 📋 [P2.1.6] Implement archiving functionality 🟢
+- [ ] 🔄 [P2.1.4] Implement Task CRUD operations 🟡 (partial - create/complete done)
+- [ ] 🔄 [P2.1.5] Add subtask support 🟡 (partial - create with subtasks done)
+- [ ] 🔄 [P2.1.6] Implement archiving functionality 🟢 (partial - project cascade done)
 
 ### [P2.2] Hierarchical Navigation
 - [ ] 📋 [P2.2.1] Build tree view component 🔴
@@ -318,12 +319,23 @@ This document tracks all development tasks for the EvorBrain project. Tasks are 
 
 ## Notes
 
+### Current Implementation Status
+- **Database Layer**: Complete with SQLite + SQLx integration
+- **Migration System**: Fully functional with Tauri commands
+- **Models**: All core models implemented with helper methods
+- **Repository**: Basic operations implemented (partial CRUD)
+- **Tauri Commands**: All CRUD commands implemented for Life Areas, Goals, Projects, Tasks, and Notes
+- **TypeScript Types**: Complete type definitions for all models and commands
+- **Frontend API Client**: Type-safe API client with full command coverage
+
 ### Technical Decisions
-- Using UUID v4 for all IDs
-- Storing dates in ISO 8601 format
-- All times in UTC, converted for display
+- Using UUID v4 for all IDs ✅
+- Storing dates in ISO 8601 format ✅
+- All times in UTC, converted for display ✅
 - Markdown as primary content format
 - JSON for structured data exchange
+- Using SQLx for compile-time checked SQL queries ✅
+- Custom migration system with up/down support ✅
 
 ### Known Challenges
 - Cross-platform file path handling
@@ -333,7 +345,7 @@ This document tracks all development tasks for the EvorBrain project. Tasks are 
 - AI API rate limiting
 
 ### Dependencies to Research
-- Best SQLite library for Rust
+- ✅ SQLite library for Rust (Decided: SQLx with compile-time checked queries)
 - Markdown editor for SolidJS
 - Git library options (git2-rs vs alternatives)
 - Calendar component options
@@ -341,4 +353,4 @@ This document tracks all development tasks for the EvorBrain project. Tasks are 
 
 ---
 
-*Last updated: 2025-01-29*
+*Last updated: 2025-01-30*
