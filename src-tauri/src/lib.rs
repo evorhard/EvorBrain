@@ -1,5 +1,7 @@
 mod db;
 mod commands;
+mod error;
+mod logger;
 
 use sqlx::SqlitePool;
 use std::sync::Arc;
@@ -31,16 +33,24 @@ pub fn run() {
         .plugin(tauri_plugin_opener::init())
         .setup(|app| {
             let app_handle = app.handle().clone();
+            
+            // Initialize logger
+            logger::init_logger(&app_handle)?;
+            log_info!("EvorBrain application starting up");
+            
             let db_path = db::connection::get_database_path(&app_handle)?;
+            log_info!("Database path", &db_path);
             
             // Use Tauri's async runtime instead of creating a new one
             tauri::async_runtime::block_on(async move {
+                log_info!("Initializing database connection");
                 let db_pool = db::init_database(&db_path).await?;
                 
                 app_handle.manage(AppState {
                     db: Arc::new(db_pool),
                 });
                 
+                log_info!("Application setup complete");
                 Ok(())
             })
         })
@@ -102,7 +112,16 @@ pub fn run() {
             commands::update_note,
             commands::delete_note,
             commands::restore_note,
-            commands::search_notes
+            commands::search_notes,
+            // Logging commands
+            commands::get_recent_logs,
+            commands::set_log_level,
+            // Repository commands
+            commands::check_repository_health,
+            commands::batch_delete,
+            commands::get_database_stats,
+            commands::cleanup_database,
+            commands::export_all_data
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

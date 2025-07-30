@@ -24,20 +24,23 @@ import type {
   MigrationStatus,
   MigrationResult,
 } from '../types/commands';
+import { EvorBrainError } from '../types/errors';
+import type { LogEntry, LogLevel, GetLogsRequest } from '../types/logging';
+import type {
+  TransactionResult,
+  BatchDeleteRequest,
+  DatabaseStats,
+  CleanupOptions,
+  ExportRequest,
+  ExportResult,
+} from '../types/repository';
 
-// Error handling
-export class ApiError extends Error {
-  constructor(message: string, public details?: unknown) {
-    super(message);
-    this.name = 'ApiError';
-  }
-}
-
+// Helper function to invoke Tauri commands with proper error handling
 async function invokeCommand<T>(command: string, args?: Record<string, unknown>): Promise<T> {
   try {
     return await invoke<T>(command, args);
   } catch (error) {
-    throw new ApiError(`Command ${command} failed`, error);
+    throw EvorBrainError.fromTauriError(error);
   }
 }
 
@@ -215,6 +218,33 @@ export const databaseApi = {
     invokeCommand<string>('test_database'),
 };
 
+// Logging API
+export const loggingApi = {
+  getRecentLogs: (request?: GetLogsRequest) =>
+    invokeCommand<LogEntry[]>('get_recent_logs', { request: request || {} }),
+    
+  setLogLevel: (level: LogLevel) =>
+    invokeCommand<void>('set_log_level', { level }),
+};
+
+// Repository API
+export const repositoryApi = {
+  checkHealth: () =>
+    invokeCommand<TransactionResult>('check_repository_health'),
+    
+  batchDelete: (request: BatchDeleteRequest) =>
+    invokeCommand<TransactionResult>('batch_delete', { request }),
+    
+  getStats: () =>
+    invokeCommand<DatabaseStats>('get_database_stats'),
+    
+  cleanup: (options: CleanupOptions) =>
+    invokeCommand<TransactionResult>('cleanup_database', { options }),
+    
+  exportData: (request: ExportRequest) =>
+    invokeCommand<ExportResult>('export_all_data', { request }),
+};
+
 // Export everything as a single API object for convenience
 export const api = {
   lifeArea: lifeAreaApi,
@@ -224,4 +254,6 @@ export const api = {
   note: noteApi,
   migration: migrationApi,
   database: databaseApi,
+  logging: loggingApi,
+  repository: repositoryApi,
 } as const;

@@ -1,10 +1,10 @@
-use anyhow::Result;
 use sqlx::{SqlitePool, Transaction, Sqlite};
 use std::sync::Arc;
 use chrono::Utc;
 use uuid::Uuid;
 
 use super::models::{LifeArea, Task};
+use crate::error::{AppError, AppResult};
 
 pub struct Repository {
     pool: Arc<SqlitePool>,
@@ -16,12 +16,15 @@ impl Repository {
     }
 
     // Transaction helper
-    pub async fn begin_transaction(&self) -> Result<Transaction<'_, Sqlite>> {
-        Ok(self.pool.begin().await?)
+    pub async fn begin_transaction(&self) -> AppResult<Transaction<'_, Sqlite>> {
+        self.pool
+            .begin()
+            .await
+            .map_err(|e| AppError::database_error("begin transaction", e))
     }
 
     // Life Area operations
-    pub async fn create_life_area(&self, name: String, description: Option<String>, color: Option<String>, icon: Option<String>) -> Result<LifeArea> {
+    pub async fn create_life_area(&self, name: String, description: Option<String>, color: Option<String>, icon: Option<String>) -> AppResult<LifeArea> {
         let id = Uuid::new_v4().to_string();
         let now = Utc::now();
         
@@ -53,7 +56,7 @@ impl Repository {
         })
     }
 
-    pub async fn get_life_areas(&self) -> Result<Vec<LifeArea>> {
+    pub async fn get_life_areas(&self) -> AppResult<Vec<LifeArea>> {
         let areas = sqlx::query_as::<_, LifeArea>(
             r#"
             SELECT id, name, description, color, icon, 
@@ -68,13 +71,179 @@ impl Repository {
 
         Ok(areas)
     }
+    
+    pub async fn get_life_area(&self, id: &str) -> AppResult<LifeArea> {
+        sqlx::query_as::<_, LifeArea>(
+            r#"
+            SELECT id, name, description, color, icon, 
+                   created_at, updated_at, archived_at
+            FROM life_areas
+            WHERE id = ?1
+            "#
+        )
+        .bind(id)
+        .fetch_one(&*self.pool)
+        .await
+        .map_err(|e| match e {
+            sqlx::Error::RowNotFound => AppError::not_found("Life area", id),
+            _ => AppError::database_error("get life area", e),
+        })
+    }
+    
+    pub async fn update_life_area(
+        &self, 
+        id: &str, 
+        name: String, 
+        description: Option<String>, 
+        color: Option<String>, 
+        icon: Option<String>
+    ) -> AppResult<LifeArea> {
+        let now = Utc::now();
+        
+        sqlx::query(
+            r#"
+            UPDATE life_areas 
+            SET name = ?1, description = ?2, color = ?3, icon = ?4, updated_at = ?5
+            WHERE id = ?6 AND archived_at IS NULL
+            "#
+        )
+        .bind(&name)
+        .bind(&description)
+        .bind(&color)
+        .bind(&icon)
+        .bind(&now)
+        .bind(id)
+        .execute(&*self.pool)
+        .await
+        .map_err(|e| AppError::database_error("update life area", e))?;
+        
+        self.get_life_area(id).await
+    }
+    
+    pub async fn delete_life_area(&self, id: &str) -> AppResult<()> {
+        let mut tx = self.begin_transaction().await?;
+        let now = Utc::now();
+        
+        // Archive the life area
+        let result = sqlx::query(
+            r#"
+            UPDATE life_areas 
+            SET archived_at = ?1, updated_at = ?2
+            WHERE id = ?3 AND archived_at IS NULL
+            "#
+        )
+        .bind(&now)
+        .bind(&now)
+        .bind(id)
+        .execute(&mut *tx)
+        .await
+        .map_err(|e| AppError::database_error("delete life area", e))?;
+        
+        if result.rows_affected() == 0 {
+            return Err(AppError::not_found("Life area", id));
+        }
+        
+        // Cascade archive to all goals in this life area
+        sqlx::query(
+            r#"
+            UPDATE goals 
+            SET archived_at = ?1, updated_at = ?2
+            WHERE life_area_id = ?3 AND archived_at IS NULL
+            "#
+        )
+        .bind(&now)
+        .bind(&now)
+        .bind(id)
+        .execute(&mut *tx)
+        .await
+        .map_err(|e| AppError::database_error("cascade delete goals", e))?;
+        
+        // Cascade archive to all projects in goals of this life area
+        sqlx::query(
+            r#"
+            UPDATE projects 
+            SET archived_at = ?1, updated_at = ?2
+            WHERE goal_id IN (
+                SELECT id FROM goals WHERE life_area_id = ?3
+            ) AND archived_at IS NULL
+            "#
+        )
+        .bind(&now)
+        .bind(&now)
+        .bind(id)
+        .execute(&mut *tx)
+        .await
+        .map_err(|e| AppError::database_error("cascade delete projects", e))?;
+        
+        // Cascade archive to all tasks in projects of goals in this life area
+        sqlx::query(
+            r#"
+            UPDATE tasks 
+            SET archived_at = ?1, updated_at = ?2
+            WHERE project_id IN (
+                SELECT p.id FROM projects p
+                JOIN goals g ON p.goal_id = g.id
+                WHERE g.life_area_id = ?3
+            ) AND archived_at IS NULL
+            "#
+        )
+        .bind(&now)
+        .bind(&now)
+        .bind(id)
+        .execute(&mut *tx)
+        .await
+        .map_err(|e| AppError::database_error("cascade delete tasks", e))?;
+        
+        // Cascade archive to all notes associated with this life area
+        sqlx::query(
+            r#"
+            UPDATE notes 
+            SET archived_at = ?1, updated_at = ?2
+            WHERE life_area_id = ?3 AND archived_at IS NULL
+            "#
+        )
+        .bind(&now)
+        .bind(&now)
+        .bind(id)
+        .execute(&mut *tx)
+        .await
+        .map_err(|e| AppError::database_error("cascade delete notes", e))?;
+        
+        tx.commit().await
+            .map_err(|e| AppError::database_error("commit cascade delete", e))?;
+        
+        Ok(())
+    }
+    
+    pub async fn restore_life_area(&self, id: &str) -> AppResult<LifeArea> {
+        let now = Utc::now();
+        
+        let result = sqlx::query(
+            r#"
+            UPDATE life_areas 
+            SET archived_at = NULL, updated_at = ?1
+            WHERE id = ?2 AND archived_at IS NOT NULL
+            "#
+        )
+        .bind(&now)
+        .bind(id)
+        .execute(&*self.pool)
+        .await
+        .map_err(|e| AppError::database_error("restore life area", e))?;
+        
+        if result.rows_affected() == 0 {
+            return Err(AppError::not_found("Archived life area", id));
+        }
+        
+        self.get_life_area(id).await
+    }
 
     // Task operations with transactions
     pub async fn create_task_with_subtasks(
         &self, 
         task: Task, 
         subtasks: Vec<Task>
-    ) -> Result<String> {
+    ) -> AppResult<String> {
         let mut tx = self.begin_transaction().await?;
         
         // Insert main task
@@ -121,7 +290,7 @@ impl Repository {
         Ok(task.id)
     }
 
-    pub async fn complete_task(&self, task_id: &str) -> Result<()> {
+    pub async fn complete_task(&self, task_id: &str) -> AppResult<()> {
         let now = Utc::now();
         
         sqlx::query(
@@ -141,7 +310,7 @@ impl Repository {
     }
 
     // Archive operations with cascading
-    pub async fn archive_project_cascade(&self, project_id: &str) -> Result<()> {
+    pub async fn archive_project_cascade(&self, project_id: &str) -> AppResult<()> {
         let mut tx = self.begin_transaction().await?;
         let now = Utc::now();
         

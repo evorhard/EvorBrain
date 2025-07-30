@@ -2,6 +2,9 @@
 
 export * from './models';
 export * from './commands';
+export * from './errors';
+export * from './logging';
+export * from './repository';
 
 // Re-export commonly used types for convenience
 export type {
