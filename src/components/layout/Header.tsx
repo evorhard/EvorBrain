@@ -1,5 +1,6 @@
 import { Component, createSignal, Show } from "solid-js";
 import { HiOutlineBars3, HiOutlineMagnifyingGlass, HiOutlineBell, HiOutlineCog } from "solid-icons/hi";
+import ThemeToggle from "./ThemeToggle";
 
 interface HeaderProps {
   onToggleMobileSidebar: () => void;
@@ -56,6 +57,8 @@ const Header: Component<HeaderProps> = (props) => {
               <HiOutlineBell class="w-5 h-5 text-content-secondary" />
             </button>
 
+            <ThemeToggle />
+            
             <button
               class="hidden xs:block p-2 rounded-md hover:bg-surface-100 dark:hover:bg-surface-200 transition-colors focus-ring"
               aria-label="Settings"

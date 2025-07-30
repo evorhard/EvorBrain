@@ -2,5 +2,13 @@
 import { render } from "solid-js/web";
 import "./index.css";
 import App from "./App";
+import { ThemeProvider } from "./providers/ThemeProvider";
 
-render(() => <App />, document.getElementById("root") as HTMLElement);
+render(
+  () => (
+    <ThemeProvider>
+      <App />
+    </ThemeProvider>
+  ),
+  document.getElementById("root") as HTMLElement
+);

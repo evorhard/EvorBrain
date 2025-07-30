@@ -1,4 +1,4 @@
-import { createSignal, createEffect } from 'solid-js';
+import { createSignal, createEffect, onCleanup } from 'solid-js';
 
 export type Theme = 'light' | 'dark' | 'system';
 
@@ -41,7 +41,7 @@ export function createTheme() {
 
   if (typeof window !== 'undefined') {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    mediaQuery.addEventListener('change', (e) => {
+    const handleChange = (e: MediaQueryListEvent) => {
       if (theme() === 'system') {
         const newTheme = e.matches ? 'dark' : 'light';
         setResolvedTheme(newTheme);
@@ -52,6 +52,13 @@ export function createTheme() {
           root.classList.remove('dark');
         }
       }
+    };
+    
+    mediaQuery.addEventListener('change', handleChange);
+    
+    // Clean up the event listener when the component is destroyed
+    onCleanup(() => {
+      mediaQuery.removeEventListener('change', handleChange);
     });
   }
 

@@ -1,8 +1,8 @@
 import { Component, For } from "solid-js";
-import { createTheme } from "../lib/theme";
+import { useTheme } from "../providers/ThemeProvider";
 
 const ThemeDemo: Component = () => {
-  const { theme, setTheme, resolvedTheme } = createTheme();
+  const { theme, setTheme, resolvedTheme } = useTheme();
 
   const colorGroups = [
     {
