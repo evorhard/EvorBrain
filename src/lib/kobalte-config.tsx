@@ -1,3 +1,4 @@
+import { Component } from "solid-js";
 import { Root as AlertDialogRoot } from "@kobalte/core/alert-dialog";
 import { Root as DialogRoot } from "@kobalte/core/dialog";
 import { Root as PopoverRoot } from "@kobalte/core/popover";
@@ -34,9 +35,9 @@ export const globalConfig = {
 };
 
 // Helper to apply default props
-export function withDefaults<T extends Record<string, any>>(
-  Component: any,
+export function withDefaults<T extends Record<string, unknown>, P extends T = T>(
+  Component: Component<P>,
   defaults: T
-) {
-  return (props: any) => <Component {...defaults} {...props} />;
+): Component<Partial<P>> {
+  return (props) => <Component {...defaults} {...props as P} />;
 }

@@ -123,22 +123,27 @@ export type ModelId = string;
 export type ISODateString = string;
 
 // Type guards
-export function isLifeArea(obj: any): obj is LifeArea {
-  return obj && typeof obj.id === 'string' && typeof obj.name === 'string';
+export function isLifeArea(obj: unknown): obj is LifeArea {
+  const area = obj as Record<string, unknown>;
+  return !!obj && typeof area.id === 'string' && typeof area.name === 'string';
 }
 
-export function isGoal(obj: any): obj is Goal {
-  return obj && typeof obj.id === 'string' && typeof obj.life_area_id === 'string' && typeof obj.title === 'string';
+export function isGoal(obj: unknown): obj is Goal {
+  const goal = obj as Record<string, unknown>;
+  return !!obj && typeof goal.id === 'string' && typeof goal.life_area_id === 'string' && typeof goal.title === 'string';
 }
 
-export function isProject(obj: any): obj is Project {
-  return obj && typeof obj.id === 'string' && typeof obj.goal_id === 'string' && typeof obj.title === 'string' && obj.status in ProjectStatus;
+export function isProject(obj: unknown): obj is Project {
+  const project = obj as Record<string, unknown>;
+  return !!obj && typeof project.id === 'string' && typeof project.goal_id === 'string' && typeof project.title === 'string' && typeof project.status === 'string' && Object.values(ProjectStatus).includes(project.status as ProjectStatus);
 }
 
-export function isTask(obj: any): obj is Task {
-  return obj && typeof obj.id === 'string' && typeof obj.title === 'string' && obj.priority in TaskPriority;
+export function isTask(obj: unknown): obj is Task {
+  const task = obj as Record<string, unknown>;
+  return !!obj && typeof task.id === 'string' && typeof task.title === 'string' && typeof task.priority === 'string' && Object.values(TaskPriority).includes(task.priority as TaskPriority);
 }
 
-export function isNote(obj: any): obj is Note {
-  return obj && typeof obj.id === 'string' && typeof obj.title === 'string' && typeof obj.content === 'string';
+export function isNote(obj: unknown): obj is Note {
+  const note = obj as Record<string, unknown>;
+  return !!obj && typeof note.id === 'string' && typeof note.title === 'string' && typeof note.content === 'string';
 }

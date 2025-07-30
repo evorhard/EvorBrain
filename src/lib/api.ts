@@ -1,6 +1,6 @@
 // API client for Tauri commands with full TypeScript support
 
-import { invoke } from '@tauri-apps/api/tauri';
+import { invoke } from '@tauri-apps/api/core';
 import type {
   LifeArea,
   Goal,

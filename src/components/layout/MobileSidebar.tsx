@@ -16,7 +16,7 @@ import {
 interface NavItem {
   id: string;
   label: string;
-  icon: any;
+  icon: Component<{ class?: string }>;
   children?: NavItem[];
 }
 
