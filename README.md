@@ -59,11 +59,14 @@ EvorBrain is currently in the initial development phase. Here's the development 
 - [x] Responsive design system with breakpoints
 - [x] Base layout components (Header, Sidebar, Content Area)
 - [x] Core UI components (Button, Input, Modal, Card, etc.)
+- [x] SQLite database integration with SQLx
+- [x] Database migration system
+- [x] Core data models (Rust)
 
 #### 🔄 In Progress
 
-- [ ] Core data models and database schema
-- [ ] SQLite database integration
+- [ ] Tauri IPC commands structure
+- [ ] Frontend TypeScript type definitions
 
 #### 📋 Pending
 - [ ] Basic CRUD operations for tasks
@@ -79,7 +82,7 @@ EvorBrain is currently in the initial development phase. Here's the development 
 - [ ] Performance optimization
 - [ ] Production build pipeline
 
-**Development Status**: The foundation is now in place! The app runs in development mode with a working UI framework, theme system, and responsive design. Database integration is the next major milestone.
+**Development Status**: Major progress! The app now has a complete database layer with SQLite integration, migration system, and all data models implemented. The UI foundation is also complete with theme system and responsive design. Next up: connecting the frontend to the backend with Tauri commands.
 
 ---
 
@@ -139,8 +142,8 @@ Perfect for anyone who wants the power of Notion's organization with Obsidian's 
 | **Styling**            | [Tailwind CSS](https://tailwindcss.com)                    | Utility-first, great DX, perfect for rapid development |
 | **Responsive Design**  | Custom Breakpoint System                                    | Mobile-first with useBreakpoint hook & responsive utils|
 | **UI Components**      | [Kobalte](https://kobalte.dev)                             | Accessible, unstyled components for SolidJS            |
-| **Database**           | [SQLite](https://sqlite.org)                               | Fast, reliable, zero-config embedded database          |
-| **ORM**                | [SQLx](https://github.com/launchbadge/sqlx)                | Compile-time checked SQL queries in Rust              |
+| **Database**           | [SQLite](https://sqlite.org) with [SQLx](https://github.com/launchbadge/sqlx) | Fast, reliable, zero-config embedded database with compile-time checked queries |
+| **Migrations**         | Custom Rust-based system                                    | Version-controlled database schema with up/down support |
 | **Language**           | [TypeScript](https://typescriptlang.org)                   | Type safety, better DX, fewer runtime errors           |
 | **Backend Language**   | [Rust](https://rust-lang.org)                              | Memory safe, blazing fast, excellent for native apps   |
 | **Package Manager**    | [Bun](https://bun.sh)                                      | Fast all-in-one JavaScript runtime and toolkit         |
@@ -214,10 +217,11 @@ bun run start
 # - Working UI framework with theme switching
 # - Responsive design system
 # - Demo components showcasing the design system
+# - Database migration system (check MigrationTester component)
 # - Hot module replacement for development
 ```
 
-**Current State**: The UI foundation is complete! You can run the app and explore the component library, theme system, and responsive design. Database functionality is coming next.
+**Current State**: Both UI foundation and database layer are complete! You can run the app to explore the component library, theme system, responsive design, and test the database migration system. Next milestone: implementing CRUD operations and connecting frontend to backend.
 
 ---
 
