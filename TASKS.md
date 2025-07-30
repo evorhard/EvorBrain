@@ -39,11 +39,11 @@ This document tracks all development tasks for the EvorBrain project. Tasks are 
 
 ### [P1.3] Database Setup
 - [x] ✅ [P1.3.1] Integrate SQLite with Tauri 🟡
-- [ ] 📋 [P1.3.2] Create database migration system 🔴
-- [ ] 📋 [P1.3.3] Implement initial schema 🟡
-- [ ] 📋 [P1.3.4] Create Rust database models 🟡
-- [ ] 📋 [P1.3.5] Build database connection pool 🟡
-- [ ] 📋 [P1.3.6] Add database initialization on first run 🟡
+- [x] ✅ [P1.3.2] Create database migration system 🔴
+- [x] ✅ [P1.3.3] Implement initial schema 🟡
+- [x] ✅ [P1.3.4] Create Rust database models 🟡
+- [x] ✅ [P1.3.5] Build database connection pool 🟡
+- [x] ✅ [P1.3.6] Add database initialization on first run 🟡
 
 ### [P1.4] Core Infrastructure
 - [ ] 📋 [P1.4.1] Set up Tauri IPC commands structure 🟡

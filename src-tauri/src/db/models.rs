@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
 use chrono::{DateTime, Utc};
 use sqlx::{Type, FromRow};
+use uuid;
 
 #[derive(Debug, Clone, Serialize, Deserialize, FromRow)]
 pub struct LifeArea {
@@ -14,7 +15,7 @@ pub struct LifeArea {
     pub archived_at: Option<DateTime<Utc>>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, FromRow)]
 pub struct Goal {
     pub id: String,
     pub life_area_id: String,
@@ -27,7 +28,7 @@ pub struct Goal {
     pub archived_at: Option<DateTime<Utc>>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, FromRow)]
 pub struct Project {
     pub id: String,
     pub goal_id: String,
@@ -40,7 +41,7 @@ pub struct Project {
     pub archived_at: Option<DateTime<Utc>>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, FromRow)]
 pub struct Task {
     pub id: String,
     pub project_id: Option<String>,
@@ -55,7 +56,7 @@ pub struct Task {
     pub archived_at: Option<DateTime<Utc>>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, FromRow)]
 pub struct Note {
     pub id: String,
     pub task_id: Option<String>,
@@ -67,6 +68,26 @@ pub struct Note {
     pub created_at: DateTime<Utc>,
     pub updated_at: DateTime<Utc>,
     pub archived_at: Option<DateTime<Utc>>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, FromRow)]
+pub struct Tag {
+    pub id: String,
+    pub name: String,
+    pub color: Option<String>,
+    pub created_at: DateTime<Utc>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, FromRow)]
+pub struct TaskTag {
+    pub task_id: String,
+    pub tag_id: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, FromRow)]
+pub struct ProjectTag {
+    pub project_id: String,
+    pub tag_id: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Type)]
@@ -146,4 +167,205 @@ impl std::str::FromStr for TaskPriority {
             _ => Err(format!("Invalid task priority: {}", s)),
         }
     }
+}
+
+// Implementation helpers for models
+impl LifeArea {
+    pub fn new(name: String) -> Self {
+        let now = Utc::now();
+        Self {
+            id: uuid::Uuid::new_v4().to_string(),
+            name,
+            description: None,
+            color: None,
+            icon: None,
+            created_at: now,
+            updated_at: now,
+            archived_at: None,
+        }
+    }
+
+    pub fn is_archived(&self) -> bool {
+        self.archived_at.is_some()
+    }
+}
+
+impl Goal {
+    pub fn new(life_area_id: String, title: String) -> Self {
+        let now = Utc::now();
+        Self {
+            id: uuid::Uuid::new_v4().to_string(),
+            life_area_id,
+            title,
+            description: None,
+            target_date: None,
+            created_at: now,
+            updated_at: now,
+            completed_at: None,
+            archived_at: None,
+        }
+    }
+
+    pub fn is_completed(&self) -> bool {
+        self.completed_at.is_some()
+    }
+
+    pub fn is_archived(&self) -> bool {
+        self.archived_at.is_some()
+    }
+}
+
+impl Project {
+    pub fn new(goal_id: String, title: String) -> Self {
+        let now = Utc::now();
+        Self {
+            id: uuid::Uuid::new_v4().to_string(),
+            goal_id,
+            title,
+            description: None,
+            status: ProjectStatus::Planning,
+            created_at: now,
+            updated_at: now,
+            completed_at: None,
+            archived_at: None,
+        }
+    }
+
+    pub fn is_active(&self) -> bool {
+        matches!(self.status, ProjectStatus::Active)
+    }
+
+    pub fn is_completed(&self) -> bool {
+        matches!(self.status, ProjectStatus::Completed) || self.completed_at.is_some()
+    }
+
+    pub fn is_archived(&self) -> bool {
+        self.archived_at.is_some()
+    }
+}
+
+impl Task {
+    pub fn new(title: String) -> Self {
+        let now = Utc::now();
+        Self {
+            id: uuid::Uuid::new_v4().to_string(),
+            project_id: None,
+            parent_task_id: None,
+            title,
+            description: None,
+            priority: TaskPriority::default(),
+            due_date: None,
+            created_at: now,
+            updated_at: now,
+            completed_at: None,
+            archived_at: None,
+        }
+    }
+
+    pub fn with_project(mut self, project_id: String) -> Self {
+        self.project_id = Some(project_id);
+        self
+    }
+
+    pub fn with_parent(mut self, parent_task_id: String) -> Self {
+        self.parent_task_id = Some(parent_task_id);
+        self
+    }
+
+    pub fn is_completed(&self) -> bool {
+        self.completed_at.is_some()
+    }
+
+    pub fn is_archived(&self) -> bool {
+        self.archived_at.is_some()
+    }
+
+    pub fn is_overdue(&self) -> bool {
+        if let Some(due) = self.due_date {
+            !self.is_completed() && due < Utc::now()
+        } else {
+            false
+        }
+    }
+}
+
+impl Note {
+    pub fn new(title: String, content: String) -> Self {
+        let now = Utc::now();
+        Self {
+            id: uuid::Uuid::new_v4().to_string(),
+            task_id: None,
+            project_id: None,
+            goal_id: None,
+            life_area_id: None,
+            title,
+            content,
+            created_at: now,
+            updated_at: now,
+            archived_at: None,
+        }
+    }
+
+    pub fn for_task(mut self, task_id: String) -> Self {
+        self.task_id = Some(task_id);
+        self
+    }
+
+    pub fn for_project(mut self, project_id: String) -> Self {
+        self.project_id = Some(project_id);
+        self
+    }
+
+    pub fn for_goal(mut self, goal_id: String) -> Self {
+        self.goal_id = Some(goal_id);
+        self
+    }
+
+    pub fn for_life_area(mut self, life_area_id: String) -> Self {
+        self.life_area_id = Some(life_area_id);
+        self
+    }
+
+    pub fn is_archived(&self) -> bool {
+        self.archived_at.is_some()
+    }
+}
+
+impl Tag {
+    pub fn new(name: String) -> Self {
+        Self {
+            id: uuid::Uuid::new_v4().to_string(),
+            name,
+            color: None,
+            created_at: Utc::now(),
+        }
+    }
+
+    pub fn with_color(mut self, color: String) -> Self {
+        self.color = Some(color);
+        self
+    }
+}
+
+// Additional type aliases for common query results
+pub type TaskWithTags = (Task, Vec<Tag>);
+pub type ProjectWithTags = (Project, Vec<Tag>);
+
+// Query builder helpers
+#[derive(Debug, Default)]
+pub struct TaskFilter {
+    pub project_id: Option<String>,
+    pub parent_task_id: Option<String>,
+    pub priority: Option<TaskPriority>,
+    pub completed: Option<bool>,
+    pub archived: Option<bool>,
+    pub overdue: Option<bool>,
+}
+
+#[derive(Debug, Default)]
+pub struct ProjectFilter {
+    pub goal_id: Option<String>,
+    pub status: Option<ProjectStatus>,
+    pub completed: Option<bool>,
+    pub archived: Option<bool>,
 }

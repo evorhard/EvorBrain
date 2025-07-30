@@ -43,7 +43,14 @@ pub fn run() {
                 Ok(())
             })
         })
-        .invoke_handler(tauri::generate_handler![greet, test_database])
+        .invoke_handler(tauri::generate_handler![
+            greet, 
+            test_database,
+            db::migrations::commands::get_migration_status,
+            db::migrations::commands::run_migrations,
+            db::migrations::commands::rollback_migration,
+            db::migrations::commands::reset_database
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
