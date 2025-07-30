@@ -52,8 +52,8 @@ This document tracks all development tasks for the EvorBrain project. Tasks are 
 - [x] ✅ [P1.4.4] Build frontend API client 🟡
 - [x] ✅ [P1.4.5] Create TypeScript type definitions 🟢
 - [ ] 📋 [P1.4.6] Set up state management structure 🟡
-- [ ] 📋 [P1.4.7] Replace all `any` types with proper TypeScript types 🟢
-- [ ] 📋 [P1.4.8] Fix memory leaks in theme system 🟢
+- [x] ✅ [P1.4.7] Replace all `any` types with proper TypeScript types 🟢
+- [x] ✅ [P1.4.8] Fix memory leaks in theme system 🟢
 - [ ] 📋 [P1.4.9] Create Tauri commands for repository operations 🟡
 
 ### [P1.5] Testing Setup
