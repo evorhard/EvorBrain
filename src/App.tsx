@@ -1,7 +1,19 @@
 import MainLayout from "./components/layout/MainLayout";
 import { Container } from "./components/ui/Container";
+import { invoke } from "@tauri-apps/api/core";
+import { createSignal } from "solid-js";
 
 function App() {
+  const [dbStatus, setDbStatus] = createSignal<string>("");
+
+  const testDatabase = async () => {
+    try {
+      const result = await invoke<string>("test_database");
+      setDbStatus(result);
+    } catch (error) {
+      setDbStatus(`Error: ${error}`);
+    }
+  };
   return (
     <MainLayout>
       <Container class="py-4 sm:py-6 lg:py-8">
@@ -13,6 +25,17 @@ function App() {
             <p class="text-sm sm:text-base text-content-secondary">
               Your intelligent life management system. Start by creating your first task or exploring the features.
             </p>
+            <div class="mt-4">
+              <button 
+                onClick={testDatabase}
+                class="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-600 transition-colors"
+              >
+                Test Database Connection
+              </button>
+              {dbStatus() && (
+                <p class="mt-2 text-sm text-content-secondary">{dbStatus()}</p>
+              )}
+            </div>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
