@@ -1,6 +1,6 @@
 import { Dialog as KobalteDialog } from "@kobalte/core/dialog";
 import { Component, JSX, splitProps, Show } from "solid-js";
-import { HiOutlineX } from "solid-icons/hi";
+import { HiOutlineXMark } from "solid-icons/hi";
 import { cva, type VariantProps } from "class-variance-authority";
 
 const Modal = KobalteDialog;
@@ -82,7 +82,7 @@ const ModalContent: Component<ModalContentProps> = (props) => {
         {local.children}
         <Show when={local.showCloseButton !== false}>
           <KobalteDialog.CloseButton class="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus-ring disabled:pointer-events-none">
-            <HiOutlineX class="h-4 w-4" />
+            <HiOutlineXMark class="h-4 w-4" />
             <span class="sr-only">Close</span>
           </KobalteDialog.CloseButton>
         </Show>

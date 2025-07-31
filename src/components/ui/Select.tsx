@@ -1,6 +1,6 @@
 import { Select as KobalteSelect } from "@kobalte/core/select";
 import { Component, JSX, splitProps } from "solid-js";
-import { HiOutlineSelector, HiOutlineCheck } from "solid-icons/hi";
+import { HiOutlineChevronUpDown, HiOutlineCheck } from "solid-icons/hi";
 
 const Select = KobalteSelect;
 
@@ -37,7 +37,7 @@ const SelectTrigger: Component<SelectTriggerProps> = (props) => {
       >
         <KobalteSelect.Value placeholder={local.placeholder || "Select an option"} />
         <KobalteSelect.Icon>
-          <HiOutlineSelector class="h-4 w-4 opacity-50" />
+          <HiOutlineChevronUpDown class="h-4 w-4 opacity-50" />
         </KobalteSelect.Icon>
       </KobalteSelect.Trigger>
       {local.error && (
