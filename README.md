@@ -65,6 +65,7 @@ EvorBrain is currently in the initial development phase. Here's the development 
 - [x] Tauri IPC commands structure
 - [x] Frontend TypeScript type definitions
 - [x] Type-safe API client with full command coverage
+- [x] Testing framework setup (Vitest + SolidJS Testing Library)
 
 #### 🔄 In Progress
 
@@ -72,6 +73,7 @@ EvorBrain is currently in the initial development phase. Here's the development 
 - [ ] Frontend state management setup
 
 #### 📋 Pending
+- [ ] Unit test coverage for existing components
 - [ ] Frontend routing and navigation
 - [ ] Life Area management implementation
 - [ ] Goal and Project hierarchies
@@ -152,6 +154,7 @@ Perfect for anyone who wants the power of Notion's organization with Obsidian's 
 | **State Management**   | [Solid Stores](https://www.solidjs.com/docs/latest#stores) | Built-in reactive state management                     |
 | **Router**             | [@solidjs/router](https://github.com/solidjs/solid-router) | Official SolidJS routing solution                      |
 | **Build Tool**         | [Vite](https://vitejs.dev)                                 | Fast frontend build tool with HMR                      |
+| **Testing**            | [Vitest](https://vitest.dev) + [@solidjs/testing-library](https://github.com/solidjs/solid-testing-library) | Modern testing framework with SolidJS support |
 
 ---
 
@@ -306,7 +309,10 @@ evorbrain/
 │   ├── stores/          # State management (planned)
 │   ├── hooks/           # Custom hooks ✅
 │   ├── lib/             # Libraries and utilities
-│   │   └── api.ts       # Type-safe Tauri API client ✅
+│   │   ├── api.ts       # Type-safe Tauri API client ✅
+│   │   └── api.test.ts  # API client tests ✅
+│   ├── test/            # Test utilities and setup ✅
+│   │   └── setup.ts     # Test environment configuration
 │   ├── types/           # TypeScript types ✅
 │   │   ├── models.ts    # Database model types
 │   │   ├── commands.ts  # Command request/response types
@@ -323,6 +329,7 @@ evorbrain/
 ├── public/               # Static assets
 ├── scripts/             # Build and utility scripts
 ├── tests/               # Test files
+├── vitest.config.ts     # Vitest configuration ✅
 │
 ├── .github/             # GitHub Actions workflows
 ├── package.json         # Node.js dependencies
@@ -354,8 +361,11 @@ bun run start
 # Build for production ✅ WORKING
 bun run tauri:build
 
-# Run tests ⚠️ NO TESTS YET
-bun run test
+# Run tests ✅ WORKING
+bun run test          # Run tests in watch mode
+bun run test:ui       # Run tests with UI interface
+bun run test:run      # Run tests once
+bun run test:coverage # Run tests with coverage report
 
 # Clean build artifacts ✅ WORKING
 bun run clean

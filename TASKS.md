@@ -57,7 +57,7 @@ This document tracks all development tasks for the EvorBrain project. Tasks are 
 - [x] ✅ [P1.4.9] Create Tauri commands for repository operations 🟡
 
 ### [P1.5] Testing Setup
-- [ ] 📋 [P1.5.1] Set up Vitest for unit testing 🟡
+- [x] ✅ [P1.5.1] Set up Vitest for unit testing 🟡
 - [ ] 📋 [P1.5.2] Configure Testing Library for component tests 🟡
 - [ ] 📋 [P1.5.3] Set up e2e testing with Playwright 🔴
 - [ ] 📋 [P1.5.4] Create test utilities and helpers 🟡
@@ -84,7 +84,7 @@ This document tracks all development tasks for the EvorBrain project. Tasks are 
 
 ### [P2.1] Data Models & CRUD
 - [x] ✅ [P2.1.1] Implement Life Area CRUD operations 🟡
-- [ ] 📋 [P2.1.2] Implement Goal CRUD operations 🟡
+- [x] ✅ [P2.1.2] Implement Goal CRUD operations 🟡
 - [ ] 📋 [P2.1.3] Implement Project CRUD operations 🟡
 - [ ] 🔄 [P2.1.4] Implement Task CRUD operations 🟡 (partial - create/complete done)
 - [ ] 🔄 [P2.1.5] Add subtask support 🟡 (partial - create with subtasks done)
@@ -327,6 +327,7 @@ This document tracks all development tasks for the EvorBrain project. Tasks are 
 - **Tauri Commands**: All CRUD commands implemented for Life Areas, Goals, Projects, Tasks, and Notes
 - **TypeScript Types**: Complete type definitions for all models and commands
 - **Frontend API Client**: Type-safe API client with full command coverage
+- **UI Components**: Life Area and Goal management interfaces complete with full CRUD functionality
 
 ### Technical Decisions
 - Using UUID v4 for all IDs ✅
