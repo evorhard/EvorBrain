@@ -1,0 +1,176 @@
+# Component Testing Guide
+
+This guide explains how to write component tests for EvorBrain using Vitest and @solidjs/testing-library.
+
+## Setup
+
+The testing environment is already configured with:
+- **Vitest** as the test runner
+- **@solidjs/testing-library** for testing SolidJS components
+- **@testing-library/jest-dom** for additional DOM matchers
+- **jsdom** as the DOM environment
+
+## Writing Component Tests
+
+### Basic Structure
+
+```typescript
+import { describe, it, expect, vi } from 'vitest';
+import { render, screen, fireEvent } from '@solidjs/testing-library';
+import { MyComponent } from './MyComponent';
+
+describe('MyComponent', () => {
+  it('renders correctly', () => {
+    render(() => <MyComponent />);
+    // Test assertions
+  });
+});
+```
+
+### Common Testing Patterns
+
+#### 1. Testing Rendered Content
+
+```typescript
+it('renders with text content', () => {
+  render(() => <Button>Click me</Button>);
+  const button = screen.getByRole('button', { name: /click me/i });
+  expect(button).toBeInTheDocument();
+});
+```
+
+#### 2. Testing Props and Variants
+
+```typescript
+it('applies variant classes', () => {
+  render(() => <Button variant="danger">Delete</Button>);
+  const button = screen.getByRole('button');
+  expect(button).toHaveClass('bg-danger-500');
+});
+```
+
+#### 3. Testing Event Handlers
+
+```typescript
+it('handles click events', () => {
+  const handleClick = vi.fn();
+  render(() => <Button onClick={handleClick}>Click</Button>);
+  
+  const button = screen.getByRole('button');
+  fireEvent.click(button);
+  
+  expect(handleClick).toHaveBeenCalledTimes(1);
+});
+```
+
+#### 4. Testing Input Components
+
+```typescript
+it('handles input changes', () => {
+  const handleInput = vi.fn();
+  render(() => <Input onInput={handleInput} />);
+  
+  const input = screen.getByRole('textbox');
+  fireEvent.input(input, { target: { value: 'test' } });
+  
+  expect(handleInput).toHaveBeenCalled();
+});
+```
+
+#### 5. Testing Conditional Rendering
+
+```typescript
+it('conditionally renders content', () => {
+  const { rerender } = render(() => <Component show={false} />);
+  expect(screen.queryByText('Content')).not.toBeInTheDocument();
+  
+  rerender(() => <Component show={true} />);
+  expect(screen.getByText('Content')).toBeInTheDocument();
+});
+```
+
+#### 6. Testing Async Behavior
+
+```typescript
+it('loads data asynchronously', async () => {
+  render(() => <DataComponent />);
+  
+  expect(screen.getByText('Loading...')).toBeInTheDocument();
+  
+  await screen.findByText('Data loaded');
+  expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
+});
+```
+
+## Query Methods
+
+Use the appropriate query method based on your needs:
+
+- `getBy*` - Throws error if element not found (use when element should exist)
+- `queryBy*` - Returns null if not found (use for conditional elements)
+- `findBy*` - Returns promise, waits for element (use for async rendering)
+
+Common queries:
+- `getByRole` - Preferred for accessibility
+- `getByLabelText` - For form elements
+- `getByText` - For specific text content
+- `getByTestId` - Last resort when other queries don't work
+
+## Mocking
+
+### Mocking Tauri Commands
+
+The setup file already mocks Tauri's invoke function:
+
+```typescript
+import { mockInvoke } from '../test/setup';
+
+it('calls Tauri command', async () => {
+  mockInvoke.mockResolvedValueOnce({ data: 'test' });
+  
+  // Your test code
+  
+  expect(mockInvoke).toHaveBeenCalledWith('command_name', expectedArgs);
+});
+```
+
+### Mocking Modules
+
+```typescript
+vi.mock('./module-path', () => ({
+  functionName: vi.fn(),
+}));
+```
+
+## Best Practices
+
+1. **Test behavior, not implementation** - Focus on what the user sees/does
+2. **Use semantic queries** - Prefer `getByRole` over `getByTestId`
+3. **Keep tests focused** - One behavior per test
+4. **Use descriptive test names** - Should explain what is being tested
+5. **Clean up after tests** - Use `cleanup` if needed (auto-handled by testing-library)
+6. **Mock external dependencies** - Don't make real API calls
+7. **Test accessibility** - Use aria attributes and semantic HTML
+
+## Running Tests
+
+```bash
+# Run tests in watch mode
+bun test
+
+# Run tests once
+bun run test:run
+
+# Run with UI
+bun run test:ui
+
+# Run with coverage
+bun run test:coverage
+```
+
+## Example Test Files
+
+See these files for examples:
+- `/src/components/ui/Button.test.tsx` - Basic component testing
+- `/src/components/ui/Input.test.tsx` - Form input testing with error states
+- `/src/lib/api.test.ts` - API client testing with mocks
