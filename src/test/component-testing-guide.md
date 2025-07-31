@@ -174,3 +174,21 @@ See these files for examples:
 - `/src/components/ui/Button.test.tsx` - Basic component testing
 - `/src/components/ui/Input.test.tsx` - Form input testing with error states
 - `/src/lib/api.test.ts` - API client testing with mocks
+
+## Component Tests vs E2E Tests
+
+Component tests focus on testing individual components in isolation, while end-to-end (E2E) tests verify complete user workflows in the running application.
+
+**When to use component tests:**
+- Testing component behavior and state
+- Verifying prop handling and event callbacks
+- Testing edge cases and error states
+- Fast feedback during development
+
+**When to use E2E tests:**
+- Testing complete user workflows
+- Verifying integration between frontend and backend
+- Testing critical business paths
+- Ensuring the app works as a whole
+
+For E2E testing documentation, see the [E2E Testing Guide](/e2e/README.md).

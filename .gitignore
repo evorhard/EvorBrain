@@ -67,6 +67,11 @@ coverage/
 *.lcov
 .nyc_output/
 
+# Playwright test results
+test-results/
+playwright-report/
+playwright/.cache/
+
 # Package manager lock files (keep one, ignore others)
 # We're using bun, so keep bun.lockb
 package-lock.json

@@ -66,6 +66,7 @@ EvorBrain is currently in the initial development phase. Here's the development 
 - [x] Frontend TypeScript type definitions
 - [x] Type-safe API client with full command coverage
 - [x] Testing framework setup (Vitest + SolidJS Testing Library)
+- [x] E2E testing setup with Playwright
 
 #### 🔄 In Progress
 
@@ -155,6 +156,7 @@ Perfect for anyone who wants the power of Notion's organization with Obsidian's 
 | **Router**             | [@solidjs/router](https://github.com/solidjs/solid-router) | Official SolidJS routing solution                      |
 | **Build Tool**         | [Vite](https://vitejs.dev)                                 | Fast frontend build tool with HMR                      |
 | **Testing**            | [Vitest](https://vitest.dev) + [@solidjs/testing-library](https://github.com/solidjs/solid-testing-library) | Modern testing framework with SolidJS support |
+| **E2E Testing**        | [Playwright](https://playwright.dev)                        | Cross-browser end-to-end testing for Tauri apps        |
 
 ---
 
@@ -326,10 +328,16 @@ evorbrain/
 │   ├── attachments/     # File attachments
 │   └── config/          # User settings
 │
+├── e2e/                  # End-to-end tests ✅
+│   ├── fixtures.ts      # Test fixtures and setup
+│   ├── helpers/         # E2E test helper functions
+│   └── *.spec.ts        # E2E test files
+│
 ├── public/               # Static assets
 ├── scripts/             # Build and utility scripts
 ├── tests/               # Test files
 ├── vitest.config.ts     # Vitest configuration ✅
+├── playwright.config.ts # Playwright configuration ✅
 │
 ├── .github/             # GitHub Actions workflows
 ├── package.json         # Node.js dependencies
@@ -366,6 +374,12 @@ bun run test          # Run tests in watch mode
 bun run test:ui       # Run tests with UI interface
 bun run test:run      # Run tests once
 bun run test:coverage # Run tests with coverage report
+
+# Run E2E tests ✅ WORKING
+bun run test:e2e      # Run end-to-end tests
+bun run test:e2e:ui   # Run E2E tests with interactive UI
+bun run test:e2e:debug # Debug E2E tests
+bun run test:e2e:headed # Run E2E tests in headed mode
 
 # Clean build artifacts ✅ WORKING
 bun run clean
@@ -422,6 +436,8 @@ bun run clean:all  # Deep clean including node_modules
 - **[Architecture Document](ARCHITECTURE.md)** - Detailed technical architecture and implementation specs
 - **[Task Tracking](TASKS.md)** - Current development status, upcoming features, and task assignments
 - **[API Documentation](docs/api.md)** - Complete TypeScript API client reference
+- **[Component Testing Guide](src/test/component-testing-guide.md)** - Guide for writing component tests
+- **[E2E Testing Guide](e2e/README.md)** - Comprehensive guide for end-to-end testing
 - **[User Guide](docs/user-guide.md)** - Comprehensive user documentation (coming soon)
 
 ---
