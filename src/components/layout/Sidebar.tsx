@@ -10,34 +10,35 @@ import {
   HiOutlineChevronRight,
   HiOutlineChevronDown,
   HiOutlineBars3,
+  HiOutlineFlag,
 } from "solid-icons/hi";
+import { useUIStore } from "../../stores";
 
 interface NavItem {
   id: string;
   label: string;
   icon: Component<{ class?: string }>;
+  viewId?: string;
   children?: NavItem[];
 }
 
 const Sidebar: Component = () => {
+  const { store: uiStore, actions: uiActions } = useUIStore();
   const [collapsed, setCollapsed] = createSignal(false);
   const [expandedItems, setExpandedItems] = createSignal<Set<string>>(new Set());
 
   const navItems: NavItem[] = [
-    { id: "home", label: "Home", icon: HiOutlineHome },
+    { id: "home", label: "Home", icon: HiOutlineHome, viewId: "dashboard" },
     {
       id: "life-areas",
       label: "Life Areas",
       icon: HiOutlineRectangleStack,
-      children: [
-        { id: "personal", label: "Personal", icon: HiOutlineFolder },
-        { id: "work", label: "Work", icon: HiOutlineFolder },
-        { id: "health", label: "Health", icon: HiOutlineFolder },
-      ],
+      viewId: "life-areas",
     },
-    { id: "tasks", label: "Tasks", icon: HiOutlineClipboardDocumentList },
-    { id: "calendar", label: "Calendar", icon: HiOutlineCalendar },
-    { id: "notes", label: "Notes", icon: HiOutlineDocumentText },
+    { id: "goals", label: "Goals", icon: HiOutlineFlag, viewId: "goals" },
+    { id: "tasks", label: "Tasks", icon: HiOutlineClipboardDocumentList, viewId: "tasks" },
+    { id: "calendar", label: "Calendar", icon: HiOutlineCalendar, viewId: "calendar" },
+    { id: "notes", label: "Notes", icon: HiOutlineDocumentText, viewId: "notes" },
     { id: "analytics", label: "Analytics", icon: HiOutlineChartBar },
   ];
 
@@ -56,14 +57,23 @@ const Sidebar: Component = () => {
   const renderNavItem = (item: NavItem, level: number = 0) => {
     const hasChildren = item.children && item.children.length > 0;
     const isExpanded = expandedItems().has(item.id);
+    const isActive = item.viewId && uiStore.activeView === item.viewId;
+
+    const handleClick = () => {
+      if (hasChildren) {
+        toggleExpanded(item.id);
+      } else if (item.viewId) {
+        uiActions.setActiveView(item.viewId as any);
+      }
+    };
 
     return (
       <>
         <button
           class={`w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-surface-100 dark:hover:bg-surface-200 transition-colors text-content ${
             level > 0 ? "pl-8" : ""
-          }`}
-          onClick={() => hasChildren && toggleExpanded(item.id)}
+          } ${isActive ? "bg-primary-100 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400" : ""}`}
+          onClick={handleClick}
         >
           <item.icon class="w-5 h-5 flex-shrink-0" />
           {!collapsed() && (
