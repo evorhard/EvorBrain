@@ -193,6 +193,32 @@ import { Tooltip } from '@/components/ui';
 
 **Props**: `content`, `placement` (top/right/bottom/left), `openDelay`, `closeDelay`
 
+### ConfirmDialog
+
+A factory function to create confirmation dialogs that replace browser `confirm()` calls.
+
+```tsx
+import { createConfirmDialog } from '@/components/ui';
+
+const [DeleteConfirmDialog, deleteConfirmHandle] = createConfirmDialog({
+  title: 'Delete Item',
+  description: 'Are you sure you want to delete this item?',
+  confirmText: 'Delete',
+  cancelText: 'Cancel',
+  variant: 'danger',
+  onConfirm: () => deleteItem(),
+  onCancel: () => console.log('Cancelled')
+});
+
+// In your component JSX
+<>
+  <Button onClick={() => deleteConfirmHandle.open()}>Delete</Button>
+  <DeleteConfirmDialog />
+</>
+```
+
+**Props**: `title`, `description` (string or function), `confirmText`, `cancelText`, `variant` (danger/default), `onConfirm`, `onCancel`
+
 ### Dropdown Menu
 
 A menu that appears on click.

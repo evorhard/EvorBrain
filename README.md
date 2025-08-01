@@ -71,6 +71,9 @@ EvorBrain is currently in the initial development phase. Here's the development 
 - [x] Testing framework setup (Vitest + SolidJS Testing Library)
 - [x] E2E testing setup with Playwright
 - [x] ESLint configuration with TypeScript and SolidJS rules
+- [x] Prettier configuration for code formatting
+- [x] Pre-commit hooks with Husky and lint-staged
+- [x] Code quality improvements (reduced ESLint errors from 181 to ~99)
 
 #### 🔄 In Progress
 
@@ -170,6 +173,8 @@ philosophy and the performance of a native app.
 | **Testing**            | [Vitest](https://vitest.dev) + [@solidjs/testing-library](https://github.com/solidjs/solid-testing-library) | Modern testing framework with SolidJS support                                   |
 | **E2E Testing**        | [Playwright](https://playwright.dev)                                                                        | Cross-browser end-to-end testing for Tauri apps                                 |
 | **Linting**            | [ESLint](https://eslint.org) + TypeScript ESLint                                                            | Code quality and consistency enforcement                                        |
+| **Formatting**         | [Prettier](https://prettier.io)                                                                              | Consistent code formatting across the project                                   |
+| **Git Hooks**          | [Husky](https://typicode.github.io/husky) + [lint-staged](https://github.com/okonet/lint-staged)             | Pre-commit hooks for code quality checks                                        |
 
 ---
 
@@ -406,6 +411,10 @@ bun run clean:all  # Deep clean including node_modules
 # Lint code ✅ WORKING
 bun run lint      # Check for linting errors
 bun run lint:fix  # Auto-fix linting errors where possible
+
+# Format code ✅ WORKING
+bun run format    # Format all code with Prettier
+bun run format:check # Check if code is properly formatted
 
 # Generate documentation ✅ WORKING
 bun run docs          # Generate all documentation

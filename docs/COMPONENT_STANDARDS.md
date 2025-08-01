@@ -693,4 +693,33 @@ Before marking a component as complete:
 
 ---
 
-*Last updated: 2025-01-31*
+## Recent Additions
+
+### ConfirmDialog Component (2025-08-01)
+
+A new `ConfirmDialog` component has been added to replace browser `confirm()` dialogs:
+
+```tsx
+import { createConfirmDialog } from '@/components/ui/ConfirmDialog';
+
+// Create a confirm dialog instance
+const [DeleteConfirmDialog, deleteConfirmHandle] = createConfirmDialog({
+  title: 'Delete Item',
+  description: 'Are you sure you want to delete this item?',
+  confirmText: 'Delete',
+  cancelText: 'Cancel',
+  variant: 'danger',
+  onConfirm: () => deleteItem(),
+  onCancel: () => console.log('Cancelled')
+});
+
+// Usage in component
+<Button onClick={() => deleteConfirmHandle.open()}>Delete</Button>
+<DeleteConfirmDialog />
+```
+
+This component follows our accessibility standards and integrates with the existing Modal component system.
+
+---
+
+*Last updated: 2025-08-01*
