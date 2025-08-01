@@ -1,9 +1,31 @@
 import { createSignal } from 'solid-js';
 import { invoke } from '@tauri-apps/api/core';
+import { createConfirmDialog } from './ui/ConfirmDialog';
 
 export function MigrationTester() {
   const [status, setStatus] = createSignal('');
   const [loading, setLoading] = createSignal(false);
+
+  const handleResetDatabase = async () => {
+    setLoading(true);
+    try {
+      const result = await invoke<string>('reset_database');
+      setStatus(result);
+      await checkStatus();
+    } catch (error) {
+      setStatus(`Error: ${error}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const [ResetConfirmDialog, resetConfirmHandle] = createConfirmDialog({
+    title: 'Reset Database',
+    description: 'Are you sure you want to reset the database? This action cannot be undone.',
+    confirmText: 'Reset',
+    variant: 'danger',
+    onConfirm: handleResetDatabase,
+  });
 
   const checkStatus = async () => {
     setLoading(true);
@@ -45,19 +67,8 @@ export function MigrationTester() {
     }
   };
 
-  const resetDatabase = async () => {
-    if (!confirm('Are you sure you want to reset the database?')) return;
-
-    setLoading(true);
-    try {
-      const result = await invoke<string>('reset_database');
-      setStatus(result);
-      await checkStatus();
-    } catch (error) {
-      setStatus(`Error: ${error}`);
-    } finally {
-      setLoading(false);
-    }
+  const resetDatabase = () => {
+    resetConfirmHandle.open();
   };
 
   return (
@@ -98,6 +109,8 @@ export function MigrationTester() {
       {status() && (
         <pre class="overflow-auto rounded bg-gray-100 p-4 whitespace-pre-wrap">{status()}</pre>
       )}
+
+      <ResetConfirmDialog />
     </div>
   );
 }

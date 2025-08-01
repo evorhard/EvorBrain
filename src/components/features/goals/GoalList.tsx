@@ -1,10 +1,29 @@
-import { For, Show, createEffect, onMount } from 'solid-js';
+import { For, Show, createEffect, onMount, createSignal } from 'solid-js';
 import { useGoalStore, useLifeAreaStore } from '../../../stores';
 import { formatDate } from '../../../utils/date';
+import { createConfirmDialog } from '../../ui/ConfirmDialog';
 
 export function GoalList() {
   const { store: goalStore, actions: goalActions } = useGoalStore();
   const { store: lifeAreaStore } = useLifeAreaStore();
+  const [goalToDelete, setGoalToDelete] = createSignal<{ id: string; name: string } | null>(null);
+
+  const handleDeleteGoal = () => {
+    const goal = goalToDelete();
+    if (goal) {
+      goalActions.delete(goal.id);
+      setGoalToDelete(null);
+    }
+  };
+
+  const [DeleteConfirmDialog, deleteConfirmHandle] = createConfirmDialog({
+    title: 'Delete Goal',
+    description: () => `Are you sure you want to delete "${goalToDelete()?.name}"?`,
+    confirmText: 'Delete',
+    variant: 'danger',
+    onConfirm: handleDeleteGoal,
+    onCancel: () => setGoalToDelete(null),
+  });
 
   onMount(() => {
     // Fetch goals when component mounts
@@ -12,9 +31,9 @@ export function GoalList() {
   });
 
   createEffect(() => {
-    // Log when selected goal changes
+    // Track when selected goal changes
     if (goalStore.selectedId) {
-      console.log('Selected goal:', goalStore.selectedId);
+      // Selected goal changed
     }
   });
 
@@ -158,9 +177,8 @@ export function GoalList() {
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        if (confirm(`Are you sure you want to delete "${goal.name}"?`)) {
-                          goalActions.delete(goal.id);
-                        }
+                        setGoalToDelete({ id: goal.id, name: goal.name });
+                        deleteConfirmHandle.open();
                       }}
                       class="rounded p-1.5 text-red-600 transition-colors hover:bg-red-50 dark:hover:bg-red-900/20"
                       title="Delete goal"
@@ -201,6 +219,8 @@ export function GoalList() {
           )}
         </For>
       </div>
+
+      <DeleteConfirmDialog />
     </div>
   );
 }

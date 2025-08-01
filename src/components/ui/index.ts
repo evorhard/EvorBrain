@@ -2,6 +2,7 @@ export * from './Badge';
 export * from './Button';
 export * from './Card';
 export * from './Checkbox';
+export * from './ConfirmDialog';
 export * from './Container';
 export * from './DropdownMenu';
 export * from './Grid';
