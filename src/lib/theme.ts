@@ -28,7 +28,7 @@ export function createTheme() {
     const currentTheme = theme();
     localStorage.setItem(STORAGE_KEY, currentTheme);
     
-    const resolved = currentTheme === 'system' ? getSystemTheme() : currentTheme as 'light' | 'dark';
+    const resolved = currentTheme === 'system' ? getSystemTheme() : currentTheme;
     setResolvedTheme(resolved);
     
     const root = document.documentElement;

@@ -17,9 +17,7 @@ let idCounter = 0;
 /**
  * Generate a unique ID for testing
  */
-export const generateId = (prefix = 'test') => {
-  return `${prefix}-${++idCounter}-${Date.now()}`;
-};
+export const generateId = (prefix = 'test') => `${prefix}-${++idCounter}-${Date.now()}`;
 
 /**
  * Reset the ID counter (useful between test suites)
@@ -40,8 +38,7 @@ export const createTimestamp = (daysOffset = 0): string => {
 /**
  * Factory for creating Life Area test data
  */
-export const createLifeArea = (overrides?: Partial<LifeArea>): LifeArea => {
-  return {
+export const createLifeArea = (overrides?: Partial<LifeArea>): LifeArea => ({
     id: generateId('life-area'),
     name: 'Test Life Area',
     description: 'A test life area for testing purposes',
@@ -52,14 +49,12 @@ export const createLifeArea = (overrides?: Partial<LifeArea>): LifeArea => {
     updated_at: createTimestamp(),
     archived_at: null,
     ...overrides,
-  };
-};
+  });
 
 /**
  * Factory for creating Goal test data
  */
-export const createGoal = (overrides?: Partial<Goal>): Goal => {
-  return {
+export const createGoal = (overrides?: Partial<Goal>): Goal => ({
     id: generateId('goal'),
     life_area_id: generateId('life-area'),
     title: 'Test Goal',
@@ -71,14 +66,12 @@ export const createGoal = (overrides?: Partial<Goal>): Goal => {
     updated_at: createTimestamp(),
     archived_at: null,
     ...overrides,
-  };
-};
+  });
 
 /**
  * Factory for creating Project test data
  */
-export const createProject = (overrides?: Partial<Project>): Project => {
-  return {
+export const createProject = (overrides?: Partial<Project>): Project => ({
     id: generateId('project'),
     goal_id: generateId('goal'),
     name: 'Test Project',
@@ -89,14 +82,12 @@ export const createProject = (overrides?: Partial<Project>): Project => {
     updated_at: createTimestamp(),
     archived_at: null,
     ...overrides,
-  };
-};
+  });
 
 /**
  * Factory for creating Task test data
  */
-export const createTask = (overrides?: Partial<Task>): Task => {
-  return {
+export const createTask = (overrides?: Partial<Task>): Task => ({
     id: generateId('task'),
     project_id: generateId('project'),
     parent_task_id: null,
@@ -110,14 +101,12 @@ export const createTask = (overrides?: Partial<Task>): Task => {
     updated_at: createTimestamp(),
     archived_at: null,
     ...overrides,
-  };
-};
+  });
 
 /**
  * Factory for creating Note test data
  */
-export const createNote = (overrides?: Partial<Note>): Note => {
-  return {
+export const createNote = (overrides?: Partial<Note>): Note => ({
     id: generateId('note'),
     content: '# Test Note\n\nThis is a test note with **markdown** content.',
     task_id: null,
@@ -129,8 +118,7 @@ export const createNote = (overrides?: Partial<Note>): Note => {
     updated_at: createTimestamp(),
     archived_at: null,
     ...overrides,
-  };
-};
+  });
 
 /**
  * Create a complete hierarchy of test data
@@ -226,45 +214,35 @@ export const createProjectWithTasks = (
 /**
  * Create test data for different states
  */
-export const createCompletedGoal = (overrides?: Partial<Goal>): Goal => {
-  return createGoal({
+export const createCompletedGoal = (overrides?: Partial<Goal>): Goal => createGoal({
     completed_at: createTimestamp(),
     ...overrides,
   });
-};
 
-export const createArchivedLifeArea = (overrides?: Partial<LifeArea>): LifeArea => {
-  return createLifeArea({
+export const createArchivedLifeArea = (overrides?: Partial<LifeArea>): LifeArea => createLifeArea({
     archived_at: createTimestamp(),
     ...overrides,
   });
-};
 
-export const createOverdueTask = (overrides?: Partial<Task>): Task => {
-  return createTask({
+export const createOverdueTask = (overrides?: Partial<Task>): Task => createTask({
     due_date: createTimestamp(-7), // 7 days ago
     ...overrides,
   });
-};
 
-export const createInProgressProject = (overrides?: Partial<Project>): Project => {
-  return createProject({
+export const createInProgressProject = (overrides?: Partial<Project>): Project => createProject({
     status: 'in_progress' as ProjectStatus,
     ...overrides,
   });
-};
 
 /**
  * Create invalid test data for error testing
  */
-export const createInvalidLifeArea = (): Partial<LifeArea> => {
-  return {
+export const createInvalidLifeArea = (): Partial<LifeArea> => ({
     id: generateId('invalid'),
     name: '', // Invalid: empty name
     color: 'not-a-color', // Invalid: not a valid color
     position: -1, // Invalid: negative position
-  };
-};
+  });
 
 /**
  * Batch create test data
@@ -273,8 +251,6 @@ export const batchCreate = <T>(
   factory: (overrides?: Partial<T>) => T,
   count: number,
   overrides?: (index: number) => Partial<T>
-): T[] => {
-  return Array.from({ length: count }, (_, i) => 
+): T[] => Array.from({ length: count }, (_, i) => 
     factory(overrides ? overrides(i) : undefined)
   );
-};

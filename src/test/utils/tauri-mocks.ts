@@ -212,8 +212,6 @@ export const mockTauriError = (command: string, error: string | Error) => {
 /**
  * Create a mock that simulates loading states
  */
-export const createLoadingMock = (finalResponse: any, loadingTime = 100) => {
-  return new Promise((resolve) => {
+export const createLoadingMock = (finalResponse: any, loadingTime = 100) => new Promise((resolve) => {
     setTimeout(() => resolve(finalResponse), loadingTime);
   });
-};

@@ -29,8 +29,8 @@ interface CustomMatchers<R = unknown> {
 }
 
 declare module 'vitest' {
-  interface Assertion<T = any> extends CustomMatchers<T> {}
-  interface AsymmetricMatchersContaining extends CustomMatchers {}
+  type Assertion<T = any> = CustomMatchers<T>
+  type AsymmetricMatchersContaining = CustomMatchers
 }
 
 /**
@@ -44,16 +44,12 @@ const isValidISODate = (date: string): boolean => {
 /**
  * Check if a value is a valid hex color
  */
-const isValidHexColor = (color: string): boolean => {
-  return /^#[0-9A-F]{6}$/i.test(color);
-};
+const isValidHexColor = (color: string): boolean => /^#[0-9A-F]{6}$/i.test(color);
 
 /**
  * Check if a value is a valid UUID
  */
-const isValidUUID = (id: string): boolean => {
-  return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
-};
+const isValidUUID = (id: string): boolean => /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
 
 /**
  * Define custom matchers

@@ -1,6 +1,6 @@
 // Command request/response types for Tauri IPC
 
-import { ProjectStatus, TaskPriority } from './models';
+import type { ProjectStatus, TaskPriority } from './models';
 
 // Life Area Commands
 export interface CreateLifeAreaRequest {

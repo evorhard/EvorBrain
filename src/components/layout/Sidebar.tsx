@@ -1,4 +1,5 @@
-import { Component, createSignal, For } from "solid-js";
+import type { Component} from "solid-js";
+import { createSignal, For } from "solid-js";
 import {
   HiOutlineHome,
   HiOutlineRectangleStack,
@@ -54,7 +55,7 @@ const Sidebar: Component = () => {
     });
   };
 
-  const renderNavItem = (item: NavItem, level: number = 0) => {
+  const renderNavItem = (item: NavItem, level = 0) => {
     const hasChildren = item.children && item.children.length > 0;
     const isExpanded = expandedItems().has(item.id);
     const isActive = item.viewId && uiStore.activeView === item.viewId;

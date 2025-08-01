@@ -28,29 +28,17 @@ export function useBreakpoint() {
     return "xs";
   };
 
-  const isAbove = (breakpoint: Breakpoint): boolean => {
-    return windowWidth() >= breakpoints[breakpoint];
-  };
+  const isAbove = (breakpoint: Breakpoint): boolean => windowWidth() >= breakpoints[breakpoint];
 
-  const isBelow = (breakpoint: Breakpoint): boolean => {
-    return windowWidth() < breakpoints[breakpoint];
-  };
+  const isBelow = (breakpoint: Breakpoint): boolean => windowWidth() < breakpoints[breakpoint];
 
-  const isBetween = (min: Breakpoint, max: Breakpoint): boolean => {
-    return windowWidth() >= breakpoints[min] && windowWidth() < breakpoints[max];
-  };
+  const isBetween = (min: Breakpoint, max: Breakpoint): boolean => windowWidth() >= breakpoints[min] && windowWidth() < breakpoints[max];
 
-  const isMobile = (): boolean => {
-    return windowWidth() < breakpoints.md;
-  };
+  const isMobile = (): boolean => windowWidth() < breakpoints.md;
 
-  const isTablet = (): boolean => {
-    return windowWidth() >= breakpoints.md && windowWidth() < breakpoints.lg;
-  };
+  const isTablet = (): boolean => windowWidth() >= breakpoints.md && windowWidth() < breakpoints.lg;
 
-  const isDesktop = (): boolean => {
-    return windowWidth() >= breakpoints.lg;
-  };
+  const isDesktop = (): boolean => windowWidth() >= breakpoints.lg;
 
   const isTouch = (): boolean => {
     if (typeof window === "undefined") return false;

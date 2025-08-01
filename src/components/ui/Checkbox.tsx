@@ -1,5 +1,6 @@
 import { Checkbox as KobalteCheckbox } from "@kobalte/core/checkbox";
-import { Component, splitProps } from "solid-js";
+import type { Component} from "solid-js";
+import { splitProps } from "solid-js";
 import { HiSolidCheck } from "solid-icons/hi";
 
 interface CheckboxProps extends KobalteCheckbox.CheckboxRootProps {

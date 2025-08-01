@@ -1,4 +1,5 @@
-import { createStore as createSolidStore, SetStoreFunction } from 'solid-js/store';
+import type { SetStoreFunction } from 'solid-js/store';
+import { createStore as createSolidStore } from 'solid-js/store';
 import { batch } from 'solid-js';
 
 export interface StoreActions<T> {

@@ -1,4 +1,5 @@
-import { Component, JSX, splitProps } from "solid-js";
+import type { Component, JSX} from "solid-js";
+import { splitProps } from "solid-js";
 import { cva, type VariantProps } from "class-variance-authority";
 
 const inputVariants = cva(
@@ -61,7 +62,7 @@ const Input: Component<InputProps> = (props) => {
           size: local.size,
           class: local.class,
         })}
-        aria-invalid={!!local.error}
+        aria-invalid={Boolean(local.error)}
         aria-describedby={
           local.error || local.helperText ? `${inputId}-description` : undefined
         }

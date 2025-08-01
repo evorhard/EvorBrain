@@ -1,4 +1,5 @@
-import { Component, Show } from "solid-js";
+import type { Component} from "solid-js";
+import { Show, For } from "solid-js";
 import { Container, Card, CardHeader, CardTitle, CardDescription, CardContent } from "./ui";
 import { useBreakpoint } from "../hooks/useBreakpoint";
 import { responsive } from "../utils/responsive";
@@ -61,11 +62,11 @@ const ResponsiveDemo: Component = () => {
             </CardHeader>
             <CardContent>
               <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+                <For each={[1, 2, 3, 4, 5, 6, 7, 8]}>{(i) => (
                   <div class="bg-primary-100 dark:bg-primary-900 p-4 rounded-lg text-center">
                     <p class="text-primary-700 dark:text-primary-300 font-medium">Item {i}</p>
                   </div>
-                ))}
+                )}</For>
               </div>
             </CardContent>
           </Card>

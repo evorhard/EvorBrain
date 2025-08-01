@@ -104,6 +104,7 @@ user-data/
 
 # Optional eslint cache
 .eslintcache
+.eslintrc.timestamp-*
 
 # Optional REPL history
 .node_repl_history

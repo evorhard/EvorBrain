@@ -1,4 +1,5 @@
-import { Component, createSignal, Show, For } from "solid-js";
+import type { Component} from "solid-js";
+import { createSignal, Show, For } from "solid-js";
 import { Portal } from "solid-js/web";
 import {
   HiOutlineXMark,
@@ -58,7 +59,7 @@ const MobileSidebar: Component<MobileSidebarProps> = (props) => {
     });
   };
 
-  const renderNavItem = (item: NavItem, level: number = 0) => {
+  const renderNavItem = (item: NavItem, level = 0) => {
     const hasChildren = item.children && item.children.length > 0;
     const isExpanded = expandedItems().has(item.id);
 

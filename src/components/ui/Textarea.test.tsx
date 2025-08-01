@@ -133,7 +133,7 @@ describe('Textarea Component', () => {
       />
     ));
     
-    const textarea = screen.getByRole('textbox') as HTMLTextAreaElement;
+    const textarea = screen.getByRole('textbox');
     expect(textarea).toHaveAttribute('maxLength', '500');
     expect(textarea).toHaveAttribute('minLength', '10');
     expect(textarea).toHaveAttribute('required');
@@ -163,7 +163,7 @@ describe('Textarea Component', () => {
       />
     );
     
-    const textarea = screen.getByRole('textbox') as HTMLTextAreaElement;
+    const textarea = screen.getByRole('textbox');
     expect(textarea.value).toBe('Initial');
     
     fireEvent.input(textarea, { target: { value: 'Updated' } });

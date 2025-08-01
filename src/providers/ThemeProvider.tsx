@@ -1,4 +1,5 @@
-import { Component, createContext, useContext, JSX } from 'solid-js';
+import type { Component, JSX } from 'solid-js';
+import { createContext, useContext } from 'solid-js';
 import { createTheme } from '../lib/theme';
 
 type ThemeContextType = ReturnType<typeof createTheme>;

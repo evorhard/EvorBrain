@@ -63,9 +63,7 @@ describe('Label Component', () => {
       </Label>
     ));
     
-    const label = screen.getByText((content, element) => {
-      return element?.tagName === 'LABEL' && element.textContent === 'Text*';
-    });
+    const label = screen.getByText((content, element) => element?.tagName === 'LABEL' && element.textContent === 'Text*');
     expect(label).toBeInTheDocument();
     expect(label.querySelector('span')).toBeInTheDocument();
     expect(label.querySelector('.required')).toBeInTheDocument();

@@ -1,5 +1,7 @@
-import { render, RenderResult } from '@solidjs/testing-library';
-import { JSX, Component, createContext, useContext } from 'solid-js';
+import type { RenderResult } from '@solidjs/testing-library';
+import { render } from '@solidjs/testing-library';
+import type { JSX, Component} from 'solid-js';
+import { createContext, useContext } from 'solid-js';
 import { Router, MemoryRouter } from '@solidjs/router';
 import type { Mock } from 'vitest';
 
@@ -69,13 +71,11 @@ export function renderWithProviders(
 export function createTestContext<T>(defaultValue: T) {
   const Context = createContext<T>(defaultValue);
 
-  const TestProvider: Component<{ value?: T; children: JSX.Element }> = (props) => {
-    return (
+  const TestProvider: Component<{ value?: T; children: JSX.Element }> = (props) => (
       <Context.Provider value={props.value ?? defaultValue}>
         {props.children}
       </Context.Provider>
     );
-  };
 
   return {
     Context,
@@ -91,13 +91,11 @@ export function renderWithTheme(
   ui: () => JSX.Element,
   theme: 'light' | 'dark' = 'light'
 ) {
-  const ThemeProvider: Component<{ children: JSX.Element }> = (props) => {
-    return (
+  const ThemeProvider: Component<{ children: JSX.Element }> = (props) => (
       <div class={theme === 'dark' ? 'dark' : ''}>
         {props.children}
       </div>
     );
-  };
 
   return renderWithProviders(ui, { wrapper: ThemeProvider });
 }
@@ -162,13 +160,11 @@ export function renderWithErrorBoundary(
 ) {
   const { onError, ...renderOptions } = options;
 
-  const ErrorBoundary: Component<{ children: JSX.Element }> = (props) => {
-    return (
+  const ErrorBoundary: Component<{ children: JSX.Element }> = (props) => (
       <div class="error-boundary-wrapper">
         {props.children}
       </div>
     );
-  };
 
   // Note: SolidJS doesn't have built-in error boundaries like React
   // This is a placeholder for when error boundary support is added
@@ -194,13 +190,11 @@ export function renderWithAllProviders(
 ) {
   const { theme = 'light', mockData = {}, ...renderOptions } = options;
 
-  const AllProviders: Component<{ children: JSX.Element }> = (props) => {
-    return (
+  const AllProviders: Component<{ children: JSX.Element }> = (props) => (
       <div class={theme === 'dark' ? 'dark' : ''}>
         {props.children}
       </div>
     );
-  };
 
   return renderWithProviders(ui, { 
     ...renderOptions, 

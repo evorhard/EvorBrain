@@ -1,6 +1,6 @@
 import { createSignal, For, Show, onMount } from 'solid-js';
 import { api, ApiError } from '../lib/api';
-import { LifeArea } from '../types';
+import type { LifeArea } from '../types';
 import { Button } from './ui/Button';
 import { Input } from './ui/Input';
 import { Card } from './ui/Card';

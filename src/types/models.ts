@@ -125,25 +125,25 @@ export type ISODateString = string;
 // Type guards
 export function isLifeArea(obj: unknown): obj is LifeArea {
   const area = obj as Record<string, unknown>;
-  return !!obj && typeof area.id === 'string' && typeof area.name === 'string';
+  return Boolean(obj) && typeof area.id === 'string' && typeof area.name === 'string';
 }
 
 export function isGoal(obj: unknown): obj is Goal {
   const goal = obj as Record<string, unknown>;
-  return !!obj && typeof goal.id === 'string' && typeof goal.life_area_id === 'string' && typeof goal.title === 'string';
+  return Boolean(obj) && typeof goal.id === 'string' && typeof goal.life_area_id === 'string' && typeof goal.title === 'string';
 }
 
 export function isProject(obj: unknown): obj is Project {
   const project = obj as Record<string, unknown>;
-  return !!obj && typeof project.id === 'string' && typeof project.goal_id === 'string' && typeof project.title === 'string' && typeof project.status === 'string' && Object.values(ProjectStatus).includes(project.status as ProjectStatus);
+  return Boolean(obj) && typeof project.id === 'string' && typeof project.goal_id === 'string' && typeof project.title === 'string' && typeof project.status === 'string' && Object.values(ProjectStatus).includes(project.status as ProjectStatus);
 }
 
 export function isTask(obj: unknown): obj is Task {
   const task = obj as Record<string, unknown>;
-  return !!obj && typeof task.id === 'string' && typeof task.title === 'string' && typeof task.priority === 'string' && Object.values(TaskPriority).includes(task.priority as TaskPriority);
+  return Boolean(obj) && typeof task.id === 'string' && typeof task.title === 'string' && typeof task.priority === 'string' && Object.values(TaskPriority).includes(task.priority as TaskPriority);
 }
 
 export function isNote(obj: unknown): obj is Note {
   const note = obj as Record<string, unknown>;
-  return !!obj && typeof note.id === 'string' && typeof note.title === 'string' && typeof note.content === 'string';
+  return Boolean(obj) && typeof note.id === 'string' && typeof note.title === 'string' && typeof note.content === 'string';
 }

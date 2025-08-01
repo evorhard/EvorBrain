@@ -1,4 +1,5 @@
-import { Component, JSX, createSignal } from "solid-js";
+import type { Component, JSX} from "solid-js";
+import { createSignal } from "solid-js";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 import ContentArea from "./ContentArea";

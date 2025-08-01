@@ -58,7 +58,7 @@ describe('Input Component', () => {
     const handleInput = vi.fn();
     render(() => <Input onInput={handleInput} />);
     
-    const input = screen.getByRole('textbox') as HTMLInputElement;
+    const input = screen.getByRole('textbox');
     fireEvent.input(input, { target: { value: 'test@example.com' } });
     
     expect(handleInput).toHaveBeenCalled();

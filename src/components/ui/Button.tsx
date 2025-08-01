@@ -1,5 +1,6 @@
 import { Button as KobalteButton } from "@kobalte/core/button";
-import { Component, JSX, splitProps } from "solid-js";
+import type { Component, JSX} from "solid-js";
+import { splitProps } from "solid-js";
 import { cva, type VariantProps } from "class-variance-authority";
 
 const buttonVariants = cva(

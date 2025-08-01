@@ -1,4 +1,5 @@
-import { Component, JSX, splitProps } from "solid-js";
+import type { Component, JSX} from "solid-js";
+import { splitProps } from "solid-js";
 import { cva, type VariantProps } from "class-variance-authority";
 
 const containerVariants = cva("mx-auto w-full", {

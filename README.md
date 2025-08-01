@@ -67,6 +67,7 @@ EvorBrain is currently in the initial development phase. Here's the development 
 - [x] Type-safe API client with full command coverage
 - [x] Testing framework setup (Vitest + SolidJS Testing Library)
 - [x] E2E testing setup with Playwright
+- [x] ESLint configuration with TypeScript and SolidJS rules
 
 #### 🔄 In Progress
 
@@ -157,6 +158,7 @@ Perfect for anyone who wants the power of Notion's organization with Obsidian's 
 | **Build Tool**         | [Vite](https://vitejs.dev)                                 | Fast frontend build tool with HMR                      |
 | **Testing**            | [Vitest](https://vitest.dev) + [@solidjs/testing-library](https://github.com/solidjs/solid-testing-library) | Modern testing framework with SolidJS support |
 | **E2E Testing**        | [Playwright](https://playwright.dev)                        | Cross-browser end-to-end testing for Tauri apps        |
+| **Linting**            | [ESLint](https://eslint.org) + TypeScript ESLint           | Code quality and consistency enforcement               |
 
 ---
 
@@ -388,8 +390,9 @@ bun run test:e2e:headed # Run E2E tests in headed mode
 bun run clean
 bun run clean:all  # Deep clean including node_modules
 
-# Lint and format code ⚠️ NOT CONFIGURED
-# No linting or formatting scripts set up yet
+# Lint code ✅ WORKING
+bun run lint      # Check for linting errors
+bun run lint:fix  # Auto-fix linting errors where possible
 ```
 
 ### Making Changes
@@ -409,8 +412,9 @@ bun run clean:all  # Deep clean including node_modules
 3. **Test your changes**
 
    ```bash
-   bun run test
-   bun run lint
+   bun run test      # Run unit tests
+   bun run lint      # Check code quality
+   bun run lint:fix  # Auto-fix linting issues
    ```
 
 4. **Commit with conventional commits**

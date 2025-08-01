@@ -1,4 +1,5 @@
-import { Component, JSX, splitProps } from "solid-js";
+import type { Component, JSX} from "solid-js";
+import { splitProps } from "solid-js";
 import { cva, type VariantProps } from "class-variance-authority";
 
 const textareaVariants = cva(
@@ -53,7 +54,7 @@ const Textarea: Component<TextareaProps> = (props) => {
           variant: actualVariant,
           class: local.class,
         })}
-        aria-invalid={!!local.error}
+        aria-invalid={Boolean(local.error)}
         aria-describedby={
           local.error || local.helperText ? `${textareaId}-description` : undefined
         }

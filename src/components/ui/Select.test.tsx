@@ -26,7 +26,7 @@ describe('Select Component', () => {
       </Select>
     ));
 
-    const select = screen.getByRole('combobox') as HTMLSelectElement;
+    const select = screen.getByRole('combobox');
     expect(select.value).toBe('2');
   });
 
