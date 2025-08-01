@@ -1,0 +1,36 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["./src"],
+  "entryPointStrategy": "expand",
+  "out": "./docs/api/typescript",
+  "exclude": ["**/*.test.ts", "**/*.test.tsx", "**/test/**", "**/e2e-tests/**"],
+  "includeVersion": true,
+  "categorizeByGroup": true,
+  "plugin": ["typedoc-plugin-markdown"],
+  "githubPages": false,
+  "readme": "./README.md",
+  "hideGenerator": true,
+  "navigationLinks": {
+    "GitHub": "https://github.com/evorbrain/evorbrain",
+    "Main Documentation": "/docs"
+  },
+  "sidebarLinks": {
+    "Project Documentation": "/docs",
+    "Business Logic": "/docs/BUSINESS_LOGIC.md",
+    "Component Standards": "/docs/COMPONENT_STANDARDS.md"
+  },
+  "customCss": "./docs/assets/typedoc-theme.css",
+  "name": "EvorBrain API Documentation",
+  "theme": "default",
+  "validation": {
+    "notExported": false,
+    "invalidLink": false,
+    "notDocumented": false
+  },
+  "treatWarningsAsErrors": false,
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "strict": false
+  },
+  "skipErrorChecking": true
+}

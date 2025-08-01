@@ -406,6 +406,12 @@ bun run clean:all  # Deep clean including node_modules
 # Lint code ✅ WORKING
 bun run lint      # Check for linting errors
 bun run lint:fix  # Auto-fix linting errors where possible
+
+# Generate documentation ✅ WORKING
+bun run docs          # Generate all documentation
+bun run docs:typescript # Generate TypeScript/Frontend docs only
+bun run docs:rust     # Generate Rust/Backend docs only
+bun run docs:serve    # Serve documentation locally
 ```
 
 ### Making Changes
@@ -519,16 +525,57 @@ issues.
 
 ## 📚 Documentation
 
+### Project Documentation
+
 - **[Planning Document](PLANNING.md)** - Project vision, design decisions, and development phases
 - **[Architecture Document](ARCHITECTURE.md)** - Detailed technical architecture and implementation
   specs
 - **[Task Tracking](TASKS.md)** - Current development status, upcoming features, and task
   assignments
-- **[API Documentation](docs/api.md)** - Complete TypeScript API client reference
+- **[Business Logic](docs/BUSINESS_LOGIC.md)** - Complex business logic patterns and architectural
+  decisions
+- **[Component Standards](docs/COMPONENT_STANDARDS.md)** - Guidelines for writing consistent,
+  well-documented components
+
+### API Documentation
+
+- **[API Documentation](docs/api/)** - Auto-generated API documentation for TypeScript and Rust code
+- **[TypeScript API](docs/api/typescript/)** - Frontend components, stores, and utilities
+  documentation
+- **[Rust API](docs/api/rust/)** - Backend commands, database operations, and system APIs
+  documentation
+
+### Testing Documentation
+
+- **[Test Utilities Guide](src/test/utils/README.md)** - Comprehensive guide to test utilities and
+  helpers
 - **[Component Testing Guide](src/test/component-testing-guide.md)** - Guide for writing component
   tests
 - **[E2E Testing Guide](e2e/README.md)** - Comprehensive guide for end-to-end testing
+
+### User Documentation
+
 - **[User Guide](docs/user-guide.md)** - Comprehensive user documentation (coming soon)
+
+### Generating Documentation
+
+The project uses automated documentation generation tools:
+
+```bash
+# Generate all documentation (TypeScript + Rust)
+bun run docs
+
+# Generate TypeScript documentation only
+bun run docs:typescript
+
+# Generate Rust documentation only
+bun run docs:rust
+
+# Serve documentation locally
+bun run docs:serve
+```
+
+Documentation is automatically generated on push to main/master branches via GitHub Actions.
 
 ---
 

@@ -1,0 +1,10 @@
+[build]
+# rustdocflags = ["--html-in-header", "./docs/assets/rust-doc-header.html"]
+
+[doc]
+# Build dependencies documentation
+dependencies = true
+# Include private items in documentation
+private = true
+# Open documentation in browser after building
+open = false
