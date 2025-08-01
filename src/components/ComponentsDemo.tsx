@@ -1,5 +1,4 @@
-import type { Component } from 'solid-js';
-import { createSignal } from 'solid-js';
+import { Component, createSignal } from 'solid-js';
 import {
   Button,
   Card,
@@ -23,7 +22,6 @@ import {
   SelectItem,
   SelectPortal,
   SelectTrigger,
-  SelectValue,
   Switch,
   Textarea,
 } from './ui';

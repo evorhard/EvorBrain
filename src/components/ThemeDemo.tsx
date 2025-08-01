@@ -1,5 +1,4 @@
-import type { Component } from 'solid-js';
-import { For } from 'solid-js';
+import { Component, For } from 'solid-js';
 import { useTheme } from '../providers/ThemeProvider';
 
 const ThemeDemo: Component = () => {

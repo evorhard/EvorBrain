@@ -1,12 +1,10 @@
-import type { Component } from 'solid-js';
-import { Show, For } from 'solid-js';
+import { Component, For } from 'solid-js';
 import { Container, Card, CardHeader, CardTitle, CardDescription, CardContent } from './ui';
 import { useBreakpoint } from '../hooks/useBreakpoint';
 import { responsive } from '../utils/responsive';
 
 const ResponsiveDemo: Component = () => {
-  const { currentBreakpoint, windowWidth, isMobile, isTablet, isDesktop, isTouch } =
-    useBreakpoint();
+  const { currentBreakpoint, windowWidth, isMobile, isTablet, isTouch } = useBreakpoint();
 
   return (
     <div class="bg-background min-h-screen">
@@ -35,7 +33,7 @@ const ResponsiveDemo: Component = () => {
                 <div class="bg-surface rounded-lg p-4 text-center">
                   <p class="text-content-secondary text-sm">Device Type</p>
                   <p class="text-content text-lg font-semibold">
-                    {isMobile() ? 'Mobile' : isTablet() ? 'Tablet' : 'Desktop'}
+                    {isMobile() ? 'Mobile' : (isTablet() ? 'Tablet' : 'Desktop')}
                   </p>
                 </div>
                 <div class="bg-surface rounded-lg p-4 text-center">
