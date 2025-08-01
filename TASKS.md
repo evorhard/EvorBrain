@@ -65,7 +65,7 @@ This document tracks all development tasks for the EvorBrain project. Tasks are 
 - [x] ✅ [P1.5.6] Add test coverage reporting 🟢
 
 ### [P1.6] Development Tooling
-- [ ] 📋 [P1.6.1] Set up ESLint with TypeScript rules 🟢
+- [x] ✅ [P1.6.1] Set up ESLint with TypeScript rules 🟢
 - [ ] 📋 [P1.6.2] Configure Prettier for code formatting 🟢
 - [ ] 📋 [P1.6.3] Create pre-commit hooks with Husky 🟢
 - [ ] 📋 [P1.6.4] Set up GitHub Actions for CI 🟡
@@ -77,6 +77,14 @@ This document tracks all development tasks for the EvorBrain project. Tasks are 
 - [ ] 📋 [P1.7.2] Create component documentation standards 🟢
 - [ ] 📋 [P1.7.3] Document complex business logic 🟢
 - [ ] 📋 [P1.7.4] Set up automated documentation generation 🟡
+
+### [P1.8] Code Quality & Cleanup
+- [ ] 📋 [P1.8.1] Fix ESLint errors (83 errors, 55 warnings) 🟡
+- [ ] 📋 [P1.8.2] Remove all `any` types in test files 🟢
+- [ ] 📋 [P1.8.3] Fix duplicate imports across codebase 🟢
+- [ ] 📋 [P1.8.4] Replace `confirm`/`alert` with proper UI modals 🟡
+- [ ] 📋 [P1.8.5] Fix SolidJS reactivity warnings 🟡
+- [ ] 📋 [P1.8.6] Remove unused variables and imports 🟢
 
 ---
 
