@@ -16,15 +16,22 @@ export function GoalForm(props: GoalFormProps) {
   const { actions: goalActions } = useGoalStore();
   const { store: lifeAreaStore } = useLifeAreaStore();
 
-  const [name, setName] = createSignal(props.goal?.name || '');
-  const [description, setDescription] = createSignal(props.goal?.description || '');
-  const [lifeAreaId, setLifeAreaId] = createSignal(props.goal?.life_area_id || '');
-  const [priority, setPriority] = createSignal<'low' | 'medium' | 'high'>(
-    props.goal?.priority || 'medium',
-  );
-  const [targetDate, setTargetDate] = createSignal(props.goal?.target_date || '');
+  const [name, setName] = createSignal('');
+  const [description, setDescription] = createSignal('');
+  const [lifeAreaId, setLifeAreaId] = createSignal('');
+  const [priority, setPriority] = createSignal<'low' | 'medium' | 'high'>('medium');
+  const [targetDate, setTargetDate] = createSignal('');
   const [isSubmitting, setIsSubmitting] = createSignal(false);
   const [error, setError] = createSignal<string | null>(null);
+
+  // Update form fields when goal prop changes
+  createEffect(() => {
+    setName(props.goal?.name || '');
+    setDescription(props.goal?.description || '');
+    setLifeAreaId(props.goal?.life_area_id || '');
+    setPriority(props.goal?.priority || 'medium');
+    setTargetDate(props.goal?.target_date || '');
+  });
 
   // Format date for input field
   createEffect(() => {
