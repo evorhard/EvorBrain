@@ -87,13 +87,21 @@ describe('Badge', () => {
       });
 
       it('should apply correct dot size for small', () => {
-        const { container } = render(() => <Badge dot size="small">Text</Badge>);
+        const { container } = render(() => (
+          <Badge dot size="small">
+            Text
+          </Badge>
+        ));
         const badge = container.querySelector('span');
         expect(badge).toHaveClass('w-2', 'h-2');
       });
 
       it('should apply correct dot size for large', () => {
-        const { container } = render(() => <Badge dot size="large">Text</Badge>);
+        const { container } = render(() => (
+          <Badge dot size="large">
+            Text
+          </Badge>
+        ));
         const badge = container.querySelector('span');
         expect(badge).toHaveClass('w-3', 'h-3');
       });
@@ -106,19 +114,21 @@ describe('Badge', () => {
           'border',
           'border-surface-300',
           'text-content-primary',
-          'bg-surface-50'
+          'bg-surface-50',
         );
       });
 
       it('should apply outline styles for primary variant', () => {
-        const { getByText } = render(() => 
-          <Badge variant="primary" outline>Primary Outline</Badge>
-        );
+        const { getByText } = render(() => (
+          <Badge variant="primary" outline>
+            Primary Outline
+          </Badge>
+        ));
         expect(getByText('Primary Outline')).toHaveClass(
           'border',
           'border-primary-500',
           'text-primary-600',
-          'bg-primary-50'
+          'bg-primary-50',
         );
       });
     });
@@ -138,9 +148,7 @@ describe('Badge', () => {
 
     describe('class', () => {
       it('should apply custom CSS classes', () => {
-        const { getByText } = render(() => 
-          <Badge class="custom-class ml-2">Custom</Badge>
-        );
+        const { getByText } = render(() => <Badge class="custom-class ml-2">Custom</Badge>);
         expect(getByText('Custom')).toHaveClass('custom-class', 'ml-2');
       });
     });
@@ -156,17 +164,17 @@ describe('Badge', () => {
     });
 
     it('should support aria-label', () => {
-      const { container } = render(() => 
-        <Badge dot aria-label="User is online">Status</Badge>
-      );
+      const { container } = render(() => (
+        <Badge dot aria-label="User is online">
+          Status
+        </Badge>
+      ));
       const badge = container.querySelector('span');
       expect(badge).toHaveAttribute('aria-label', 'User is online');
     });
 
     it('should pass through additional aria attributes', () => {
-      const { getByText } = render(() => 
-        <Badge aria-describedby="description">Described</Badge>
-      );
+      const { getByText } = render(() => <Badge aria-describedby="description">Described</Badge>);
       expect(getByText('Described')).toHaveAttribute('aria-describedby', 'description');
     });
   });
@@ -181,28 +189,22 @@ describe('Badge', () => {
     });
 
     it('should handle JSX children', () => {
-      const { container } = render(() => 
+      const { container } = render(() => (
         <Badge>
           <span class="icon">→</span>
           <span>Next</span>
         </Badge>
-      );
+      ));
       expect(container.querySelector('.icon')).toBeInTheDocument();
       expect(container).toHaveTextContent('→Next');
     });
 
     it('should combine multiple style modifiers correctly', () => {
-      const { getByText } = render(() => 
-        <Badge 
-          variant="danger" 
-          size="large" 
-          outline 
-          rounded={false}
-          class="absolute"
-        >
+      const { getByText } = render(() => (
+        <Badge variant="danger" size="large" outline rounded={false} class="absolute">
           Complex
         </Badge>
-      );
+      ));
       const badge = getByText('Complex');
       expect(badge).toHaveClass(
         'border',
@@ -213,7 +215,7 @@ describe('Badge', () => {
         'py-1',
         'text-sm',
         'rounded',
-        'absolute'
+        'absolute',
       );
     });
   });

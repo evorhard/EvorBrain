@@ -13,7 +13,8 @@
  * @since 1.0.0
  */
 
-import { Component, JSXElement, Show, splitProps, createMemo } from 'solid-js';
+import type { Component, JSXElement } from 'solid-js';
+import { Show, splitProps, createMemo } from 'solid-js';
 import { clx } from '@/utils/responsive';
 
 /**
@@ -69,7 +70,7 @@ export interface BadgeProps {
 
 /**
  * Badge component for displaying small pieces of information or status indicators.
- * 
+ *
  * ## Features
  * - Multiple visual variants for different contexts
  * - Three size options
@@ -77,29 +78,29 @@ export interface BadgeProps {
  * - Outline style option
  * - Full accessibility support
  * - Dark mode compatible
- * 
+ *
  * ## Usage Examples
- * 
+ *
  * ### Basic Usage
  * ```tsx
  * <Badge>New</Badge>
  * ```
- * 
+ *
  * ### With Variants
  * ```tsx
  * <Badge variant="success">Active</Badge>
  * <Badge variant="danger">Offline</Badge>
  * <Badge variant="warning">Pending</Badge>
  * ```
- * 
+ *
  * ### Notification Badge
  * ```tsx
  * <div class="relative">
  *   <Button>
  *     <BellIcon />
  *   </Button>
- *   <Badge 
- *     class="absolute -top-1 -right-1" 
+ *   <Badge
+ *     class="absolute -top-1 -right-1"
  *     variant="danger"
  *     size="small"
  *   >
@@ -107,7 +108,7 @@ export interface BadgeProps {
  *   </Badge>
  * </div>
  * ```
- * 
+ *
  * ### Status Indicator
  * ```tsx
  * <div class="flex items-center gap-2">
@@ -115,13 +116,13 @@ export interface BadgeProps {
  *   <span>John Doe</span>
  * </div>
  * ```
- * 
+ *
  * @accessibility
  * - Uses appropriate color contrast for all variants
  * - Includes aria-label support for dot indicators
  * - Semantic HTML with proper text content
  * - Visible focus states when interactive
- * 
+ *
  * @keyboard
  * - Not interactive by default
  * - When used as child of interactive element, inherits keyboard behavior
@@ -160,8 +161,8 @@ export const Badge: Component<BadgeProps> = (props) => {
   // Variant styles
   const variantStyles = createMemo(() => {
     const variant = local.variant || 'default';
-    const outline = local.outline;
-    
+    const { outline } = local;
+
     const styles = {
       default: outline
         ? 'border border-surface-300 text-content-primary bg-surface-50'
@@ -175,14 +176,10 @@ export const Badge: Component<BadgeProps> = (props) => {
       warning: outline
         ? 'border border-yellow-500 text-yellow-700 bg-yellow-50'
         : 'bg-yellow-500 text-white',
-      danger: outline
-        ? 'border border-red-500 text-red-700 bg-red-50'
-        : 'bg-red-500 text-white',
-      info: outline
-        ? 'border border-blue-500 text-blue-700 bg-blue-50'
-        : 'bg-blue-500 text-white',
+      danger: outline ? 'border border-red-500 text-red-700 bg-red-50' : 'bg-red-500 text-white',
+      info: outline ? 'border border-blue-500 text-blue-700 bg-blue-50' : 'bg-blue-500 text-white',
     };
-    
+
     return styles[variant];
   });
 
@@ -196,13 +193,7 @@ export const Badge: Component<BadgeProps> = (props) => {
 
   return (
     <span
-      class={clx(
-        baseStyles,
-        sizeStyles(),
-        variantStyles(),
-        roundedStyles(),
-        local.class
-      )}
+      class={clx(baseStyles, sizeStyles(), variantStyles(), roundedStyles(), local.class)}
       {...others}
     >
       <Show when={!local.dot}>{local.children}</Show>

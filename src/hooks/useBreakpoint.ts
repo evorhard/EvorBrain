@@ -36,11 +36,11 @@ const breakpoints: Record<Breakpoint, number> = {
  * @example
  * ```typescript
  * const { isMobile, isAbove, currentBreakpoint } = useBreakpoint();
- * 
+ *
  * if (isMobile()) {
  *   // Mobile layout
  * }
- * 
+ *
  * if (isAbove('lg')) {
  *   // Large screen layout
  * }

@@ -25,15 +25,15 @@ export interface StoreActions<T> {
  *   todos: Todo[];
  *   filter: 'all' | 'active' | 'completed';
  * }
- * 
+ *
  * const [state, { setState, resetState }] = createStore<TodoState>({
  *   todos: [],
  *   filter: 'all'
  * }, 'TodoStore');
- * 
+ *
  * // Update state
  * setState('todos', [...state.todos, newTodo]);
- * 
+ *
  * // Reset to initial state
  * resetState();
  * ```

@@ -572,10 +572,10 @@ export const repositoryApi = {
  * @example
  * ```typescript
  * import { api } from './lib/api';
- * 
+ *
  * // Create a new life area
  * const lifeArea = await api.lifeArea.create({ name: 'Work', ... });
- * 
+ *
  * // Get all tasks for today
  * const todaysTasks = await api.task.getTodaysTasks();
  * ```

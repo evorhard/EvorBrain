@@ -42,10 +42,10 @@ function getStoredTheme(): Theme {
  * @example
  * ```typescript
  * const { theme, setTheme, resolvedTheme } = createTheme();
- * 
+ *
  * // Change to dark mode
  * setTheme('dark');
- * 
+ *
  * // Use system preference
  * setTheme('system');
  * ```
