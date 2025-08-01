@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+bun.lockb
+
+# Build outputs
+dist/
+build/
+.vite/
+coverage/
+*.log
+
+# Tauri generated files
+src-tauri/target/
+src-tauri/Cargo.lock
+
+# Platform specific
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Generated documentation
+docs/generated/
+
+# Prettier should not format these
+*.min.js
+*.min.css
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+bun.lock
