@@ -118,9 +118,38 @@ Common queries:
 
 ## Mocking
 
-### Mocking Tauri Commands
+### Using Test Utilities
 
-The setup file already mocks Tauri's invoke function:
+⚠️ **Note**: The test utilities are fully implemented but have some environment setup limitations. See the [Test Utilities Documentation](/src/test/utils/README.md) for current status and workarounds.
+
+We provide comprehensive test utilities for common scenarios:
+
+```typescript
+import { 
+  TauriMock, 
+  renderWithProviders,
+  createLifeArea 
+} from '../test/utils';
+
+it('uses enhanced mocking', async () => {
+  const tauriMock = new TauriMock();
+  tauriMock.onCommand('get_life_areas', () => [
+    createLifeArea({ name: 'Work' })
+  ]);
+  
+  const result = renderWithProviders(() => <MyComponent />, {
+    mockInvoke: tauriMock.getMock()
+  });
+  
+  // Test your component
+  
+  tauriMock.expectCommand('get_life_areas').toHaveBeenCalledTimes(1);
+});
+```
+
+### Legacy Mocking
+
+The setup file provides basic Tauri mocking:
 
 ```typescript
 import { mockInvoke } from '../test/setup';

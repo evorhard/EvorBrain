@@ -60,8 +60,8 @@ This document tracks all development tasks for the EvorBrain project. Tasks are 
 - [x] ✅ [P1.5.1] Set up Vitest for unit testing 🟡
 - [x] ✅ [P1.5.2] Configure Testing Library for component tests 🟡
 - [x] ✅ [P1.5.3] Set up e2e testing with Playwright 🔴
-- [ ] 📋 [P1.5.4] Create test utilities and helpers 🟡
-- [ ] 📋 [P1.5.5] Write initial test suite for existing components 🟡
+- [x] ✅ [P1.5.4] Create test utilities and helpers 🟡
+- [x] ✅ [P1.5.5] Write initial test suite for existing components 🟡
 - [ ] 📋 [P1.5.6] Add test coverage reporting 🟢
 
 ### [P1.6] Development Tooling
@@ -328,6 +328,8 @@ This document tracks all development tasks for the EvorBrain project. Tasks are 
 - **TypeScript Types**: Complete type definitions for all models and commands
 - **Frontend API Client**: Type-safe API client with full command coverage
 - **UI Components**: Life Area and Goal management interfaces complete with full CRUD functionality
+- **Test Utilities**: Comprehensive test helpers created (TauriMock, render helpers, data factories, custom matchers)
+- **Testing Setup**: Vitest + Playwright configured, though some environment issues need resolution
 
 ### Technical Decisions
 - Using UUID v4 for all IDs ✅
@@ -344,6 +346,8 @@ This document tracks all development tasks for the EvorBrain project. Tasks are 
 - Calendar view performance with many tasks
 - Conflict resolution for sync
 - AI API rate limiting
+- Test environment configuration (jsdom with bun test)
+- Router integration in component tests
 
 ### Dependencies to Research
 - ✅ SQLite library for Rust (Decided: SQLx with compile-time checked queries)

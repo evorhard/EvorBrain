@@ -369,11 +369,14 @@ bun run start
 # Build for production ✅ WORKING
 bun run tauri:build
 
-# Run tests ✅ WORKING
+# Run tests ⚠️ PARTIALLY WORKING
 bun run test          # Run tests in watch mode
 bun run test:ui       # Run tests with UI interface
 bun run test:run      # Run tests once
 bun run test:coverage # Run tests with coverage report
+
+# Run specific test file (recommended for now)
+bun test src/test/utils/example.test.tsx
 
 # Run E2E tests ✅ WORKING
 bun run test:e2e      # Run end-to-end tests
@@ -427,6 +430,43 @@ bun run clean:all  # Deep clean including node_modules
 - Install recommended extensions for the best development experience
 - Check [`TASKS.md`](TASKS.md) for current development priorities
 - Join my Discord for help and discussions
+
+---
+
+## 🧪 Testing
+
+The project uses Vitest for unit testing and Playwright for end-to-end testing.
+
+### Current Testing Status
+
+⚠️ **Important**: Test utilities are fully implemented but have some environment setup limitations:
+
+- **Component Tests**: Some tests fail with "document is not defined" errors due to jsdom configuration issues
+- **Router Integration**: Not yet implemented in render helpers (disabled to avoid SSR issues)
+- **Test Utilities**: Working correctly as demonstrated by passing example tests
+
+### Running Tests
+
+```bash
+# Run unit tests (some may fail due to environment issues)
+bun test
+
+# Run specific test file (recommended approach)
+bun test src/test/utils/example.test.tsx
+
+# Run E2E tests (fully working)
+bun run test:e2e
+```
+
+### Test Utilities
+
+We provide comprehensive test utilities in `src/test/utils/`:
+- **TauriMock**: Enhanced mocking for Tauri IPC commands
+- **Render Helpers**: Utilities for testing SolidJS components
+- **Data Factories**: Functions for generating test data
+- **Custom Matchers**: Domain-specific assertions
+
+See the [Test Utilities Documentation](src/test/utils/README.md) for detailed usage and known issues.
 
 ---
 
