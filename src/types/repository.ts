@@ -7,11 +7,11 @@ export interface TransactionResult {
 }
 
 export enum EntityType {
-  LifeArea = "life_area",
-  Goal = "goal", 
-  Project = "project",
-  Task = "task",
-  Note = "note",
+  LifeArea = 'life_area',
+  Goal = 'goal',
+  Project = 'project',
+  Task = 'task',
+  Note = 'note',
 }
 
 export interface BatchDeleteRequest {
@@ -34,7 +34,7 @@ export interface CleanupOptions {
 }
 
 export enum ExportFormat {
-  Json = "json",
+  Json = 'json',
   // Future: CSV = "csv", Markdown = "markdown"
 }
 

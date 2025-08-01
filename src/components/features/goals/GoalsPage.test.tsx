@@ -1,20 +1,17 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { render, screen, fireEvent, waitFor, within } from '@solidjs/testing-library';
 import { GoalsPage } from './GoalsPage';
-import { 
+import {
   TauriMock,
   createGoal,
   createLifeArea,
   createArchivedGoal,
-  batchCreate
+  batchCreate,
 } from '../../../test/utils';
 
 describe('GoalsPage Component', () => {
   let tauriMock: TauriMock;
-  const mockLifeAreas = [
-    createLifeArea({ name: 'Work' }),
-    createLifeArea({ name: 'Personal' })
-  ];
+  const mockLifeAreas = [createLifeArea({ name: 'Work' }), createLifeArea({ name: 'Personal' })];
 
   beforeEach(() => {
     tauriMock = new TauriMock({ delay: 10 });
@@ -32,17 +29,14 @@ describe('GoalsPage Component', () => {
     render(() => <GoalsPage />);
 
     expect(screen.getByText('Goals', { selector: 'h1' })).toBeInTheDocument();
-    
+
     const newGoalButton = screen.getByText('New Goal');
     expect(newGoalButton).toBeInTheDocument();
     expect(newGoalButton.querySelector('svg')).toBeInTheDocument(); // Plus icon
   });
 
   it('should render GoalList component', async () => {
-    const goals = [
-      createGoal({ name: 'Test Goal 1' }),
-      createGoal({ name: 'Test Goal 2' })
-    ];
+    const goals = [createGoal({ name: 'Test Goal 1' }), createGoal({ name: 'Test Goal 2' })];
 
     tauriMock.onCommand('get_goals', () => goals);
 
@@ -82,10 +76,10 @@ describe('GoalsPage Component', () => {
 
     // Fill and submit form
     fireEvent.input(screen.getByLabelText('Goal Name *'), {
-      target: { value: 'Test Goal' }
+      target: { value: 'Test Goal' },
     });
     fireEvent.change(screen.getByLabelText('Life Area *'), {
-      target: { value: mockLifeAreas[0].id }
+      target: { value: mockLifeAreas[0].id },
     });
     fireEvent.click(screen.getByText('Create Goal'));
 
@@ -95,10 +89,7 @@ describe('GoalsPage Component', () => {
   });
 
   it('should show edit button when goal is selected', async () => {
-    const goals = [
-      createGoal({ name: 'Goal 1' }),
-      createGoal({ name: 'Goal 2' })
-    ];
+    const goals = [createGoal({ name: 'Goal 1' }), createGoal({ name: 'Goal 2' })];
 
     tauriMock.onCommand('get_goals', () => goals);
 
@@ -122,9 +113,7 @@ describe('GoalsPage Component', () => {
   });
 
   it('should not show edit button for archived goals', async () => {
-    const goals = [
-      createArchivedGoal({ name: 'Archived Goal' })
-    ];
+    const goals = [createArchivedGoal({ name: 'Archived Goal' })];
 
     tauriMock.onCommand('get_goals', () => goals);
 
@@ -143,10 +132,10 @@ describe('GoalsPage Component', () => {
   });
 
   it('should open edit form when edit button is clicked', async () => {
-    const goal = createGoal({ 
+    const goal = createGoal({
       name: 'Editable Goal',
       description: 'Original description',
-      life_area_id: mockLifeAreas[0].id
+      life_area_id: mockLifeAreas[0].id,
     });
 
     tauriMock.onCommand('get_goals', () => [goal]);
@@ -217,7 +206,7 @@ describe('GoalsPage Component', () => {
 
   it('should handle multiple goals selection', async () => {
     const goals = batchCreate(createGoal, 3, (index) => ({
-      name: `Goal ${index + 1}`
+      name: `Goal ${index + 1}`,
     }));
 
     tauriMock.onCommand('get_goals', () => goals);
@@ -255,9 +244,7 @@ describe('GoalsPage Component', () => {
     const goal = createGoal({ name: 'Original Name' });
     const updatedGoal = { ...goal, name: 'Updated Name' };
 
-    tauriMock
-      .onCommand('get_goals', () => [goal])
-      .onCommand('update_goal', () => updatedGoal);
+    tauriMock.onCommand('get_goals', () => [goal]).onCommand('update_goal', () => updatedGoal);
 
     render(() => <GoalsPage />);
 
@@ -268,7 +255,7 @@ describe('GoalsPage Component', () => {
     // Select and edit
     const goalElement = screen.getByText('Original Name').closest('div[class*="cursor-pointer"]')!;
     fireEvent.click(goalElement);
-    
+
     await waitFor(() => {
       expect(screen.getByText('Edit Selected')).toBeInTheDocument();
     });
@@ -278,9 +265,9 @@ describe('GoalsPage Component', () => {
     await waitFor(() => {
       expect(screen.getByLabelText('Goal Name *')).toBeInTheDocument();
     });
-    
+
     fireEvent.input(screen.getByLabelText('Goal Name *'), {
-      target: { value: 'Updated Name' }
+      target: { value: 'Updated Name' },
     });
     fireEvent.click(screen.getByText('Update Goal'));
 
@@ -293,7 +280,7 @@ describe('GoalsPage Component', () => {
   it('should reset editing state when closing form', async () => {
     const goals = [
       createGoal({ name: 'Goal 1', description: 'Desc 1' }),
-      createGoal({ name: 'Goal 2', description: 'Desc 2' })
+      createGoal({ name: 'Goal 2', description: 'Desc 2' }),
     ];
 
     tauriMock.onCommand('get_goals', () => goals);

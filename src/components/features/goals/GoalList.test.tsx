@@ -1,14 +1,14 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@solidjs/testing-library';
 import { GoalList } from './GoalList';
-import { 
-  TauriMock, 
+import {
+  TauriMock,
   createGoal,
   createLifeArea,
   createCompletedGoal,
   createArchivedGoal,
   createTimestamp,
-  batchCreate
+  batchCreate,
 } from '../../../test/utils';
 
 describe('GoalList Component', () => {
@@ -16,7 +16,7 @@ describe('GoalList Component', () => {
   const mockLifeAreas = [
     createLifeArea({ name: 'Work' }),
     createLifeArea({ name: 'Personal' }),
-    createLifeArea({ name: 'Health' })
+    createLifeArea({ name: 'Health' }),
   ];
 
   beforeEach(() => {
@@ -31,26 +31,26 @@ describe('GoalList Component', () => {
 
   it('should render loading state initially', async () => {
     tauriMock.onCommand('get_goals', () => new Promise(() => {})); // Never resolves
-    
+
     render(() => <GoalList />);
-    
+
     expect(screen.getByText('Loading...')).toBeInTheDocument();
   });
 
   it('should fetch and display goals on mount', async () => {
     const goals = [
-      createGoal({ 
+      createGoal({
         name: 'Learn TypeScript',
         description: 'Master TypeScript for better code',
         life_area_id: mockLifeAreas[0].id,
-        priority: 'high'
+        priority: 'high',
       }),
-      createGoal({ 
+      createGoal({
         name: 'Exercise Daily',
         life_area_id: mockLifeAreas[2].id,
         priority: 'medium',
-        target_date: createTimestamp(30)
-      })
+        target_date: createTimestamp(30),
+      }),
     ];
 
     tauriMock.onCommand('get_goals', () => goals);
@@ -65,17 +65,17 @@ describe('GoalList Component', () => {
     expect(screen.getByText('Learn TypeScript')).toBeInTheDocument();
     expect(screen.getByText('Master TypeScript for better code')).toBeInTheDocument();
     expect(screen.getByText('Exercise Daily')).toBeInTheDocument();
-    
+
     // Verify life area names
     expect(screen.getByText('Life Area: Work')).toBeInTheDocument();
     expect(screen.getByText('Life Area: Health')).toBeInTheDocument();
-    
+
     // Verify priority badges
     expect(screen.getByText('High')).toBeInTheDocument();
     expect(screen.getByText('High')).toHaveClass('text-red-600');
     expect(screen.getByText('Medium')).toBeInTheDocument();
     expect(screen.getByText('Medium')).toHaveClass('text-yellow-600');
-    
+
     // Verify target date
     expect(screen.getByText(/Target:/)).toBeInTheDocument();
 
@@ -109,10 +109,7 @@ describe('GoalList Component', () => {
 
   it('should handle refresh button click', async () => {
     const initialGoals = [createGoal({ name: 'Initial Goal' })];
-    const refreshedGoals = [
-      createGoal({ name: 'Initial Goal' }),
-      createGoal({ name: 'New Goal' })
-    ];
+    const refreshedGoals = [createGoal({ name: 'Initial Goal' }), createGoal({ name: 'New Goal' })];
 
     let callCount = 0;
     tauriMock.onCommand('get_goals', () => {
@@ -136,10 +133,7 @@ describe('GoalList Component', () => {
   });
 
   it('should handle goal selection', async () => {
-    const goals = [
-      createGoal({ name: 'Goal 1' }),
-      createGoal({ name: 'Goal 2' })
-    ];
+    const goals = [createGoal({ name: 'Goal 1' }), createGoal({ name: 'Goal 2' })];
 
     tauriMock.onCommand('get_goals', () => goals);
     const consoleSpy = vi.spyOn(console, 'log');
@@ -209,7 +203,7 @@ describe('GoalList Component', () => {
     });
 
     expect(screen.getByText(/Completed/)).toBeInTheDocument();
-    
+
     const uncompleteButton = screen.getByTitle('Mark as incomplete');
     fireEvent.click(uncompleteButton);
 
@@ -289,7 +283,7 @@ describe('GoalList Component', () => {
     });
 
     expect(screen.getByText('Archived')).toBeInTheDocument();
-    
+
     const restoreButton = screen.getByTitle('Restore goal');
     fireEvent.click(restoreButton);
 
@@ -350,7 +344,7 @@ describe('GoalList Component', () => {
     const goals = [
       createGoal({ name: 'High Priority', priority: 'high' }),
       createGoal({ name: 'Medium Priority', priority: 'medium' }),
-      createGoal({ name: 'Low Priority', priority: 'low' })
+      createGoal({ name: 'Low Priority', priority: 'low' }),
     ];
 
     tauriMock.onCommand('get_goals', () => goals);
@@ -372,9 +366,9 @@ describe('GoalList Component', () => {
   });
 
   it('should handle unknown life area gracefully', async () => {
-    const goal = createGoal({ 
+    const goal = createGoal({
       name: 'Orphan Goal',
-      life_area_id: 'non-existent-id'
+      life_area_id: 'non-existent-id',
     });
 
     tauriMock.onCommand('get_goals', () => [goal]);
@@ -390,7 +384,7 @@ describe('GoalList Component', () => {
 
   it('should stop event propagation on button clicks', async () => {
     const goal = createGoal({ name: 'Test Goal' });
-    
+
     tauriMock
       .onCommand('get_goals', () => [goal])
       .onCommand('complete_goal', () => ({ ...goal, completed_at: createTimestamp() }));

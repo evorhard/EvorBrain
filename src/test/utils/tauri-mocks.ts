@@ -1,12 +1,6 @@
 import { vi, expect } from 'vitest';
 import type { Mock } from 'vitest';
-import type { 
-  LifeArea, 
-  Goal, 
-  Project, 
-  Task, 
-  Note 
-} from '../../types/models';
+import type { LifeArea, Goal, Project, Task, Note } from '../../types/models';
 
 /**
  * Tauri command mocking utilities for testing
@@ -38,7 +32,7 @@ export class TauriMock {
   private setupDefaultImplementation() {
     this.mockFn.mockImplementation(async (command: string, args?: any) => {
       const handler = this.commandHandlers.get(command);
-      
+
       if (!handler) {
         if (this.failOnUnknownCommand) {
           throw new Error(`Unknown Tauri command: ${command}`);
@@ -48,7 +42,7 @@ export class TauriMock {
 
       // Simulate async delay
       if (this.defaultDelay > 0) {
-        await new Promise(resolve => setTimeout(resolve, this.defaultDelay));
+        await new Promise((resolve) => setTimeout(resolve, this.defaultDelay));
       }
 
       return handler(args);
@@ -113,13 +107,13 @@ export class TauriMock {
         expect(this.mockFn).toHaveBeenCalledWith(command, expectedArgs);
       },
       toHaveBeenCalledTimes: (times: number) => {
-        const calls = this.mockFn.mock.calls.filter(call => call[0] === command);
+        const calls = this.mockFn.mock.calls.filter((call) => call[0] === command);
         expect(calls).toHaveLength(times);
       },
       notToHaveBeenCalled: () => {
-        const calls = this.mockFn.mock.calls.filter(call => call[0] === command);
+        const calls = this.mockFn.mock.calls.filter((call) => call[0] === command);
         expect(calls).toHaveLength(0);
-      }
+      },
     };
   }
 }
@@ -200,9 +194,9 @@ export const mockTauriSuccess = <T>(command: string, response: T) => {
  * Mock Tauri errors
  */
 export const mockTauriError = (command: string, error: string | Error) => {
-  const mockInvoke = vi.fn().mockRejectedValueOnce(
-    typeof error === 'string' ? new Error(error) : error
-  );
+  const mockInvoke = vi
+    .fn()
+    .mockRejectedValueOnce(typeof error === 'string' ? new Error(error) : error);
   vi.mock('@tauri-apps/api/core', () => ({
     invoke: mockInvoke,
   }));
@@ -212,6 +206,7 @@ export const mockTauriError = (command: string, error: string | Error) => {
 /**
  * Create a mock that simulates loading states
  */
-export const createLoadingMock = (finalResponse: any, loadingTime = 100) => new Promise((resolve) => {
+export const createLoadingMock = (finalResponse: any, loadingTime = 100) =>
+  new Promise((resolve) => {
     setTimeout(() => resolve(finalResponse), loadingTime);
   });

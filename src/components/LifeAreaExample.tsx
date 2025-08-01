@@ -51,7 +51,7 @@ export function LifeAreaExample() {
       setLoading(true);
       setError(null);
       await api.lifeArea.delete(id);
-      setLifeAreas(lifeAreas().filter(area => area.id !== id));
+      setLifeAreas(lifeAreas().filter((area) => area.id !== id));
     } catch (err) {
       setError(err instanceof ApiError ? err.message : 'Failed to delete life area');
     } finally {
@@ -61,10 +61,10 @@ export function LifeAreaExample() {
 
   return (
     <div class="space-y-6">
-      <h2 class="text-2xl font-bold text-foreground">Life Areas Example</h2>
-      
+      <h2 class="text-foreground text-2xl font-bold">Life Areas Example</h2>
+
       <Show when={error()}>
-        <div class="bg-red-100 dark:bg-red-900/20 text-red-600 dark:text-red-400 p-3 rounded">
+        <div class="rounded bg-red-100 p-3 text-red-600 dark:bg-red-900/20 dark:text-red-400">
           {error()}
         </div>
       </Show>
@@ -79,10 +79,7 @@ export function LifeAreaExample() {
             onKeyPress={(e) => e.key === 'Enter' && createLifeArea()}
             disabled={loading()}
           />
-          <Button 
-            onClick={createLifeArea} 
-            disabled={loading() || !newAreaName().trim()}
-          >
+          <Button onClick={createLifeArea} disabled={loading() || !newAreaName().trim()}>
             Add Area
           </Button>
         </div>
@@ -92,20 +89,20 @@ export function LifeAreaExample() {
         <Show when={loading() && lifeAreas().length === 0}>
           <p class="text-muted-foreground">Loading life areas...</p>
         </Show>
-        
+
         <Show when={!loading() && lifeAreas().length === 0}>
           <p class="text-muted-foreground">No life areas yet. Create your first one!</p>
         </Show>
 
         <For each={lifeAreas()}>
           {(area) => (
-            <Card class="p-4 flex justify-between items-center">
+            <Card class="flex items-center justify-between p-4">
               <div>
-                <h3 class="font-semibold text-foreground">{area.name}</h3>
+                <h3 class="text-foreground font-semibold">{area.name}</h3>
                 <Show when={area.description}>
-                  <p class="text-sm text-muted-foreground">{area.description}</p>
+                  <p class="text-muted-foreground text-sm">{area.description}</p>
                 </Show>
-                <p class="text-xs text-muted-foreground mt-1">
+                <p class="text-muted-foreground mt-1 text-xs">
                   Created: {new Date(area.created_at).toLocaleDateString()}
                 </p>
               </div>

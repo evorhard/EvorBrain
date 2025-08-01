@@ -1,30 +1,27 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   darkMode: 'class',
   theme: {
     screens: {
-      'xs': '475px',
-      'sm': '640px',
-      'md': '768px',
-      'lg': '1024px',
-      'xl': '1280px',
+      xs: '475px',
+      sm: '640px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1280px',
       '2xl': '1536px',
       '3xl': '1920px',
     },
     extend: {
       screens: {
-        'touch': {'raw': '(hover: none) and (pointer: coarse)'},
-        'stylus': {'raw': '(hover: none) and (pointer: fine)'},
-        'mouse': {'raw': '(hover: hover) and (pointer: fine)'},
-        'can-hover': {'raw': '(hover: hover)'},
+        touch: { raw: '(hover: none) and (pointer: coarse)' },
+        stylus: { raw: '(hover: none) and (pointer: fine)' },
+        mouse: { raw: '(hover: hover) and (pointer: fine)' },
+        'can-hover': { raw: '(hover: hover)' },
       },
       colors: {
         // Primary brand colors - Blue theme for productivity
-        'primary': {
+        primary: {
           50: 'rgb(var(--color-primary-50) / <alpha-value>)',
           100: 'rgb(var(--color-primary-100) / <alpha-value>)',
           200: 'rgb(var(--color-primary-200) / <alpha-value>)',
@@ -38,7 +35,7 @@ export default {
           950: 'rgb(var(--color-primary-950) / <alpha-value>)',
         },
         // Secondary accent colors - Purple for creative elements
-        'accent': {
+        accent: {
           50: 'rgb(var(--color-accent-50) / <alpha-value>)',
           100: 'rgb(var(--color-accent-100) / <alpha-value>)',
           200: 'rgb(var(--color-accent-200) / <alpha-value>)',
@@ -52,7 +49,7 @@ export default {
           950: 'rgb(var(--color-accent-950) / <alpha-value>)',
         },
         // Semantic colors
-        'success': {
+        success: {
           50: 'rgb(var(--color-success-50) / <alpha-value>)',
           100: 'rgb(var(--color-success-100) / <alpha-value>)',
           200: 'rgb(var(--color-success-200) / <alpha-value>)',
@@ -64,7 +61,7 @@ export default {
           800: 'rgb(var(--color-success-800) / <alpha-value>)',
           900: 'rgb(var(--color-success-900) / <alpha-value>)',
         },
-        'warning': {
+        warning: {
           50: 'rgb(var(--color-warning-50) / <alpha-value>)',
           100: 'rgb(var(--color-warning-100) / <alpha-value>)',
           200: 'rgb(var(--color-warning-200) / <alpha-value>)',
@@ -76,7 +73,7 @@ export default {
           800: 'rgb(var(--color-warning-800) / <alpha-value>)',
           900: 'rgb(var(--color-warning-900) / <alpha-value>)',
         },
-        'danger': {
+        danger: {
           50: 'rgb(var(--color-danger-50) / <alpha-value>)',
           100: 'rgb(var(--color-danger-100) / <alpha-value>)',
           200: 'rgb(var(--color-danger-200) / <alpha-value>)',
@@ -89,7 +86,7 @@ export default {
           900: 'rgb(var(--color-danger-900) / <alpha-value>)',
         },
         // Surface colors for cards, modals, etc.
-        'surface': {
+        surface: {
           DEFAULT: 'rgb(var(--color-surface) / <alpha-value>)',
           50: 'rgb(var(--color-surface-50) / <alpha-value>)',
           100: 'rgb(var(--color-surface-100) / <alpha-value>)',
@@ -103,25 +100,25 @@ export default {
           900: 'rgb(var(--color-surface-900) / <alpha-value>)',
         },
         // Background colors
-        'background': {
+        background: {
           DEFAULT: 'rgb(var(--color-background) / <alpha-value>)',
           secondary: 'rgb(var(--color-background-secondary) / <alpha-value>)',
         },
         // Text colors
-        'content': {
+        content: {
           DEFAULT: 'rgb(var(--color-content) / <alpha-value>)',
           secondary: 'rgb(var(--color-content-secondary) / <alpha-value>)',
           tertiary: 'rgb(var(--color-content-tertiary) / <alpha-value>)',
           inverse: 'rgb(var(--color-content-inverse) / <alpha-value>)',
         },
         // Border colors
-        'border': {
+        border: {
           DEFAULT: 'rgb(var(--color-border) / <alpha-value>)',
           subtle: 'rgb(var(--color-border-subtle) / <alpha-value>)',
           strong: 'rgb(var(--color-border-strong) / <alpha-value>)',
         },
         // Priority colors for tasks
-        'priority': {
+        priority: {
           low: 'rgb(var(--color-priority-low) / <alpha-value>)',
           medium: 'rgb(var(--color-priority-medium) / <alpha-value>)',
           high: 'rgb(var(--color-priority-high) / <alpha-value>)',
@@ -145,14 +142,14 @@ export default {
         '2xs': '0.625rem',
       },
       boxShadow: {
-        'card': '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
+        card: '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
         'card-hover': '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
-        'modal': '0 25px 50px -12px rgb(0 0 0 / 0.25)',
+        modal: '0 25px 50px -12px rgb(0 0 0 / 0.25)',
       },
       animation: {
         'fade-in': 'fadeIn 0.2s ease-in-out',
         'slide-in': 'slideIn 0.3s ease-out',
-        'check': 'check 0.3s ease-in-out',
+        check: 'check 0.3s ease-in-out',
       },
       keyframes: {
         fadeIn: {
@@ -170,12 +167,10 @@ export default {
         },
       },
       transitionProperty: {
-        'height': 'height',
-        'spacing': 'margin, padding',
+        height: 'height',
+        spacing: 'margin, padding',
       },
     },
   },
-  plugins: [
-    require('@kobalte/tailwindcss'),
-  ],
-}
+  plugins: [require('@kobalte/tailwindcss')],
+};

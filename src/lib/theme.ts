@@ -21,16 +21,16 @@ function getStoredTheme(): Theme {
 export function createTheme() {
   const [theme, setTheme] = createSignal<Theme>(getStoredTheme());
   const [resolvedTheme, setResolvedTheme] = createSignal<'light' | 'dark'>(
-    theme() === 'system' ? getSystemTheme() : theme() as 'light' | 'dark'
+    theme() === 'system' ? getSystemTheme() : (theme() as 'light' | 'dark'),
   );
 
   createEffect(() => {
     const currentTheme = theme();
     localStorage.setItem(STORAGE_KEY, currentTheme);
-    
+
     const resolved = currentTheme === 'system' ? getSystemTheme() : currentTheme;
     setResolvedTheme(resolved);
-    
+
     const root = document.documentElement;
     if (resolved === 'dark') {
       root.classList.add('dark');
@@ -53,9 +53,9 @@ export function createTheme() {
         }
       }
     };
-    
+
     mediaQuery.addEventListener('change', handleChange);
-    
+
     // Clean up the event listener when the component is destroyed
     onCleanup(() => {
       mediaQuery.removeEventListener('change', handleChange);

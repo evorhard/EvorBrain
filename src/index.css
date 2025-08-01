@@ -1,10 +1,10 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @layer base {
   /* Light Theme Colors */
   :root {
     color-scheme: light;
-    
+
     /* Primary Colors - Blue (Productivity & Focus) */
     --color-primary-50: 239 246 255;
     --color-primary-100: 219 234 254;
@@ -17,7 +17,7 @@
     --color-primary-800: 30 64 175;
     --color-primary-900: 30 58 138;
     --color-primary-950: 23 37 84;
-    
+
     /* Accent Colors - Purple (Creativity & Innovation) */
     --color-accent-50: 250 245 255;
     --color-accent-100: 243 232 255;
@@ -30,7 +30,7 @@
     --color-accent-800: 107 33 168;
     --color-accent-900: 88 28 135;
     --color-accent-950: 59 7 100;
-    
+
     /* Semantic Colors */
     --color-success-50: 240 253 244;
     --color-success-100: 220 252 231;
@@ -42,7 +42,7 @@
     --color-success-700: 21 128 61;
     --color-success-800: 22 101 52;
     --color-success-900: 20 83 45;
-    
+
     --color-warning-50: 255 251 235;
     --color-warning-100: 254 243 199;
     --color-warning-200: 253 230 138;
@@ -53,7 +53,7 @@
     --color-warning-700: 180 83 9;
     --color-warning-800: 146 64 14;
     --color-warning-900: 120 53 15;
-    
+
     --color-danger-50: 254 242 242;
     --color-danger-100: 254 226 226;
     --color-danger-200: 254 202 202;
@@ -64,7 +64,7 @@
     --color-danger-700: 185 28 28;
     --color-danger-800: 153 27 27;
     --color-danger-900: 127 29 29;
-    
+
     /* Surface Colors */
     --color-surface: 255 255 255;
     --color-surface-50: 250 250 250;
@@ -77,28 +77,28 @@
     --color-surface-700: 64 64 64;
     --color-surface-800: 38 38 38;
     --color-surface-900: 23 23 23;
-    
+
     /* Background Colors */
     --color-background: 249 250 251;
     --color-background-secondary: 243 244 246;
-    
+
     /* Text Colors */
     --color-content: 17 24 39;
     --color-content-secondary: 75 85 99;
     --color-content-tertiary: 156 163 175;
     --color-content-inverse: 255 255 255;
-    
+
     /* Border Colors */
     --color-border: 229 231 235;
     --color-border-subtle: 243 244 246;
     --color-border-strong: 209 213 219;
-    
+
     /* Priority Colors */
     --color-priority-low: 156 163 175;
     --color-priority-medium: 59 130 246;
     --color-priority-high: 251 191 36;
     --color-priority-urgent: 239 68 68;
-    
+
     /* Life Area Colors */
     --color-life-area-personal: 168 85 247;
     --color-life-area-work: 59 130 246;
@@ -107,11 +107,11 @@
     --color-life-area-finance: 245 158 11;
     --color-life-area-growth: 14 165 233;
   }
-  
+
   /* Dark Theme Colors */
   .dark {
     color-scheme: dark;
-    
+
     /* Primary Colors - Blue (adjusted for dark mode) */
     --color-primary-50: 23 37 84;
     --color-primary-100: 30 58 138;
@@ -124,7 +124,7 @@
     --color-primary-800: 191 219 254;
     --color-primary-900: 219 234 254;
     --color-primary-950: 239 246 255;
-    
+
     /* Accent Colors - Purple (adjusted for dark mode) */
     --color-accent-50: 59 7 100;
     --color-accent-100: 88 28 135;
@@ -137,7 +137,7 @@
     --color-accent-800: 233 213 255;
     --color-accent-900: 243 232 255;
     --color-accent-950: 250 245 255;
-    
+
     /* Semantic Colors (adjusted for dark mode) */
     --color-success-50: 20 83 45;
     --color-success-100: 22 101 52;
@@ -149,7 +149,7 @@
     --color-success-700: 187 247 208;
     --color-success-800: 220 252 231;
     --color-success-900: 240 253 244;
-    
+
     --color-warning-50: 120 53 15;
     --color-warning-100: 146 64 14;
     --color-warning-200: 180 83 9;
@@ -160,7 +160,7 @@
     --color-warning-700: 253 230 138;
     --color-warning-800: 254 243 199;
     --color-warning-900: 255 251 235;
-    
+
     --color-danger-50: 127 29 29;
     --color-danger-100: 153 27 27;
     --color-danger-200: 185 28 28;
@@ -171,7 +171,7 @@
     --color-danger-700: 254 202 202;
     --color-danger-800: 254 226 226;
     --color-danger-900: 254 242 242;
-    
+
     /* Surface Colors (dark mode) */
     --color-surface: 31 41 55;
     --color-surface-50: 17 24 39;
@@ -184,28 +184,28 @@
     --color-surface-700: 229 231 235;
     --color-surface-800: 243 244 246;
     --color-surface-900: 249 250 251;
-    
+
     /* Background Colors (dark mode) */
     --color-background: 17 24 39;
     --color-background-secondary: 31 41 55;
-    
+
     /* Text Colors (dark mode) */
     --color-content: 243 244 246;
     --color-content-secondary: 209 213 219;
     --color-content-tertiary: 156 163 175;
     --color-content-inverse: 17 24 39;
-    
+
     /* Border Colors (dark mode) */
     --color-border: 55 65 81;
     --color-border-subtle: 31 41 55;
     --color-border-strong: 75 85 99;
-    
+
     /* Priority Colors (dark mode - slightly adjusted for visibility) */
     --color-priority-low: 156 163 175;
     --color-priority-medium: 96 165 250;
     --color-priority-high: 252 211 77;
     --color-priority-urgent: 248 113 113;
-    
+
     /* Life Area Colors (dark mode - slightly brighter) */
     --color-life-area-personal: 192 132 252;
     --color-life-area-work: 96 165 250;
@@ -214,62 +214,64 @@
     --color-life-area-finance: 252 211 77;
     --color-life-area-growth: 56 189 248;
   }
-  
+
   /* Base styles */
   * {
     border-color: rgb(var(--color-border));
   }
-  
+
   body {
     @apply antialiased;
     background-color: rgb(var(--color-background));
     color: rgb(var(--color-content));
   }
-  
+
   /* Focus styles */
   .focus-ring:focus {
     outline: none;
-    --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
-    --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+    --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width)
+      var(--tw-ring-offset-color);
+    --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width))
+      var(--tw-ring-color);
     box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
     --tw-ring-color: rgb(var(--color-primary-500));
     --tw-ring-offset-width: 2px;
     --tw-ring-offset-color: rgb(var(--color-background));
   }
-  
+
   /* Scrollbar styling */
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
   }
-  
+
   ::-webkit-scrollbar-track {
     background-color: rgb(var(--color-surface-100));
   }
-  
+
   .dark ::-webkit-scrollbar-track {
     background-color: rgb(var(--color-surface-800));
   }
-  
+
   ::-webkit-scrollbar-thumb {
     background-color: rgb(var(--color-surface-400));
     border-radius: 0.25rem;
   }
-  
+
   .dark ::-webkit-scrollbar-thumb {
     background-color: rgb(var(--color-surface-600));
   }
-  
+
   ::-webkit-scrollbar-thumb:hover {
     background-color: rgb(var(--color-surface-500));
   }
-  
+
   /* Selection colors */
   ::selection {
     background-color: rgb(var(--color-primary-200));
     color: rgb(var(--color-primary-900));
   }
-  
+
   .dark ::selection {
     background-color: rgb(var(--color-primary-800));
     color: rgb(var(--color-primary-100));

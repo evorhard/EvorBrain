@@ -1,12 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@solidjs/testing-library';
 import { LifeAreaList } from './LifeAreaList';
-import { 
-  TauriMock, 
-  createLifeArea,
-  createArchivedLifeArea,
-  batchCreate
-} from '../../test/utils';
+import { TauriMock, createLifeArea, createArchivedLifeArea, batchCreate } from '../../test/utils';
 
 describe('LifeAreaList Component', () => {
   let tauriMock: TauriMock;
@@ -21,9 +16,9 @@ describe('LifeAreaList Component', () => {
 
   it('should render loading state initially', async () => {
     tauriMock.onCommand('get_life_areas', () => new Promise(() => {})); // Never resolves
-    
+
     render(() => <LifeAreaList />);
-    
+
     expect(screen.getByText('Loading...')).toBeInTheDocument();
   });
 
@@ -31,7 +26,7 @@ describe('LifeAreaList Component', () => {
     const lifeAreas = [
       createLifeArea({ name: 'Work', description: 'Professional life' }),
       createLifeArea({ name: 'Personal', description: 'Personal development' }),
-      createLifeArea({ name: 'Health', icon: '💪', color: '#22c55e' })
+      createLifeArea({ name: 'Health', icon: '💪', color: '#22c55e' }),
     ];
 
     tauriMock.onCommand('get_life_areas', () => lifeAreas);
@@ -83,7 +78,7 @@ describe('LifeAreaList Component', () => {
     const initialAreas = [createLifeArea({ name: 'Initial' })];
     const refreshedAreas = [
       createLifeArea({ name: 'Initial' }),
-      createLifeArea({ name: 'New Area' })
+      createLifeArea({ name: 'New Area' }),
     ];
 
     let callCount = 0;
@@ -111,8 +106,9 @@ describe('LifeAreaList Component', () => {
   });
 
   it('should disable refresh button while loading', async () => {
-    tauriMock.onCommand('get_life_areas', () => 
-      new Promise(resolve => setTimeout(() => resolve([]), 100))
+    tauriMock.onCommand(
+      'get_life_areas',
+      () => new Promise((resolve) => setTimeout(() => resolve([]), 100)),
     );
 
     render(() => <LifeAreaList />);
@@ -122,10 +118,7 @@ describe('LifeAreaList Component', () => {
   });
 
   it('should handle area selection', async () => {
-    const lifeAreas = [
-      createLifeArea({ name: 'Work' }),
-      createLifeArea({ name: 'Personal' })
-    ];
+    const lifeAreas = [createLifeArea({ name: 'Work' }), createLifeArea({ name: 'Personal' })];
 
     tauriMock.onCommand('get_life_areas', () => lifeAreas);
 
@@ -162,7 +155,7 @@ describe('LifeAreaList Component', () => {
   it('should display archived areas with badge', async () => {
     const lifeAreas = [
       createLifeArea({ name: 'Active Area' }),
-      createArchivedLifeArea({ name: 'Archived Area' })
+      createArchivedLifeArea({ name: 'Archived Area' }),
     ];
 
     tauriMock.onCommand('get_life_areas', () => lifeAreas);
@@ -176,7 +169,7 @@ describe('LifeAreaList Component', () => {
     // Archived area should have archived badge
     expect(screen.getByText('Archived Area')).toBeInTheDocument();
     expect(screen.getByText('Archived')).toBeInTheDocument();
-    
+
     const archivedBadge = screen.getByText('Archived');
     expect(archivedBadge).toHaveClass('bg-gray-100');
     expect(archivedBadge).toHaveClass('text-gray-600');
@@ -184,11 +177,11 @@ describe('LifeAreaList Component', () => {
 
   it('should render icons with custom colors', async () => {
     const lifeAreas = [
-      createLifeArea({ 
+      createLifeArea({
         name: 'Health',
         icon: '🏃',
-        color: '#10b981'
-      })
+        color: '#10b981',
+      }),
     ];
 
     tauriMock.onCommand('get_life_areas', () => lifeAreas);
@@ -207,7 +200,7 @@ describe('LifeAreaList Component', () => {
   it('should handle many life areas', async () => {
     const lifeAreas = batchCreate(createLifeArea, 10, (index) => ({
       name: `Life Area ${index + 1}`,
-      description: `Description for area ${index + 1}`
+      description: `Description for area ${index + 1}`,
     }));
 
     tauriMock.onCommand('get_life_areas', () => lifeAreas);
@@ -237,10 +230,10 @@ describe('LifeAreaList Component', () => {
     });
 
     const area = screen.getByText('Test Area').closest('div[class*="cursor-pointer"]')!;
-    
+
     // Should have hover shadow class when not selected
     expect(area).toHaveClass('hover:shadow-card-hover');
-    
+
     // After selection, hover effect should be removed
     fireEvent.click(area);
     expect(area).not.toHaveClass('hover:shadow-card-hover');

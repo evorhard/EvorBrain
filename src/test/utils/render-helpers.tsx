@@ -1,6 +1,6 @@
 import type { RenderResult } from '@solidjs/testing-library';
 import { render } from '@solidjs/testing-library';
-import type { JSX, Component} from 'solid-js';
+import type { JSX, Component } from 'solid-js';
 import { createContext, useContext } from 'solid-js';
 import { Router, MemoryRouter } from '@solidjs/router';
 import type { Mock } from 'vitest';
@@ -25,14 +25,9 @@ export interface RenderOptions {
  */
 export function renderWithProviders(
   ui: () => JSX.Element,
-  options: RenderOptions = {}
+  options: RenderOptions = {},
 ): RenderResult {
-  const {
-    withRouter = false,
-    initialRoute = '/',
-    wrapper: Wrapper,
-    mockInvoke,
-  } = options;
+  const { withRouter = false, initialRoute = '/', wrapper: Wrapper, mockInvoke } = options;
 
   // Set up mock invoke if provided
   if (mockInvoke && typeof window !== 'undefined') {
@@ -48,9 +43,7 @@ export function renderWithProviders(
   // Wrap with router if needed
   if (withRouter) {
     const RouterWrapper: Component<{ children: JSX.Element }> = (props) => (
-      <MemoryRouter initialEntries={[initialRoute]}>
-        {props.children}
-      </MemoryRouter>
+      <MemoryRouter initialEntries={[initialRoute]}>{props.children}</MemoryRouter>
     );
     const originalComponent = component;
     component = () => <RouterWrapper>{originalComponent()}</RouterWrapper>;
@@ -72,10 +65,8 @@ export function createTestContext<T>(defaultValue: T) {
   const Context = createContext<T>(defaultValue);
 
   const TestProvider: Component<{ value?: T; children: JSX.Element }> = (props) => (
-      <Context.Provider value={props.value ?? defaultValue}>
-        {props.children}
-      </Context.Provider>
-    );
+    <Context.Provider value={props.value ?? defaultValue}>{props.children}</Context.Provider>
+  );
 
   return {
     Context,
@@ -87,15 +78,10 @@ export function createTestContext<T>(defaultValue: T) {
 /**
  * Render with mock theme context
  */
-export function renderWithTheme(
-  ui: () => JSX.Element,
-  theme: 'light' | 'dark' = 'light'
-) {
+export function renderWithTheme(ui: () => JSX.Element, theme: 'light' | 'dark' = 'light') {
   const ThemeProvider: Component<{ children: JSX.Element }> = (props) => (
-      <div class={theme === 'dark' ? 'dark' : ''}>
-        {props.children}
-      </div>
-    );
+    <div class={theme === 'dark' ? 'dark' : ''}>{props.children}</div>
+  );
 
   return renderWithProviders(ui, { wrapper: ThemeProvider });
 }
@@ -108,14 +94,14 @@ export async function renderWithLoadingState(
   options: RenderOptions & {
     loadingDelay?: number;
     onLoad?: () => void | Promise<void>;
-  } = {}
+  } = {},
 ) {
   const { loadingDelay = 100, onLoad, ...renderOptions } = options;
 
   const result = renderWithProviders(ui, renderOptions);
 
   // Wait for loading to complete
-  await new Promise(resolve => setTimeout(resolve, loadingDelay));
+  await new Promise((resolve) => setTimeout(resolve, loadingDelay));
 
   if (onLoad) {
     await onLoad();
@@ -130,14 +116,12 @@ export async function renderWithLoadingState(
 export function renderWithMockData<T extends Record<string, any>>(
   ui: () => JSX.Element,
   mockData: T,
-  options: RenderOptions = {}
+  options: RenderOptions = {},
 ) {
   const MockDataContext = createContext(mockData);
 
   const MockDataProvider: Component<{ children: JSX.Element }> = (props) => (
-    <MockDataContext.Provider value={mockData}>
-      {props.children}
-    </MockDataContext.Provider>
+    <MockDataContext.Provider value={mockData}>{props.children}</MockDataContext.Provider>
   );
 
   return {
@@ -156,15 +140,13 @@ export function renderWithErrorBoundary(
   ui: () => JSX.Element,
   options: RenderOptions & {
     onError?: (error: Error) => void;
-  } = {}
+  } = {},
 ) {
   const { onError, ...renderOptions } = options;
 
   const ErrorBoundary: Component<{ children: JSX.Element }> = (props) => (
-      <div class="error-boundary-wrapper">
-        {props.children}
-      </div>
-    );
+    <div class="error-boundary-wrapper">{props.children}</div>
+  );
 
   // Note: SolidJS doesn't have built-in error boundaries like React
   // This is a placeholder for when error boundary support is added
@@ -175,7 +157,7 @@ export function renderWithErrorBoundary(
  * Utility to wait for async updates
  */
 export async function waitForUpdate(ms = 50) {
-  await new Promise(resolve => setTimeout(resolve, ms));
+  await new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 /**
@@ -186,18 +168,16 @@ export function renderWithAllProviders(
   options: RenderOptions & {
     theme?: 'light' | 'dark';
     mockData?: Record<string, any>;
-  } = {}
+  } = {},
 ) {
   const { theme = 'light', mockData = {}, ...renderOptions } = options;
 
   const AllProviders: Component<{ children: JSX.Element }> = (props) => (
-      <div class={theme === 'dark' ? 'dark' : ''}>
-        {props.children}
-      </div>
-    );
+    <div class={theme === 'dark' ? 'dark' : ''}>{props.children}</div>
+  );
 
-  return renderWithProviders(ui, { 
-    ...renderOptions, 
+  return renderWithProviders(ui, {
+    ...renderOptions,
     wrapper: AllProviders,
     withRouter: true,
   });

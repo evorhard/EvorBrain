@@ -15,7 +15,8 @@
 
 ## System Overview
 
-EvorBrain is built as a local-first desktop application using a modern web-based UI with a native Rust backend. The architecture prioritizes performance, data ownership, and extensibility.
+EvorBrain is built as a local-first desktop application using a modern web-based UI with a native
+Rust backend. The architecture prioritizes performance, data ownership, and extensibility.
 
 ### Core Architectural Principles
 
@@ -253,13 +254,13 @@ const [store, setStore] = createStore<AppStore>({
 ```typescript
 // Route configuration
 const routes = [
-  { path: "/", component: Dashboard },
-  { path: "/areas/:id", component: AreaView },
-  { path: "/projects/:id", component: ProjectView },
-  { path: "/tasks/:id", component: TaskView },
-  { path: "/calendar", component: CalendarView },
-  { path: "/search", component: SearchView },
-  { path: "/settings", component: SettingsView },
+  { path: '/', component: Dashboard },
+  { path: '/areas/:id', component: AreaView },
+  { path: '/projects/:id', component: ProjectView },
+  { path: '/tasks/:id', component: TaskView },
+  { path: '/calendar', component: CalendarView },
+  { path: '/search', component: SearchView },
+  { path: '/settings', component: SettingsView },
 ];
 ```
 
@@ -332,16 +333,15 @@ impl AreaService {
 
 ```typescript
 // Frontend command invocation
-import { invoke } from "@tauri-apps/api/core";
+import { invoke } from '@tauri-apps/api/core';
 
 export const api = {
   areas: {
-    list: () => invoke<LifeArea[]>("get_areas"),
-    create: (input: CreateAreaInput) =>
-      invoke<LifeArea>("create_area", { input }),
+    list: () => invoke<LifeArea[]>('get_areas'),
+    create: (input: CreateAreaInput) => invoke<LifeArea>('create_area', { input }),
     update: (id: string, updates: Partial<LifeArea>) =>
-      invoke<LifeArea>("update_area", { id, updates }),
-    delete: (id: string) => invoke<void>("delete_area", { id }),
+      invoke<LifeArea>('update_area', { id, updates }),
+    delete: (id: string) => invoke<void>('delete_area', { id }),
   },
   // ... more API methods
 };
@@ -429,7 +429,7 @@ Store Update → UI Re-render
 ```typescript
 // Query caching with TanStack Query
 const areaQuery = createQuery(() => ({
-  queryKey: ["areas"],
+  queryKey: ['areas'],
   queryFn: api.areas.list,
   staleTime: 5 * 60 * 1000, // 5 minutes
   cacheTime: 10 * 60 * 1000, // 10 minutes
@@ -544,7 +544,7 @@ impl GitManager {
 1. **Component Lazy Loading**
 
    ```typescript
-   const CalendarView = lazy(() => import("./views/CalendarView"));
+   const CalendarView = lazy(() => import('./views/CalendarView'));
    ```
 
 2. **Virtual Scrolling**
@@ -564,7 +564,7 @@ impl GitManager {
    const sortedTasks = createMemo(() =>
      tasks()
        .filter((t) => !t.archived)
-       .sort((a, b) => b.priority - a.priority)
+       .sort((a, b) => b.priority - a.priority),
    );
    ```
 
@@ -729,13 +729,11 @@ gtk = "0.18"
 #### Platform-Specific Packages
 
 1. **Windows**
-
    - MSI installer via WiX
    - Portable ZIP
    - Microsoft Store (future)
 
 2. **macOS**
-
    - DMG with code signing
    - Homebrew cask (future)
    - Mac App Store (future)
@@ -768,6 +766,7 @@ if let Some(update) = updater.check().await? {
 
 ---
 
-_This architecture document provides the technical foundation for EvorBrain development and will be updated as implementation progresses._
+_This architecture document provides the technical foundation for EvorBrain development and will be
+updated as implementation progresses._
 
-*Last updated: 2025-07-29*
+_Last updated: 2025-07-29_

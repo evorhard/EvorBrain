@@ -1,6 +1,6 @@
-import { createSignal, onMount, onCleanup } from "solid-js";
+import { createSignal, onMount, onCleanup } from 'solid-js';
 
-export type Breakpoint = "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl";
+export type Breakpoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
 
 const breakpoints: Record<Breakpoint, number> = {
   xs: 475,
@@ -8,31 +8,32 @@ const breakpoints: Record<Breakpoint, number> = {
   md: 768,
   lg: 1024,
   xl: 1280,
-  "2xl": 1536,
-  "3xl": 1920,
+  '2xl': 1536,
+  '3xl': 1920,
 };
 
 export function useBreakpoint() {
-  const [currentBreakpoint, setCurrentBreakpoint] = createSignal<Breakpoint>("xs");
+  const [currentBreakpoint, setCurrentBreakpoint] = createSignal<Breakpoint>('xs');
   const [windowWidth, setWindowWidth] = createSignal(
-    typeof window !== "undefined" ? window.innerWidth : 0
+    typeof window !== 'undefined' ? window.innerWidth : 0,
   );
 
   const getBreakpoint = (width: number): Breakpoint => {
-    if (width >= breakpoints["3xl"]) return "3xl";
-    if (width >= breakpoints["2xl"]) return "2xl";
-    if (width >= breakpoints.xl) return "xl";
-    if (width >= breakpoints.lg) return "lg";
-    if (width >= breakpoints.md) return "md";
-    if (width >= breakpoints.sm) return "sm";
-    return "xs";
+    if (width >= breakpoints['3xl']) return '3xl';
+    if (width >= breakpoints['2xl']) return '2xl';
+    if (width >= breakpoints.xl) return 'xl';
+    if (width >= breakpoints.lg) return 'lg';
+    if (width >= breakpoints.md) return 'md';
+    if (width >= breakpoints.sm) return 'sm';
+    return 'xs';
   };
 
   const isAbove = (breakpoint: Breakpoint): boolean => windowWidth() >= breakpoints[breakpoint];
 
   const isBelow = (breakpoint: Breakpoint): boolean => windowWidth() < breakpoints[breakpoint];
 
-  const isBetween = (min: Breakpoint, max: Breakpoint): boolean => windowWidth() >= breakpoints[min] && windowWidth() < breakpoints[max];
+  const isBetween = (min: Breakpoint, max: Breakpoint): boolean =>
+    windowWidth() >= breakpoints[min] && windowWidth() < breakpoints[max];
 
   const isMobile = (): boolean => windowWidth() < breakpoints.md;
 
@@ -41,11 +42,11 @@ export function useBreakpoint() {
   const isDesktop = (): boolean => windowWidth() >= breakpoints.lg;
 
   const isTouch = (): boolean => {
-    if (typeof window === "undefined") return false;
+    if (typeof window === 'undefined') return false;
     return (
-      "ontouchstart" in window ||
+      'ontouchstart' in window ||
       navigator.maxTouchPoints > 0 ||
-      (window.matchMedia && window.matchMedia("(hover: none) and (pointer: coarse)").matches)
+      (window.matchMedia && window.matchMedia('(hover: none) and (pointer: coarse)').matches)
     );
   };
 
@@ -57,10 +58,10 @@ export function useBreakpoint() {
     };
 
     handleResize();
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
 
     onCleanup(() => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('resize', handleResize);
     });
   });
 

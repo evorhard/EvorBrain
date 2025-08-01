@@ -1,11 +1,5 @@
 import { expect } from 'vitest';
-import type { 
-  LifeArea, 
-  Goal, 
-  Project, 
-  Task, 
-  Note 
-} from '../../types/models';
+import type { LifeArea, Goal, Project, Task, Note } from '../../types/models';
 
 /**
  * Custom matchers for EvorBrain domain objects
@@ -29,8 +23,8 @@ interface CustomMatchers<R = unknown> {
 }
 
 declare module 'vitest' {
-  type Assertion<T = any> = CustomMatchers<T>
-  type AsymmetricMatchersContaining = CustomMatchers
+  type Assertion<T = any> = CustomMatchers<T>;
+  type AsymmetricMatchersContaining = CustomMatchers;
 }
 
 /**
@@ -49,7 +43,8 @@ const isValidHexColor = (color: string): boolean => /^#[0-9A-F]{6}$/i.test(color
 /**
  * Check if a value is a valid UUID
  */
-const isValidUUID = (id: string): boolean => /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+const isValidUUID = (id: string): boolean =>
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
 
 /**
  * Define custom matchers
@@ -85,9 +80,10 @@ expect.extend({
 
     return {
       pass: errors.length === 0,
-      message: () => errors.length > 0 
-        ? `Expected valid LifeArea but found errors:\n${errors.join('\n')}`
-        : 'Expected invalid LifeArea but it was valid',
+      message: () =>
+        errors.length > 0
+          ? `Expected valid LifeArea but found errors:\n${errors.join('\n')}`
+          : 'Expected invalid LifeArea but it was valid',
     };
   },
 
@@ -118,9 +114,10 @@ expect.extend({
 
     return {
       pass: errors.length === 0,
-      message: () => errors.length > 0 
-        ? `Expected valid Goal but found errors:\n${errors.join('\n')}`
-        : 'Expected invalid Goal but it was valid',
+      message: () =>
+        errors.length > 0
+          ? `Expected valid Goal but found errors:\n${errors.join('\n')}`
+          : 'Expected invalid Goal but it was valid',
     };
   },
 
@@ -148,9 +145,10 @@ expect.extend({
 
     return {
       pass: errors.length === 0,
-      message: () => errors.length > 0 
-        ? `Expected valid Task but found errors:\n${errors.join('\n')}`
-        : 'Expected invalid Task but it was valid',
+      message: () =>
+        errors.length > 0
+          ? `Expected valid Task but found errors:\n${errors.join('\n')}`
+          : 'Expected invalid Task but it was valid',
     };
   },
 
@@ -158,9 +156,8 @@ expect.extend({
     const isArchived = received?.archived_at != null;
     return {
       pass: isArchived,
-      message: () => isArchived
-        ? 'Expected item not to be archived'
-        : 'Expected item to be archived',
+      message: () =>
+        isArchived ? 'Expected item not to be archived' : 'Expected item to be archived',
     };
   },
 
@@ -168,9 +165,8 @@ expect.extend({
     const isCompleted = received?.completed_at != null;
     return {
       pass: isCompleted,
-      message: () => isCompleted
-        ? 'Expected item not to be completed'
-        : 'Expected item to be completed',
+      message: () =>
+        isCompleted ? 'Expected item not to be completed' : 'Expected item to be completed',
     };
   },
 
@@ -182,9 +178,8 @@ expect.extend({
 
     return {
       pass: isOverdue,
-      message: () => isOverdue
-        ? 'Expected task not to be overdue'
-        : 'Expected task to be overdue',
+      message: () =>
+        isOverdue ? 'Expected task not to be overdue' : 'Expected task to be overdue',
     };
   },
 
@@ -194,9 +189,10 @@ expect.extend({
 
     return {
       pass: matches,
-      message: () => matches
-        ? `Expected position not to be ${expectedPosition}`
-        : `Expected position ${expectedPosition} but got ${actualPosition}`,
+      message: () =>
+        matches
+          ? `Expected position not to be ${expectedPosition}`
+          : `Expected position ${expectedPosition} but got ${actualPosition}`,
     };
   },
 
@@ -208,9 +204,10 @@ expect.extend({
 
     return {
       pass: isBetween,
-      message: () => isBetween
-        ? `Expected ${received} not to be between ${startDate} and ${endDate}`
-        : `Expected ${received} to be between ${startDate} and ${endDate}`,
+      message: () =>
+        isBetween
+          ? `Expected ${received} not to be between ${startDate} and ${endDate}`
+          : `Expected ${received} to be between ${startDate} and ${endDate}`,
     };
   },
 
@@ -233,9 +230,10 @@ expect.extend({
 
     return {
       pass: errors.length === 0,
-      message: () => errors.length > 0
-        ? `Invalid timestamps:\n${errors.join('\n')}`
-        : 'Expected invalid timestamps',
+      message: () =>
+        errors.length > 0
+          ? `Invalid timestamps:\n${errors.join('\n')}`
+          : 'Expected invalid timestamps',
     };
   },
 
@@ -254,9 +252,10 @@ expect.extend({
 
     return {
       pass: isValid,
-      message: () => isValid
-        ? `Expected invalid ID${prefix ? ` with prefix "${prefix}"` : ''}`
-        : `Expected valid ID${prefix ? ` with prefix "${prefix}"` : ''} but got "${id}"`,
+      message: () =>
+        isValid
+          ? `Expected invalid ID${prefix ? ` with prefix "${prefix}"` : ''}`
+          : `Expected valid ID${prefix ? ` with prefix "${prefix}"` : ''} but got "${id}"`,
     };
   },
 
@@ -266,9 +265,10 @@ expect.extend({
 
     return {
       pass: matches,
-      message: () => matches
-        ? `Expected status not to be "${expectedStatus}"`
-        : `Expected status "${expectedStatus}" but got "${actualStatus}"`,
+      message: () =>
+        matches
+          ? `Expected status not to be "${expectedStatus}"`
+          : `Expected status "${expectedStatus}" but got "${actualStatus}"`,
     };
   },
 
@@ -278,9 +278,10 @@ expect.extend({
 
     return {
       pass: matches,
-      message: () => matches
-        ? `Expected priority not to be "${expectedPriority}"`
-        : `Expected priority "${expectedPriority}" but got "${actualPriority}"`,
+      message: () =>
+        matches
+          ? `Expected priority not to be "${expectedPriority}"`
+          : `Expected priority "${expectedPriority}" but got "${actualPriority}"`,
     };
   },
 });
@@ -306,7 +307,7 @@ export const assertValidHierarchy = (hierarchy: {
 };
 
 export const assertValidDates = (...dates: (string | null | undefined)[]) => {
-  dates.filter(Boolean).forEach(date => {
+  dates.filter(Boolean).forEach((date) => {
     expect(date).toBeTruthy();
     expect(() => new Date(date!)).not.toThrow();
   });

@@ -1,6 +1,6 @@
-import type { Component } from "solid-js";
-import { HiOutlineSun, HiOutlineMoon, HiOutlineComputerDesktop } from "solid-icons/hi";
-import { useTheme } from "../../providers/ThemeProvider";
+import type { Component } from 'solid-js';
+import { HiOutlineSun, HiOutlineMoon, HiOutlineComputerDesktop } from 'solid-icons/hi';
+import { useTheme } from '../../providers/ThemeProvider';
 
 const ThemeToggle: Component = () => {
   const { theme, setTheme } = useTheme();
@@ -19,12 +19,12 @@ const ThemeToggle: Component = () => {
   return (
     <button
       onClick={cycleTheme}
-      class="p-2 rounded-lg hover:bg-surface-100 dark:hover:bg-surface-200 transition-colors focus-ring"
+      class="hover:bg-surface-100 dark:hover:bg-surface-200 focus-ring rounded-lg p-2 transition-colors"
       aria-label="Toggle theme"
     >
-      {theme() === 'light' && <HiOutlineSun class="w-5 h-5 text-content-secondary" />}
-      {theme() === 'dark' && <HiOutlineMoon class="w-5 h-5 text-content-secondary" />}
-      {theme() === 'system' && <HiOutlineComputerDesktop class="w-5 h-5 text-content-secondary" />}
+      {theme() === 'light' && <HiOutlineSun class="text-content-secondary h-5 w-5" />}
+      {theme() === 'dark' && <HiOutlineMoon class="text-content-secondary h-5 w-5" />}
+      {theme() === 'system' && <HiOutlineComputerDesktop class="text-content-secondary h-5 w-5" />}
     </button>
   );
 };

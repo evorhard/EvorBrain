@@ -1,10 +1,12 @@
 # EvorBrain UI Components
 
-This directory contains reusable UI components built with [Kobalte](https://kobalte.dev/), an accessible component library for SolidJS.
+This directory contains reusable UI components built with [Kobalte](https://kobalte.dev/), an
+accessible component library for SolidJS.
 
 ## Overview
 
-Kobalte provides unstyled, accessible components that we style using our theme system and Tailwind CSS. This approach gives us:
+Kobalte provides unstyled, accessible components that we style using our theme system and Tailwind
+CSS. This approach gives us:
 
 - **Accessibility by default**: All components follow WAI-ARIA best practices
 - **Full control over styling**: Components integrate seamlessly with our theme
@@ -14,6 +16,7 @@ Kobalte provides unstyled, accessible components that we style using our theme s
 ## Available Components
 
 ### Button
+
 A versatile button component with multiple variants and sizes.
 
 ```tsx
@@ -24,51 +27,49 @@ import { Button } from "@/components/ui";
 <Button variant="danger" disabled>Disabled</Button>
 ```
 
-**Variants**: `default`, `secondary`, `outline`, `ghost`, `danger`, `success`
-**Sizes**: `sm`, `default`, `lg`, `icon`
+**Variants**: `default`, `secondary`, `outline`, `ghost`, `danger`, `success` **Sizes**: `sm`,
+`default`, `lg`, `icon`
 
 ### Input
+
 Text input field with label, error, and helper text support.
 
 ```tsx
-import { Input } from "@/components/ui";
+import { Input } from '@/components/ui';
 
-<Input 
-  label="Email" 
+<Input
+  label="Email"
   type="email"
   placeholder="you@example.com"
   error="Invalid email address"
   helperText="We'll never share your email"
-/>
+/>;
 ```
 
-**Props**: `label`, `error`, `helperText`, all standard input attributes
-**Sizes**: `sm`, `default`, `lg`
+**Props**: `label`, `error`, `helperText`, all standard input attributes **Sizes**: `sm`, `default`,
+`lg`
 
 ### Textarea
+
 Multi-line text input with label and validation support.
 
 ```tsx
-import { Textarea } from "@/components/ui";
+import { Textarea } from '@/components/ui';
 
-<Textarea 
-  label="Description" 
+<Textarea
+  label="Description"
   placeholder="Tell us more..."
   rows={4}
   error="Description is required"
-/>
+/>;
 ```
 
 ### Select
+
 Dropdown selection component with search and custom styling.
 
 ```tsx
-import { 
-  Select, 
-  SelectTrigger, 
-  SelectContent, 
-  SelectItem 
-} from "@/components/ui";
+import { Select, SelectTrigger, SelectContent, SelectItem } from '@/components/ui';
 
 <Select value={value()} onChange={setValue}>
   <SelectTrigger label="Priority" />
@@ -78,22 +79,23 @@ import {
       <SelectItem value="high">High</SelectItem>
     </SelectContent>
   </SelectPortal>
-</Select>
+</Select>;
 ```
 
 ### Modal
+
 Dialog component for overlays and popups.
 
 ```tsx
-import { 
+import {
   Modal,
   ModalTrigger,
   ModalContent,
   ModalHeader,
   ModalTitle,
   ModalDescription,
-  ModalFooter
-} from "@/components/ui";
+  ModalFooter,
+} from '@/components/ui';
 
 <Modal>
   <ModalTrigger asChild>
@@ -109,102 +111,97 @@ import {
       <Button>Close</Button>
     </ModalFooter>
   </ModalContent>
-</Modal>
+</Modal>;
 ```
 
 **Sizes**: `sm`, `md`, `lg`, `xl`, `full`
 
 ### Card
+
 Container component for grouped content.
 
 ```tsx
-import { 
+import {
   Card,
   CardHeader,
   CardTitle,
   CardDescription,
   CardContent,
-  CardFooter
-} from "@/components/ui";
+  CardFooter,
+} from '@/components/ui';
 
 <Card variant="default">
   <CardHeader>
     <CardTitle>Title</CardTitle>
     <CardDescription>Description</CardDescription>
   </CardHeader>
-  <CardContent>
-    Content goes here
-  </CardContent>
+  <CardContent>Content goes here</CardContent>
   <CardFooter>
     <Button>Action</Button>
   </CardFooter>
-</Card>
+</Card>;
 ```
 
-**Variants**: `default`, `outline`, `ghost`
-**Padding**: `none`, `sm`, `default`, `lg`
+**Variants**: `default`, `outline`, `ghost` **Padding**: `none`, `sm`, `default`, `lg`
 
 ### Label
+
 Form label component with error state support.
 
 ```tsx
-import { Label } from "@/components/ui";
+import { Label } from '@/components/ui';
 
 <Label for="email" error={hasError}>
   Email Address
-</Label>
+</Label>;
 ```
 
 ### Checkbox
+
 An accessible checkbox with optional label.
 
 ```tsx
-import { Checkbox } from "@/components/ui";
+import { Checkbox } from '@/components/ui';
 
-<Checkbox 
-  label="I agree to terms" 
-  checked={checked()} 
-  onChange={setChecked} 
-/>
+<Checkbox label="I agree to terms" checked={checked()} onChange={setChecked} />;
 ```
 
 ### Switch
+
 A toggle switch for boolean values.
 
 ```tsx
-import { Switch } from "@/components/ui";
+import { Switch } from '@/components/ui';
 
-<Switch 
-  label="Enable notifications" 
-  checked={enabled()} 
-  onChange={setEnabled} 
-/>
+<Switch label="Enable notifications" checked={enabled()} onChange={setEnabled} />;
 ```
 
 ### Tooltip
+
 Provides additional context on hover.
 
 ```tsx
-import { Tooltip } from "@/components/ui";
+import { Tooltip } from '@/components/ui';
 
 <Tooltip content="Helpful information">
   <Button>Hover me</Button>
-</Tooltip>
+</Tooltip>;
 ```
 
 **Props**: `content`, `placement` (top/right/bottom/left), `openDelay`, `closeDelay`
 
 ### Dropdown Menu
+
 A menu that appears on click.
 
 ```tsx
-import { 
+import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator
-} from "@/components/ui";
+  DropdownMenuSeparator,
+} from '@/components/ui';
 
 <DropdownMenu>
   <DropdownMenuTrigger asChild>
@@ -216,7 +213,7 @@ import {
       <DropdownMenuItem>Option 2</DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenuPortal>
-</DropdownMenu>
+</DropdownMenu>;
 ```
 
 ## Styling
@@ -235,23 +232,19 @@ All components use our theme system colors and Tailwind utilities. Key classes:
 4. Export from `index.ts`
 
 Example structure:
+
 ```tsx
-import { ComponentPrimitive } from "@kobalte/core/component";
-import { Component, splitProps } from "solid-js";
+import { ComponentPrimitive } from '@kobalte/core/component';
+import { Component, splitProps } from 'solid-js';
 
 interface ComponentProps extends ComponentPrimitive.ComponentRootProps {
   // Custom props
 }
 
 const Component: Component<ComponentProps> = (props) => {
-  const [local, others] = splitProps(props, ["class"]);
-  
-  return (
-    <ComponentPrimitive
-      class={`base-styles ${local.class || ""}`}
-      {...others}
-    />
-  );
+  const [local, others] = splitProps(props, ['class']);
+
+  return <ComponentPrimitive class={`base-styles ${local.class || ''}`} {...others} />;
 };
 
 export { Component };

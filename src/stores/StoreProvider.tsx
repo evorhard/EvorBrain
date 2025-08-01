@@ -31,12 +31,8 @@ export const StoreProvider: ParentComponent = (props) => {
       ui: uiActions,
     },
   };
-  
-  return (
-    <StoreContext.Provider value={value}>
-      {props.children}
-    </StoreContext.Provider>
-  );
+
+  return <StoreContext.Provider value={value}>{props.children}</StoreContext.Provider>;
 };
 
 export function useStore() {

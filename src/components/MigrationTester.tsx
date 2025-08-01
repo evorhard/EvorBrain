@@ -1,14 +1,14 @@
-import { createSignal } from "solid-js";
-import { invoke } from "@tauri-apps/api/core";
+import { createSignal } from 'solid-js';
+import { invoke } from '@tauri-apps/api/core';
 
 export function MigrationTester() {
-  const [status, setStatus] = createSignal("");
+  const [status, setStatus] = createSignal('');
   const [loading, setLoading] = createSignal(false);
 
   const checkStatus = async () => {
     setLoading(true);
     try {
-      const result = await invoke<string>("get_migration_status");
+      const result = await invoke<string>('get_migration_status');
       setStatus(result);
     } catch (error) {
       setStatus(`Error: ${error}`);
@@ -20,7 +20,7 @@ export function MigrationTester() {
   const runMigrations = async () => {
     setLoading(true);
     try {
-      const result = await invoke<string>("run_migrations");
+      const result = await invoke<string>('run_migrations');
       setStatus(result);
       await checkStatus();
     } catch (error) {
@@ -33,7 +33,7 @@ export function MigrationTester() {
   const rollbackAll = async () => {
     setLoading(true);
     try {
-      const result = await invoke<string>("rollback_migration", {
+      const result = await invoke<string>('rollback_migration', {
         targetVersion: 0,
       });
       setStatus(result);
@@ -46,11 +46,11 @@ export function MigrationTester() {
   };
 
   const resetDatabase = async () => {
-    if (!confirm("Are you sure you want to reset the database?")) return;
-    
+    if (!confirm('Are you sure you want to reset the database?')) return;
+
     setLoading(true);
     try {
-      const result = await invoke<string>("reset_database");
+      const result = await invoke<string>('reset_database');
       setStatus(result);
       await checkStatus();
     } catch (error) {
@@ -61,44 +61,42 @@ export function MigrationTester() {
   };
 
   return (
-    <div class="p-4 space-y-4">
+    <div class="space-y-4 p-4">
       <h2 class="text-xl font-bold">Migration Tester</h2>
-      
+
       <div class="flex gap-2">
         <button
           onClick={checkStatus}
           disabled={loading()}
-          class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50"
+          class="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 disabled:opacity-50"
         >
           Check Status
         </button>
         <button
           onClick={runMigrations}
           disabled={loading()}
-          class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 disabled:opacity-50"
+          class="rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600 disabled:opacity-50"
         >
           Run Migrations
         </button>
         <button
           onClick={rollbackAll}
           disabled={loading()}
-          class="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 disabled:opacity-50"
+          class="rounded bg-yellow-500 px-4 py-2 text-white hover:bg-yellow-600 disabled:opacity-50"
         >
           Rollback All
         </button>
         <button
           onClick={resetDatabase}
           disabled={loading()}
-          class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 disabled:opacity-50"
+          class="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600 disabled:opacity-50"
         >
           Reset Database
         </button>
       </div>
 
       {status() && (
-        <pre class="p-4 bg-gray-100 rounded overflow-auto whitespace-pre-wrap">
-          {status()}
-        </pre>
+        <pre class="overflow-auto rounded bg-gray-100 p-4 whitespace-pre-wrap">{status()}</pre>
       )}
     </div>
   );

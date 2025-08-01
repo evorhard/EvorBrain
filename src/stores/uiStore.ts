@@ -12,27 +12,30 @@ const [state, { setState }] = createStore(initialState, 'UI');
 // Actions
 export const uiActions = {
   toggleSidebar() {
-    setState('sidebarOpen', open => !open);
+    setState('sidebarOpen', (open) => !open);
   },
-  
+
   setSidebarOpen(open: boolean) {
     setState('sidebarOpen', open);
   },
-  
+
   setTheme(theme: UIState['theme']) {
     setState('theme', theme);
     // Apply theme to document
-    if (theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    if (
+      theme === 'dark' ||
+      (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)
+    ) {
       document.documentElement.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
     }
   },
-  
+
   setActiveView(view: UIState['activeView']) {
     setState('activeView', view);
   },
-  
+
   // Initialize theme on app start
   initializeTheme() {
     const savedTheme = localStorage.getItem('theme') as UIState['theme'] | null;
@@ -41,7 +44,7 @@ export const uiActions = {
     } else {
       uiActions.setTheme('system');
     }
-    
+
     // Listen for system theme changes
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
       if (state.theme === 'system') {
@@ -53,7 +56,7 @@ export const uiActions = {
       }
     });
   },
-  
+
   // Save theme preference
   saveThemePreference(theme: UIState['theme']) {
     localStorage.setItem('theme', theme);

@@ -9,11 +9,7 @@ const ThemeContext = createContext<ThemeContextType>();
 export const ThemeProvider: Component<{ children: JSX.Element }> = (props) => {
   const theme = createTheme();
 
-  return (
-    <ThemeContext.Provider value={theme}>
-      {props.children}
-    </ThemeContext.Provider>
-  );
+  return <ThemeContext.Provider value={theme}>{props.children}</ThemeContext.Provider>;
 };
 
 export const useTheme = () => {

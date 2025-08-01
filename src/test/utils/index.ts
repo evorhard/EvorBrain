@@ -1,6 +1,6 @@
 /**
  * Test utilities for EvorBrain
- * 
+ *
  * This module provides a comprehensive set of testing utilities to make
  * writing tests easier and more consistent across the codebase.
  */

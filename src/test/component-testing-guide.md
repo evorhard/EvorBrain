@@ -1,10 +1,12 @@
 # Component Testing Guide
 
-This guide explains how to write component tests for EvorBrain using Vitest and @solidjs/testing-library.
+This guide explains how to write component tests for EvorBrain using Vitest and
+@solidjs/testing-library.
 
 ## Setup
 
 The testing environment is already configured with:
+
 - **Vitest** as the test runner
 - **@solidjs/testing-library** for testing SolidJS components
 - **@testing-library/jest-dom** for additional DOM matchers
@@ -55,10 +57,10 @@ it('applies variant classes', () => {
 it('handles click events', () => {
   const handleClick = vi.fn();
   render(() => <Button onClick={handleClick}>Click</Button>);
-  
+
   const button = screen.getByRole('button');
   fireEvent.click(button);
-  
+
   expect(handleClick).toHaveBeenCalledTimes(1);
 });
 ```
@@ -69,10 +71,10 @@ it('handles click events', () => {
 it('handles input changes', () => {
   const handleInput = vi.fn();
   render(() => <Input onInput={handleInput} />);
-  
+
   const input = screen.getByRole('textbox');
   fireEvent.input(input, { target: { value: 'test' } });
-  
+
   expect(handleInput).toHaveBeenCalled();
 });
 ```
@@ -83,7 +85,7 @@ it('handles input changes', () => {
 it('conditionally renders content', () => {
   const { rerender } = render(() => <Component show={false} />);
   expect(screen.queryByText('Content')).not.toBeInTheDocument();
-  
+
   rerender(() => <Component show={true} />);
   expect(screen.getByText('Content')).toBeInTheDocument();
 });
@@ -94,9 +96,9 @@ it('conditionally renders content', () => {
 ```typescript
 it('loads data asynchronously', async () => {
   render(() => <DataComponent />);
-  
+
   expect(screen.getByText('Loading...')).toBeInTheDocument();
-  
+
   await screen.findByText('Data loaded');
   expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
 });
@@ -111,6 +113,7 @@ Use the appropriate query method based on your needs:
 - `findBy*` - Returns promise, waits for element (use for async rendering)
 
 Common queries:
+
 - `getByRole` - Preferred for accessibility
 - `getByLabelText` - For form elements
 - `getByText` - For specific text content
@@ -120,15 +123,17 @@ Common queries:
 
 ### Using Test Utilities
 
-⚠️ **Note**: The test utilities are fully implemented but have some environment setup limitations. See the [Test Utilities Documentation](/src/test/utils/README.md) for current status and workarounds.
+⚠️ **Note**: The test utilities are fully implemented but have some environment setup limitations.
+See the [Test Utilities Documentation](/src/test/utils/README.md) for current status and
+workarounds.
 
 We provide comprehensive test utilities for common scenarios:
 
 ```typescript
-import { 
-  TauriMock, 
+import {
+  TauriMock,
   renderWithProviders,
-  createLifeArea 
+  createLifeArea
 } from '../test/utils';
 
 it('uses enhanced mocking', async () => {
@@ -136,13 +141,13 @@ it('uses enhanced mocking', async () => {
   tauriMock.onCommand('get_life_areas', () => [
     createLifeArea({ name: 'Work' })
   ]);
-  
+
   const result = renderWithProviders(() => <MyComponent />, {
     mockInvoke: tauriMock.getMock()
   });
-  
+
   // Test your component
-  
+
   tauriMock.expectCommand('get_life_areas').toHaveBeenCalledTimes(1);
 });
 ```
@@ -156,9 +161,9 @@ import { mockInvoke } from '../test/setup';
 
 it('calls Tauri command', async () => {
   mockInvoke.mockResolvedValueOnce({ data: 'test' });
-  
+
   // Your test code
-  
+
   expect(mockInvoke).toHaveBeenCalledWith('command_name', expectedArgs);
 });
 ```
@@ -202,6 +207,7 @@ bun run test:coverage
 The project enforces minimum test coverage thresholds to maintain code quality:
 
 ### Coverage Thresholds
+
 - **Statements**: 80%
 - **Branches**: 70%
 - **Functions**: 80%
@@ -222,6 +228,7 @@ start coverage/index.html  # Windows
 ### Coverage Configuration
 
 Coverage is configured in `vitest.config.ts`:
+
 - **Provider**: V8 (native Node.js coverage)
 - **Reports**: Generated in `./coverage` directory
 - **Formats**: text, json, html, lcov
@@ -230,8 +237,9 @@ Coverage is configured in `vitest.config.ts`:
 ### Writing Tests for Coverage
 
 To improve coverage:
+
 1. **Test all exported functions** - Ensure each function has at least one test
-2. **Cover edge cases** - Test error states, empty states, and boundaries  
+2. **Cover edge cases** - Test error states, empty states, and boundaries
 3. **Test conditional logic** - Cover all branches in if/else statements
 4. **Test user interactions** - Click handlers, form submissions, etc.
 5. **Test props variations** - Different prop combinations
@@ -241,21 +249,25 @@ Use the HTML coverage report to identify uncovered lines and branches.
 ## Example Test Files
 
 See these files for examples:
+
 - `/src/components/ui/Button.test.tsx` - Basic component testing
 - `/src/components/ui/Input.test.tsx` - Form input testing with error states
 - `/src/lib/api.test.ts` - API client testing with mocks
 
 ## Component Tests vs E2E Tests
 
-Component tests focus on testing individual components in isolation, while end-to-end (E2E) tests verify complete user workflows in the running application.
+Component tests focus on testing individual components in isolation, while end-to-end (E2E) tests
+verify complete user workflows in the running application.
 
 **When to use component tests:**
+
 - Testing component behavior and state
 - Verifying prop handling and event callbacks
 - Testing edge cases and error states
 - Fast feedback during development
 
 **When to use E2E tests:**
+
 - Testing complete user workflows
 - Verifying integration between frontend and backend
 - Testing critical business paths

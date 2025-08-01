@@ -18,7 +18,10 @@
 
 ## Project Vision
 
-EvorBrain is a local-first, hierarchical task management system that combines the organizational power of Notion with the data ownership philosophy of Obsidian. The goal is to create a blazing-fast desktop application that helps users organize their entire life through a structured hierarchy while maintaining complete control over their data.
+EvorBrain is a local-first, hierarchical task management system that combines the organizational
+power of Notion with the data ownership philosophy of Obsidian. The goal is to create a blazing-fast
+desktop application that helps users organize their entire life through a structured hierarchy while
+maintaining complete control over their data.
 
 ### Core Philosophy
 
@@ -53,7 +56,6 @@ Power users who:
 ### MVP Features
 
 1. **Hierarchical Structure**
-
    - Life Areas (e.g., Career, Health, Personal)
    - Goals linked to life areas
    - Projects linked to goals
@@ -62,14 +64,12 @@ Power users who:
    - Standalone tasks/chores not linked to projects
 
 2. **Views & Navigation**
-
    - Dashboard/Homepage with at-a-glance overview
    - Calendar view (day/week/month)
    - List views with filtering and sorting
    - Quick search across all content
 
 3. **Task Management**
-
    - Priority levels (Critical/High/Medium/Low)
    - Due dates (optional)
    - Status tracking
@@ -84,13 +84,11 @@ Power users who:
 ### Post-MVP Features
 
 1. **AI Integration**
-
    - Claude-powered priority suggestions
    - Smart task scheduling
    - Natural language task creation
 
 2. **Tracking Systems**
-
    - Habit tracker with streaks
    - Health metrics (weight, sleep, etc.)
    - Progress visualization and analytics
@@ -103,7 +101,8 @@ Power users who:
 
 ## Tech Stack Selection
 
-Based on research of local-first applications and modern desktop development in 2025, I've selected the following technologies:
+Based on research of local-first applications and modern desktop development in 2025, I've selected
+the following technologies:
 
 ### Core Stack
 
@@ -124,7 +123,8 @@ Based on research of local-first applications and modern desktop development in 
 - **Icons**: [Lucide](https://lucide.dev) (successor to Feather icons)
 - **Date Handling**: [date-fns](https://date-fns.org)
 - **Charts**: [Chart.js](https://www.chartjs.org) or [D3.js](https://d3js.org) for analytics
-- **Testing**: [Vitest](https://vitest.dev) for unit tests, [Playwright](https://playwright.dev) for E2E
+- **Testing**: [Vitest](https://vitest.dev) for unit tests, [Playwright](https://playwright.dev) for
+  E2E
 
 ## Architecture Overview
 
@@ -300,7 +300,7 @@ interface Goal {
   description?: string;
   targetDate?: Date;
   progress: number;
-  status: "active" | "completed" | "paused";
+  status: 'active' | 'completed' | 'paused';
   createdAt: Date;
   updatedAt: Date;
   archived: boolean;
@@ -313,7 +313,7 @@ interface Project {
   name: string;
   description?: string;
   priority: Priority;
-  status: "planning" | "active" | "completed" | "paused";
+  status: 'planning' | 'active' | 'completed' | 'paused';
   startDate?: Date;
   endDate?: Date;
   createdAt: Date;
@@ -397,13 +397,11 @@ type Priority = 0 | 1 | 2 | 3; // 0: Low, 1: Medium, 2: High, 3: Critical
 Since this is a personal project without a plugin system, extensibility is achieved through:
 
 1. **Modular Architecture**
-
    - Clear separation of concerns
    - Well-defined interfaces
    - Easy to add new modules
 
 2. **Configuration Options**
-
    - Extensive settings
    - Custom themes
    - Workflow customization
@@ -426,13 +424,11 @@ Since this is a personal project without a plugin system, extensibility is achie
 ### Local Security
 
 1. **Data Encryption**
-
    - Optional database encryption
    - Secure credential storage
    - Protected configuration files
 
 2. **Access Control**
-
    - OS-level file permissions
    - Application-level authentication (optional)
 
@@ -444,7 +440,6 @@ Since this is a personal project without a plugin system, extensibility is achie
 ### Sync Security
 
 1. **Git Operations**
-
    - SSH key authentication
    - HTTPS with tokens
    - No sensitive data in commits
@@ -470,7 +465,6 @@ Since this is a personal project without a plugin system, extensibility is achie
 ### Optimization Strategies
 
 1. **Frontend**
-
    - Lazy loading of views
    - Virtual scrolling for lists
    - Debounced search
@@ -557,4 +551,4 @@ src/
 
 _This planning document is a living document and will be updated as the project evolves._
 
-*Last updated: 2025-07-29*
+_Last updated: 2025-07-29_

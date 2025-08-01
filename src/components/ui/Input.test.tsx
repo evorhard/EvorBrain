@@ -13,7 +13,7 @@ describe('Input Component', () => {
     render(() => <Input label="Email Address" type="email" />);
     const label = screen.getByText('Email Address');
     const input = screen.getByLabelText('Email Address');
-    
+
     expect(label).toBeInTheDocument();
     expect(input).toBeInTheDocument();
     expect(input).toHaveAttribute('type', 'email');
@@ -22,7 +22,7 @@ describe('Input Component', () => {
   it('applies default variant and size classes', () => {
     render(() => <Input />);
     const input = screen.getByRole('textbox');
-    
+
     expect(input).toHaveClass('border-border');
     expect(input).toHaveClass('h-10');
   });
@@ -30,7 +30,7 @@ describe('Input Component', () => {
   it('applies custom size classes', () => {
     render(() => <Input size="sm" />);
     const input = screen.getByRole('textbox');
-    
+
     expect(input).toHaveClass('h-9');
     expect(input).toHaveClass('text-xs');
   });
@@ -39,7 +39,7 @@ describe('Input Component', () => {
     render(() => <Input error="Email is required" />);
     const input = screen.getByRole('textbox');
     const errorMessage = screen.getByText('Email is required');
-    
+
     expect(input).toHaveClass('border-danger-500');
     expect(input).toHaveAttribute('aria-invalid', 'true');
     expect(errorMessage).toBeInTheDocument();
@@ -49,7 +49,7 @@ describe('Input Component', () => {
   it('shows helper text', () => {
     render(() => <Input helperText="Enter your email address" />);
     const helperText = screen.getByText('Enter your email address');
-    
+
     expect(helperText).toBeInTheDocument();
     expect(helperText).toHaveClass('text-content-secondary');
   });
@@ -57,17 +57,17 @@ describe('Input Component', () => {
   it('handles input changes', () => {
     const handleInput = vi.fn();
     render(() => <Input onInput={handleInput} />);
-    
+
     const input = screen.getByRole('textbox');
     fireEvent.input(input, { target: { value: 'test@example.com' } });
-    
+
     expect(handleInput).toHaveBeenCalled();
   });
 
   it('can be disabled', () => {
     render(() => <Input disabled placeholder="Disabled input" />);
     const input = screen.getByPlaceholderText('Disabled input');
-    
+
     expect(input).toBeDisabled();
     expect(input).toHaveClass('disabled:cursor-not-allowed');
     expect(input).toHaveClass('disabled:opacity-50');
@@ -76,7 +76,7 @@ describe('Input Component', () => {
   it('applies custom classes', () => {
     render(() => <Input class="custom-input-class" />);
     const input = screen.getByRole('textbox');
-    
+
     expect(input).toHaveClass('custom-input-class');
   });
 
@@ -96,7 +96,7 @@ describe('Input Component', () => {
     render(() => <Input error="Invalid input" />);
     const input = screen.getByRole('textbox');
     const describedBy = input.getAttribute('aria-describedby');
-    
+
     expect(describedBy).toBeTruthy();
     const errorElement = document.getElementById(describedBy!);
     expect(errorElement).toHaveTextContent('Invalid input');
@@ -104,16 +104,9 @@ describe('Input Component', () => {
 
   it('accepts all standard input attributes', () => {
     render(() => (
-      <Input 
-        type="email"
-        maxLength={20}
-        minLength={8}
-        required
-        autoComplete="email"
-        name="email"
-      />
+      <Input type="email" maxLength={20} minLength={8} required autoComplete="email" name="email" />
     ));
-    
+
     const input = screen.getByRole('textbox');
     expect(input).toHaveAttribute('type', 'email');
     expect(input).toHaveAttribute('maxLength', '20');

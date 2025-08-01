@@ -1,11 +1,11 @@
-import type { 
-  LifeArea, 
-  Goal, 
-  Project, 
-  Task, 
+import type {
+  LifeArea,
+  Goal,
+  Project,
+  Task,
   Note,
   Priority,
-  ProjectStatus 
+  ProjectStatus,
 } from '../../types/models';
 
 /**
@@ -39,86 +39,86 @@ export const createTimestamp = (daysOffset = 0): string => {
  * Factory for creating Life Area test data
  */
 export const createLifeArea = (overrides?: Partial<LifeArea>): LifeArea => ({
-    id: generateId('life-area'),
-    name: 'Test Life Area',
-    description: 'A test life area for testing purposes',
-    color: '#3B82F6',
-    icon: '🎯',
-    position: 0,
-    created_at: createTimestamp(),
-    updated_at: createTimestamp(),
-    archived_at: null,
-    ...overrides,
-  });
+  id: generateId('life-area'),
+  name: 'Test Life Area',
+  description: 'A test life area for testing purposes',
+  color: '#3B82F6',
+  icon: '🎯',
+  position: 0,
+  created_at: createTimestamp(),
+  updated_at: createTimestamp(),
+  archived_at: null,
+  ...overrides,
+});
 
 /**
  * Factory for creating Goal test data
  */
 export const createGoal = (overrides?: Partial<Goal>): Goal => ({
-    id: generateId('goal'),
-    life_area_id: generateId('life-area'),
-    title: 'Test Goal',
-    description: 'A test goal for testing purposes',
-    target_date: createTimestamp(30), // 30 days from now
-    completed_at: null,
-    position: 0,
-    created_at: createTimestamp(),
-    updated_at: createTimestamp(),
-    archived_at: null,
-    ...overrides,
-  });
+  id: generateId('goal'),
+  life_area_id: generateId('life-area'),
+  title: 'Test Goal',
+  description: 'A test goal for testing purposes',
+  target_date: createTimestamp(30), // 30 days from now
+  completed_at: null,
+  position: 0,
+  created_at: createTimestamp(),
+  updated_at: createTimestamp(),
+  archived_at: null,
+  ...overrides,
+});
 
 /**
  * Factory for creating Project test data
  */
 export const createProject = (overrides?: Partial<Project>): Project => ({
-    id: generateId('project'),
-    goal_id: generateId('goal'),
-    name: 'Test Project',
-    description: 'A test project for testing purposes',
-    status: 'not_started' as ProjectStatus,
-    position: 0,
-    created_at: createTimestamp(),
-    updated_at: createTimestamp(),
-    archived_at: null,
-    ...overrides,
-  });
+  id: generateId('project'),
+  goal_id: generateId('goal'),
+  name: 'Test Project',
+  description: 'A test project for testing purposes',
+  status: 'not_started' as ProjectStatus,
+  position: 0,
+  created_at: createTimestamp(),
+  updated_at: createTimestamp(),
+  archived_at: null,
+  ...overrides,
+});
 
 /**
  * Factory for creating Task test data
  */
 export const createTask = (overrides?: Partial<Task>): Task => ({
-    id: generateId('task'),
-    project_id: generateId('project'),
-    parent_task_id: null,
-    title: 'Test Task',
-    description: 'A test task for testing purposes',
-    priority: 'medium' as Priority,
-    due_date: null,
-    completed_at: null,
-    position: 0,
-    created_at: createTimestamp(),
-    updated_at: createTimestamp(),
-    archived_at: null,
-    ...overrides,
-  });
+  id: generateId('task'),
+  project_id: generateId('project'),
+  parent_task_id: null,
+  title: 'Test Task',
+  description: 'A test task for testing purposes',
+  priority: 'medium' as Priority,
+  due_date: null,
+  completed_at: null,
+  position: 0,
+  created_at: createTimestamp(),
+  updated_at: createTimestamp(),
+  archived_at: null,
+  ...overrides,
+});
 
 /**
  * Factory for creating Note test data
  */
 export const createNote = (overrides?: Partial<Note>): Note => ({
-    id: generateId('note'),
-    content: '# Test Note\n\nThis is a test note with **markdown** content.',
-    task_id: null,
-    project_id: null,
-    goal_id: null,
-    life_area_id: null,
-    tags: [],
-    created_at: createTimestamp(),
-    updated_at: createTimestamp(),
-    archived_at: null,
-    ...overrides,
-  });
+  id: generateId('note'),
+  content: '# Test Note\n\nThis is a test note with **markdown** content.',
+  task_id: null,
+  project_id: null,
+  goal_id: null,
+  life_area_id: null,
+  tags: [],
+  created_at: createTimestamp(),
+  updated_at: createTimestamp(),
+  archived_at: null,
+  ...overrides,
+});
 
 /**
  * Create a complete hierarchy of test data
@@ -132,16 +132,14 @@ export interface TestDataHierarchy {
   note: Note;
 }
 
-export const createTestHierarchy = (
-  overrides?: {
-    lifeArea?: Partial<LifeArea>;
-    goal?: Partial<Goal>;
-    project?: Partial<Project>;
-    task?: Partial<Task>;
-    subtask?: Partial<Task>;
-    note?: Partial<Note>;
-  }
-): TestDataHierarchy => {
+export const createTestHierarchy = (overrides?: {
+  lifeArea?: Partial<LifeArea>;
+  goal?: Partial<Goal>;
+  project?: Partial<Project>;
+  task?: Partial<Task>;
+  subtask?: Partial<Task>;
+  note?: Partial<Note>;
+}): TestDataHierarchy => {
   const lifeArea = createLifeArea(overrides?.lifeArea);
   const goal = createGoal({
     life_area_id: lifeArea.id,
@@ -174,16 +172,16 @@ export const createTestHierarchy = (
 export const createLifeAreaWithGoals = (
   goalCount = 3,
   lifeAreaOverrides?: Partial<LifeArea>,
-  goalOverrides?: Partial<Goal>
+  goalOverrides?: Partial<Goal>,
 ) => {
   const lifeArea = createLifeArea(lifeAreaOverrides);
-  const goals = Array.from({ length: goalCount }, (_, i) => 
+  const goals = Array.from({ length: goalCount }, (_, i) =>
     createGoal({
       life_area_id: lifeArea.id,
       title: `Goal ${i + 1}`,
       position: i,
       ...goalOverrides,
-    })
+    }),
   );
 
   return { lifeArea, goals };
@@ -195,17 +193,17 @@ export const createLifeAreaWithGoals = (
 export const createProjectWithTasks = (
   taskCount = 5,
   projectOverrides?: Partial<Project>,
-  taskOverrides?: Partial<Task>
+  taskOverrides?: Partial<Task>,
 ) => {
   const project = createProject(projectOverrides);
-  const tasks = Array.from({ length: taskCount }, (_, i) => 
+  const tasks = Array.from({ length: taskCount }, (_, i) =>
     createTask({
       project_id: project.id,
       title: `Task ${i + 1}`,
       position: i,
       priority: ['low', 'medium', 'high'][i % 3] as Priority,
       ...taskOverrides,
-    })
+    }),
   );
 
   return { project, tasks };
@@ -214,22 +212,26 @@ export const createProjectWithTasks = (
 /**
  * Create test data for different states
  */
-export const createCompletedGoal = (overrides?: Partial<Goal>): Goal => createGoal({
+export const createCompletedGoal = (overrides?: Partial<Goal>): Goal =>
+  createGoal({
     completed_at: createTimestamp(),
     ...overrides,
   });
 
-export const createArchivedLifeArea = (overrides?: Partial<LifeArea>): LifeArea => createLifeArea({
+export const createArchivedLifeArea = (overrides?: Partial<LifeArea>): LifeArea =>
+  createLifeArea({
     archived_at: createTimestamp(),
     ...overrides,
   });
 
-export const createOverdueTask = (overrides?: Partial<Task>): Task => createTask({
+export const createOverdueTask = (overrides?: Partial<Task>): Task =>
+  createTask({
     due_date: createTimestamp(-7), // 7 days ago
     ...overrides,
   });
 
-export const createInProgressProject = (overrides?: Partial<Project>): Project => createProject({
+export const createInProgressProject = (overrides?: Partial<Project>): Project =>
+  createProject({
     status: 'in_progress' as ProjectStatus,
     ...overrides,
   });
@@ -238,11 +240,11 @@ export const createInProgressProject = (overrides?: Partial<Project>): Project =
  * Create invalid test data for error testing
  */
 export const createInvalidLifeArea = (): Partial<LifeArea> => ({
-    id: generateId('invalid'),
-    name: '', // Invalid: empty name
-    color: 'not-a-color', // Invalid: not a valid color
-    position: -1, // Invalid: negative position
-  });
+  id: generateId('invalid'),
+  name: '', // Invalid: empty name
+  color: 'not-a-color', // Invalid: not a valid color
+  position: -1, // Invalid: negative position
+});
 
 /**
  * Batch create test data
@@ -250,7 +252,5 @@ export const createInvalidLifeArea = (): Partial<LifeArea> => ({
 export const batchCreate = <T>(
   factory: (overrides?: Partial<T>) => T,
   count: number,
-  overrides?: (index: number) => Partial<T>
-): T[] => Array.from({ length: count }, (_, i) => 
-    factory(overrides ? overrides(i) : undefined)
-  );
+  overrides?: (index: number) => Partial<T>,
+): T[] => Array.from({ length: count }, (_, i) => factory(overrides ? overrides(i) : undefined));

@@ -1,7 +1,7 @@
-import { Select as KobalteSelect } from "@kobalte/core/select";
-import type { Component} from "solid-js";
-import { JSX, splitProps } from "solid-js";
-import { HiOutlineChevronUpDown, HiOutlineCheck } from "solid-icons/hi";
+import { Select as KobalteSelect } from '@kobalte/core/select';
+import type { Component } from 'solid-js';
+import { JSX, splitProps } from 'solid-js';
+import { HiOutlineChevronUpDown, HiOutlineCheck } from 'solid-icons/hi';
 
 const Select = KobalteSelect;
 
@@ -14,36 +14,31 @@ interface SelectTriggerProps extends KobalteSelect.SelectTriggerProps {
 }
 
 const SelectTrigger: Component<SelectTriggerProps> = (props) => {
-  const [local, others] = splitProps(props, ["class", "children", "label", "error", "placeholder"]);
+  const [local, others] = splitProps(props, ['class', 'children', 'label', 'error', 'placeholder']);
   const triggerId = `select-${Math.random().toString(36).substr(2, 9)}`;
 
   return (
     <div class="w-full">
       {local.label && (
-        <label
-          for={triggerId}
-          class="mb-2 block text-sm font-medium text-content"
-        >
+        <label for={triggerId} class="text-content mb-2 block text-sm font-medium">
           {local.label}
         </label>
       )}
       <KobalteSelect.Trigger
         id={triggerId}
-        class={`flex h-10 w-full items-center justify-between rounded-md border px-3 py-2 text-sm transition-colors focus-ring disabled:cursor-not-allowed disabled:opacity-50 ${
+        class={`focus-ring flex h-10 w-full items-center justify-between rounded-md border px-3 py-2 text-sm transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${
           local.error
-            ? "border-danger-500 hover:border-danger-600"
-            : "border-border bg-surface hover:border-border-strong"
-        } ${local.class || ""}`}
+            ? 'border-danger-500 hover:border-danger-600'
+            : 'border-border bg-surface hover:border-border-strong'
+        } ${local.class || ''}`}
         {...others}
       >
-        <KobalteSelect.Value placeholder={local.placeholder || "Select an option"} />
+        <KobalteSelect.Value placeholder={local.placeholder || 'Select an option'} />
         <KobalteSelect.Icon>
           <HiOutlineChevronUpDown class="h-4 w-4 opacity-50" />
         </KobalteSelect.Icon>
       </KobalteSelect.Trigger>
-      {local.error && (
-        <p class="mt-1 text-sm text-danger-500">{local.error}</p>
-      )}
+      {local.error && <p class="text-danger-500 mt-1 text-sm">{local.error}</p>}
     </div>
   );
 };
@@ -51,10 +46,10 @@ const SelectTrigger: Component<SelectTriggerProps> = (props) => {
 const SelectPortal = KobalteSelect.Portal;
 
 const SelectContent: Component<KobalteSelect.SelectContentProps> = (props) => {
-  const [local, others] = splitProps(props, ["class"]);
+  const [local, others] = splitProps(props, ['class']);
   return (
     <KobalteSelect.Content
-      class={`relative z-50 max-h-96 min-w-[8rem] overflow-hidden rounded-md border border-border bg-surface text-content shadow-modal animate-fade-in ${local.class || ""}`}
+      class={`border-border bg-surface text-content shadow-modal animate-fade-in relative z-50 max-h-96 min-w-[8rem] overflow-hidden rounded-md border ${local.class || ''}`}
       {...others}
     >
       <KobalteSelect.Listbox class="p-1" />
@@ -63,10 +58,10 @@ const SelectContent: Component<KobalteSelect.SelectContentProps> = (props) => {
 };
 
 const SelectItem: Component<KobalteSelect.SelectItemProps> = (props) => {
-  const [local, others] = splitProps(props, ["class", "children"]);
+  const [local, others] = splitProps(props, ['class', 'children']);
   return (
     <KobalteSelect.Item
-      class={`relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none ui-highlighted:bg-surface-100 dark:ui-highlighted:bg-surface-200 ui-disabled:pointer-events-none ui-disabled:opacity-50 ${local.class || ""}`}
+      class={`ui-highlighted:bg-surface-100 dark:ui-highlighted:bg-surface-200 ui-disabled:pointer-events-none ui-disabled:opacity-50 relative flex w-full cursor-default items-center rounded-sm py-1.5 pr-2 pl-8 text-sm outline-none select-none ${local.class || ''}`}
       {...others}
     >
       <span class="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
@@ -79,11 +74,4 @@ const SelectItem: Component<KobalteSelect.SelectItemProps> = (props) => {
   );
 };
 
-export {
-  Select,
-  SelectValue,
-  SelectTrigger,
-  SelectPortal,
-  SelectContent,
-  SelectItem,
-};
+export { Select, SelectValue, SelectTrigger, SelectPortal, SelectContent, SelectItem };

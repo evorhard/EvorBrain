@@ -1,9 +1,9 @@
-import type { Component} from "solid-js";
-import { createSignal } from "solid-js";
-import { 
-  Button, 
-  Checkbox, 
-  Switch, 
+import type { Component } from 'solid-js';
+import { createSignal } from 'solid-js';
+import {
+  Button,
+  Checkbox,
+  Switch,
   Tooltip,
   DropdownMenu,
   DropdownMenuContent,
@@ -11,25 +11,25 @@ import {
   DropdownMenuLabel,
   DropdownMenuPortal,
   DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from "./ui";
-import { HiOutlineDotsVertical } from "solid-icons/hi";
+  DropdownMenuTrigger,
+} from './ui';
+import { HiOutlineDotsVertical } from 'solid-icons/hi';
 
 const KobalteDemo: Component = () => {
   const [switchChecked, setSwitchChecked] = createSignal(false);
   const [checkboxChecked, setCheckboxChecked] = createSignal(false);
 
   return (
-    <div class="p-8 space-y-8">
-      <div class="bg-surface rounded-lg shadow-card p-6">
-        <h2 class="text-2xl font-bold text-content mb-4">Kobalte Component Library</h2>
+    <div class="space-y-8 p-8">
+      <div class="bg-surface shadow-card rounded-lg p-6">
+        <h2 class="text-content mb-4 text-2xl font-bold">Kobalte Component Library</h2>
         <p class="text-content-secondary mb-6">
           A collection of accessible, unstyled components integrated with our theme system.
         </p>
       </div>
 
-      <div class="bg-surface rounded-lg shadow-card p-6">
-        <h3 class="text-lg font-semibold text-content mb-4">Buttons</h3>
+      <div class="bg-surface shadow-card rounded-lg p-6">
+        <h3 class="text-content mb-4 text-lg font-semibold">Buttons</h3>
         <div class="space-y-4">
           <div class="flex flex-wrap gap-4">
             <Button>Default Button</Button>
@@ -39,7 +39,7 @@ const KobalteDemo: Component = () => {
             <Button variant="danger">Danger</Button>
             <Button variant="success">Success</Button>
           </div>
-          
+
           <div class="flex flex-wrap gap-4">
             <Button size="sm">Small</Button>
             <Button size="default">Default</Button>
@@ -48,16 +48,18 @@ const KobalteDemo: Component = () => {
               <HiOutlineDotsVertical class="h-4 w-4" />
             </Button>
           </div>
-          
+
           <div class="flex flex-wrap gap-4">
             <Button disabled>Disabled</Button>
-            <Button variant="secondary" disabled>Disabled Secondary</Button>
+            <Button variant="secondary" disabled>
+              Disabled Secondary
+            </Button>
           </div>
         </div>
       </div>
 
-      <div class="bg-surface rounded-lg shadow-card p-6">
-        <h3 class="text-lg font-semibold text-content mb-4">Form Controls</h3>
+      <div class="bg-surface shadow-card rounded-lg p-6">
+        <h3 class="text-content mb-4 text-lg font-semibold">Form Controls</h3>
         <div class="space-y-4">
           <div>
             <Switch
@@ -66,7 +68,7 @@ const KobalteDemo: Component = () => {
               onChange={setSwitchChecked}
             />
           </div>
-          
+
           <div>
             <Checkbox
               label="I agree to the terms and conditions"
@@ -77,30 +79,28 @@ const KobalteDemo: Component = () => {
         </div>
       </div>
 
-      <div class="bg-surface rounded-lg shadow-card p-6">
-        <h3 class="text-lg font-semibold text-content mb-4">Tooltips</h3>
+      <div class="bg-surface shadow-card rounded-lg p-6">
+        <h3 class="text-content mb-4 text-lg font-semibold">Tooltips</h3>
         <div class="flex gap-4">
           <Tooltip content="This is a tooltip">
             <Button variant="outline">Hover me</Button>
           </Tooltip>
-          
+
           <Tooltip content="Another helpful tooltip" placement="bottom">
             <Button variant="secondary">Bottom tooltip</Button>
           </Tooltip>
-          
+
           <Tooltip content="Right side tooltip" placement="right">
             <Button variant="ghost">Right tooltip</Button>
           </Tooltip>
         </div>
       </div>
 
-      <div class="bg-surface rounded-lg shadow-card p-6">
-        <h3 class="text-lg font-semibold text-content mb-4">Dropdown Menu</h3>
+      <div class="bg-surface shadow-card rounded-lg p-6">
+        <h3 class="text-content mb-4 text-lg font-semibold">Dropdown Menu</h3>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline">
-              Open Menu
-            </Button>
+            <Button variant="outline">Open Menu</Button>
           </DropdownMenuTrigger>
           <DropdownMenuPortal>
             <DropdownMenuContent>
@@ -116,17 +116,15 @@ const KobalteDemo: Component = () => {
         </DropdownMenu>
       </div>
 
-      <div class="bg-surface rounded-lg shadow-card p-6">
-        <h3 class="text-lg font-semibold text-content mb-4">Component States</h3>
-        <p class="text-content-secondary mb-4">
-          Current states:
-        </p>
+      <div class="bg-surface shadow-card rounded-lg p-6">
+        <h3 class="text-content mb-4 text-lg font-semibold">Component States</h3>
+        <p class="text-content-secondary mb-4">Current states:</p>
         <ul class="space-y-2 text-sm">
           <li class="text-content">
-            Switch: <span class="font-medium">{switchChecked() ? "On" : "Off"}</span>
+            Switch: <span class="font-medium">{switchChecked() ? 'On' : 'Off'}</span>
           </li>
           <li class="text-content">
-            Checkbox: <span class="font-medium">{checkboxChecked() ? "Checked" : "Unchecked"}</span>
+            Checkbox: <span class="font-medium">{checkboxChecked() ? 'Checked' : 'Unchecked'}</span>
           </li>
         </ul>
       </div>

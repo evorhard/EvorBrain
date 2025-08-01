@@ -9,9 +9,12 @@
 ╚══════╝  ╚═══╝   ╚═════╝ ╚═╝  ╚═╝╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝
 ```
 
-**A local-first, hierarchical task management system that combines the best of Notion and Obsidian into a blazing-fast desktop application.**
+**A local-first, hierarchical task management system that combines the best of Notion and Obsidian
+into a blazing-fast desktop application.**
 
-> ⚠️ **IMPORTANT: This project is currently in early development and is NOT functional yet.** The documentation below describes the planned features and architecture. Please check the [Current Status](#-current-status) section for development progress.
+> ⚠️ **IMPORTANT: This project is currently in early development and is NOT functional yet.** The
+> documentation below describes the planned features and architecture. Please check the
+> [Current Status](#-current-status) section for development progress.
 
 [![Tauri](https://img.shields.io/badge/Tauri-2.0-24C8DB?style=for-the-badge&logo=tauri&logoColor=white)](https://tauri.app)
 [![SolidJS](https://img.shields.io/badge/SolidJS-1.8-2C4F7C?style=for-the-badge&logo=solid&logoColor=white)](https://solidjs.com)
@@ -75,6 +78,7 @@ EvorBrain is currently in the initial development phase. Here's the development 
 - [ ] Frontend state management setup
 
 #### 📋 Pending
+
 - [ ] Unit test coverage for existing components
 - [ ] Frontend routing and navigation
 - [ ] Life Area management implementation
@@ -88,13 +92,18 @@ EvorBrain is currently in the initial development phase. Here's the development 
 - [ ] Performance optimization
 - [ ] Production build pipeline
 
-**Development Status**: Major progress! The app now has a complete database layer with SQLite integration, migration system, and all data models implemented. The UI foundation is complete with theme system and responsive design. All Tauri IPC commands are implemented with full CRUD operations for Life Areas, Goals, Projects, Tasks, and Notes. A type-safe frontend API client is ready to use. Next up: implementing the actual UI functionality and state management.
+**Development Status**: Major progress! The app now has a complete database layer with SQLite
+integration, migration system, and all data models implemented. The UI foundation is complete with
+theme system and responsive design. All Tauri IPC commands are implemented with full CRUD operations
+for Life Areas, Goals, Projects, Tasks, and Notes. A type-safe frontend API client is ready to use.
+Next up: implementing the actual UI functionality and state management.
 
 ---
 
 ## 🤔 What Does This Do?
 
-EvorBrain is your personal life management system that helps you organize everything from big life goals down to daily tasks. Think of it as a digital brain that:
+EvorBrain is your personal life management system that helps you organize everything from big life
+goals down to daily tasks. Think of it as a digital brain that:
 
 - **Organizes your life** into clear areas (Career, Health, Finance, etc.)
 - **Breaks down goals** into achievable projects and tasks
@@ -104,7 +113,8 @@ EvorBrain is your personal life management system that helps you organize everyt
 - **Reads like Obsidian** with human-readable markdown files
 - **Functions like Notion** with a beautiful, intuitive interface
 
-Perfect for anyone who wants the power of Notion's organization with Obsidian's local-first philosophy and the performance of a native app.
+Perfect for anyone who wants the power of Notion's organization with Obsidian's local-first
+philosophy and the performance of a native app.
 
 ---
 
@@ -112,7 +122,8 @@ Perfect for anyone who wants the power of Notion's organization with Obsidian's 
 
 ### 🚀 Currently In Development
 
-> **Note**: These features represent the planned functionality. None of these features are implemented yet.
+> **Note**: These features represent the planned functionality. None of these features are
+> implemented yet.
 
 - **Hierarchical Organization**: Life Areas → Goals → Projects → Tasks → Subtasks
 - **Local-First Storage**: All data stored in SQLite + markdown files on your computer
@@ -141,24 +152,24 @@ Perfect for anyone who wants the power of Notion's organization with Obsidian's 
 
 ### Core Technologies
 
-| Component              | Technology                                                 | Why I Chose It                                         |
-| ---------------------- | ---------------------------------------------------------- | ------------------------------------------------------ |
-| **Desktop Framework**  | [Tauri 2.0](https://tauri.app)                             | Rust-powered, secure, 50MB apps vs Electron's 150MB+   |
-| **Frontend Framework** | [SolidJS](https://solidjs.com)                             | No virtual DOM, fine-grained reactivity, 7KB runtime   |
-| **Styling**            | [Tailwind CSS](https://tailwindcss.com)                    | Utility-first, great DX, perfect for rapid development |
-| **Responsive Design**  | Custom Breakpoint System                                    | Mobile-first with useBreakpoint hook & responsive utils|
-| **UI Components**      | [Kobalte](https://kobalte.dev)                             | Accessible, unstyled components for SolidJS            |
-| **Database**           | [SQLite](https://sqlite.org) with [SQLx](https://github.com/launchbadge/sqlx) | Fast, reliable, zero-config embedded database with compile-time checked queries |
-| **Migrations**         | Custom Rust-based system                                    | Version-controlled database schema with up/down support |
-| **Language**           | [TypeScript](https://typescriptlang.org)                   | Type safety, better DX, fewer runtime errors           |
-| **Backend Language**   | [Rust](https://rust-lang.org)                              | Memory safe, blazing fast, excellent for native apps   |
-| **Package Manager**    | [Bun](https://bun.sh)                                      | Fast all-in-one JavaScript runtime and toolkit         |
-| **State Management**   | [Solid Stores](https://www.solidjs.com/docs/latest#stores) | Built-in reactive state management                     |
-| **Router**             | [@solidjs/router](https://github.com/solidjs/solid-router) | Official SolidJS routing solution                      |
-| **Build Tool**         | [Vite](https://vitejs.dev)                                 | Fast frontend build tool with HMR                      |
-| **Testing**            | [Vitest](https://vitest.dev) + [@solidjs/testing-library](https://github.com/solidjs/solid-testing-library) | Modern testing framework with SolidJS support |
-| **E2E Testing**        | [Playwright](https://playwright.dev)                        | Cross-browser end-to-end testing for Tauri apps        |
-| **Linting**            | [ESLint](https://eslint.org) + TypeScript ESLint           | Code quality and consistency enforcement               |
+| Component              | Technology                                                                                                  | Why I Chose It                                                                  |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| **Desktop Framework**  | [Tauri 2.0](https://tauri.app)                                                                              | Rust-powered, secure, 50MB apps vs Electron's 150MB+                            |
+| **Frontend Framework** | [SolidJS](https://solidjs.com)                                                                              | No virtual DOM, fine-grained reactivity, 7KB runtime                            |
+| **Styling**            | [Tailwind CSS](https://tailwindcss.com)                                                                     | Utility-first, great DX, perfect for rapid development                          |
+| **Responsive Design**  | Custom Breakpoint System                                                                                    | Mobile-first with useBreakpoint hook & responsive utils                         |
+| **UI Components**      | [Kobalte](https://kobalte.dev)                                                                              | Accessible, unstyled components for SolidJS                                     |
+| **Database**           | [SQLite](https://sqlite.org) with [SQLx](https://github.com/launchbadge/sqlx)                               | Fast, reliable, zero-config embedded database with compile-time checked queries |
+| **Migrations**         | Custom Rust-based system                                                                                    | Version-controlled database schema with up/down support                         |
+| **Language**           | [TypeScript](https://typescriptlang.org)                                                                    | Type safety, better DX, fewer runtime errors                                    |
+| **Backend Language**   | [Rust](https://rust-lang.org)                                                                               | Memory safe, blazing fast, excellent for native apps                            |
+| **Package Manager**    | [Bun](https://bun.sh)                                                                                       | Fast all-in-one JavaScript runtime and toolkit                                  |
+| **State Management**   | [Solid Stores](https://www.solidjs.com/docs/latest#stores)                                                  | Built-in reactive state management                                              |
+| **Router**             | [@solidjs/router](https://github.com/solidjs/solid-router)                                                  | Official SolidJS routing solution                                               |
+| **Build Tool**         | [Vite](https://vitejs.dev)                                                                                  | Fast frontend build tool with HMR                                               |
+| **Testing**            | [Vitest](https://vitest.dev) + [@solidjs/testing-library](https://github.com/solidjs/solid-testing-library) | Modern testing framework with SolidJS support                                   |
+| **E2E Testing**        | [Playwright](https://playwright.dev)                                                                        | Cross-browser end-to-end testing for Tauri apps                                 |
+| **Linting**            | [ESLint](https://eslint.org) + TypeScript ESLint                                                            | Code quality and consistency enforcement                                        |
 
 ---
 
@@ -196,7 +207,9 @@ Before you begin, ensure you have the following installed:
 
 ## 🚀 Installation
 
-> 🚀 **Developer Notice**: The application now runs in development mode! While core functionality like task management isn't implemented yet, you can explore the UI framework and responsive design system.
+> 🚀 **Developer Notice**: The application now runs in development mode! While core functionality
+> like task management isn't implemented yet, you can explore the UI framework and responsive design
+> system.
 
 ### 1. Clone the Repository
 
@@ -230,13 +243,16 @@ bun run start
 # - Hot module replacement for development
 ```
 
-**Current State**: Both UI foundation and database layer are complete! You can run the app to explore the component library, theme system, responsive design, and test the database migration system. Next milestone: implementing CRUD operations and connecting frontend to backend.
+**Current State**: Both UI foundation and database layer are complete! You can run the app to
+explore the component library, theme system, responsive design, and test the database migration
+system. Next milestone: implementing CRUD operations and connecting frontend to backend.
 
 ---
 
 ## 🎯 Getting Started
 
-> 📝 **Note**: This section describes the planned user experience once the application is functional. It's currently here as a reference for the intended workflow.
+> 📝 **Note**: This section describes the planned user experience once the application is
+> functional. It's currently here as a reference for the intended workflow.
 
 ### Quick Start Guide (Planned Experience)
 
@@ -247,20 +263,17 @@ bun run start
    ```
 
 2. **Create Your First Life Area** _(Not implemented)_
-
    - Click the "+" button in the sidebar
    - Name it (e.g., "Career", "Health", "Personal")
    - Choose a color and icon
 
 3. **Add a Goal** _(Not implemented)_
-
    - Select your life area
    - Click "Add Goal"
    - Define what you want to achieve
    - Set a target date
 
 4. **Create a Project** _(Not implemented)_
-
    - Within your goal, create a project
    - Break it down into actionable tasks
    - Set priorities and deadlines
@@ -404,7 +417,6 @@ bun run lint:fix  # Auto-fix linting errors where possible
    ```
 
 2. **Make your changes**
-
    - Follow the coding standards in [`PLANNING.md`](PLANNING.md#coding-standards)
    - Write tests for new functionality
    - Update documentation as needed
@@ -445,7 +457,8 @@ The project uses Vitest for unit testing and Playwright for end-to-end testing.
 
 ⚠️ **Important**: Test utilities are fully implemented but have some environment setup limitations:
 
-- **Component Tests**: Some tests fail with "document is not defined" errors due to jsdom configuration issues
+- **Component Tests**: Some tests fail with "document is not defined" errors due to jsdom
+  configuration issues
 - **Router Integration**: Not yet implemented in render helpers (disabled to avoid SSR issues)
 - **Test Utilities**: Working correctly as demonstrated by passing example tests
 
@@ -470,7 +483,8 @@ bun run test:e2e
 
 ### Test Coverage
 
-The project includes comprehensive test coverage reporting using Vitest's built-in coverage support (via c8/v8).
+The project includes comprehensive test coverage reporting using Vitest's built-in coverage support
+(via c8/v8).
 
 ```bash
 # Generate coverage report
@@ -486,27 +500,33 @@ bun run test:coverage
 - **Output Formats**: text, json, html, and lcov
 - **Excluded Files**: Test files, configuration files, type definitions, and test utilities
 
-The coverage configuration can be found in `vitest.config.ts`. Coverage reports are automatically excluded from version control.
+The coverage configuration can be found in `vitest.config.ts`. Coverage reports are automatically
+excluded from version control.
 
 ### Test Utilities
 
 We provide comprehensive test utilities in `src/test/utils/`:
+
 - **TauriMock**: Enhanced mocking for Tauri IPC commands
 - **Render Helpers**: Utilities for testing SolidJS components
 - **Data Factories**: Functions for generating test data
 - **Custom Matchers**: Domain-specific assertions
 
-See the [Test Utilities Documentation](src/test/utils/README.md) for detailed usage and known issues.
+See the [Test Utilities Documentation](src/test/utils/README.md) for detailed usage and known
+issues.
 
 ---
 
 ## 📚 Documentation
 
 - **[Planning Document](PLANNING.md)** - Project vision, design decisions, and development phases
-- **[Architecture Document](ARCHITECTURE.md)** - Detailed technical architecture and implementation specs
-- **[Task Tracking](TASKS.md)** - Current development status, upcoming features, and task assignments
+- **[Architecture Document](ARCHITECTURE.md)** - Detailed technical architecture and implementation
+  specs
+- **[Task Tracking](TASKS.md)** - Current development status, upcoming features, and task
+  assignments
 - **[API Documentation](docs/api.md)** - Complete TypeScript API client reference
-- **[Component Testing Guide](src/test/component-testing-guide.md)** - Guide for writing component tests
+- **[Component Testing Guide](src/test/component-testing-guide.md)** - Guide for writing component
+  tests
 - **[E2E Testing Guide](e2e/README.md)** - Comprehensive guide for end-to-end testing
 - **[User Guide](docs/user-guide.md)** - Comprehensive user documentation (coming soon)
 
@@ -558,7 +578,8 @@ Need help? I'm here for you!
 <!-- - 📖 **[Documentation](https://evorbrain.dev/docs)** - Comprehensive guides (coming soon) -->
 <!-- - 💬 **[Discord Community](https://discord.gg/evorbrain)** - Get help and chat with users -->
 
-- 🐛 **[Issue Tracker](https://github.com/evorhard/evorbrain/issues)** - Report bugs or request features
+- 🐛 **[Issue Tracker](https://github.com/evorhard/evorbrain/issues)** - Report bugs or request
+  features
   <!-- - 📧 **Email** - support@evorbrain.dev -->
   <!-- - 🐦 **Twitter** - [@evorbrain](https://twitter.com/evorbrain) for updates -->
 

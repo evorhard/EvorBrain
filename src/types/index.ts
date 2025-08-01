@@ -7,16 +7,6 @@ export * from './logging';
 export * from './repository';
 
 // Re-export commonly used types for convenience
-export type {
-  LifeArea,
-  Goal,
-  Project,
-  Task,
-  Note,
-  Tag,
-} from './models';
+export type { LifeArea, Goal, Project, Task, Note, Tag } from './models';
 
-export {
-  ProjectStatus,
-  TaskPriority,
-} from './models';
+export { ProjectStatus, TaskPriority } from './models';

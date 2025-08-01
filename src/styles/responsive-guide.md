@@ -2,21 +2,22 @@
 
 ## Overview
 
-EvorBrain uses a mobile-first responsive design system built on Tailwind CSS. This guide covers breakpoints, responsive utilities, and best practices for building adaptive interfaces.
+EvorBrain uses a mobile-first responsive design system built on Tailwind CSS. This guide covers
+breakpoints, responsive utilities, and best practices for building adaptive interfaces.
 
 ## Breakpoints
 
 Our design system includes the following breakpoints:
 
-| Breakpoint | Min Width | CSS Prefix | Target Devices |
-|------------|-----------|------------|----------------|
-| xs | 475px | `xs:` | Large phones |
-| sm | 640px | `sm:` | Small tablets, landscape phones |
-| md | 768px | `md:` | Tablets |
-| lg | 1024px | `lg:` | Small laptops, large tablets |
-| xl | 1280px | `xl:` | Desktops |
-| 2xl | 1536px | `2xl:` | Large desktops |
-| 3xl | 1920px | `3xl:` | Full HD and larger screens |
+| Breakpoint | Min Width | CSS Prefix | Target Devices                  |
+| ---------- | --------- | ---------- | ------------------------------- |
+| xs         | 475px     | `xs:`      | Large phones                    |
+| sm         | 640px     | `sm:`      | Small tablets, landscape phones |
+| md         | 768px     | `md:`      | Tablets                         |
+| lg         | 1024px    | `lg:`      | Small laptops, large tablets    |
+| xl         | 1280px    | `xl:`      | Desktops                        |
+| 2xl        | 1536px    | `2xl:`     | Large desktops                  |
+| 3xl        | 1920px    | `3xl:`     | Full HD and larger screens      |
 
 ### Special Breakpoints
 
@@ -46,11 +47,11 @@ Always design for mobile first, then enhance for larger screens:
 The `Container` component provides consistent max-widths and padding:
 
 ```tsx
-import { Container } from "@/components/ui";
+import { Container } from '@/components/ui';
 
 <Container maxWidth="7xl" padding="default">
   {/* Content */}
-</Container>
+</Container>;
 ```
 
 ### Grid System
@@ -59,9 +60,7 @@ Use responsive grid classes for layouts:
 
 ```tsx
 // 1 column on mobile, 2 on tablet, 3 on desktop
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-  {/* Grid items */}
-</div>
+<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">{/* Grid items */}</div>
 ```
 
 ### useBreakpoint Hook
@@ -69,17 +68,11 @@ Use responsive grid classes for layouts:
 Access current breakpoint information programmatically:
 
 ```tsx
-import { useBreakpoint } from "@/hooks/useBreakpoint";
+import { useBreakpoint } from '@/hooks/useBreakpoint';
 
 const Component = () => {
-  const { 
-    currentBreakpoint, 
-    isMobile, 
-    isTablet, 
-    isDesktop,
-    isTouch 
-  } = useBreakpoint();
-  
+  const { currentBreakpoint, isMobile, isTablet, isDesktop, isTouch } = useBreakpoint();
+
   return (
     <Show when={isMobile()}>
       <MobileLayout />
@@ -127,7 +120,7 @@ const Component = () => {
 
 ```tsx
 // Stack on mobile, side-by-side on desktop
-<div class="flex flex-col lg:flex-row gap-4">
+<div class="flex flex-col gap-4 lg:flex-row">
   <div class="flex-1">Main content</div>
   <div class="w-full lg:w-64">Sidebar</div>
 </div>
@@ -138,10 +131,8 @@ const Component = () => {
 ### Responsive Card Grid
 
 ```tsx
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-  <Card class="p-4 sm:p-6">
-    {/* Card content */}
-  </Card>
+<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
+  <Card class="p-4 sm:p-6">{/* Card content */}</Card>
 </div>
 ```
 
@@ -149,7 +140,7 @@ const Component = () => {
 
 ```tsx
 // Desktop: horizontal, Mobile: vertical
-<nav class="flex flex-col sm:flex-row gap-2 sm:gap-4">
+<nav class="flex flex-col gap-2 sm:flex-row sm:gap-4">
   <a class="px-4 py-2">Link 1</a>
   <a class="px-4 py-2">Link 2</a>
 </nav>
@@ -159,7 +150,7 @@ const Component = () => {
 
 ```tsx
 <form class="space-y-4">
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
     <Input label="First Name" />
     <Input label="Last Name" />
   </div>
@@ -203,6 +194,7 @@ const Component = () => {
 ## Common Issues and Solutions
 
 ### Text Overflow
+
 ```tsx
 // Add text truncation
 <p class="truncate">Long text that might overflow</p>
@@ -212,6 +204,7 @@ const Component = () => {
 ```
 
 ### Image Responsiveness
+
 ```tsx
 // Responsive image
 <img src="..." class="w-full h-auto" />
@@ -223,11 +216,10 @@ const Component = () => {
 ```
 
 ### Table Responsiveness
+
 ```tsx
 // Horizontal scroll for tables
 <div class="overflow-x-auto">
-  <table class="min-w-full">
-    {/* Table content */}
-  </table>
+  <table class="min-w-full">{/* Table content */}</table>
 </div>
 ```

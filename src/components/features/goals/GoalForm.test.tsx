@@ -1,12 +1,12 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@solidjs/testing-library';
 import { GoalForm } from './GoalForm';
-import { 
+import {
   TauriMock,
   createGoal,
   createLifeArea,
   createArchivedLifeArea,
-  createTimestamp
+  createTimestamp,
 } from '../../../test/utils';
 
 describe('GoalForm Component', () => {
@@ -16,7 +16,7 @@ describe('GoalForm Component', () => {
     createLifeArea({ name: 'Work' }),
     createLifeArea({ name: 'Personal' }),
     createLifeArea({ name: 'Health' }),
-    createArchivedLifeArea({ name: 'Archived Area' })
+    createArchivedLifeArea({ name: 'Archived Area' }),
   ];
 
   beforeEach(() => {
@@ -68,7 +68,7 @@ describe('GoalForm Component', () => {
 
       // Fill name but not life area
       fireEvent.input(screen.getByLabelText('Goal Name *'), {
-        target: { value: 'Test Goal' }
+        target: { value: 'Test Goal' },
       });
       fireEvent.click(submitButton);
 
@@ -83,7 +83,7 @@ describe('GoalForm Component', () => {
         description: 'Goal description',
         life_area_id: mockLifeAreas[0].id,
         priority: 'high',
-        target_date: '2025-12-31T00:00:00Z'
+        target_date: '2025-12-31T00:00:00Z',
       });
 
       tauriMock.onCommand('create_goal', (data) => {
@@ -92,7 +92,7 @@ describe('GoalForm Component', () => {
           description: 'Goal description',
           life_area_id: mockLifeAreas[0].id,
           priority: 'high',
-          target_date: '2025-12-31'
+          target_date: '2025-12-31',
         });
         return newGoal;
       });
@@ -101,19 +101,19 @@ describe('GoalForm Component', () => {
 
       // Fill form
       fireEvent.input(screen.getByLabelText('Goal Name *'), {
-        target: { value: 'New Goal' }
+        target: { value: 'New Goal' },
       });
       fireEvent.change(screen.getByLabelText('Life Area *'), {
-        target: { value: mockLifeAreas[0].id }
+        target: { value: mockLifeAreas[0].id },
       });
       fireEvent.input(screen.getByLabelText('Description'), {
-        target: { value: 'Goal description' }
+        target: { value: 'Goal description' },
       });
       fireEvent.change(screen.getByLabelText('Priority'), {
-        target: { value: 'high' }
+        target: { value: 'high' },
       });
       fireEvent.input(screen.getByLabelText('Target Date'), {
-        target: { value: '2025-12-31' }
+        target: { value: '2025-12-31' },
       });
 
       // Submit
@@ -129,14 +129,14 @@ describe('GoalForm Component', () => {
     it('should create goal with minimal fields', async () => {
       const newGoal = createGoal({
         name: 'Minimal Goal',
-        life_area_id: mockLifeAreas[1].id
+        life_area_id: mockLifeAreas[1].id,
       });
 
       tauriMock.onCommand('create_goal', (data) => {
         expect(data).toMatchObject({
           name: 'Minimal Goal',
           life_area_id: mockLifeAreas[1].id,
-          priority: 'medium'
+          priority: 'medium',
         });
         expect(data.description).toBeUndefined();
         expect(data.target_date).toBeUndefined();
@@ -146,10 +146,10 @@ describe('GoalForm Component', () => {
       render(() => <GoalForm onClose={onClose} />);
 
       fireEvent.input(screen.getByLabelText('Goal Name *'), {
-        target: { value: 'Minimal Goal' }
+        target: { value: 'Minimal Goal' },
       });
       fireEvent.change(screen.getByLabelText('Life Area *'), {
-        target: { value: mockLifeAreas[1].id }
+        target: { value: mockLifeAreas[1].id },
       });
 
       fireEvent.click(screen.getByText('Create Goal'));
@@ -160,17 +160,18 @@ describe('GoalForm Component', () => {
     });
 
     it('should show loading state during submission', async () => {
-      tauriMock.onCommand('create_goal', () => 
-        new Promise(resolve => setTimeout(() => resolve(createGoal()), 100))
+      tauriMock.onCommand(
+        'create_goal',
+        () => new Promise((resolve) => setTimeout(() => resolve(createGoal()), 100)),
       );
 
       render(() => <GoalForm onClose={onClose} />);
 
       fireEvent.input(screen.getByLabelText('Goal Name *'), {
-        target: { value: 'Test' }
+        target: { value: 'Test' },
       });
       fireEvent.change(screen.getByLabelText('Life Area *'), {
-        target: { value: mockLifeAreas[0].id }
+        target: { value: mockLifeAreas[0].id },
       });
 
       fireEvent.click(screen.getByText('Create Goal'));
@@ -185,10 +186,10 @@ describe('GoalForm Component', () => {
       render(() => <GoalForm onClose={onClose} />);
 
       fireEvent.input(screen.getByLabelText('Goal Name *'), {
-        target: { value: 'Test' }
+        target: { value: 'Test' },
       });
       fireEvent.change(screen.getByLabelText('Life Area *'), {
-        target: { value: mockLifeAreas[0].id }
+        target: { value: mockLifeAreas[0].id },
       });
 
       fireEvent.click(screen.getByText('Create Goal'));
@@ -207,7 +208,7 @@ describe('GoalForm Component', () => {
       description: 'Current description',
       life_area_id: mockLifeAreas[1].id,
       priority: 'high',
-      target_date: '2025-06-15T00:00:00Z'
+      target_date: '2025-06-15T00:00:00Z',
     });
 
     it('should render form with existing goal data', () => {
@@ -227,7 +228,7 @@ describe('GoalForm Component', () => {
         name: 'Updated Goal',
         description: 'New description',
         priority: 'low' as const,
-        target_date: '2025-12-31T00:00:00Z'
+        target_date: '2025-12-31T00:00:00Z',
       };
 
       tauriMock.onCommand('update_goal', ({ id, ...data }) => {
@@ -236,7 +237,7 @@ describe('GoalForm Component', () => {
           name: 'Updated Goal',
           description: 'New description',
           priority: 'low',
-          target_date: '2025-12-31'
+          target_date: '2025-12-31',
         });
         return updatedGoal;
       });
@@ -245,16 +246,16 @@ describe('GoalForm Component', () => {
 
       // Update fields
       fireEvent.input(screen.getByLabelText('Goal Name *'), {
-        target: { value: 'Updated Goal' }
+        target: { value: 'Updated Goal' },
       });
       fireEvent.input(screen.getByLabelText('Description'), {
-        target: { value: 'New description' }
+        target: { value: 'New description' },
       });
       fireEvent.change(screen.getByLabelText('Priority'), {
-        target: { value: 'low' }
+        target: { value: 'low' },
       });
       fireEvent.input(screen.getByLabelText('Target Date'), {
-        target: { value: '2025-12-31' }
+        target: { value: '2025-12-31' },
       });
 
       fireEvent.click(screen.getByText('Update Goal'));
@@ -308,13 +309,13 @@ describe('GoalForm Component', () => {
       render(() => <GoalForm onClose={onClose} />);
 
       fireEvent.input(screen.getByLabelText('Goal Name *'), {
-        target: { value: '  Trimmed Name  ' }
+        target: { value: '  Trimmed Name  ' },
       });
       fireEvent.change(screen.getByLabelText('Life Area *'), {
-        target: { value: mockLifeAreas[0].id }
+        target: { value: mockLifeAreas[0].id },
       });
       fireEvent.input(screen.getByLabelText('Description'), {
-        target: { value: '  Trimmed description  ' }
+        target: { value: '  Trimmed description  ' },
       });
 
       fireEvent.click(screen.getByText('Create Goal'));
@@ -348,13 +349,13 @@ describe('GoalForm Component', () => {
       render(() => <GoalForm onClose={onClose} />);
 
       fireEvent.input(screen.getByLabelText('Goal Name *'), {
-        target: { value: 'Test' }
+        target: { value: 'Test' },
       });
       fireEvent.change(screen.getByLabelText('Life Area *'), {
-        target: { value: mockLifeAreas[0].id }
+        target: { value: mockLifeAreas[0].id },
       });
       fireEvent.input(screen.getByLabelText('Description'), {
-        target: { value: '   ' } // Only whitespace
+        target: { value: '   ' }, // Only whitespace
       });
 
       fireEvent.click(screen.getByText('Create Goal'));
@@ -387,10 +388,10 @@ describe('GoalForm Component', () => {
       render(() => <GoalForm onClose={onClose} />);
 
       fireEvent.input(screen.getByLabelText('Goal Name *'), {
-        target: { value: 'Test' }
+        target: { value: 'Test' },
       });
       fireEvent.change(screen.getByLabelText('Life Area *'), {
-        target: { value: mockLifeAreas[0].id }
+        target: { value: mockLifeAreas[0].id },
       });
 
       fireEvent.click(screen.getByText('Create Goal'));

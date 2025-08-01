@@ -32,7 +32,7 @@ describe('Select Component', () => {
 
   it('should handle onChange event', () => {
     const handleChange = vi.fn();
-    
+
     render(() => (
       <Select onChange={handleChange}>
         <option value="1">Option 1</option>
@@ -42,7 +42,7 @@ describe('Select Component', () => {
 
     const select = screen.getByRole('combobox');
     fireEvent.change(select, { target: { value: '2' } });
-    
+
     expect(handleChange).toHaveBeenCalled();
     expect(handleChange.mock.calls[0][0].target.value).toBe('2');
   });
@@ -163,7 +163,7 @@ describe('Select Component', () => {
 
   it('should merge custom styles with default styles', () => {
     render(() => (
-      <Select class="text-red-500 font-bold">
+      <Select class="font-bold text-red-500">
         <option value="1">Option 1</option>
       </Select>
     ));

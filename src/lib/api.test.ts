@@ -2,18 +2,18 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { api, lifeAreaApi, goalApi, projectApi, taskApi, noteApi } from './api';
 import { invoke } from '@tauri-apps/api/core';
 import { EvorBrainError } from '../types/errors';
-import { 
-  createLifeArea, 
-  createGoal, 
-  createProject, 
-  createTask, 
+import {
+  createLifeArea,
+  createGoal,
+  createProject,
+  createTask,
   createNote,
-  createTimestamp 
+  createTimestamp,
 } from '../test/utils';
 
 // Mock the Tauri invoke function
 vi.mock('@tauri-apps/api/core', () => ({
-  invoke: vi.fn()
+  invoke: vi.fn(),
 }));
 
 describe('API Client', () => {
@@ -105,10 +105,10 @@ describe('API Client', () => {
 
   describe('Goal API', () => {
     it('should create a goal', async () => {
-      const request = { 
-        name: 'Test Goal', 
+      const request = {
+        name: 'Test Goal',
         life_area_id: 'area-id',
-        priority: 'high' as const
+        priority: 'high' as const,
       };
       const mockResponse = createGoal(request);
       vi.mocked(invoke).mockResolvedValueOnce(mockResponse);
@@ -155,10 +155,10 @@ describe('API Client', () => {
 
   describe('Project API', () => {
     it('should create a project', async () => {
-      const request = { 
-        name: 'Test Project', 
+      const request = {
+        name: 'Test Project',
         goal_id: 'goal-id',
-        status: 'planned' as const
+        status: 'planned' as const,
       };
       const mockResponse = createProject(request);
       vi.mocked(invoke).mockResolvedValueOnce(mockResponse);
@@ -195,10 +195,10 @@ describe('API Client', () => {
 
   describe('Task API', () => {
     it('should create a task', async () => {
-      const request = { 
+      const request = {
         title: 'Test Task',
         project_id: 'project-id',
-        priority: 'medium' as const
+        priority: 'medium' as const,
       };
       const mockResponse = createTask(request);
       vi.mocked(invoke).mockResolvedValueOnce(mockResponse);
@@ -211,14 +211,11 @@ describe('API Client', () => {
 
     it('should create task with subtasks', async () => {
       const request = {
-        task: { 
+        task: {
           title: 'Parent Task',
-          project_id: 'project-id'
+          project_id: 'project-id',
         },
-        subtasks: [
-          { title: 'Subtask 1' },
-          { title: 'Subtask 2' }
-        ]
+        subtasks: [{ title: 'Subtask 1' }, { title: 'Subtask 2' }],
       };
       const mockResponse = createTask(request.task);
       vi.mocked(invoke).mockResolvedValueOnce(mockResponse);
@@ -264,10 +261,10 @@ describe('API Client', () => {
 
   describe('Note API', () => {
     it('should create a note', async () => {
-      const request = { 
+      const request = {
         title: 'Test Note',
         content: 'Note content',
-        task_id: 'task-id'
+        task_id: 'task-id',
       };
       const mockResponse = createNote(request);
       vi.mocked(invoke).mockResolvedValueOnce(mockResponse);
@@ -280,7 +277,7 @@ describe('API Client', () => {
 
     it('should get notes by different parent types', async () => {
       const mockNotes = [createNote(), createNote()];
-      
+
       // By task
       vi.mocked(invoke).mockResolvedValueOnce(mockNotes);
       let result = await noteApi.getByTask('task-id');
@@ -321,7 +318,7 @@ describe('API Client', () => {
         current_version: 5,
         latest_version: 5,
         pending_migrations: [],
-        applied_migrations: []
+        applied_migrations: [],
       };
       vi.mocked(invoke).mockResolvedValueOnce(mockStatus);
 
@@ -335,7 +332,7 @@ describe('API Client', () => {
       const mockResult = {
         success: true,
         message: 'Migrations complete',
-        version: 5
+        version: 5,
       };
       vi.mocked(invoke).mockResolvedValueOnce(mockResult);
 
@@ -350,7 +347,7 @@ describe('API Client', () => {
       const mockResult = {
         success: true,
         message: 'Rolled back to version 3',
-        version: 3
+        version: 3,
       };
       vi.mocked(invoke).mockResolvedValueOnce(mockResult);
 
@@ -375,9 +372,7 @@ describe('API Client', () => {
 
   describe('Logging API', () => {
     it('should get recent logs', async () => {
-      const mockLogs = [
-        { timestamp: createTimestamp(), level: 'INFO', message: 'Test log' }
-      ];
+      const mockLogs = [{ timestamp: createTimestamp(), level: 'INFO', message: 'Test log' }];
       vi.mocked(invoke).mockResolvedValueOnce(mockLogs);
 
       const result = await api.logging.getRecentLogs();
@@ -387,14 +382,12 @@ describe('API Client', () => {
     });
 
     it('should get logs with filters', async () => {
-      const request = { 
-        level: 'ERROR' as const, 
+      const request = {
+        level: 'ERROR' as const,
         limit: 50,
-        since: createTimestamp(-60) // 1 hour ago
+        since: createTimestamp(-60), // 1 hour ago
       };
-      const mockLogs = [
-        { timestamp: createTimestamp(), level: 'ERROR', message: 'Error log' }
-      ];
+      const mockLogs = [{ timestamp: createTimestamp(), level: 'ERROR', message: 'Error log' }];
       vi.mocked(invoke).mockResolvedValueOnce(mockLogs);
 
       const result = await api.logging.getRecentLogs(request);
@@ -414,10 +407,10 @@ describe('API Client', () => {
 
   describe('Repository API', () => {
     it('should check repository health', async () => {
-      const mockResult = { 
-        success: true, 
+      const mockResult = {
+        success: true,
         message: 'Repository is healthy',
-        affected_rows: 0
+        affected_rows: 0,
       };
       vi.mocked(invoke).mockResolvedValueOnce(mockResult);
 
@@ -430,12 +423,12 @@ describe('API Client', () => {
     it('should batch delete items', async () => {
       const request = {
         life_areas: ['id1', 'id2'],
-        goals: ['id3', 'id4']
+        goals: ['id3', 'id4'],
       };
       const mockResult = {
         success: true,
         message: 'Deleted 4 items',
-        affected_rows: 4
+        affected_rows: 4,
       };
       vi.mocked(invoke).mockResolvedValueOnce(mockResult);
 
@@ -449,7 +442,7 @@ describe('API Client', () => {
       const mockStats = {
         life_areas: { total: 10, active: 8, archived: 2 },
         goals: { total: 50, active: 40, archived: 10 },
-        database_size: 1024000
+        database_size: 1024000,
       };
       vi.mocked(invoke).mockResolvedValueOnce(mockStats);
 
@@ -462,12 +455,12 @@ describe('API Client', () => {
     it('should cleanup database', async () => {
       const options = {
         delete_archived_older_than_days: 90,
-        vacuum: true
+        vacuum: true,
       };
       const mockResult = {
         success: true,
         message: 'Cleanup complete',
-        affected_rows: 25
+        affected_rows: 25,
       };
       vi.mocked(invoke).mockResolvedValueOnce(mockResult);
 
@@ -480,12 +473,12 @@ describe('API Client', () => {
     it('should export data', async () => {
       const request = {
         format: 'json' as const,
-        include_archived: false
+        include_archived: false,
       };
       const mockResult = {
         success: true,
         path: '/exports/data.json',
-        size: 2048000
+        size: 2048000,
       };
       vi.mocked(invoke).mockResolvedValueOnce(mockResult);
 

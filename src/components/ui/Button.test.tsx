@@ -34,17 +34,17 @@ describe('Button Component', () => {
   it('handles click events', () => {
     const handleClick = vi.fn();
     render(() => <Button onClick={handleClick}>Clickable</Button>);
-    
+
     const button = screen.getByRole('button');
     fireEvent.click(button);
-    
+
     expect(handleClick).toHaveBeenCalledTimes(1);
   });
 
   it('can be disabled', () => {
     render(() => <Button disabled>Disabled Button</Button>);
     const button = screen.getByRole('button');
-    
+
     expect(button).toBeDisabled();
     expect(button).toHaveClass('disabled:opacity-50');
     expect(button).toHaveClass('disabled:pointer-events-none');
@@ -57,7 +57,11 @@ describe('Button Component', () => {
   });
 
   it('renders icon button with correct size', () => {
-    render(() => <Button size="icon" aria-label="Settings">⚙️</Button>);
+    render(() => (
+      <Button size="icon" aria-label="Settings">
+        ⚙️
+      </Button>
+    ));
     const button = screen.getByRole('button', { name: /settings/i });
     expect(button).toHaveClass('h-10');
     expect(button).toHaveClass('w-10');

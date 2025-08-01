@@ -1,32 +1,35 @@
-import type { Component} from "solid-js";
-import { createSignal, Show } from "solid-js";
-import { HiOutlineBars3, HiOutlineMagnifyingGlass, HiOutlineBell, HiOutlineCog } from "solid-icons/hi";
-import ThemeToggle from "./ThemeToggle";
+import type { Component } from 'solid-js';
+import { createSignal, Show } from 'solid-js';
+import {
+  HiOutlineBars3,
+  HiOutlineMagnifyingGlass,
+  HiOutlineBell,
+  HiOutlineCog,
+} from 'solid-icons/hi';
+import ThemeToggle from './ThemeToggle';
 
 interface HeaderProps {
   onToggleMobileSidebar: () => void;
 }
 
 const Header: Component<HeaderProps> = (props) => {
-  const [searchQuery, setSearchQuery] = createSignal("");
+  const [searchQuery, setSearchQuery] = createSignal('');
   const [showMobileSearch, setShowMobileSearch] = createSignal(false);
 
   return (
-    <header class="bg-surface border-b border-border">
-      <div class="px-3 sm:px-4 lg:px-6 py-3">
+    <header class="bg-surface border-border border-b">
+      <div class="px-3 py-3 sm:px-4 lg:px-6">
         <div class="flex items-center justify-between gap-3">
           <div class="flex items-center gap-2 sm:gap-4">
             <button
-              class="lg:hidden p-2 -ml-2 rounded-md hover:bg-surface-100 dark:hover:bg-surface-200 transition-colors focus-ring"
+              class="hover:bg-surface-100 dark:hover:bg-surface-200 focus-ring -ml-2 rounded-md p-2 transition-colors lg:hidden"
               aria-label="Toggle sidebar"
               onClick={props.onToggleMobileSidebar}
             >
-              <HiOutlineBars3 class="w-5 h-5 text-content-secondary" />
+              <HiOutlineBars3 class="text-content-secondary h-5 w-5" />
             </button>
-            
-            <h1 class="text-lg sm:text-xl font-semibold text-content">
-              EvorBrain
-            </h1>
+
+            <h1 class="text-content text-lg font-semibold sm:text-xl">EvorBrain</h1>
           </div>
 
           <div class="flex items-center gap-2 sm:gap-3">
@@ -37,34 +40,34 @@ const Header: Component<HeaderProps> = (props) => {
                 value={searchQuery()}
                 onInput={(e) => setSearchQuery(e.currentTarget.value)}
                 placeholder="Search..."
-                class="w-48 lg:w-64 px-4 py-2 pl-10 pr-4 text-sm bg-surface-100 dark:bg-surface-200 border border-border rounded-lg focus-ring placeholder:text-content-tertiary"
+                class="bg-surface-100 dark:bg-surface-200 border-border focus-ring placeholder:text-content-tertiary w-48 rounded-lg border px-4 py-2 pr-4 pl-10 text-sm lg:w-64"
               />
-              <HiOutlineMagnifyingGlass class="absolute left-3 top-2.5 w-5 h-5 text-content-tertiary" />
+              <HiOutlineMagnifyingGlass class="text-content-tertiary absolute top-2.5 left-3 h-5 w-5" />
             </div>
 
             {/* Mobile Search Toggle */}
             <button
-              class="md:hidden p-2 rounded-md hover:bg-surface-100 dark:hover:bg-surface-200 transition-colors focus-ring"
+              class="hover:bg-surface-100 dark:hover:bg-surface-200 focus-ring rounded-md p-2 transition-colors md:hidden"
               aria-label="Search"
               onClick={() => setShowMobileSearch(!showMobileSearch())}
             >
-              <HiOutlineMagnifyingGlass class="w-5 h-5 text-content-secondary" />
+              <HiOutlineMagnifyingGlass class="text-content-secondary h-5 w-5" />
             </button>
 
             <button
-              class="p-2 rounded-md hover:bg-surface-100 dark:hover:bg-surface-200 transition-colors focus-ring"
+              class="hover:bg-surface-100 dark:hover:bg-surface-200 focus-ring rounded-md p-2 transition-colors"
               aria-label="Notifications"
             >
-              <HiOutlineBell class="w-5 h-5 text-content-secondary" />
+              <HiOutlineBell class="text-content-secondary h-5 w-5" />
             </button>
 
             <ThemeToggle />
-            
+
             <button
-              class="hidden xs:block p-2 rounded-md hover:bg-surface-100 dark:hover:bg-surface-200 transition-colors focus-ring"
+              class="xs:block hover:bg-surface-100 dark:hover:bg-surface-200 focus-ring hidden rounded-md p-2 transition-colors"
               aria-label="Settings"
             >
-              <HiOutlineCog class="w-5 h-5 text-content-secondary" />
+              <HiOutlineCog class="text-content-secondary h-5 w-5" />
             </button>
           </div>
         </div>
@@ -78,10 +81,10 @@ const Header: Component<HeaderProps> = (props) => {
                 value={searchQuery()}
                 onInput={(e) => setSearchQuery(e.currentTarget.value)}
                 placeholder="Search..."
-                class="w-full px-4 py-2 pl-10 pr-4 text-sm bg-surface-100 dark:bg-surface-200 border border-border rounded-lg focus-ring placeholder:text-content-tertiary"
+                class="bg-surface-100 dark:bg-surface-200 border-border focus-ring placeholder:text-content-tertiary w-full rounded-lg border px-4 py-2 pr-4 pl-10 text-sm"
                 autofocus
               />
-              <HiOutlineMagnifyingGlass class="absolute left-3 top-2.5 w-5 h-5 text-content-tertiary" />
+              <HiOutlineMagnifyingGlass class="text-content-tertiary absolute top-2.5 left-3 h-5 w-5" />
             </div>
           </div>
         </Show>

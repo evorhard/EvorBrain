@@ -1,13 +1,13 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@solidjs/testing-library';
-import { 
+import {
   Modal,
   ModalTrigger,
   ModalContent,
   ModalHeader,
   ModalTitle,
   ModalDescription,
-  ModalFooter
+  ModalFooter,
 } from './Modal';
 import { Button } from './Button';
 
@@ -85,7 +85,9 @@ describe('Modal Component', () => {
 
   it('should be controlled with open prop', async () => {
     let isOpen = true;
-    const setOpen = (value: boolean) => { isOpen = value; };
+    const setOpen = (value: boolean) => {
+      isOpen = value;
+    };
 
     const { rerender } = render(() => (
       <Modal open={isOpen} onOpenChange={setOpen}>
@@ -143,9 +145,7 @@ describe('Modal Component', () => {
             <Button variant="secondary" onClick={handleCancel}>
               Cancel
             </Button>
-            <Button onClick={handleSave}>
-              Save
-            </Button>
+            <Button onClick={handleSave}>Save</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
@@ -226,7 +226,7 @@ describe('Modal Component', () => {
     await waitFor(() => {
       const dialog = screen.getByRole('dialog');
       expect(dialog).toBeInTheDocument();
-      
+
       // Kobalte automatically handles ARIA labels
       expect(screen.getByText('Accessible Title')).toBeInTheDocument();
       expect(screen.getByText('Accessible description')).toBeInTheDocument();
@@ -291,7 +291,7 @@ describe('Modal Component', () => {
   it('should handle all size variants', () => {
     const sizes = ['sm', 'md', 'lg', 'xl', 'full'] as const;
 
-    sizes.forEach(size => {
+    sizes.forEach((size) => {
       const { unmount } = render(() => (
         <Modal open>
           <ModalContent size={size}>
@@ -302,7 +302,7 @@ describe('Modal Component', () => {
 
       const content = screen.getByRole('dialog');
       expect(content).toHaveClass(`max-w-${size === 'full' ? '[95vw]' : size}`);
-      
+
       unmount();
     });
   });

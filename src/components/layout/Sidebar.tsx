@@ -1,5 +1,5 @@
-import type { Component} from "solid-js";
-import { createSignal, For } from "solid-js";
+import type { Component } from 'solid-js';
+import { createSignal, For } from 'solid-js';
 import {
   HiOutlineHome,
   HiOutlineRectangleStack,
@@ -12,8 +12,8 @@ import {
   HiOutlineChevronDown,
   HiOutlineBars3,
   HiOutlineFlag,
-} from "solid-icons/hi";
-import { useUIStore } from "../../stores";
+} from 'solid-icons/hi';
+import { useUIStore } from '../../stores';
 
 interface NavItem {
   id: string;
@@ -29,18 +29,18 @@ const Sidebar: Component = () => {
   const [expandedItems, setExpandedItems] = createSignal<Set<string>>(new Set());
 
   const navItems: NavItem[] = [
-    { id: "home", label: "Home", icon: HiOutlineHome, viewId: "dashboard" },
+    { id: 'home', label: 'Home', icon: HiOutlineHome, viewId: 'dashboard' },
     {
-      id: "life-areas",
-      label: "Life Areas",
+      id: 'life-areas',
+      label: 'Life Areas',
       icon: HiOutlineRectangleStack,
-      viewId: "life-areas",
+      viewId: 'life-areas',
     },
-    { id: "goals", label: "Goals", icon: HiOutlineFlag, viewId: "goals" },
-    { id: "tasks", label: "Tasks", icon: HiOutlineClipboardDocumentList, viewId: "tasks" },
-    { id: "calendar", label: "Calendar", icon: HiOutlineCalendar, viewId: "calendar" },
-    { id: "notes", label: "Notes", icon: HiOutlineDocumentText, viewId: "notes" },
-    { id: "analytics", label: "Analytics", icon: HiOutlineChartBar },
+    { id: 'goals', label: 'Goals', icon: HiOutlineFlag, viewId: 'goals' },
+    { id: 'tasks', label: 'Tasks', icon: HiOutlineClipboardDocumentList, viewId: 'tasks' },
+    { id: 'calendar', label: 'Calendar', icon: HiOutlineCalendar, viewId: 'calendar' },
+    { id: 'notes', label: 'Notes', icon: HiOutlineDocumentText, viewId: 'notes' },
+    { id: 'analytics', label: 'Analytics', icon: HiOutlineChartBar },
   ];
 
   const toggleExpanded = (itemId: string) => {
@@ -71,21 +71,21 @@ const Sidebar: Component = () => {
     return (
       <>
         <button
-          class={`w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-surface-100 dark:hover:bg-surface-200 transition-colors text-content ${
-            level > 0 ? "pl-8" : ""
-          } ${isActive ? "bg-primary-100 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400" : ""}`}
+          class={`hover:bg-surface-100 dark:hover:bg-surface-200 text-content flex w-full items-center gap-3 rounded-lg px-3 py-2 transition-colors ${
+            level > 0 ? 'pl-8' : ''
+          } ${isActive ? 'bg-primary-100 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400' : ''}`}
           onClick={handleClick}
         >
-          <item.icon class="w-5 h-5 flex-shrink-0" />
+          <item.icon class="h-5 w-5 flex-shrink-0" />
           {!collapsed() && (
             <>
               <span class="flex-1 text-left text-sm font-medium">{item.label}</span>
               {hasChildren && (
                 <span class="ml-auto">
                   {isExpanded ? (
-                    <HiOutlineChevronDown class="w-4 h-4" />
+                    <HiOutlineChevronDown class="h-4 w-4" />
                   ) : (
-                    <HiOutlineChevronRight class="w-4 h-4" />
+                    <HiOutlineChevronRight class="h-4 w-4" />
                   )}
                 </span>
               )}
@@ -94,9 +94,7 @@ const Sidebar: Component = () => {
         </button>
         {!collapsed() && hasChildren && isExpanded && (
           <div class="mt-1">
-            <For each={item.children}>
-              {(child) => renderNavItem(child, level + 1)}
-            </For>
+            <For each={item.children}>{(child) => renderNavItem(child, level + 1)}</For>
           </div>
         )}
       </>
@@ -106,33 +104,33 @@ const Sidebar: Component = () => {
   return (
     <aside
       class={`${
-        collapsed() ? "w-16" : "w-64"
-      } bg-surface border-r border-border transition-all duration-300 hidden lg:block`}
+        collapsed() ? 'w-16' : 'w-64'
+      } bg-surface border-border hidden border-r transition-all duration-300 lg:block`}
     >
-      <div class="flex flex-col h-full">
+      <div class="flex h-full flex-col">
         <div class="p-4">
           <button
             onClick={() => setCollapsed(!collapsed())}
-            class="w-full flex items-center justify-center p-2 rounded-lg hover:bg-surface-100 dark:hover:bg-surface-200 transition-colors focus-ring"
-            aria-label={collapsed() ? "Expand sidebar" : "Collapse sidebar"}
+            class="hover:bg-surface-100 dark:hover:bg-surface-200 focus-ring flex w-full items-center justify-center rounded-lg p-2 transition-colors"
+            aria-label={collapsed() ? 'Expand sidebar' : 'Collapse sidebar'}
           >
-            <HiOutlineBars3 class="w-5 h-5 text-content-secondary" />
+            <HiOutlineBars3 class="text-content-secondary h-5 w-5" />
           </button>
         </div>
 
-        <nav class="flex-1 px-3 pb-4 overflow-y-auto">
+        <nav class="flex-1 overflow-y-auto px-3 pb-4">
           <For each={navItems}>{(item) => renderNavItem(item)}</For>
         </nav>
 
-        <div class="p-4 border-t border-border">
+        <div class="border-border border-t p-4">
           <div class="flex items-center gap-3">
-            <div class="w-8 h-8 bg-primary-500 rounded-full flex items-center justify-center text-content-inverse font-semibold">
+            <div class="bg-primary-500 text-content-inverse flex h-8 w-8 items-center justify-center rounded-full font-semibold">
               U
             </div>
             {!collapsed() && (
               <div class="flex-1">
-                <p class="text-sm font-medium text-content">User</p>
-                <p class="text-xs text-content-tertiary">user@example.com</p>
+                <p class="text-content text-sm font-medium">User</p>
+                <p class="text-content-tertiary text-xs">user@example.com</p>
               </div>
             )}
           </div>

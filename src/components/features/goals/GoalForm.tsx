@@ -15,15 +15,17 @@ interface GoalFormProps {
 export function GoalForm(props: GoalFormProps) {
   const { actions: goalActions } = useGoalStore();
   const { store: lifeAreaStore } = useLifeAreaStore();
-  
+
   const [name, setName] = createSignal(props.goal?.name || '');
   const [description, setDescription] = createSignal(props.goal?.description || '');
   const [lifeAreaId, setLifeAreaId] = createSignal(props.goal?.life_area_id || '');
-  const [priority, setPriority] = createSignal<'low' | 'medium' | 'high'>(props.goal?.priority || 'medium');
+  const [priority, setPriority] = createSignal<'low' | 'medium' | 'high'>(
+    props.goal?.priority || 'medium',
+  );
   const [targetDate, setTargetDate] = createSignal(props.goal?.target_date || '');
   const [isSubmitting, setIsSubmitting] = createSignal(false);
   const [error, setError] = createSignal<string | null>(null);
-  
+
   // Format date for input field
   createEffect(() => {
     if (props.goal?.target_date) {
@@ -32,23 +34,23 @@ export function GoalForm(props: GoalFormProps) {
       setTargetDate(formattedDate);
     }
   });
-  
+
   const handleSubmit = async (e: Event) => {
     e.preventDefault();
     setError(null);
-    
+
     if (!name().trim()) {
       setError('Goal name is required');
       return;
     }
-    
+
     if (!lifeAreaId()) {
       setError('Please select a life area');
       return;
     }
-    
+
     setIsSubmitting(true);
-    
+
     try {
       const goalData = {
         name: name().trim(),
@@ -57,7 +59,7 @@ export function GoalForm(props: GoalFormProps) {
         priority: priority(),
         target_date: targetDate() || undefined,
       };
-      
+
       if (props.goal) {
         await goalActions.update(props.goal.id, {
           name: goalData.name,
@@ -68,7 +70,7 @@ export function GoalForm(props: GoalFormProps) {
       } else {
         await goalActions.create(goalData);
       }
-      
+
       props.onClose();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to save goal');
@@ -76,9 +78,9 @@ export function GoalForm(props: GoalFormProps) {
       setIsSubmitting(false);
     }
   };
-  
-  const activeLifeAreas = () => lifeAreaStore.items.filter(area => !area.archived_at);
-  
+
+  const activeLifeAreas = () => lifeAreaStore.items.filter((area) => !area.archived_at);
+
   return (
     <form onSubmit={handleSubmit} class="space-y-4">
       <div>
@@ -93,7 +95,7 @@ export function GoalForm(props: GoalFormProps) {
           autofocus
         />
       </div>
-      
+
       <div>
         <Label for="goal-life-area">Life Area *</Label>
         <Select
@@ -104,13 +106,11 @@ export function GoalForm(props: GoalFormProps) {
         >
           <option value="">Select a life area</option>
           <For each={activeLifeAreas()}>
-            {(area) => (
-              <option value={area.id}>{area.name}</option>
-            )}
+            {(area) => <option value={area.id}>{area.name}</option>}
           </For>
         </Select>
       </div>
-      
+
       <div>
         <Label for="goal-description">Description</Label>
         <Textarea
@@ -121,7 +121,7 @@ export function GoalForm(props: GoalFormProps) {
           rows={3}
         />
       </div>
-      
+
       <div class="grid grid-cols-2 gap-4">
         <div>
           <Label for="goal-priority">Priority</Label>
@@ -135,7 +135,7 @@ export function GoalForm(props: GoalFormProps) {
             <option value="high">High</option>
           </Select>
         </div>
-        
+
         <div>
           <Label for="goal-target-date">Target Date</Label>
           <Input
@@ -146,26 +146,18 @@ export function GoalForm(props: GoalFormProps) {
           />
         </div>
       </div>
-      
+
       <Show when={error()}>
-        <div class="p-3 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded text-sm">
+        <div class="rounded bg-red-50 p-3 text-sm text-red-600 dark:bg-red-900/20 dark:text-red-400">
           {error()}
         </div>
       </Show>
-      
+
       <div class="flex justify-end gap-3">
-        <Button
-          type="button"
-          variant="secondary"
-          onClick={props.onClose}
-          disabled={isSubmitting()}
-        >
+        <Button type="button" variant="secondary" onClick={props.onClose} disabled={isSubmitting()}>
           Cancel
         </Button>
-        <Button
-          type="submit"
-          disabled={isSubmitting()}
-        >
+        <Button type="submit" disabled={isSubmitting()}>
           {isSubmitting() ? 'Saving...' : props.goal ? 'Update Goal' : 'Create Goal'}
         </Button>
       </div>

@@ -1,16 +1,21 @@
 # Test Utilities Documentation
 
-This directory contains reusable test utilities to help write consistent and maintainable tests for EvorBrain.
+This directory contains reusable test utilities to help write consistent and maintainable tests for
+EvorBrain.
 
 ## ⚠️ Current Status
 
-**Important:** These test utilities are fully implemented but have some limitations due to the current test environment setup:
+**Important:** These test utilities are fully implemented but have some limitations due to the
+current test environment setup:
 
 - **Render Helpers**: Router integration is not yet implemented (commented out to avoid SSR issues)
-- **DOM Environment**: Some tests may fail with "document is not defined" errors when running outside of the proper test environment
-- **Component Tests**: The existing Button and Input tests need to be updated to work with the current environment setup
+- **DOM Environment**: Some tests may fail with "document is not defined" errors when running
+  outside of the proper test environment
+- **Component Tests**: The existing Button and Input tests need to be updated to work with the
+  current environment setup
 
-The utilities themselves are working correctly as demonstrated by the passing `example.test.tsx` file, but full integration with all component tests is still in progress.
+The utilities themselves are working correctly as demonstrated by the passing `example.test.tsx`
+file, but full integration with all component tests is still in progress.
 
 ## Overview
 
@@ -26,9 +31,9 @@ The test utilities are organized into four main categories:
 Import all utilities from the main index:
 
 ```typescript
-import { 
-  TauriMock, 
-  renderWithProviders, 
+import {
+  TauriMock,
+  renderWithProviders,
   createLifeArea,
   // ... other utilities
 } from '../test/utils';
@@ -72,7 +77,7 @@ describe('MyComponent', () => {
 
   it('should handle errors', () => {
     tauriMock.failCommand('create_life_area', 'Database error');
-    
+
     // Test error handling...
   });
 });
@@ -168,13 +173,7 @@ updateMockData({ users: [{ id: '1', name: 'Test' }] });
 Create test data with sensible defaults:
 
 ```typescript
-import { 
-  createLifeArea, 
-  createGoal, 
-  createProject, 
-  createTask,
-  createNote 
-} from '../test/utils';
+import { createLifeArea, createGoal, createProject, createTask, createNote } from '../test/utils';
 
 // Basic usage
 const lifeArea = createLifeArea();
@@ -184,7 +183,7 @@ const goal = createGoal({ life_area_id: lifeArea.id });
 const task = createTask({
   title: 'Custom Task',
   priority: 'high',
-  due_date: createTimestamp(7) // 7 days from now
+  due_date: createTimestamp(7), // 7 days from now
 });
 ```
 
@@ -198,7 +197,7 @@ import { createTestHierarchy } from '../test/utils';
 const hierarchy = createTestHierarchy({
   lifeArea: { name: 'Work' },
   goal: { title: 'Get Promotion' },
-  project: { name: 'Skill Development' }
+  project: { name: 'Skill Development' },
 });
 
 // Access all related data
@@ -215,18 +214,18 @@ import { batchCreate, createTask } from '../test/utils';
 
 const tasks = batchCreate(createTask, 5, (index) => ({
   title: `Task ${index + 1}`,
-  position: index
+  position: index,
 }));
 ```
 
 ### State-specific Factories
 
 ```typescript
-import { 
+import {
   createCompletedGoal,
   createArchivedLifeArea,
   createOverdueTask,
-  createInProgressProject 
+  createInProgressProject,
 } from '../test/utils';
 
 const completed = createCompletedGoal();
@@ -270,7 +269,7 @@ Here's a complete test example using all utilities:
 
 ```typescript
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { 
+import {
   TauriMock,
   renderWithProviders,
   createLifeAreaWithGoals,
@@ -296,7 +295,7 @@ describe('LifeAreaManager', () => {
     // Mock API responses
     tauriMock
       .onCommand('get_life_areas', () => [lifeArea])
-      .onCommand('get_goals_by_life_area', ({ life_area_id }) => 
+      .onCommand('get_goals_by_life_area', ({ life_area_id }) =>
         life_area_id === lifeArea.id ? goals : []
       );
 
@@ -364,6 +363,7 @@ describe('LifeAreaManager', () => {
 ### Document is not defined
 
 If you encounter "document is not defined" errors:
+
 1. Ensure your test file is running with the proper Vitest configuration
 2. Check that jsdom is properly configured in vitest.config.ts
 3. Run tests specifically with: `bun test src/test/utils/example.test.tsx`
@@ -371,6 +371,7 @@ If you encounter "document is not defined" errors:
 ### Router Integration
 
 Router support in render helpers is currently disabled. If you need to test components with routing:
+
 1. Mock the router context manually
 2. Use the base `render` function with custom providers
 3. Wait for full router integration support
@@ -378,6 +379,7 @@ Router support in render helpers is currently disabled. If you need to test comp
 ### Running Tests
 
 For best results, run test utilities separately:
+
 ```bash
 # Run only the test utilities examples
 bun test src/test/utils/example.test.tsx
