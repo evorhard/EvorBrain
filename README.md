@@ -454,9 +454,35 @@ bun test
 # Run specific test file (recommended approach)
 bun test src/test/utils/example.test.tsx
 
+# Run tests with UI interface
+bun run test:ui
+
+# Run tests once (no watch mode)
+bun run test:run
+
 # Run E2E tests (fully working)
 bun run test:e2e
 ```
+
+### Test Coverage
+
+The project includes comprehensive test coverage reporting using Vitest's built-in coverage support (via c8/v8).
+
+```bash
+# Generate coverage report
+bun run test:coverage
+
+# Coverage will be generated in ./coverage directory
+# Open ./coverage/index.html in your browser for detailed report
+```
+
+#### Coverage Configuration
+
+- **Coverage Thresholds**: 80% for statements, functions, and lines; 70% for branches
+- **Output Formats**: text, json, html, and lcov
+- **Excluded Files**: Test files, configuration files, type definitions, and test utilities
+
+The coverage configuration can be found in `vitest.config.ts`. Coverage reports are automatically excluded from version control.
 
 ### Test Utilities
 

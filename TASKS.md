@@ -62,7 +62,7 @@ This document tracks all development tasks for the EvorBrain project. Tasks are 
 - [x] ✅ [P1.5.3] Set up e2e testing with Playwright 🔴
 - [x] ✅ [P1.5.4] Create test utilities and helpers 🟡
 - [x] ✅ [P1.5.5] Write initial test suite for existing components 🟡
-- [ ] 📋 [P1.5.6] Add test coverage reporting 🟢
+- [x] ✅ [P1.5.6] Add test coverage reporting 🟢
 
 ### [P1.6] Development Tooling
 - [ ] 📋 [P1.6.1] Set up ESLint with TypeScript rules 🟢

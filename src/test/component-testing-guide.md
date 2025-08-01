@@ -197,6 +197,47 @@ bun run test:ui
 bun run test:coverage
 ```
 
+## Test Coverage
+
+The project enforces minimum test coverage thresholds to maintain code quality:
+
+### Coverage Thresholds
+- **Statements**: 80%
+- **Branches**: 70%
+- **Functions**: 80%
+- **Lines**: 80%
+
+### Viewing Coverage Reports
+
+```bash
+# Generate and view coverage in terminal
+bun run test:coverage
+
+# Open HTML coverage report in browser
+open coverage/index.html  # macOS
+xdg-open coverage/index.html  # Linux
+start coverage/index.html  # Windows
+```
+
+### Coverage Configuration
+
+Coverage is configured in `vitest.config.ts`:
+- **Provider**: V8 (native Node.js coverage)
+- **Reports**: Generated in `./coverage` directory
+- **Formats**: text, json, html, lcov
+- **All files**: Includes untested files in coverage
+
+### Writing Tests for Coverage
+
+To improve coverage:
+1. **Test all exported functions** - Ensure each function has at least one test
+2. **Cover edge cases** - Test error states, empty states, and boundaries  
+3. **Test conditional logic** - Cover all branches in if/else statements
+4. **Test user interactions** - Click handlers, form submissions, etc.
+5. **Test props variations** - Different prop combinations
+
+Use the HTML coverage report to identify uncovered lines and branches.
+
 ## Example Test Files
 
 See these files for examples:
