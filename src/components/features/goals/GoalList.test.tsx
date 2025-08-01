@@ -8,7 +8,6 @@ import {
   createCompletedGoal,
   createArchivedGoal,
   createTimestamp,
-  batchCreate,
 } from '../../../test/utils';
 
 describe('GoalList Component', () => {

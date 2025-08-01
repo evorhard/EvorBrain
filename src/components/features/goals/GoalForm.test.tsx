@@ -6,7 +6,6 @@ import {
   createGoal,
   createLifeArea,
   createArchivedLifeArea,
-  createTimestamp,
 } from '../../../test/utils';
 
 describe('GoalForm Component', () => {
