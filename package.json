@@ -24,7 +24,8 @@
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,css,md}\" \"*.{js,json,md}\"",
     "format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,css,md}\" \"*.{js,json,md}\"",
     "clean": "./scripts/clean.sh",
-    "clean:all": "./scripts/clean.sh --all"
+    "clean:all": "./scripts/clean.sh --all",
+    "prepare": "husky"
   },
   "license": "MIT",
   "dependencies": {
@@ -55,7 +56,9 @@
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-prettier": "^5.5.3",
     "eslint-plugin-solid": "^0.14.5",
+    "husky": "^9.1.7",
     "jsdom": "^26.1.0",
+    "lint-staged": "^16.1.2",
     "postcss": "^8.5.6",
     "prettier": "^3.6.2",
     "prettier-plugin-tailwindcss": "^0.6.14",

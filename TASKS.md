@@ -77,9 +77,6 @@ development phase with difficulty ratings and current status.
 - [x] ✅ [P1.6.1] Set up ESLint with TypeScript rules 🟢
 - [x] ✅ [P1.6.2] Configure Prettier for code formatting 🟢
 - [ ] 📋 [P1.6.3] Create pre-commit hooks with Husky 🟢
-- [ ] 📋 [P1.6.4] Set up GitHub Actions for CI 🟡
-- [ ] 📋 [P1.6.5] Add automated build and test pipeline 🟡
-- [ ] 📋 [P1.6.6] Configure Dependabot for dependency updates 🟢
 
 ### [P1.7] Documentation Standards
 
