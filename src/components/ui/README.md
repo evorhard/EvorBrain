@@ -1,7 +1,8 @@
 # EvorBrain UI Components
 
-> **Important**: All components must follow the [Component Documentation Standards](/docs/COMPONENT_STANDARDS.md).
-> See the [Badge component](/src/components/ui/Badge.tsx) for a complete example.
+> **Important**: All components must follow the
+> [Component Documentation Standards](/docs/COMPONENT_STANDARDS.md). See the
+> [Badge component](/src/components/ui/Badge.tsx) for a complete example.
 
 This directory contains reusable UI components built with [Kobalte](https://kobalte.dev/), an
 accessible component library for SolidJS.
@@ -207,17 +208,18 @@ const [DeleteConfirmDialog, deleteConfirmHandle] = createConfirmDialog({
   cancelText: 'Cancel',
   variant: 'danger',
   onConfirm: () => deleteItem(),
-  onCancel: () => console.log('Cancelled')
+  onCancel: () => console.log('Cancelled'),
 });
 
 // In your component JSX
 <>
   <Button onClick={() => deleteConfirmHandle.open()}>Delete</Button>
   <DeleteConfirmDialog />
-</>
+</>;
 ```
 
-**Props**: `title`, `description` (string or function), `confirmText`, `cancelText`, `variant` (danger/default), `onConfirm`, `onCancel`
+**Props**: `title`, `description` (string or function), `confirmText`, `cancelText`, `variant`
+(danger/default), `onConfirm`, `onCancel`
 
 ### Dropdown Menu
 

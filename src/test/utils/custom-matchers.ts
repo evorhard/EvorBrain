@@ -1,5 +1,5 @@
 import { expect } from 'vitest';
-import type { LifeArea, Goal, Project, Task, Note } from '../../types/models';
+import type { LifeArea, Goal, Project, Task } from '../../types/models';
 
 /**
  * Custom matchers for EvorBrain domain objects
@@ -23,7 +23,7 @@ interface CustomMatchers<R = unknown> {
 }
 
 declare module 'vitest' {
-  interface Assertion<T = unknown> extends CustomMatchers<T> {}
+  type Assertion<T = unknown> = CustomMatchers<T>;
   type AsymmetricMatchersContaining = CustomMatchers;
 }
 
@@ -153,7 +153,7 @@ expect.extend({
   },
 
   toBeArchived(received: unknown) {
-    const isArchived = received?.archived_at != null;
+    const isArchived = received?.archived_at !== null && received?.archived_at !== undefined;
     return {
       pass: isArchived,
       message: () =>
@@ -162,7 +162,7 @@ expect.extend({
   },
 
   toBeCompleted(received: unknown) {
-    const isCompleted = received?.completed_at != null;
+    const isCompleted = received?.completed_at !== null && received?.completed_at !== undefined;
     return {
       pass: isCompleted,
       message: () =>
@@ -174,7 +174,7 @@ expect.extend({
     const task = received as Task;
     const now = new Date();
     const dueDate = task.due_date ? new Date(task.due_date) : null;
-    const isOverdue = dueDate != null && dueDate < now && !task.completed_at;
+    const isOverdue = dueDate !== null && dueDate < now && !task.completed_at;
 
     return {
       pass: isOverdue,

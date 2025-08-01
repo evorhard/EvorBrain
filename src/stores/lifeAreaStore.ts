@@ -1,7 +1,6 @@
 import { createStore } from './createStore';
 import { createMemo } from 'solid-js';
 import type { LifeAreaState } from './types';
-import type { LifeArea } from '../types/models';
 import { api } from '../lib/api';
 import { EvorBrainError } from '../types/errors';
 

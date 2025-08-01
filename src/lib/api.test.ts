@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { api, lifeAreaApi, goalApi, projectApi, taskApi, noteApi } from './api';
 import { invoke } from '@tauri-apps/api/core';
 import { EvorBrainError } from '../types/errors';

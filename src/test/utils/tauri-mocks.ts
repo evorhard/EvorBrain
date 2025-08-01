@@ -1,5 +1,4 @@
-import { vi, expect } from 'vitest';
-import type { Mock } from 'vitest';
+import { vi, expect, type Mock } from 'vitest';
 
 /**
  * Tauri command mocking utilities for testing

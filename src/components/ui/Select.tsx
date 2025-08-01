@@ -1,6 +1,5 @@
 import { Select as KobalteSelect } from '@kobalte/core/select';
-import type { Component } from 'solid-js';
-import { JSX, splitProps } from 'solid-js';
+import { splitProps, type Component } from 'solid-js';
 import { HiOutlineChevronUpDown, HiOutlineCheck } from 'solid-icons/hi';
 
 const Select = KobalteSelect;

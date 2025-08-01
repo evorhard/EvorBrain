@@ -1,7 +1,7 @@
 # Component Testing Guide
 
-> **Note**: This guide covers the technical aspects of testing components. 
-> For documentation standards and requirements, see [Component Documentation Standards](/docs/COMPONENT_STANDARDS.md).
+> **Note**: This guide covers the technical aspects of testing components. For documentation
+> standards and requirements, see [Component Documentation Standards](/docs/COMPONENT_STANDARDS.md).
 
 This guide explains how to write component tests for EvorBrain using Vitest and
 @solidjs/testing-library.

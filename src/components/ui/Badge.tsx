@@ -13,8 +13,7 @@
  * @since 1.0.0
  */
 
-import type { Component, JSXElement } from 'solid-js';
-import { Show, splitProps, createMemo } from 'solid-js';
+import { Show, splitProps, createMemo, type Component, type JSXElement } from 'solid-js';
 import { clx } from '@/utils/responsive';
 
 /**

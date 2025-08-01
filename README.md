@@ -173,8 +173,8 @@ philosophy and the performance of a native app.
 | **Testing**            | [Vitest](https://vitest.dev) + [@solidjs/testing-library](https://github.com/solidjs/solid-testing-library) | Modern testing framework with SolidJS support                                   |
 | **E2E Testing**        | [Playwright](https://playwright.dev)                                                                        | Cross-browser end-to-end testing for Tauri apps                                 |
 | **Linting**            | [ESLint](https://eslint.org) + TypeScript ESLint                                                            | Code quality and consistency enforcement                                        |
-| **Formatting**         | [Prettier](https://prettier.io)                                                                              | Consistent code formatting across the project                                   |
-| **Git Hooks**          | [Husky](https://typicode.github.io/husky) + [lint-staged](https://github.com/okonet/lint-staged)             | Pre-commit hooks for code quality checks                                        |
+| **Formatting**         | [Prettier](https://prettier.io)                                                                             | Consistent code formatting across the project                                   |
+| **Git Hooks**          | [Husky](https://typicode.github.io/husky) + [lint-staged](https://github.com/okonet/lint-staged)            | Pre-commit hooks for code quality checks                                        |
 
 ---
 

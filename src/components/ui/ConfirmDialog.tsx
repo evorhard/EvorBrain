@@ -1,4 +1,4 @@
-import { Component, createSignal } from 'solid-js';
+import { createSignal, type Component } from 'solid-js';
 import {
   Modal,
   ModalContent,
@@ -24,10 +24,7 @@ interface ConfirmDialogHandle {
   close: () => void;
 }
 
-export function createConfirmDialog(props: ConfirmDialogProps): [
-  Component,
-  ConfirmDialogHandle
-] {
+export function createConfirmDialog(props: ConfirmDialogProps): [Component, ConfirmDialogHandle] {
   const [isOpen, setIsOpen] = createSignal(false);
 
   const handleConfirm = () => {

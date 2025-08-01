@@ -1,5 +1,4 @@
-import type { Component } from 'solid-js';
-import { createSignal, Show, For } from 'solid-js';
+import { createSignal, Show, For, type Component } from 'solid-js';
 import { Portal } from 'solid-js/web';
 import {
   HiOutlineXMark,

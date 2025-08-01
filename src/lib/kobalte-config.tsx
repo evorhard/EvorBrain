@@ -1,8 +1,4 @@
 import type { Component } from 'solid-js';
-import { Root as AlertDialogRoot } from '@kobalte/core/alert-dialog';
-import { Root as DialogRoot } from '@kobalte/core/dialog';
-import { Root as PopoverRoot } from '@kobalte/core/popover';
-import { Root as TooltipRoot } from '@kobalte/core/tooltip';
 
 // Global configuration for Kobalte components
 export const globalConfig = {

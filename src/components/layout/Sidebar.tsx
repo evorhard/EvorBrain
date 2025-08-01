@@ -1,12 +1,10 @@
-import type { Component } from 'solid-js';
-import { createSignal, For } from 'solid-js';
+import { createSignal, For, type Component } from 'solid-js';
 import {
   HiOutlineHome,
   HiOutlineRectangleStack,
   HiOutlineClipboardDocumentList,
   HiOutlineCalendar,
   HiOutlineDocumentText,
-  HiOutlineFolder,
   HiOutlineChartBar,
   HiOutlineChevronRight,
   HiOutlineChevronDown,

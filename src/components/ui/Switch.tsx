@@ -1,6 +1,5 @@
 import { Switch as KobalteSwitch } from '@kobalte/core/switch';
-import type { Component } from 'solid-js';
-import { splitProps } from 'solid-js';
+import { splitProps, type Component } from 'solid-js';
 
 interface SwitchProps extends KobalteSwitch.SwitchRootProps {
   label?: string;

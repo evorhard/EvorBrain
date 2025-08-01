@@ -1,6 +1,5 @@
 import { Dialog as KobalteDialog } from '@kobalte/core/dialog';
-import type { Component, JSX } from 'solid-js';
-import { splitProps, Show } from 'solid-js';
+import { splitProps, Show, type Component, type JSX } from 'solid-js';
 import { HiOutlineXMark } from 'solid-icons/hi';
 import { cva, type VariantProps } from 'class-variance-authority';
 

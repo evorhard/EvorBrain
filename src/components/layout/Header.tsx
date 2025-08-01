@@ -1,5 +1,4 @@
-import type { Component } from 'solid-js';
-import { createSignal, Show } from 'solid-js';
+import { createSignal, Show, type Component } from 'solid-js';
 import {
   HiOutlineBars3,
   HiOutlineMagnifyingGlass,

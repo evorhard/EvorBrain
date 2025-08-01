@@ -1,12 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@solidjs/testing-library';
 import { GoalForm } from './GoalForm';
-import {
-  TauriMock,
-  createGoal,
-  createLifeArea,
-  createArchivedLifeArea,
-} from '../../../test/utils';
+import { TauriMock, createGoal, createLifeArea, createArchivedLifeArea } from '../../../test/utils';
 
 describe('GoalForm Component', () => {
   let tauriMock: TauriMock;

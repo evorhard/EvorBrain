@@ -1,6 +1,5 @@
 import { Tooltip as KobalteTooltip } from '@kobalte/core/tooltip';
-import type { Component, JSX } from 'solid-js';
-import { splitProps } from 'solid-js';
+import { splitProps, type Component, type JSX } from 'solid-js';
 
 interface TooltipProps {
   children: JSX.Element;

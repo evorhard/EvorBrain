@@ -1,6 +1,5 @@
 import { DropdownMenu as KobalteDropdownMenu } from '@kobalte/core/dropdown-menu';
-import type { Component, JSX } from 'solid-js';
-import { splitProps } from 'solid-js';
+import { splitProps, type Component, type JSX } from 'solid-js';
 
 const DropdownMenu = KobalteDropdownMenu;
 

@@ -87,12 +87,15 @@ development phase with difficulty ratings and current status.
 
 ### [P1.8] Code Quality & Cleanup
 
-- [x] ✅ [P1.8.1] Fix ESLint errors (reduced from 181 to ~99 issues) 🟡
+- [ ] 🔄 [P1.8.1] Fix ESLint errors (reduced from 181 to ~39 issues) 🟡
 - [x] ✅ [P1.8.2] Remove all `any` types in test files 🟢
 - [x] ✅ [P1.8.3] Fix duplicate imports across codebase 🟢
 - [x] ✅ [P1.8.4] Replace `confirm`/`alert` with proper UI modals 🟡
 - [x] ✅ [P1.8.5] Fix SolidJS reactivity warnings 🟡
 - [x] ✅ [P1.8.6] Remove unused variables and imports 🟢
+- [x] ✅ [P1.8.7] Remove unused demo/test components (8 files) 🟢
+- [x] ✅ [P1.8.8] Fix duplicate imports from 'solid-js' (19 files) 🟢
+- [x] ✅ [P1.8.9] Apply Prettier formatting to codebase 🟢
 
 ---
 

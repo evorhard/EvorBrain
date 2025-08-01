@@ -1,7 +1,5 @@
-import { render } from '@solidjs/testing-library';
-import type { RenderResult } from '@solidjs/testing-library';
-import { createContext, useContext } from 'solid-js';
-import type { JSX, Component } from 'solid-js';
+import { render, type RenderResult } from '@solidjs/testing-library';
+import { createContext, useContext, type JSX, type Component } from 'solid-js';
 import { MemoryRouter } from '@solidjs/router';
 import type { Mock } from 'vitest';
 

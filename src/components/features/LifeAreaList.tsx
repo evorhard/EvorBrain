@@ -1,4 +1,4 @@
-import { For, Show, createEffect, onMount } from 'solid-js';
+import { For, Show, onMount } from 'solid-js';
 import { useLifeAreaStore } from '../../stores';
 
 export function LifeAreaList() {
@@ -7,13 +7,6 @@ export function LifeAreaList() {
   onMount(() => {
     // Fetch life areas when component mounts
     actions.fetchAll();
-  });
-
-  createEffect(() => {
-    // Log when selected life area changes
-    if (store.selectedId) {
-      console.log('Selected life area:', store.selectedId);
-    }
   });
 
   return (
