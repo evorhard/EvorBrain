@@ -1,7 +1,16 @@
+//! Migration command handlers for database schema management
+
 use crate::AppState;
 use anyhow::Result;
 use tauri::State;
 
+/// Gets the current migration status showing applied and pending migrations
+/// 
+/// # Arguments
+/// * `state` - Application state containing the database connection
+/// 
+/// # Returns
+/// * `Result<String, String>` - Formatted status of all migrations
 #[tauri::command]
 pub async fn get_migration_status(state: State<'_, AppState>) -> Result<String, String> {
     let runner = super::MigrationRunner::new((*state.db).clone());
@@ -35,6 +44,13 @@ pub async fn get_migration_status(state: State<'_, AppState>) -> Result<String, 
     Ok(status)
 }
 
+/// Runs all pending database migrations
+/// 
+/// # Arguments
+/// * `state` - Application state containing the database connection
+/// 
+/// # Returns
+/// * `Result<String, String>` - Success message with count of applied migrations
 #[tauri::command]
 pub async fn run_migrations(state: State<'_, AppState>) -> Result<String, String> {
     let runner = super::MigrationRunner::new((*state.db).clone());
@@ -63,6 +79,14 @@ pub async fn run_migrations(state: State<'_, AppState>) -> Result<String, String
     }
 }
 
+/// Rolls back database migrations to a target version
+/// 
+/// # Arguments
+/// * `state` - Application state containing the database connection
+/// * `target_version` - Optional target version to rollback to (None rolls back one migration)
+/// 
+/// # Returns
+/// * `Result<String, String>` - Success message with rollback details
 #[tauri::command]
 pub async fn rollback_migration(state: State<'_, AppState>, target_version: Option<i64>) -> Result<String, String> {
     let runner = super::MigrationRunner::new((*state.db).clone());
@@ -92,6 +116,15 @@ pub async fn rollback_migration(state: State<'_, AppState>, target_version: Opti
     }
 }
 
+/// Resets the database by rolling back all migrations and re-applying them
+/// 
+/// **Note**: Only available in debug builds for safety
+/// 
+/// # Arguments
+/// * `_state` - Application state containing the database connection
+/// 
+/// # Returns
+/// * `Result<String, String>` - Success message or error if not in debug mode
 #[tauri::command]
 pub async fn reset_database(_state: State<'_, AppState>) -> Result<String, String> {
     #[cfg(not(debug_assertions))]

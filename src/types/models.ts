@@ -1,6 +1,9 @@
 // Core domain models matching Rust backend structures
 
-// Enums
+/**
+ * Status options for projects
+ * @enum {string}
+ */
 export enum ProjectStatus {
   Planning = 'planning',
   Active = 'active',
@@ -9,6 +12,10 @@ export enum ProjectStatus {
   Cancelled = 'cancelled',
 }
 
+/**
+ * Priority levels for tasks
+ * @enum {string}
+ */
 export enum TaskPriority {
   Low = 'low',
   Medium = 'medium',
@@ -17,6 +24,12 @@ export enum TaskPriority {
 }
 
 // Core Models
+
+/**
+ * Represents a major area of life (e.g., Work, Health, Family)
+ * The top-level organizational unit in EvorBrain
+ * @interface LifeArea
+ */
 export interface LifeArea {
   id: string;
   name: string;
@@ -28,6 +41,11 @@ export interface LifeArea {
   archived_at?: string;
 }
 
+/**
+ * Represents a specific objective within a Life Area
+ * Goals are achieved through completing related Projects
+ * @interface Goal
+ */
 export interface Goal {
   id: string;
   life_area_id: string;
@@ -40,6 +58,11 @@ export interface Goal {
   archived_at?: string;
 }
 
+/**
+ * Represents a concrete work item within a Goal
+ * Projects contain Tasks and have a defined status
+ * @interface Project
+ */
 export interface Project {
   id: string;
   goal_id: string;
@@ -52,6 +75,11 @@ export interface Project {
   archived_at?: string;
 }
 
+/**
+ * Represents an actionable item within a Project
+ * Tasks can have subtasks and are the primary unit of work
+ * @interface Task
+ */
 export interface Task {
   id: string;
   project_id?: string;
@@ -66,6 +94,11 @@ export interface Task {
   archived_at?: string;
 }
 
+/**
+ * Represents markdown content attached to any entity
+ * Notes provide additional context and documentation
+ * @interface Note
+ */
 export interface Note {
   id: string;
   task_id?: string;
@@ -79,6 +112,10 @@ export interface Note {
   archived_at?: string;
 }
 
+/**
+ * Represents a label that can be attached to tasks or projects
+ * @interface Tag
+ */
 export interface Tag {
   id: string;
   name: string;
@@ -123,11 +160,22 @@ export type ModelId = string;
 export type ISODateString = string;
 
 // Type guards
+
+/**
+ * Type guard to check if an object is a valid LifeArea
+ * @param obj - The object to check
+ * @returns True if the object is a LifeArea
+ */
 export function isLifeArea(obj: unknown): obj is LifeArea {
   const area = obj as Record<string, unknown>;
   return Boolean(obj) && typeof area.id === 'string' && typeof area.name === 'string';
 }
 
+/**
+ * Type guard to check if an object is a valid Goal
+ * @param obj - The object to check
+ * @returns True if the object is a Goal
+ */
 export function isGoal(obj: unknown): obj is Goal {
   const goal = obj as Record<string, unknown>;
   return (
@@ -138,6 +186,11 @@ export function isGoal(obj: unknown): obj is Goal {
   );
 }
 
+/**
+ * Type guard to check if an object is a valid Project
+ * @param obj - The object to check
+ * @returns True if the object is a Project with valid status
+ */
 export function isProject(obj: unknown): obj is Project {
   const project = obj as Record<string, unknown>;
   return (
@@ -150,6 +203,11 @@ export function isProject(obj: unknown): obj is Project {
   );
 }
 
+/**
+ * Type guard to check if an object is a valid Task
+ * @param obj - The object to check
+ * @returns True if the object is a Task with valid priority
+ */
 export function isTask(obj: unknown): obj is Task {
   const task = obj as Record<string, unknown>;
   return (
@@ -161,6 +219,11 @@ export function isTask(obj: unknown): obj is Task {
   );
 }
 
+/**
+ * Type guard to check if an object is a valid Note
+ * @param obj - The object to check
+ * @returns True if the object is a Note
+ */
 export function isNote(obj: unknown): obj is Note {
   const note = obj as Record<string, unknown>;
   return (

@@ -1,3 +1,11 @@
+/**
+ * Formats a date string into a human-readable format
+ * @param dateString - ISO 8601 date string to format
+ * @returns Formatted date string:
+ *   - Today: shows time (e.g., "2:30 PM")
+ *   - This year: shows month and day (e.g., "Jan 15")
+ *   - Other years: shows full date (e.g., "Jan 15, 2023")
+ */
 export function formatDate(dateString: string): string {
   const date = new Date(dateString);
   const now = new Date();
@@ -29,6 +37,17 @@ export function formatDate(dateString: string): string {
   });
 }
 
+/**
+ * Formats a date string into a relative format
+ * @param dateString - ISO 8601 date string to format
+ * @returns Relative date string:
+ *   - "Today" for current day
+ *   - "Yesterday" for previous day
+ *   - "Tomorrow" for next day
+ *   - "X days ago" for recent past (up to 7 days)
+ *   - "in X days" for near future (up to 7 days)
+ *   - Otherwise uses formatDate() output
+ */
 export function formatRelativeDate(dateString: string): string {
   const date = new Date(dateString);
   const now = new Date();
@@ -44,6 +63,11 @@ export function formatRelativeDate(dateString: string): string {
   return formatDate(dateString);
 }
 
+/**
+ * Checks if a date is in the past (overdue)
+ * @param dateString - ISO 8601 date string to check
+ * @returns true if the date is before today (midnight comparison)
+ */
 export function isOverdue(dateString: string): boolean {
   const date = new Date(dateString);
   const now = new Date();
@@ -52,6 +76,11 @@ export function isOverdue(dateString: string): boolean {
   return date < now;
 }
 
+/**
+ * Calculates the number of days until a given date
+ * @param dateString - ISO 8601 date string to calculate days until
+ * @returns Number of days until the date (negative if in the past)
+ */
 export function getDaysUntil(dateString: string): number {
   const date = new Date(dateString);
   const now = new Date();

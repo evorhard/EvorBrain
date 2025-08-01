@@ -5,6 +5,7 @@ use serde::{Deserialize, Serialize};
 use tauri::State;
 use uuid::Uuid;
 
+/// Request structure for creating a new goal
 #[derive(Debug, Serialize, Deserialize)]
 pub struct CreateGoalRequest {
     pub life_area_id: String,
@@ -13,6 +14,7 @@ pub struct CreateGoalRequest {
     pub target_date: Option<DateTime<Utc>>,
 }
 
+/// Request structure for updating an existing goal
 #[derive(Debug, Serialize, Deserialize)]
 pub struct UpdateGoalRequest {
     pub id: String,
@@ -22,6 +24,14 @@ pub struct UpdateGoalRequest {
     pub target_date: Option<DateTime<Utc>>,
 }
 
+/// Creates a new goal within a life area
+/// 
+/// # Arguments
+/// * `state` - Application state containing the database connection
+/// * `request` - Creation request with life_area_id, title, description, and target_date
+/// 
+/// # Returns
+/// * `Result<Goal, String>` - The newly created goal or error message
 #[tauri::command]
 pub async fn create_goal(
     state: State<'_, AppState>,
@@ -50,6 +60,13 @@ pub async fn create_goal(
     get_goal(state, id).await
 }
 
+/// Retrieves all non-archived goals from the database
+/// 
+/// # Arguments
+/// * `state` - Application state containing the database connection
+/// 
+/// # Returns
+/// * `Result<Vec<Goal>, String>` - List of all active goals or error message
 #[tauri::command]
 pub async fn get_goals(state: State<'_, AppState>) -> Result<Vec<Goal>, String> {
     sqlx::query_as::<_, Goal>(
@@ -66,6 +83,14 @@ pub async fn get_goals(state: State<'_, AppState>) -> Result<Vec<Goal>, String> 
     .map_err(|e| e.to_string())
 }
 
+/// Retrieves all goals for a specific life area
+/// 
+/// # Arguments
+/// * `state` - Application state containing the database connection
+/// * `life_area_id` - UUID string of the life area
+/// 
+/// # Returns
+/// * `Result<Vec<Goal>, String>` - List of goals for the life area or error message
 #[tauri::command]
 pub async fn get_goals_by_life_area(
     state: State<'_, AppState>,
@@ -86,6 +111,14 @@ pub async fn get_goals_by_life_area(
     .map_err(|e| e.to_string())
 }
 
+/// Retrieves a specific goal by ID
+/// 
+/// # Arguments
+/// * `state` - Application state containing the database connection
+/// * `id` - UUID string of the goal to retrieve
+/// 
+/// # Returns
+/// * `Result<Goal, String>` - The requested goal or error message
 #[tauri::command]
 pub async fn get_goal(state: State<'_, AppState>, id: String) -> Result<Goal, String> {
     sqlx::query_as::<_, Goal>(
@@ -102,6 +135,14 @@ pub async fn get_goal(state: State<'_, AppState>, id: String) -> Result<Goal, St
     .map_err(|e| e.to_string())
 }
 
+/// Updates an existing goal
+/// 
+/// # Arguments
+/// * `state` - Application state containing the database connection
+/// * `request` - Update request containing ID and fields to update
+/// 
+/// # Returns
+/// * `Result<Goal, String>` - The updated goal or error message
 #[tauri::command]
 pub async fn update_goal(
     state: State<'_, AppState>,
@@ -129,6 +170,14 @@ pub async fn update_goal(
     get_goal(state, request.id).await
 }
 
+/// Marks a goal as completed
+/// 
+/// # Arguments
+/// * `state` - Application state containing the database connection
+/// * `id` - UUID string of the goal to complete
+/// 
+/// # Returns
+/// * `Result<Goal, String>` - The completed goal or error message
 #[tauri::command]
 pub async fn complete_goal(state: State<'_, AppState>, id: String) -> Result<Goal, String> {
     let now = Utc::now();
@@ -150,6 +199,14 @@ pub async fn complete_goal(state: State<'_, AppState>, id: String) -> Result<Goa
     get_goal(state, id).await
 }
 
+/// Marks a completed goal as incomplete
+/// 
+/// # Arguments
+/// * `state` - Application state containing the database connection
+/// * `id` - UUID string of the goal to uncomplete
+/// 
+/// # Returns
+/// * `Result<Goal, String>` - The uncompleted goal or error message
 #[tauri::command]
 pub async fn uncomplete_goal(state: State<'_, AppState>, id: String) -> Result<Goal, String> {
     let now = Utc::now();
@@ -170,6 +227,14 @@ pub async fn uncomplete_goal(state: State<'_, AppState>, id: String) -> Result<G
     get_goal(state, id).await
 }
 
+/// Soft deletes a goal (marks as archived)
+/// 
+/// # Arguments
+/// * `state` - Application state containing the database connection
+/// * `id` - UUID string of the goal to delete
+/// 
+/// # Returns
+/// * `Result<(), String>` - Success or error message
 #[tauri::command]
 pub async fn delete_goal(state: State<'_, AppState>, id: String) -> Result<(), String> {
     let now = Utc::now();
@@ -191,6 +256,14 @@ pub async fn delete_goal(state: State<'_, AppState>, id: String) -> Result<(), S
     Ok(())
 }
 
+/// Restores a previously deleted goal
+/// 
+/// # Arguments
+/// * `state` - Application state containing the database connection
+/// * `id` - UUID string of the goal to restore
+/// 
+/// # Returns
+/// * `Result<Goal, String>` - The restored goal or error message
 #[tauri::command]
 pub async fn restore_goal(state: State<'_, AppState>, id: String) -> Result<Goal, String> {
     let now = Utc::now();

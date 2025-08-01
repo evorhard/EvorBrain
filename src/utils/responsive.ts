@@ -1,5 +1,8 @@
-// Responsive utility classes for common patterns
-
+/**
+ * Responsive utility classes for common Tailwind CSS patterns
+ * Provides pre-configured responsive class combinations for consistent styling
+ * @constant
+ */
 export const responsive = {
   // Padding utilities
   padding: {
@@ -113,7 +116,22 @@ export const responsive = {
   },
 };
 
-// Helper function to combine responsive classes
+/**
+ * Combines class names, filtering out falsy values
+ * @param classes - Array of class names or falsy values
+ * @returns Combined class string with falsy values removed
+ * @example
+ * ```typescript
+ * const className = clx(
+ *   'base-class',
+ *   isActive && 'active',
+ *   isMobile && 'mobile-class',
+ *   undefined,
+ *   null
+ * );
+ * // Returns: "base-class active" (if isActive is true and isMobile is false)
+ * ```
+ */
 export function clx(...classes: (string | undefined | null | false)[]): string {
   return classes.filter(Boolean).join(' ');
 }

@@ -11,12 +11,25 @@ pub struct AppState {
     pub db: Arc<SqlitePool>,
 }
 
-// Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
+/// Simple greeting command for testing
+/// 
+/// # Arguments
+/// * `name` - The name to greet
+/// 
+/// # Returns
+/// * A greeting message
 #[tauri::command]
 fn greet(name: &str) -> String {
     format!("Hello, {}! You've been greeted from Rust!", name)
 }
 
+/// Tests the database connection by counting tables
+/// 
+/// # Arguments
+/// * `state` - Application state containing the database connection
+/// 
+/// # Returns
+/// * `Result<String, String>` - Success message with table count or error
 #[tauri::command]
 async fn test_database(state: tauri::State<'_, AppState>) -> Result<String, String> {
     let result: (i64,) = sqlx::query_as("SELECT COUNT(*) FROM sqlite_master WHERE type='table'")

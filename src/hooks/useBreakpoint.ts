@@ -1,7 +1,15 @@
 import { createSignal, onMount, onCleanup } from 'solid-js';
 
+/**
+ * Available breakpoint sizes matching Tailwind CSS breakpoints
+ * @typedef {'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl'} Breakpoint
+ */
 export type Breakpoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
 
+/**
+ * Breakpoint pixel values
+ * @constant
+ */
 const breakpoints: Record<Breakpoint, number> = {
   xs: 475,
   sm: 640,
@@ -12,6 +20,32 @@ const breakpoints: Record<Breakpoint, number> = {
   '3xl': 1920,
 };
 
+/**
+ * Hook for responsive design utilities and breakpoint detection
+ * @returns An object containing:
+ *   - currentBreakpoint: Signal<Breakpoint> - The current breakpoint
+ *   - windowWidth: Signal<number> - The current window width
+ *   - isAbove: (breakpoint: Breakpoint) => boolean - Check if viewport is above a breakpoint
+ *   - isBelow: (breakpoint: Breakpoint) => boolean - Check if viewport is below a breakpoint
+ *   - isBetween: (min: Breakpoint, max: Breakpoint) => boolean - Check if viewport is between breakpoints
+ *   - isMobile: () => boolean - Check if viewport is mobile size (< md)
+ *   - isTablet: () => boolean - Check if viewport is tablet size (md to lg)
+ *   - isDesktop: () => boolean - Check if viewport is desktop size (>= lg)
+ *   - isTouch: () => boolean - Check if device has touch capability
+ *   - breakpoints: Record<Breakpoint, number> - Breakpoint pixel values
+ * @example
+ * ```typescript
+ * const { isMobile, isAbove, currentBreakpoint } = useBreakpoint();
+ * 
+ * if (isMobile()) {
+ *   // Mobile layout
+ * }
+ * 
+ * if (isAbove('lg')) {
+ *   // Large screen layout
+ * }
+ * ```
+ */
 export function useBreakpoint() {
   const [currentBreakpoint, setCurrentBreakpoint] = createSignal<Breakpoint>('xs');
   const [windowWidth, setWindowWidth] = createSignal(

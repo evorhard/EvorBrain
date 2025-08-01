@@ -1,3 +1,7 @@
+/**
+ * Error codes used throughout the EvorBrain application
+ * @enum {string}
+ */
 export enum ErrorCode {
   // Database errors
   DATABASE_CONNECTION = 'DATABASE_CONNECTION',
@@ -25,16 +29,30 @@ export enum ErrorCode {
   FORBIDDEN = 'FORBIDDEN',
 }
 
+/**
+ * Standard error format for the application
+ * @interface AppError
+ */
 export interface AppError {
   code: ErrorCode;
   message: string;
   details?: string;
 }
 
+/**
+ * Custom error class for EvorBrain application errors
+ * Extends the native Error class with additional error code and details
+ * @class EvorBrainError
+ * @extends {Error}
+ */
 export class EvorBrainError extends Error {
   code: ErrorCode;
   details?: string;
 
+  /**
+   * Creates a new EvorBrainError instance
+   * @param error - The AppError object containing code, message, and optional details
+   */
   constructor(error: AppError) {
     super(error.message);
     this.name = 'EvorBrainError';
@@ -42,6 +60,11 @@ export class EvorBrainError extends Error {
     this.details = error.details;
   }
 
+  /**
+   * Creates an EvorBrainError from a Tauri command error
+   * @param error - The error object from a Tauri command
+   * @returns A properly typed EvorBrainError instance
+   */
   static fromTauriError(error: unknown): EvorBrainError {
     if (error && typeof error === 'object' && 'code' in error && 'message' in error) {
       return new EvorBrainError(error as AppError);
@@ -54,6 +77,10 @@ export class EvorBrainError extends Error {
     });
   }
 
+  /**
+   * Serializes the error to a JSON-compatible format
+   * @returns The error as an AppError object
+   */
   toJSON(): AppError {
     return {
       code: this.code,
