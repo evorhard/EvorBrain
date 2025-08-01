@@ -98,8 +98,10 @@ describe('Input Component', () => {
     const describedBy = input.getAttribute('aria-describedby');
 
     expect(describedBy).toBeTruthy();
-    const errorElement = document.getElementById(describedBy!);
-    expect(errorElement).toHaveTextContent('Invalid input');
+    if (describedBy) {
+      const errorElement = document.getElementById(describedBy);
+      expect(errorElement).toHaveTextContent('Invalid input');
+    }
   });
 
   it('accepts all standard input attributes', () => {

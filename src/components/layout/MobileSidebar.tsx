@@ -95,13 +95,13 @@ const MobileSidebar: Component<MobileSidebarProps> = (props) => {
     <Show when={props.isOpen}>
       <Portal>
         <div class="fixed inset-0 z-50 lg:hidden">
-          <div class="bg-opacity-75 fixed inset-0 bg-gray-600" onClick={props.onClose} />
+          <div class="bg-opacity-75 fixed inset-0 bg-gray-600" onClick={() => props.onClose()} />
           <div class="fixed inset-y-0 left-0 flex w-full max-w-xs">
             <div class="relative flex w-full max-w-xs flex-1 flex-col bg-white dark:bg-gray-800">
               <div class="absolute top-0 right-0 -mr-12 pt-2">
                 <button
                   class="ml-1 flex h-10 w-10 items-center justify-center rounded-full focus:ring-2 focus:ring-white focus:outline-none focus:ring-inset"
-                  onClick={props.onClose}
+                  onClick={() => props.onClose()}
                 >
                   <HiOutlineXMark class="h-6 w-6 text-white" />
                 </button>

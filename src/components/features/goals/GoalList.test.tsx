@@ -143,18 +143,26 @@ describe('GoalList Component', () => {
       expect(screen.getByText('Goal 1')).toBeInTheDocument();
     });
 
-    const goal1 = screen.getByText('Goal 1').closest('div[class*="cursor-pointer"]')!;
-    fireEvent.click(goal1);
+    const goal1Element = screen.getByText('Goal 1');
+    const goal1 = goal1Element.closest('div[class*="cursor-pointer"]');
+    expect(goal1).toBeDefined();
+    if (goal1) {
+      fireEvent.click(goal1);
 
-    expect(goal1).toHaveClass('ring-2');
-    expect(goal1).toHaveClass('ring-primary');
-    expect(consoleSpy).toHaveBeenCalledWith('Selected goal:', goals[0].id);
+      expect(goal1).toHaveClass('ring-2');
+      expect(goal1).toHaveClass('ring-primary');
+      expect(consoleSpy).toHaveBeenCalledWith('Selected goal:', goals[0].id);
+    }
 
-    const goal2 = screen.getByText('Goal 2').closest('div[class*="cursor-pointer"]')!;
-    fireEvent.click(goal2);
+    const goal2Element = screen.getByText('Goal 2');
+    const goal2 = goal2Element.closest('div[class*="cursor-pointer"]');
+    expect(goal2).toBeDefined();
+    if (goal2 && goal1) {
+      fireEvent.click(goal2);
 
-    expect(goal1).not.toHaveClass('ring-2');
-    expect(goal2).toHaveClass('ring-2');
+      expect(goal1).not.toHaveClass('ring-2');
+      expect(goal2).toHaveClass('ring-2');
+    }
 
     consoleSpy.mockRestore();
   });
@@ -302,8 +310,12 @@ describe('GoalList Component', () => {
       expect(screen.getByText('Completed Goal')).toBeInTheDocument();
     });
 
-    const goalElement = screen.getByText('Completed Goal').closest('div[class*="cursor-pointer"]')!;
-    expect(goalElement).toHaveClass('opacity-60');
+    const completedGoalElement = screen.getByText('Completed Goal');
+    const goalElement = completedGoalElement.closest('div[class*="cursor-pointer"]');
+    expect(goalElement).toBeDefined();
+    if (goalElement) {
+      expect(goalElement).toHaveClass('opacity-60');
+    }
   });
 
   it('should show appropriate buttons based on goal state', async () => {
@@ -320,23 +332,35 @@ describe('GoalList Component', () => {
     });
 
     // Active goal should have complete and delete buttons
-    const activeElement = screen.getByText('Active').closest('div[class*="cursor-pointer"]')!;
-    expect(activeElement.querySelector('[title="Mark as completed"]')).toBeInTheDocument();
-    expect(activeElement.querySelector('[title="Delete goal"]')).toBeInTheDocument();
-    expect(activeElement.querySelector('[title="Mark as incomplete"]')).not.toBeInTheDocument();
-    expect(activeElement.querySelector('[title="Restore goal"]')).not.toBeInTheDocument();
+    const activeTextElement = screen.getByText('Active');
+    const activeElement = activeTextElement.closest('div[class*="cursor-pointer"]');
+    expect(activeElement).toBeDefined();
+    if (activeElement) {
+      expect(activeElement.querySelector('[title="Mark as completed"]')).toBeInTheDocument();
+      expect(activeElement.querySelector('[title="Delete goal"]')).toBeInTheDocument();
+      expect(activeElement.querySelector('[title="Mark as incomplete"]')).not.toBeInTheDocument();
+      expect(activeElement.querySelector('[title="Restore goal"]')).not.toBeInTheDocument();
+    }
 
     // Completed goal should have uncomplete and delete buttons
-    const completedElement = screen.getByText('Completed').closest('div[class*="cursor-pointer"]')!;
-    expect(completedElement.querySelector('[title="Mark as incomplete"]')).toBeInTheDocument();
-    expect(completedElement.querySelector('[title="Delete goal"]')).toBeInTheDocument();
-    expect(completedElement.querySelector('[title="Mark as completed"]')).not.toBeInTheDocument();
+    const completedTextElement = screen.getByText('Completed');
+    const completedElement = completedTextElement.closest('div[class*="cursor-pointer"]');
+    expect(completedElement).toBeDefined();
+    if (completedElement) {
+      expect(completedElement.querySelector('[title="Mark as incomplete"]')).toBeInTheDocument();
+      expect(completedElement.querySelector('[title="Delete goal"]')).toBeInTheDocument();
+      expect(completedElement.querySelector('[title="Mark as completed"]')).not.toBeInTheDocument();
+    }
 
     // Archived goal should only have restore button
-    const archivedElement = screen.getByText('Archived').closest('div[class*="cursor-pointer"]')!;
-    expect(archivedElement.querySelector('[title="Restore goal"]')).toBeInTheDocument();
-    expect(archivedElement.querySelector('[title="Delete goal"]')).not.toBeInTheDocument();
-    expect(archivedElement.querySelector('[title="Mark as completed"]')).not.toBeInTheDocument();
+    const archivedTextElement = screen.getByText('Archived');
+    const archivedElement = archivedTextElement.closest('div[class*="cursor-pointer"]');
+    expect(archivedElement).toBeDefined();
+    if (archivedElement) {
+      expect(archivedElement.querySelector('[title="Restore goal"]')).toBeInTheDocument();
+      expect(archivedElement.querySelector('[title="Delete goal"]')).not.toBeInTheDocument();
+      expect(archivedElement.querySelector('[title="Mark as completed"]')).not.toBeInTheDocument();
+    }
   });
 
   it('should display all priority levels correctly', async () => {

@@ -1,4 +1,4 @@
-import { splitProps, type Component, type JSX } from 'solid-js';
+import { splitProps, createMemo, type Component, type JSX } from 'solid-js';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 const textareaVariants = cva(
@@ -34,29 +34,33 @@ const Textarea: Component<TextareaProps> = (props) => {
     'id',
   ]);
 
-  const textareaId = local.id || `textarea-${Math.random().toString(36).substr(2, 9)}`;
-  const actualVariant = local.error ? 'error' : local.variant;
+  const textareaId = createMemo(
+    () => local.id || `textarea-${Math.random().toString(36).substr(2, 9)}`,
+  );
+  const actualVariant = createMemo(() => (local.error ? 'error' : local.variant));
 
   return (
     <div class="w-full">
       {local.label && (
-        <label for={textareaId} class="text-content mb-2 block text-sm font-medium">
+        <label for={textareaId()} class="text-content mb-2 block text-sm font-medium">
           {local.label}
         </label>
       )}
       <textarea
-        id={textareaId}
+        id={textareaId()}
         class={textareaVariants({
-          variant: actualVariant,
+          variant: actualVariant(),
           class: local.class,
         })}
         aria-invalid={Boolean(local.error)}
-        aria-describedby={local.error || local.helperText ? `${textareaId}-description` : undefined}
+        aria-describedby={
+          local.error || local.helperText ? `${textareaId()}-description` : undefined
+        }
         {...others}
       />
       {(local.error || local.helperText) && (
         <p
-          id={`${textareaId}-description`}
+          id={`${textareaId()}-description`}
           class={`mt-1 text-sm ${local.error ? 'text-danger-500' : 'text-content-secondary'}`}
         >
           {local.error || local.helperText}

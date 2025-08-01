@@ -29,7 +29,10 @@ export const goalsByLifeArea = createMemo(() => {
     if (!grouped.has(goal.life_area_id)) {
       grouped.set(goal.life_area_id, []);
     }
-    grouped.get(goal.life_area_id)!.push(goal);
+    const goals = grouped.get(goal.life_area_id);
+    if (goals) {
+      goals.push(goal);
+    }
   });
   return grouped;
 });

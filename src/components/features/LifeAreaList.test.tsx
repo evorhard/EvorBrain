@@ -131,23 +131,31 @@ describe('LifeAreaList Component', () => {
     });
 
     // Click on Work area
-    const workArea = screen.getByText('Work').closest('div[class*="cursor-pointer"]')!;
-    fireEvent.click(workArea);
+    const workAreaElement = screen.getByText('Work');
+    const workArea = workAreaElement.closest('div[class*="cursor-pointer"]');
+    expect(workArea).toBeDefined();
+    if (workArea) {
+      fireEvent.click(workArea);
 
-    // Should have selection ring
-    expect(workArea).toHaveClass('ring-2');
-    expect(workArea).toHaveClass('ring-primary');
+      // Should have selection ring
+      expect(workArea).toHaveClass('ring-2');
+      expect(workArea).toHaveClass('ring-primary');
+    }
 
     // Console should log the selection
     expect(consoleSpy).toHaveBeenCalledWith('Selected life area:', lifeAreas[0].id);
 
     // Click on Personal area
-    const personalArea = screen.getByText('Personal').closest('div[class*="cursor-pointer"]')!;
-    fireEvent.click(personalArea);
+    const personalAreaElement = screen.getByText('Personal');
+    const personalArea = personalAreaElement.closest('div[class*="cursor-pointer"]');
+    expect(personalArea).toBeDefined();
+    if (personalArea && workArea) {
+      fireEvent.click(personalArea);
 
-    // Work should no longer be selected
-    expect(workArea).not.toHaveClass('ring-2');
-    expect(personalArea).toHaveClass('ring-2');
+      // Work should no longer be selected
+      expect(workArea).not.toHaveClass('ring-2');
+      expect(personalArea).toHaveClass('ring-2');
+    }
 
     consoleSpy.mockRestore();
   });
@@ -229,13 +237,17 @@ describe('LifeAreaList Component', () => {
       expect(screen.getByText('Test Area')).toBeInTheDocument();
     });
 
-    const area = screen.getByText('Test Area').closest('div[class*="cursor-pointer"]')!;
+    const areaElement = screen.getByText('Test Area');
+    const area = areaElement.closest('div[class*="cursor-pointer"]');
+    expect(area).toBeDefined();
 
-    // Should have hover shadow class when not selected
-    expect(area).toHaveClass('hover:shadow-card-hover');
+    if (area) {
+      // Should have hover shadow class when not selected
+      expect(area).toHaveClass('hover:shadow-card-hover');
 
-    // After selection, hover effect should be removed
-    fireEvent.click(area);
-    expect(area).not.toHaveClass('hover:shadow-card-hover');
+      // After selection, hover effect should be removed
+      fireEvent.click(area);
+      expect(area).not.toHaveClass('hover:shadow-card-hover');
+    }
   });
 });

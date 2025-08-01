@@ -23,7 +23,7 @@ const Header: Component<HeaderProps> = (props) => {
             <button
               class="hover:bg-surface-100 dark:hover:bg-surface-200 focus-ring -ml-2 rounded-md p-2 transition-colors lg:hidden"
               aria-label="Toggle sidebar"
-              onClick={props.onToggleMobileSidebar}
+              onClick={() => props.onToggleMobileSidebar()}
             >
               <HiOutlineBars3 class="text-content-secondary h-5 w-5" />
             </button>

@@ -40,7 +40,15 @@ export function GoalsPage() {
         <h1 class="text-2xl font-bold">Goals</h1>
         <div class="flex gap-3">
           <Show when={selectedGoal() && !selectedGoal()?.archived_at}>
-            <Button variant="secondary" onClick={() => handleEditClick(selectedGoal()!)}>
+            <Button
+              variant="secondary"
+              onClick={() => {
+                const goal = selectedGoal();
+                if (goal) {
+                  handleEditClick(goal);
+                }
+              }}
+            >
               Edit Selected
             </Button>
           </Show>

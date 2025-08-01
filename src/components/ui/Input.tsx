@@ -1,4 +1,4 @@
-import { splitProps, type Component, type JSX } from 'solid-js';
+import { splitProps, createMemo, type Component, type JSX } from 'solid-js';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 const inputVariants = cva(
@@ -41,30 +41,30 @@ const Input: Component<InputProps> = (props) => {
     'id',
   ]);
 
-  const inputId = local.id || `input-${Math.random().toString(36).substr(2, 9)}`;
-  const actualVariant = local.error ? 'error' : local.variant;
+  const inputId = createMemo(() => local.id || `input-${Math.random().toString(36).substr(2, 9)}`);
+  const actualVariant = createMemo(() => (local.error ? 'error' : local.variant));
 
   return (
     <div class="w-full">
       {local.label && (
-        <label for={inputId} class="text-content mb-2 block text-sm font-medium">
+        <label for={inputId()} class="text-content mb-2 block text-sm font-medium">
           {local.label}
         </label>
       )}
       <input
-        id={inputId}
+        id={inputId()}
         class={inputVariants({
-          variant: actualVariant,
+          variant: actualVariant(),
           size: local.size,
           class: local.class,
         })}
         aria-invalid={Boolean(local.error)}
-        aria-describedby={local.error || local.helperText ? `${inputId}-description` : undefined}
+        aria-describedby={local.error || local.helperText ? `${inputId()}-description` : undefined}
         {...others}
       />
       {(local.error || local.helperText) && (
         <p
-          id={`${inputId}-description`}
+          id={`${inputId()}-description`}
           class={`mt-1 text-sm ${local.error ? 'text-danger-500' : 'text-content-secondary'}`}
         >
           {local.error || local.helperText}

@@ -309,6 +309,8 @@ export const assertValidHierarchy = (hierarchy: {
 export const assertValidDates = (...dates: (string | null | undefined)[]) => {
   dates.filter(Boolean).forEach((date) => {
     expect(date).toBeTruthy();
-    expect(() => new Date(date!)).not.toThrow();
+    if (date) {
+      expect(() => new Date(date)).not.toThrow();
+    }
   });
 };

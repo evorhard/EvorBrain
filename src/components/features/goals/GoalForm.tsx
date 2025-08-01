@@ -165,7 +165,10 @@ export function GoalForm(props: GoalFormProps) {
           Cancel
         </Button>
         <Button type="submit" disabled={isSubmitting()}>
-          {isSubmitting() ? 'Saving...' : props.goal ? 'Update Goal' : 'Create Goal'}
+          {(() => {
+            if (isSubmitting()) return 'Saving...';
+            return props.goal ? 'Update Goal' : 'Create Goal';
+          })()}
         </Button>
       </div>
     </form>

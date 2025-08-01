@@ -103,8 +103,12 @@ describe('GoalsPage Component', () => {
     expect(screen.queryByText('Edit Selected')).not.toBeInTheDocument();
 
     // Select a goal
-    const goal1Element = screen.getByText('Goal 1').closest('div[class*="cursor-pointer"]')!;
-    fireEvent.click(goal1Element);
+    const goal1TextElement = screen.getByText('Goal 1');
+    const goal1Element = goal1TextElement.closest('div[class*="cursor-pointer"]');
+    expect(goal1Element).toBeDefined();
+    if (goal1Element) {
+      fireEvent.click(goal1Element);
+    }
 
     // Edit button should appear
     await waitFor(() => {
@@ -124,8 +128,12 @@ describe('GoalsPage Component', () => {
     });
 
     // Select the archived goal
-    const goalElement = screen.getByText('Archived Goal').closest('div[class*="cursor-pointer"]')!;
-    fireEvent.click(goalElement);
+    const archivedGoalText = screen.getByText('Archived Goal');
+    const goalElement = archivedGoalText.closest('div[class*="cursor-pointer"]');
+    expect(goalElement).toBeDefined();
+    if (goalElement) {
+      fireEvent.click(goalElement);
+    }
 
     // Edit button should not appear
     expect(screen.queryByText('Edit Selected')).not.toBeInTheDocument();
@@ -147,8 +155,12 @@ describe('GoalsPage Component', () => {
     });
 
     // Select the goal
-    const goalElement = screen.getByText('Editable Goal').closest('div[class*="cursor-pointer"]')!;
-    fireEvent.click(goalElement);
+    const editableGoalText = screen.getByText('Editable Goal');
+    const goalElement = editableGoalText.closest('div[class*="cursor-pointer"]');
+    expect(goalElement).toBeDefined();
+    if (goalElement) {
+      fireEvent.click(goalElement);
+    }
 
     // Click edit button
     await waitFor(() => {
@@ -218,16 +230,24 @@ describe('GoalsPage Component', () => {
     });
 
     // Select first goal
-    const goal1 = screen.getByText('Goal 1').closest('div[class*="cursor-pointer"]')!;
-    fireEvent.click(goal1);
+    const goal1Text = screen.getByText('Goal 1');
+    const goal1 = goal1Text.closest('div[class*="cursor-pointer"]');
+    expect(goal1).toBeDefined();
+    if (goal1) {
+      fireEvent.click(goal1);
 
-    await waitFor(() => {
-      expect(screen.getByText('Edit Selected')).toBeInTheDocument();
-    });
+      await waitFor(() => {
+        expect(screen.getByText('Edit Selected')).toBeInTheDocument();
+      });
+    }
 
     // Select second goal
-    const goal2 = screen.getByText('Goal 2').closest('div[class*="cursor-pointer"]')!;
-    fireEvent.click(goal2);
+    const goal2Text = screen.getByText('Goal 2');
+    const goal2 = goal2Text.closest('div[class*="cursor-pointer"]');
+    expect(goal2).toBeDefined();
+    if (goal2) {
+      fireEvent.click(goal2);
+    }
 
     // Edit button should still be visible
     expect(screen.getByText('Edit Selected')).toBeInTheDocument();
@@ -253,8 +273,12 @@ describe('GoalsPage Component', () => {
     });
 
     // Select and edit
-    const goalElement = screen.getByText('Original Name').closest('div[class*="cursor-pointer"]')!;
-    fireEvent.click(goalElement);
+    const originalGoalText = screen.getByText('Original Name');
+    const goalElement = originalGoalText.closest('div[class*="cursor-pointer"]');
+    expect(goalElement).toBeDefined();
+    if (goalElement) {
+      fireEvent.click(goalElement);
+    }
 
     await waitFor(() => {
       expect(screen.getByText('Edit Selected')).toBeInTheDocument();
@@ -292,9 +316,13 @@ describe('GoalsPage Component', () => {
     });
 
     // Edit Goal 1
-    const goal1 = screen.getByText('Goal 1').closest('div[class*="cursor-pointer"]')!;
-    fireEvent.click(goal1);
-    fireEvent.click(screen.getByText('Edit Selected'));
+    const goal1TextEl = screen.getByText('Goal 1');
+    const goal1 = goal1TextEl.closest('div[class*="cursor-pointer"]');
+    expect(goal1).toBeDefined();
+    if (goal1) {
+      fireEvent.click(goal1);
+      fireEvent.click(screen.getByText('Edit Selected'));
+    }
 
     await waitFor(() => {
       expect(screen.getByLabelText('Goal Name *')).toHaveValue('Goal 1');

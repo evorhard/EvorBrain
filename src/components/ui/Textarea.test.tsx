@@ -112,8 +112,10 @@ describe('Textarea Component', () => {
     const describedBy = textarea.getAttribute('aria-describedby');
 
     expect(describedBy).toBeTruthy();
-    const errorElement = document.getElementById(describedBy!);
-    expect(errorElement).toHaveTextContent('Error text');
+    if (describedBy) {
+      const errorElement = document.getElementById(describedBy);
+      expect(errorElement).toHaveTextContent('Error text');
+    }
   });
 
   it('should accept standard textarea attributes', () => {

@@ -52,8 +52,9 @@ function getStoredTheme(): Theme {
  */
 export function createTheme() {
   const [theme, setTheme] = createSignal<Theme>(getStoredTheme());
+  const initialTheme = getStoredTheme();
   const [resolvedTheme, setResolvedTheme] = createSignal<'light' | 'dark'>(
-    theme() === 'system' ? getSystemTheme() : (theme() as 'light' | 'dark'),
+    initialTheme === 'system' ? getSystemTheme() : initialTheme,
   );
 
   createEffect(() => {

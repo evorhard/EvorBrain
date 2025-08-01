@@ -87,7 +87,7 @@ development phase with difficulty ratings and current status.
 
 ### [P1.8] Code Quality & Cleanup
 
-- [ ] 🔄 [P1.8.1] Fix ESLint errors (reduced from 181 to ~39 issues) 🟡
+- [x] ✅ [P1.8.1] Fix ESLint errors (reduced from 181 to 2 warnings) 🟡
 - [x] ✅ [P1.8.2] Remove all `any` types in test files 🟢
 - [x] ✅ [P1.8.3] Fix duplicate imports across codebase 🟢
 - [x] ✅ [P1.8.4] Replace `confirm`/`alert` with proper UI modals 🟡
@@ -379,7 +379,7 @@ development phase with difficulty ratings and current status.
 - **Test Utilities**: Comprehensive test helpers created (TauriMock, render helpers, data factories,
   custom matchers)
 - **Testing Setup**: Vitest + Playwright configured, though some environment issues need resolution
-- **Code Quality**: ESLint configured with TypeScript rules, reduced errors from 181 to ~99
+- **Code Quality**: ESLint configured with TypeScript rules, reduced errors from 181 to 2 warnings only
 - **UI Components**: Added ConfirmDialog component to replace browser confirm/alert dialogs
 
 ### Technical Decisions
