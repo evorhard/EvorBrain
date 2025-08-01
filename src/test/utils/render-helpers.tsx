@@ -1,8 +1,8 @@
-import type { RenderResult } from '@solidjs/testing-library';
 import { render } from '@solidjs/testing-library';
-import type { JSX, Component } from 'solid-js';
+import type { RenderResult } from '@solidjs/testing-library';
 import { createContext, useContext } from 'solid-js';
-import { Router, MemoryRouter } from '@solidjs/router';
+import type { JSX, Component } from 'solid-js';
+import { MemoryRouter } from '@solidjs/router';
 import type { Mock } from 'vitest';
 
 /**
@@ -31,7 +31,7 @@ export function renderWithProviders(
 
   // Set up mock invoke if provided
   if (mockInvoke && typeof window !== 'undefined') {
-    (window as any).__TAURI__ = {
+    (window as Window & { __TAURI__?: { tauri: { invoke: Mock } } }).__TAURI__ = {
       tauri: {
         invoke: mockInvoke,
       },
@@ -64,9 +64,10 @@ export function renderWithProviders(
 export function createTestContext<T>(defaultValue: T) {
   const Context = createContext<T>(defaultValue);
 
-  const TestProvider: Component<{ value?: T; children: JSX.Element }> = (props) => (
-    <Context.Provider value={props.value ?? defaultValue}>{props.children}</Context.Provider>
-  );
+  const TestProvider: Component<{ value?: T; children: JSX.Element }> = (props) => {
+    const value = () => props.value ?? defaultValue;
+    return <Context.Provider value={value()}>{props.children}</Context.Provider>;
+  };
 
   return {
     Context,
@@ -113,7 +114,7 @@ export async function renderWithLoadingState(
 /**
  * Render with mock data providers
  */
-export function renderWithMockData<T extends Record<string, any>>(
+export function renderWithMockData<T extends Record<string, unknown>>(
   ui: () => JSX.Element,
   mockData: T,
   options: RenderOptions = {},
@@ -142,7 +143,7 @@ export function renderWithErrorBoundary(
     onError?: (error: Error) => void;
   } = {},
 ) {
-  const { onError, ...renderOptions } = options;
+  const { onError: _onError, ...renderOptions } = options;
 
   const ErrorBoundary: Component<{ children: JSX.Element }> = (props) => (
     <div class="error-boundary-wrapper">{props.children}</div>
@@ -167,10 +168,10 @@ export function renderWithAllProviders(
   ui: () => JSX.Element,
   options: RenderOptions & {
     theme?: 'light' | 'dark';
-    mockData?: Record<string, any>;
+    mockData?: Record<string, unknown>;
   } = {},
 ) {
-  const { theme = 'light', mockData = {}, ...renderOptions } = options;
+  const { theme = 'light', mockData: _mockData = {}, ...renderOptions } = options;
 
   const AllProviders: Component<{ children: JSX.Element }> = (props) => (
     <div class={theme === 'dark' ? 'dark' : ''}>{props.children}</div>

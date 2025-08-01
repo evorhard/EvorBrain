@@ -23,7 +23,7 @@ interface CustomMatchers<R = unknown> {
 }
 
 declare module 'vitest' {
-  type Assertion<T = any> = CustomMatchers<T>;
+  interface Assertion<T = unknown> extends CustomMatchers<T> {}
   type AsymmetricMatchersContaining = CustomMatchers;
 }
 
@@ -50,7 +50,7 @@ const isValidUUID = (id: string): boolean =>
  * Define custom matchers
  */
 expect.extend({
-  toBeValidLifeArea(received: any) {
+  toBeValidLifeArea(received: unknown) {
     const errors: string[] = [];
 
     if (!received || typeof received !== 'object') {
@@ -87,7 +87,7 @@ expect.extend({
     };
   },
 
-  toBeValidGoal(received: any) {
+  toBeValidGoal(received: unknown) {
     const errors: string[] = [];
 
     if (!received || typeof received !== 'object') {
@@ -121,7 +121,7 @@ expect.extend({
     };
   },
 
-  toBeValidTask(received: any) {
+  toBeValidTask(received: unknown) {
     const errors: string[] = [];
 
     if (!received || typeof received !== 'object') {
@@ -152,7 +152,7 @@ expect.extend({
     };
   },
 
-  toBeArchived(received: any) {
+  toBeArchived(received: unknown) {
     const isArchived = received?.archived_at != null;
     return {
       pass: isArchived,
@@ -161,7 +161,7 @@ expect.extend({
     };
   },
 
-  toBeCompleted(received: any) {
+  toBeCompleted(received: unknown) {
     const isCompleted = received?.completed_at != null;
     return {
       pass: isCompleted,
@@ -170,7 +170,7 @@ expect.extend({
     };
   },
 
-  toBeOverdue(received: any) {
+  toBeOverdue(received: unknown) {
     const task = received as Task;
     const now = new Date();
     const dueDate = task.due_date ? new Date(task.due_date) : null;
@@ -183,7 +183,7 @@ expect.extend({
     };
   },
 
-  toHavePosition(received: any, expectedPosition: number) {
+  toHavePosition(received: unknown, expectedPosition: number) {
     const actualPosition = received?.position;
     const matches = actualPosition === expectedPosition;
 
@@ -211,7 +211,7 @@ expect.extend({
     };
   },
 
-  toHaveValidTimestamps(received: any) {
+  toHaveValidTimestamps(received: unknown) {
     const errors: string[] = [];
 
     if (!received?.created_at || !isValidISODate(received.created_at)) {
@@ -237,7 +237,7 @@ expect.extend({
     };
   },
 
-  toHaveValidId(received: any, prefix?: string) {
+  toHaveValidId(received: unknown, prefix?: string) {
     const id = received?.id || received;
     let isValid = typeof id === 'string' && id.length > 0;
 
@@ -259,7 +259,7 @@ expect.extend({
     };
   },
 
-  toBeInStatus(received: any, expectedStatus: string) {
+  toBeInStatus(received: unknown, expectedStatus: string) {
     const actualStatus = received?.status;
     const matches = actualStatus === expectedStatus;
 
@@ -272,7 +272,7 @@ expect.extend({
     };
   },
 
-  toHavePriority(received: any, expectedPriority: string) {
+  toHavePriority(received: unknown, expectedPriority: string) {
     const actualPriority = received?.priority;
     const matches = actualPriority === expectedPriority;
 

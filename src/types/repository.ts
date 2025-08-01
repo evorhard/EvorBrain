@@ -44,7 +44,7 @@ export interface ExportRequest {
 }
 
 export interface ExportResult {
-  data: Record<string, any>;
+  data: Record<string, unknown>;
   item_count: number;
   export_date: string; // ISO 8601 datetime
 }

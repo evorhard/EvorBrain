@@ -15,11 +15,13 @@ import {
 } from 'solid-icons/hi';
 import { useUIStore } from '../../stores';
 
+type ViewId = 'dashboard' | 'life-areas' | 'goals' | 'projects' | 'tasks' | 'notes' | 'calendar';
+
 interface NavItem {
   id: string;
   label: string;
   icon: Component<{ class?: string }>;
-  viewId?: string;
+  viewId?: ViewId;
   children?: NavItem[];
 }
 
@@ -64,7 +66,7 @@ const Sidebar: Component = () => {
       if (hasChildren) {
         toggleExpanded(item.id);
       } else if (item.viewId) {
-        uiActions.setActiveView(item.viewId as any);
+        uiActions.setActiveView(item.viewId);
       }
     };
 

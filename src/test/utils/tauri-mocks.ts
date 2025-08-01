@@ -1,6 +1,5 @@
 import { vi, expect } from 'vitest';
 import type { Mock } from 'vitest';
-import type { LifeArea, Goal, Project, Task, Note } from '../../types/models';
 
 /**
  * Tauri command mocking utilities for testing
@@ -18,7 +17,7 @@ export interface MockTauriOptions {
  */
 export class TauriMock {
   private mockFn: Mock;
-  private commandHandlers: Map<string, (...args: any[]) => any> = new Map();
+  private commandHandlers: Map<string, (args?: unknown) => unknown> = new Map();
   private defaultDelay: number;
   private failOnUnknownCommand: boolean;
 
@@ -30,7 +29,7 @@ export class TauriMock {
   }
 
   private setupDefaultImplementation() {
-    this.mockFn.mockImplementation(async (command: string, args?: any) => {
+    this.mockFn.mockImplementation(async (command: string, args?: unknown) => {
       const handler = this.commandHandlers.get(command);
 
       if (!handler) {
@@ -52,7 +51,7 @@ export class TauriMock {
   /**
    * Register a handler for a specific command
    */
-  onCommand<T = any>(command: string, handler: (args?: any) => T | Promise<T>) {
+  onCommand<T = unknown>(command: string, handler: (args?: unknown) => T | Promise<T>) {
     this.commandHandlers.set(command, handler);
     return this;
   }
@@ -60,7 +59,7 @@ export class TauriMock {
   /**
    * Register a one-time response for a command
    */
-  onceCommand<T = any>(command: string, response: T) {
+  onceCommand<T = unknown>(command: string, response: T) {
     let called = false;
     this.onCommand(command, () => {
       if (called) {
@@ -103,7 +102,7 @@ export class TauriMock {
    */
   expectCommand(command: string) {
     return {
-      toHaveBeenCalledWith: (expectedArgs?: any) => {
+      toHaveBeenCalledWith: (expectedArgs?: unknown) => {
         expect(this.mockFn).toHaveBeenCalledWith(command, expectedArgs);
       },
       toHaveBeenCalledTimes: (times: number) => {
@@ -206,7 +205,7 @@ export const mockTauriError = (command: string, error: string | Error) => {
 /**
  * Create a mock that simulates loading states
  */
-export const createLoadingMock = (finalResponse: any, loadingTime = 100) =>
+export const createLoadingMock = (finalResponse: unknown, loadingTime = 100) =>
   new Promise((resolve) => {
     setTimeout(() => resolve(finalResponse), loadingTime);
   });
