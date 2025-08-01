@@ -1,5 +1,8 @@
 # EvorBrain UI Components
 
+> **Important**: All components must follow the [Component Documentation Standards](/docs/COMPONENT_STANDARDS.md).
+> See the [Badge component](/src/components/ui/Badge.tsx) for a complete example.
+
 This directory contains reusable UI components built with [Kobalte](https://kobalte.dev/), an
 accessible component library for SolidJS.
 
