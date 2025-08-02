@@ -9,6 +9,8 @@ export interface MockTauriOptions {
   delay?: number;
   /** Whether to automatically fail on unknown commands */
   failOnUnknownCommand?: boolean;
+  /** Whether to log all commands for debugging */
+  logCommands?: boolean;
 }
 
 /**
@@ -19,21 +21,43 @@ export class TauriMock {
   private commandHandlers: Map<string, (args?: unknown) => unknown> = new Map();
   private defaultDelay: number;
   private failOnUnknownCommand: boolean;
+  private logCommands: boolean;
+  private commandCalls: Map<string, unknown[]> = new Map();
+  private commandCallCounts: Map<string, number> = new Map();
 
   constructor(options: MockTauriOptions = {}) {
     this.mockFn = vi.fn();
     this.defaultDelay = options.delay ?? 0;
     this.failOnUnknownCommand = options.failOnUnknownCommand ?? false;
+    this.logCommands = options.logCommands ?? false;
     this.setupDefaultImplementation();
   }
 
   private setupDefaultImplementation() {
     this.mockFn.mockImplementation(async (command: string, args?: unknown) => {
+      // Log command if debugging is enabled
+      if (this.logCommands) {
+        // eslint-disable-next-line no-console
+        console.log(`[TauriMock] Command: ${command}`, args);
+      }
+
+      // Track command calls
+      if (!this.commandCalls.has(command)) {
+        this.commandCalls.set(command, []);
+      }
+      this.commandCalls.get(command)?.push(args);
+      
+      // Track call counts
+      this.commandCallCounts.set(command, (this.commandCallCounts.get(command) ?? 0) + 1);
+
       const handler = this.commandHandlers.get(command);
 
       if (!handler) {
         if (this.failOnUnknownCommand) {
           throw new Error(`Unknown Tauri command: ${command}`);
+        }
+        if (this.logCommands) {
+          console.warn(`[TauriMock] No handler for command: ${command}`);
         }
         return undefined;
       }
@@ -43,14 +67,26 @@ export class TauriMock {
         await new Promise((resolve) => setTimeout(resolve, this.defaultDelay));
       }
 
-      return handler(args);
+      try {
+        const result = await handler(args);
+        if (this.logCommands) {
+          // eslint-disable-next-line no-console
+          console.log(`[TauriMock] Command ${command} returned:`, result);
+        }
+        return result;
+      } catch (error) {
+        if (this.logCommands) {
+          console.error(`[TauriMock] Command ${command} failed:`, error);
+        }
+        throw error;
+      }
     });
   }
 
   /**
    * Register a handler for a specific command
    */
-  onCommand<T = unknown>(command: string, handler: (args?: unknown) => T | Promise<T>) {
+  onCommand<T>(command: string, handler: (args?: unknown) => T | Promise<T>) {
     this.commandHandlers.set(command, handler);
     return this;
   }
@@ -93,7 +129,38 @@ export class TauriMock {
   reset() {
     this.mockFn.mockReset();
     this.commandHandlers.clear();
+    this.commandCalls.clear();
+    this.commandCallCounts.clear();
     this.setupDefaultImplementation();
+  }
+
+  /**
+   * Get all calls for a specific command
+   */
+  getCommandCalls(command: string): Array<unknown> {
+    return this.commandCalls.get(command) ?? [];
+  }
+
+  /**
+   * Get the last call arguments for a command
+   */
+  getLastCommandCall(command: string): unknown {
+    const calls = this.getCommandCalls(command);
+    return calls[calls.length - 1];
+  }
+
+  /**
+   * Check if a command was called
+   */
+  wasCommandCalled(command: string): boolean {
+    return (this.commandCallCounts.get(command) ?? 0) > 0;
+  }
+
+  /**
+   * Get the number of times a command was called
+   */
+  getCommandCallCount(command: string): number {
+    return this.commandCallCounts.get(command) ?? 0;
   }
 
   /**
@@ -210,3 +277,69 @@ export const createLoadingMock = (finalResponse: unknown, loadingTime = 100) =>
   new Promise((resolve) => {
     setTimeout(() => resolve(finalResponse), loadingTime);
   });
+
+/**
+ * Install TauriMock globally for all tests in a file
+ * This should be called in a beforeEach hook
+ */
+export function installTauriMock(mock: TauriMock) {
+  // @ts-expect-error - We're mocking a global
+  window.__TAURI__ = {
+    invoke: mock.getMock(),
+  };
+  
+  // Also mock the module import
+  vi.doMock('@tauri-apps/api/core', () => ({
+    invoke: mock.getMock(),
+  }));
+}
+
+/**
+ * Uninstall TauriMock and restore original state
+ * This should be called in an afterEach hook
+ */
+export function uninstallTauriMock() {
+  // @ts-expect-error - We're cleaning up our mock
+  delete window.__TAURI__;
+  
+  // Clear module mock
+  vi.doUnmock('@tauri-apps/api/core');
+}
+
+/**
+ * Create a TauriMock instance with state management capabilities
+ */
+export class StatefulTauriMock extends TauriMock {
+  private state: Map<string, unknown> = new Map();
+
+  /**
+   * Set initial state for testing
+   */
+  setState(key: string, value: unknown) {
+    this.state.set(key, value);
+    return this;
+  }
+
+  /**
+   * Get current state
+   */
+  getState(key: string): unknown {
+    return this.state.get(key);
+  }
+
+  /**
+   * Clear all state
+   */
+  clearState() {
+    this.state.clear();
+    return this;
+  }
+
+  /**
+   * Override reset to also clear state
+   */
+  reset() {
+    super.reset();
+    this.clearState();
+  }
+}
