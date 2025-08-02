@@ -23,7 +23,7 @@ describe('API Abstraction Layer Integration', () => {
       createLifeArea({ name: 'Work', description: 'Professional life' }),
       createLifeArea({ name: 'Personal', description: 'Personal development' }),
     ];
-    
+
     for (const area of lifeAreas) {
       testApi.testHelpers.addLifeArea(area);
     }

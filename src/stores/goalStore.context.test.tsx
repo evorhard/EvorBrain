@@ -27,7 +27,7 @@ describe('GoalStore Context', () => {
   });
 
   it('should provide store through context without reactive warnings', () => {
-    let storeResult: any;
+    let storeResult: ReturnType<typeof useGoalStore> | undefined;
 
     const TestComponent = () => {
       const store = useGoalStore();
@@ -85,7 +85,7 @@ describe('GoalStore Context', () => {
   it('should support testing with createTestStore', async () => {
     // This demonstrates how to test stores without the provider
     const { api } = await import('../lib/api');
-    
+
     // Create a test goal
     const testGoal: Goal = {
       id: '1',
@@ -107,10 +107,10 @@ describe('GoalStore Context', () => {
     const { createGoalStore } = await import('./goalStore.context');
     const testStore = createTestStore(() => createGoalStore());
     const { getStore, cleanup: cleanupStore } = testStore();
-    
+
     const store = getStore();
     expect(store.state.items).toHaveLength(0);
-    
+
     // Test an action
     await store.actions.create({
       life_area_id: 'life-1',
@@ -118,7 +118,7 @@ describe('GoalStore Context', () => {
       description: 'Test description',
       priority: 'high',
     });
-    
+
     expect(store.state.items).toHaveLength(1);
 
     // Cleanup

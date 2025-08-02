@@ -18,34 +18,37 @@ export function createGoalStore() {
   const [state, { setState }] = createStore(initialState, 'Goal');
 
   // Computed values - created inside the factory to ensure proper reactive context
+  const selectedGoal = createMemo(() => state.items.find((goal) => goal.id === state.selectedId));
+
+  const activeGoals = createMemo(() => state.items.filter((goal) => !goal.archived_at));
+
+  const completedGoals = createMemo(() => state.items.filter((goal) => goal.completed_at));
+
+  const goalsByLifeArea = createMemo(() => {
+    const grouped = new Map<string, Goal[]>();
+    state.items.forEach((goal) => {
+      if (!grouped.has(goal.life_area_id)) {
+        grouped.set(goal.life_area_id, []);
+      }
+      const goals = grouped.get(goal.life_area_id);
+      if (goals) {
+        goals.push(goal);
+      }
+    });
+    return grouped;
+  });
+
   const computed = {
-    selectedGoal: createMemo(() =>
-      state.items.find((goal) => goal.id === state.selectedId),
-    ),
-
-    activeGoals: createMemo(() => state.items.filter((goal) => !goal.archived_at)),
-
-    completedGoals: createMemo(() => state.items.filter((goal) => goal.completed_at)),
-
-    goalsByLifeArea: createMemo(() => {
-      const grouped = new Map<string, Goal[]>();
-      state.items.forEach((goal) => {
-        if (!grouped.has(goal.life_area_id)) {
-          grouped.set(goal.life_area_id, []);
-        }
-        const goals = grouped.get(goal.life_area_id);
-        if (goals) {
-          goals.push(goal);
-        }
-      });
-      return grouped;
-    }),
+    selectedGoal,
+    activeGoals,
+    completedGoals,
+    goalsByLifeArea,
   };
 
   // Actions
   const actions = {
     setState,
-    
+
     // Fetch all goals
     async fetchAll() {
       setState('isLoading', true);
@@ -158,7 +161,8 @@ export function createGoalStore() {
         setState('items', (item) => item.id === id, uncompleted);
         return uncompleted;
       } catch (error) {
-        const message = error instanceof EvorBrainError ? error.message : 'Failed to uncomplete goal';
+        const message =
+          error instanceof EvorBrainError ? error.message : 'Failed to uncomplete goal';
         setState('error', message);
         throw error;
       } finally {
@@ -233,7 +237,7 @@ let singletonInstance: ReturnType<typeof createGoalStore> | null = null;
 export function getGoalStore() {
   if (!singletonInstance) {
     console.warn(
-      'Using getGoalStore() is deprecated. Please use GoalStoreProvider and useGoalStore() instead.'
+      'Using getGoalStore() is deprecated. Please use GoalStoreProvider and useGoalStore() instead.',
     );
     singletonInstance = createGoalStore();
   }

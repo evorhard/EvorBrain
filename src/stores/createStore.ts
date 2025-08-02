@@ -53,6 +53,5 @@ export function createStore<T extends object>(
     },
   };
 
-
   return [state, actions];
 }

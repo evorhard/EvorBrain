@@ -1,14 +1,7 @@
 import { invoke } from '@tauri-apps/api/core';
 import { isTauri, mockInvoke } from '../tauriCheck';
 import type { ApiClient, ApiClientOptions } from './interface';
-import type {
-  LifeArea,
-  Goal,
-  Project,
-  Task,
-  Note,
-  MigrationStatus,
-} from '../../types/models';
+import type { LifeArea, Goal, Project, Task, Note, MigrationStatus } from '../../types/models';
 import type {
   CreateLifeAreaRequest,
   UpdateLifeAreaRequest,
@@ -37,15 +30,15 @@ export class TauriApiClient implements ApiClient {
   private async invokeCommand<T>(command: string, args?: Record<string, unknown>): Promise<T> {
     try {
       this.options?.onRequest?.(command, args);
-      
+
       let result: T;
       if (isTauri()) {
         result = await invoke<T>(command, args);
       } else {
         // Use mock for development in browser
-        result = await mockInvoke(command, args) as T;
+        result = (await mockInvoke(command, args)) as T;
       }
-      
+
       this.options?.onResponse?.(command, result);
       return result;
     } catch (error) {
@@ -81,10 +74,8 @@ export class TauriApiClient implements ApiClient {
     getByLifeArea: (lifeAreaId: string) =>
       this.invokeCommand<Goal[]>('get_goals_by_life_area', { life_area_id: lifeAreaId }),
     getOne: (id: string) => this.invokeCommand<Goal>('get_goal', { id }),
-    create: (data: CreateGoalRequest) => 
-      this.invokeCommand<Goal>('create_goal', { request: data }),
-    update: (data: UpdateGoalRequest) => 
-      this.invokeCommand<Goal>('update_goal', { request: data }),
+    create: (data: CreateGoalRequest) => this.invokeCommand<Goal>('create_goal', { request: data }),
+    update: (data: UpdateGoalRequest) => this.invokeCommand<Goal>('update_goal', { request: data }),
     complete: (id: string) => this.invokeCommand<Goal>('complete_goal', { id }),
     uncomplete: (id: string) => this.invokeCommand<Goal>('uncomplete_goal', { id }),
     delete: (id: string) => this.invokeCommand<void>('delete_goal', { id }),
@@ -97,9 +88,9 @@ export class TauriApiClient implements ApiClient {
     getByGoal: (goalId: string) =>
       this.invokeCommand<Project[]>('get_projects_by_goal', { goal_id: goalId }),
     getOne: (id: string) => this.invokeCommand<Project>('get_project', { id }),
-    create: (data: CreateProjectRequest) => 
+    create: (data: CreateProjectRequest) =>
       this.invokeCommand<Project>('create_project', { request: data }),
-    update: (data: UpdateProjectRequest) => 
+    update: (data: UpdateProjectRequest) =>
       this.invokeCommand<Project>('update_project', { request: data }),
     updateStatus: (id: string, status: Project['status']) =>
       this.invokeCommand<Project>('update_project_status', { id, status }),
@@ -116,14 +107,12 @@ export class TauriApiClient implements ApiClient {
       this.invokeCommand<Task[]>('get_subtasks', { parent_task_id: parentId }),
     getOne: (id: string) => this.invokeCommand<Task>('get_task', { id }),
     getTodaysTasks: () => this.invokeCommand<Task[]>('get_todays_tasks'),
-    create: (data: CreateTaskRequest) => 
-      this.invokeCommand<Task>('create_task', { request: data }),
+    create: (data: CreateTaskRequest) => this.invokeCommand<Task>('create_task', { request: data }),
     createWithSubtasks: (data: CreateTaskRequest, subtasks: CreateTaskRequest[]) =>
-      this.invokeCommand<Task>('create_task_with_subtasks', { 
-        request: { task: data, subtasks } as CreateTaskWithSubtasksRequest 
+      this.invokeCommand<Task>('create_task_with_subtasks', {
+        request: { task: data, subtasks } as CreateTaskWithSubtasksRequest,
       }),
-    update: (data: UpdateTaskRequest) => 
-      this.invokeCommand<Task>('update_task', { request: data }),
+    update: (data: UpdateTaskRequest) => this.invokeCommand<Task>('update_task', { request: data }),
     complete: (id: string) => this.invokeCommand<Task>('complete_task', { id }),
     uncomplete: (id: string) => this.invokeCommand<Task>('uncomplete_task', { id }),
     delete: (id: string) => this.invokeCommand<void>('delete_task', { id }),
@@ -133,19 +122,17 @@ export class TauriApiClient implements ApiClient {
   // Note operations
   note = {
     getAll: () => this.invokeCommand<Note[]>('get_notes'),
-    getByTask: (taskId: string) => 
+    getByTask: (taskId: string) =>
       this.invokeCommand<Note[]>('get_notes_by_task', { task_id: taskId }),
     getByProject: (projectId: string) =>
       this.invokeCommand<Note[]>('get_notes_by_project', { project_id: projectId }),
-    getByGoal: (goalId: string) => 
+    getByGoal: (goalId: string) =>
       this.invokeCommand<Note[]>('get_notes_by_goal', { goal_id: goalId }),
     getByLifeArea: (lifeAreaId: string) =>
       this.invokeCommand<Note[]>('get_notes_by_life_area', { life_area_id: lifeAreaId }),
     getOne: (id: string) => this.invokeCommand<Note>('get_note', { id }),
-    create: (data: CreateNoteRequest) => 
-      this.invokeCommand<Note>('create_note', { request: data }),
-    update: (data: UpdateNoteRequest) => 
-      this.invokeCommand<Note>('update_note', { request: data }),
+    create: (data: CreateNoteRequest) => this.invokeCommand<Note>('create_note', { request: data }),
+    update: (data: UpdateNoteRequest) => this.invokeCommand<Note>('update_note', { request: data }),
     delete: (id: string) => this.invokeCommand<void>('delete_note', { id }),
     restore: (id: string) => this.invokeCommand<Note>('restore_note', { id }),
     search: (query: string) => this.invokeCommand<Note[]>('search_notes', { query }),

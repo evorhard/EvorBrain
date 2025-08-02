@@ -7,7 +7,7 @@
  * @deprecated Use imports from './lib/api' instead
  */
 
-import { api as apiClient } from './api/index';
+import { api as apiClient, createApiClient } from './api/index';
 import type { LogEntry, LogLevel, GetLogsRequest } from '../types/logging';
 import type {
   TransactionResult,
@@ -17,6 +17,9 @@ import type {
   ExportRequest,
   ExportResult,
 } from '../types';
+
+// Re-export the createApiClient function
+export { createApiClient };
 
 // Re-export the main API modules
 
@@ -73,6 +76,5 @@ export const api = {
   repository: repositoryApi,
 } as const;
 
-// Re-export new API modules
-export { createApiClient } from './api';
+// Re-export new API modules and types
 export type { ApiClient, ApiClientOptions } from './api';

@@ -1,5 +1,4 @@
-import type { ParentComponent } from 'solid-js';
-import { createSignal, onMount, onCleanup } from 'solid-js';
+import { createSignal, onMount, onCleanup, type ParentComponent } from 'solid-js';
 import { Card } from './Card';
 import { Button } from './Button';
 
@@ -42,58 +41,53 @@ export const ErrorBoundary: ParentComponent<ErrorBoundaryProps> = (props) => {
     });
   });
 
-  const currentError = error();
-  if (currentError) {
-    if (props.fallback) {
-      return <>{props.fallback(currentError, reset)}</>;
-    }
-
-    return (
-      <Card class="p-6 border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-950">
-        <div class="space-y-4">
-          <div class="flex items-center gap-2">
-            <svg
-              class="h-5 w-5 text-red-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
-              />
-            </svg>
-            <h3 class="text-lg font-semibold text-red-800 dark:text-red-200">
-              Something went wrong
-            </h3>
-          </div>
-          <p class="text-red-700 dark:text-red-300">
-            {currentError.message}
-          </p>
-          <div class="flex gap-2">
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={reset}
-            >
-              Try Again
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => {
-                console.error('Full error details:', currentError);
-              }}
-            >
-              Log Details
-            </Button>
-          </div>
-        </div>
-      </Card>
-    );
-  }
-
-  return <>{props.children}</>;
+  return (
+    <>
+      {error() ? (
+        props.fallback ? (
+          <>{props.fallback(error()!, reset)}</>
+        ) : (
+          <Card class="border-red-200 bg-red-50 p-6 dark:border-red-800 dark:bg-red-950">
+            <div class="space-y-4">
+              <div class="flex items-center gap-2">
+                <svg
+                  class="h-5 w-5 text-red-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
+                  />
+                </svg>
+                <h3 class="text-lg font-semibold text-red-800 dark:text-red-200">
+                  Something went wrong
+                </h3>
+              </div>
+              <p class="text-red-700 dark:text-red-300">{error()!.message}</p>
+              <div class="flex gap-2">
+                <Button variant="secondary" size="sm" onClick={reset}>
+                  Try Again
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    console.error('Full error details:', error());
+                  }}
+                >
+                  Log Details
+                </Button>
+              </div>
+            </div>
+          </Card>
+        )
+      ) : (
+        props.children
+      )}
+    </>
+  );
 };

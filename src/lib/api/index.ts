@@ -1,6 +1,6 @@
 /**
  * API client exports for EvorBrain
- * 
+ *
  * This module provides the main API interface and implementations
  * for communicating with the Tauri backend.
  */
@@ -14,14 +14,14 @@ import { TauriApiClient } from './tauri-client';
 /**
  * Default API client instance for the application.
  * This is the main entry point for all API calls.
- * 
+ *
  * @example
  * ```typescript
  * import { api } from './lib/api';
- * 
+ *
  * // Create a new life area
  * const lifeArea = await api.lifeArea.create({ name: 'Work' });
- * 
+ *
  * // Get all tasks for today
  * const tasks = await api.task.getTodaysTasks();
  * ```
@@ -32,7 +32,7 @@ export const api = new TauriApiClient({
 
 /**
  * Create a custom API client with specific options
- * 
+ *
  * @example
  * ```typescript
  * const customApi = createApiClient({

@@ -1,11 +1,4 @@
-import type {
-  LifeArea,
-  Goal,
-  Project,
-  Task,
-  Note,
-  MigrationStatus,
-} from '../../types/models';
+import type { LifeArea, Goal, Project, Task, Note, MigrationStatus } from '../../types/models';
 import type {
   CreateLifeAreaRequest,
   UpdateLifeAreaRequest,
@@ -108,17 +101,17 @@ export interface ApiClientOptions {
    * Enable debug logging
    */
   debug?: boolean;
-  
+
   /**
    * Custom error handler
    */
   onError?: (error: Error) => void;
-  
+
   /**
    * Request interceptor for logging or modifications
    */
   onRequest?: (command: string, args: unknown) => void;
-  
+
   /**
    * Response interceptor for logging or modifications
    */
