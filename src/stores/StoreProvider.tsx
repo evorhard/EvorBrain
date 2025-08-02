@@ -1,17 +1,23 @@
 import { createContext, useContext, type ParentComponent } from 'solid-js';
 import { lifeAreaStore, lifeAreaActions } from './lifeAreaStore';
 import { goalStore, goalActions } from './goalStore';
+import { projectStore, projectActions } from './projectStore';
+import { taskStore, taskActions } from './taskStore';
 import { uiStore, uiActions } from './uiStore';
 
 interface StoreContextValue {
   stores: {
     lifeArea: typeof lifeAreaStore;
     goal: typeof goalStore;
+    project: typeof projectStore;
+    task: typeof taskStore;
     ui: typeof uiStore;
   };
   actions: {
     lifeArea: typeof lifeAreaActions;
     goal: typeof goalActions;
+    project: typeof projectActions;
+    task: typeof taskActions;
     ui: typeof uiActions;
   };
 }
@@ -23,11 +29,15 @@ export const StoreProvider: ParentComponent = (props) => {
     stores: {
       lifeArea: lifeAreaStore,
       goal: goalStore,
+      project: projectStore,
+      task: taskStore,
       ui: uiStore,
     },
     actions: {
       lifeArea: lifeAreaActions,
       goal: goalActions,
+      project: projectActions,
+      task: taskActions,
       ui: uiActions,
     },
   };
@@ -52,6 +62,16 @@ export function useLifeAreaStore() {
 export function useGoalStore() {
   const { stores, actions } = useStore();
   return { store: stores.goal, actions: actions.goal };
+}
+
+export function useProjectStore() {
+  const { stores, actions } = useStore();
+  return { store: stores.project, actions: actions.project };
+}
+
+export function useTaskStore() {
+  const { stores, actions } = useStore();
+  return { store: stores.task, actions: actions.task };
 }
 
 export function useUIStore() {

@@ -5,6 +5,8 @@ import { createSignal, onMount, Switch, Match } from 'solid-js';
 import { StoreProvider, useUIStore } from './stores';
 import { uiActions } from './stores/uiStore';
 import { GoalsPage } from './components/features/goals';
+import { ProjectsPage } from './components/features/projects';
+import TasksPage from './components/features/tasks/TasksPage';
 import { LifeAreaList } from './components/features';
 
 function AppContent() {
@@ -26,6 +28,16 @@ function AppContent() {
         <Match when={uiStore.activeView === 'goals'}>
           <Container class="py-4 sm:py-6 lg:py-8">
             <GoalsPage />
+          </Container>
+        </Match>
+        <Match when={uiStore.activeView === 'projects'}>
+          <Container class="py-4 sm:py-6 lg:py-8">
+            <ProjectsPage />
+          </Container>
+        </Match>
+        <Match when={uiStore.activeView === 'tasks'}>
+          <Container class="py-4 sm:py-6 lg:py-8">
+            <TasksPage />
           </Container>
         </Match>
         <Match when={uiStore.activeView === 'life-areas'}>
