@@ -175,9 +175,10 @@ describe('LifeAreaList with Factory Store', () => {
       expect(screen.getByText('Failed to fetch life areas')).toBeInTheDocument();
     });
 
-    // Error should be displayed in red background
-    const errorElement = screen.getByText('Failed to fetch life areas').parentElement;
-    expect(errorElement).toHaveClass('bg-red-50');
+    // Error should be displayed with proper styling
+    const errorContainer = screen.getByText('Failed to fetch life areas').closest('div');
+    expect(errorContainer).toHaveClass('bg-red-50');
+    expect(errorContainer).toHaveClass('text-red-600');
   });
 
   it('should handle refresh button click', async () => {
