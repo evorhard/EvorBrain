@@ -10,6 +10,7 @@ import {
   HiOutlineChevronDown,
   HiOutlineBars3,
   HiOutlineFlag,
+  HiOutlineFolderOpen,
 } from 'solid-icons/hi';
 import { useUIStore } from '../../stores';
 
@@ -37,6 +38,7 @@ const Sidebar: Component = () => {
       viewId: 'life-areas',
     },
     { id: 'goals', label: 'Goals', icon: HiOutlineFlag, viewId: 'goals' },
+    { id: 'projects', label: 'Projects', icon: HiOutlineFolderOpen, viewId: 'projects' },
     { id: 'tasks', label: 'Tasks', icon: HiOutlineClipboardDocumentList, viewId: 'tasks' },
     { id: 'calendar', label: 'Calendar', icon: HiOutlineCalendar, viewId: 'calendar' },
     { id: 'notes', label: 'Notes', icon: HiOutlineDocumentText, viewId: 'notes' },
