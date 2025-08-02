@@ -7,7 +7,7 @@ import { StoreProvider, useUIStore } from './stores';
 import { GoalsPage } from './components/features/goals';
 import { ProjectsPage } from './components/features/projects';
 import TasksPage from './components/features/tasks/TasksPage';
-import { LifeAreaList } from './components/features';
+import { LifeAreasPage } from './components/features';
 
 function AppContent() {
   const { store: uiStore, actions: uiActions } = useUIStore();
@@ -68,8 +68,7 @@ function AppContent() {
         <Match when={activeView() === 'life-areas'}>
           <Container class="py-4 sm:py-6 lg:py-8">
             <ErrorBoundary>
-              <h1 class="mb-6 text-2xl font-bold">Life Areas</h1>
-              <LifeAreaList />
+              <LifeAreasPage />
             </ErrorBoundary>
           </Container>
         </Match>
