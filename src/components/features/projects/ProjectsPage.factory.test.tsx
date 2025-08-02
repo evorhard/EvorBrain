@@ -1,16 +1,12 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { screen, fireEvent, waitFor } from '@solidjs/testing-library';
-import { renderWithProviders, createProject, createGoal } from '../../../test/utils';
+import { renderWithProviders, createProject } from '../../../test/utils';
 import { createSignal, Show, createRoot } from 'solid-js';
 import {
   createProjectStoreFactory,
   type ProjectStoreInstance,
 } from '../../../stores/projectStore.factory';
-import {
-  createGoalStoreFactory,
-  type GoalStoreInstance,
-} from '../../../stores/goalStore.factory';
-import { ProjectStatus } from '../../../types/models';
+import { createGoalStoreFactory, type GoalStoreInstance } from '../../../stores/goalStore.factory';
 import { Button } from '../../ui/Button';
 import { Modal } from '../../ui/Modal';
 
@@ -46,7 +42,7 @@ function ProjectsPageTestable(props: {
 }) {
   const { projectStore } = props;
   const [showForm, setShowForm] = createSignal(false);
-  const [editingProject, setEditingProject] = createSignal<any | undefined>(undefined);
+  const [editingProject, setEditingProject] = createSignal<any>(undefined);
 
   const handleCreateClick = () => {
     setEditingProject(undefined);

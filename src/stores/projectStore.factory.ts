@@ -111,7 +111,12 @@ export function createProjectStoreFactory(
     },
 
     // Create a new project
-    async create(data: { goal_id: string; title: string; description?: string; status: ProjectStatus }) {
+    async create(data: {
+      goal_id: string;
+      title: string;
+      description?: string;
+      status: ProjectStatus;
+    }) {
       setState('isLoading', true);
       setState('error', null);
 
@@ -130,10 +135,7 @@ export function createProjectStoreFactory(
     },
 
     // Update a project
-    async update(
-      id: string,
-      data: { title: string; description?: string; status: ProjectStatus },
-    ) {
+    async update(id: string, data: { title: string; description?: string; status: ProjectStatus }) {
       setState('isLoading', true);
       setState('error', null);
 

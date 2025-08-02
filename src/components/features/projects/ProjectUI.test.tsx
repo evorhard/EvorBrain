@@ -1,8 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@solidjs/testing-library';
 import { For, Show } from 'solid-js';
-import { ProjectStatus } from '../../../types/models';
-import type { Project } from '../../../types/models';
+import { ProjectStatus, type Project } from '../../../types/models';
 import { Card } from '../../ui/Card';
 import { Badge } from '../../ui/Badge';
 import { Button } from '../../ui/Button';
@@ -55,19 +54,16 @@ function ProjectCard(props: {
   return (
     <Card
       class={`cursor-pointer transition-all ${
-        props.isSelected ? 'ring-2 ring-primary' : 'hover:shadow-md'
+        props.isSelected ? 'ring-primary ring-2' : 'hover:shadow-md'
       } ${props.project.archived_at ? 'opacity-60' : ''}`}
       onClick={props.onSelect}
       data-testid="project-card"
     >
       <div class="flex items-start justify-between">
         <div class="flex-1">
-          <div class="flex items-center gap-3 mb-2">
+          <div class="mb-2 flex items-center gap-3">
             <h3 class="text-lg font-semibold">{props.project.title}</h3>
-            <Badge
-              variant={getStatusBadgeVariant(props.project.status)}
-              data-testid="status-badge"
-            >
+            <Badge variant={getStatusBadgeVariant(props.project.status)} data-testid="status-badge">
               {getStatusLabel(props.project.status)}
             </Badge>
             <Show when={props.project.archived_at}>
@@ -77,7 +73,7 @@ function ProjectCard(props: {
             </Show>
           </div>
           <Show when={props.project.description}>
-            <p class="text-gray-600 mb-2" data-testid="project-description">
+            <p class="mb-2 text-gray-600" data-testid="project-description">
               {props.project.description}
             </p>
           </Show>
@@ -152,10 +148,7 @@ function ProjectListEmpty() {
 // Error state component
 function ProjectListError(props: { error: string }) {
   return (
-    <div
-      class="rounded bg-red-50 p-3 text-red-600"
-      data-testid="error-state"
-    >
+    <div class="rounded bg-red-50 p-3 text-red-600" data-testid="error-state">
       {props.error}
     </div>
   );
@@ -174,13 +167,11 @@ describe('Project UI Components', () => {
     };
 
     it('should render project details correctly', () => {
-      render(() => (
-        <ProjectCard project={mockProject} goalName="Test Goal" />
-      ));
+      render(() => <ProjectCard project={mockProject} goalName="Test Goal" />);
 
       expect(screen.getByText('Test Project')).toBeInTheDocument();
       expect(screen.getByTestId('project-description')).toHaveTextContent(
-        'A test project description'
+        'A test project description',
       );
       expect(screen.getByTestId('goal-name')).toHaveTextContent('Goal: Test Goal');
     });
@@ -196,10 +187,7 @@ describe('Project UI Components', () => {
 
       statuses.forEach(({ status, label }) => {
         const { unmount } = render(() => (
-          <ProjectCard
-            project={{ ...mockProject, status }}
-            goalName="Test Goal"
-          />
+          <ProjectCard project={{ ...mockProject, status }} goalName="Test Goal" />
         ));
 
         const badge = screen.getByTestId('status-badge');
@@ -210,9 +198,7 @@ describe('Project UI Components', () => {
     });
 
     it('should show selected state when isSelected is true', () => {
-      render(() => (
-        <ProjectCard project={mockProject} goalName="Test Goal" isSelected={true} />
-      ));
+      render(() => <ProjectCard project={mockProject} goalName="Test Goal" isSelected={true} />);
 
       const card = screen.getByTestId('project-card');
       expect(card).toHaveClass('ring-2');
@@ -225,9 +211,7 @@ describe('Project UI Components', () => {
         archived_at: '2024-01-01T00:00:00Z',
       };
 
-      render(() => (
-        <ProjectCard project={archivedProject} goalName="Test Goal" />
-      ));
+      render(() => <ProjectCard project={archivedProject} goalName="Test Goal" />);
 
       const card = screen.getByTestId('project-card');
       expect(card).toHaveClass('opacity-60');
@@ -240,9 +224,7 @@ describe('Project UI Components', () => {
         description: undefined,
       };
 
-      render(() => (
-        <ProjectCard project={projectWithoutDescription} goalName="Test Goal" />
-      ));
+      render(() => <ProjectCard project={projectWithoutDescription} goalName="Test Goal" />);
 
       expect(screen.queryByTestId('project-description')).not.toBeInTheDocument();
     });
@@ -250,9 +232,7 @@ describe('Project UI Components', () => {
     it('should call onSelect when card is clicked', () => {
       const onSelect = vi.fn();
 
-      render(() => (
-        <ProjectCard project={mockProject} goalName="Test Goal" onSelect={onSelect} />
-      ));
+      render(() => <ProjectCard project={mockProject} goalName="Test Goal" onSelect={onSelect} />);
 
       fireEvent.click(screen.getByTestId('project-card'));
       expect(onSelect).toHaveBeenCalled();
@@ -261,9 +241,7 @@ describe('Project UI Components', () => {
     it('should call onEdit when edit button is clicked', () => {
       const onEdit = vi.fn();
 
-      render(() => (
-        <ProjectCard project={mockProject} goalName="Test Goal" onEdit={onEdit} />
-      ));
+      render(() => <ProjectCard project={mockProject} goalName="Test Goal" onEdit={onEdit} />);
 
       fireEvent.click(screen.getByTestId('edit-button'));
       expect(onEdit).toHaveBeenCalled();
@@ -272,9 +250,7 @@ describe('Project UI Components', () => {
     it('should call onDelete when delete button is clicked', () => {
       const onDelete = vi.fn();
 
-      render(() => (
-        <ProjectCard project={mockProject} goalName="Test Goal" onDelete={onDelete} />
-      ));
+      render(() => <ProjectCard project={mockProject} goalName="Test Goal" onDelete={onDelete} />);
 
       fireEvent.click(screen.getByTestId('delete-button'));
       expect(onDelete).toHaveBeenCalled();
@@ -306,11 +282,7 @@ describe('Project UI Components', () => {
       const onRestore = vi.fn();
 
       render(() => (
-        <ProjectCard
-          project={archivedProject}
-          goalName="Test Goal"
-          onRestore={onRestore}
-        />
+        <ProjectCard project={archivedProject} goalName="Test Goal" onRestore={onRestore} />
       ));
 
       expect(screen.queryByTestId('edit-button')).not.toBeInTheDocument();
@@ -336,9 +308,7 @@ describe('Project UI Components', () => {
       render(() => <ProjectListEmpty />);
 
       expect(screen.getByTestId('empty-state')).toBeInTheDocument();
-      expect(
-        screen.getByText('No projects yet. Create your first project!')
-      ).toBeInTheDocument();
+      expect(screen.getByText('No projects yet. Create your first project!')).toBeInTheDocument();
     });
   });
 
@@ -368,7 +338,7 @@ describe('Project UI Components', () => {
         created_at: '2024-01-01T00:00:00Z',
         updated_at: '2024-01-01T00:00:00Z',
       } as Project;
-      
+
       const projects: Project[] = [
         {
           ...baseProject,
@@ -393,9 +363,7 @@ describe('Project UI Components', () => {
       render(() => (
         <div class="space-y-3">
           <For each={projects}>
-            {(project) => (
-              <ProjectCard project={project} goalName="Test Goal" />
-            )}
+            {(project) => <ProjectCard project={project} goalName="Test Goal" />}
           </For>
         </div>
       ));

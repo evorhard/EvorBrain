@@ -6,10 +6,7 @@ import {
   createProjectStoreFactory,
   type ProjectStoreInstance,
 } from '../../../stores/projectStore.factory';
-import {
-  createGoalStoreFactory,
-  type GoalStoreInstance,
-} from '../../../stores/goalStore.factory';
+import { createGoalStoreFactory, type GoalStoreInstance } from '../../../stores/goalStore.factory';
 import { ProjectStatus } from '../../../types/models';
 import { Input } from '../../ui/Input';
 import { Textarea } from '../../ui/Textarea';
@@ -36,8 +33,10 @@ function ProjectFormTestable(props: {
   // Initialize form values and fetch goals on mount
   createEffect(() => {
     goalStore.actions.fetchAll();
+  });
 
-    // Initialize form values from props
+  // Initialize form values from props
+  createEffect(() => {
     if (props.project) {
       setGoalId(props.project.goal_id);
       setTitle(props.project.title);
@@ -116,9 +115,7 @@ function ProjectFormTestable(props: {
           data-testid="goal-select"
         >
           <option value="">Select a goal...</option>
-          <For each={activeGoals()}>
-            {(goal) => <option value={goal.id}>{goal.name}</option>}
-          </For>
+          <For each={activeGoals()}>{(goal) => <option value={goal.id}>{goal.name}</option>}</For>
         </Select>
       </div>
 
@@ -154,7 +151,9 @@ function ProjectFormTestable(props: {
         <Select
           id="status"
           value={status()}
-          onChange={(e: any) => setStatus((typeof e === 'string' ? e : e.target.value) as ProjectStatus)}
+          onChange={(e: any) =>
+            setStatus((typeof e === 'string' ? e : e.target.value) as ProjectStatus)
+          }
           disabled={isSubmitting()}
           data-testid="status-select"
         >
@@ -175,7 +174,10 @@ function ProjectFormTestable(props: {
           Cancel
         </Button>
         <Button type="submit" disabled={isSubmitting()} data-testid="submit-button">
-          {isSubmitting() ? 'Saving...' : props.project ? 'Update' : 'Create'} Project
+          {(() => {
+            if (isSubmitting()) return 'Saving... Project';
+            return props.project ? 'Update Project' : 'Create Project';
+          })()}
         </Button>
       </div>
     </form>
@@ -227,10 +229,7 @@ describe('ProjectForm Factory', () => {
       await createRoot(async (d) => {
         dispose = d;
 
-        const goals = [
-          createGoal({ name: 'Goal 1' }),
-          createGoal({ name: 'Goal 2' }),
-        ];
+        const goals = [createGoal({ name: 'Goal 1' }), createGoal({ name: 'Goal 2' })];
         goalApi.goal.getAll.mockResolvedValue(goals);
 
         const projectStore = createProjectStoreFactory(projectApi);
@@ -515,7 +514,7 @@ describe('ProjectForm Factory', () => {
 
         // Mock a slow API call
         projectApi.project.create.mockImplementation(
-          () => new Promise((resolve) => setTimeout(resolve, 100))
+          () => new Promise((resolve) => setTimeout(resolve, 100)),
         );
 
         const projectStore = createProjectStoreFactory(projectApi);
@@ -578,9 +577,7 @@ describe('ProjectForm Factory', () => {
 
         const goal = createGoal({ name: 'Test Goal' });
         goalApi.goal.getAll.mockResolvedValue([goal]);
-        projectApi.project.create.mockResolvedValue(
-          createProject({ title: 'Trimmed Title' })
-        );
+        projectApi.project.create.mockResolvedValue(createProject({ title: 'Trimmed Title' }));
 
         const projectStore = createProjectStoreFactory(projectApi);
         const goalStore = createGoalStoreFactory(goalApi);

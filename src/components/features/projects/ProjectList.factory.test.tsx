@@ -1,29 +1,27 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { screen, fireEvent, waitFor } from '@solidjs/testing-library';
-import { renderWithProviders, createProject, createGoal, createArchivedProject } from '../../../test/utils';
+import {
+  renderWithProviders,
+  createProject,
+  createGoal,
+  createArchivedProject,
+} from '../../../test/utils';
 import { For, Show, createEffect, createRoot } from 'solid-js';
 import {
   createProjectStoreFactory,
   type ProjectStoreInstance,
 } from '../../../stores/projectStore.factory';
-import {
-  createGoalStoreFactory,
-  type GoalStoreInstance,
-} from '../../../stores/goalStore.factory';
+import { createGoalStoreFactory, type GoalStoreInstance } from '../../../stores/goalStore.factory';
 import { ProjectStatus } from '../../../types/models';
-import { Card } from '../../ui/Card';
 import { Badge } from '../../ui/Badge';
-import { Button } from '../../ui/Button';
-import { DropdownMenu } from '../../ui/DropdownMenu';
-import { createConfirmDialog } from '../../ui/ConfirmDialog';
 
 // Create a test version of ProjectList that accepts stores as props
-function ProjectListTestable(props: { 
-  projectStore: ProjectStoreInstance; 
+function ProjectListTestable(props: {
+  projectStore: ProjectStoreInstance;
   goalStore: GoalStoreInstance;
   onEdit?: (project: any) => void;
 }) {
-  const { projectStore, goalStore } = props;
+  const { projectStore, goalStore, onEdit } = props;
 
   // Fetch projects and goals on mount
   createEffect(() => {
@@ -44,9 +42,7 @@ function ProjectListTestable(props: {
   };
 
   const handleSelect = (projectId: string) => {
-    projectStore.actions.select(
-      projectStore.state.selectedId === projectId ? null : projectId
-    );
+    projectStore.actions.select(projectStore.state.selectedId === projectId ? null : projectId);
   };
 
   const getGoalName = (goalId: string) => {
@@ -102,9 +98,7 @@ function ProjectListTestable(props: {
       </div>
 
       <Show when={projectStore.state.error}>
-        <div class="rounded bg-red-50 p-3 text-red-600">
-          {projectStore.state.error}
-        </div>
+        <div class="rounded bg-red-50 p-3 text-red-600">{projectStore.state.error}</div>
       </Show>
 
       <Show when={!projectStore.state.isLoading && projectStore.state.items.length === 0}>
@@ -115,17 +109,17 @@ function ProjectListTestable(props: {
         <For each={projectStore.state.items}>
           {(project) => (
             <div
-              class="bg-white rounded-lg p-4 cursor-pointer transition-all"
+              class="cursor-pointer rounded-lg bg-white p-4 transition-all"
               classList={{
                 'ring-2 ring-primary': projectStore.state.selectedId === project.id,
-                'opacity-60': !!project.archived_at,
+                'opacity-60': Boolean(project.archived_at),
               }}
               onClick={() => handleSelect(project.id)}
               data-testid={`project-${project.id}`}
             >
               <div class="flex items-start justify-between">
                 <div class="flex-1">
-                  <div class="flex items-center gap-3 mb-2">
+                  <div class="mb-2 flex items-center gap-3">
                     <h3 class="text-lg font-semibold">{project.title}</h3>
                     <Badge variant={getStatusBadgeVariant(project.status)}>
                       {getStatusLabel(project.status)}
@@ -135,7 +129,7 @@ function ProjectListTestable(props: {
                     </Show>
                   </div>
                   <Show when={project.description}>
-                    <p class="text-gray-600 mb-2">{project.description}</p>
+                    <p class="mb-2 text-gray-600">{project.description}</p>
                   </Show>
                   <div class="text-sm text-gray-500">
                     <span>Goal: {getGoalName(project.goal_id)}</span>
@@ -143,7 +137,7 @@ function ProjectListTestable(props: {
                 </div>
                 <div class="relative">
                   <button
-                    class="p-2 hover:bg-gray-100 rounded"
+                    class="rounded p-2 hover:bg-gray-100"
                     onClick={(e) => {
                       e.stopPropagation();
                       // Dropdown would be here in real component
@@ -153,11 +147,11 @@ function ProjectListTestable(props: {
                     •••
                   </button>
                   <Show when={!project.archived_at}>
-                    <div class="actions" style="display: none;">
+                    <div class="actions" style={{ display: 'none' }}>
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          props.onEdit?.(project);
+                          onEdit?.(project);
                         }}
                         data-testid={`edit-${project.id}`}
                       >
@@ -188,7 +182,8 @@ function ProjectListTestable(props: {
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          if (confirm(`Delete "${project.title}"?`)) {
+                          // eslint-disable-next-line no-alert
+                          if (window.confirm(`Delete "${project.title}"?`)) {
                             handleDelete(project.id);
                           }
                         }}
@@ -199,7 +194,7 @@ function ProjectListTestable(props: {
                     </div>
                   </Show>
                   <Show when={project.archived_at}>
-                    <div class="actions" style="display: none;">
+                    <div class="actions" style={{ display: 'none' }}>
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
@@ -262,16 +257,18 @@ describe('ProjectList Factory', () => {
     it('should render empty state when no projects', async () => {
       await createRoot(async (d) => {
         dispose = d;
-        
+
         const projectStore = createProjectStoreFactory(projectApi);
         const goalStore = createGoalStoreFactory(goalApi);
 
-        renderWithProviders(() => 
+        renderWithProviders(() => (
           <ProjectListTestable projectStore={projectStore} goalStore={goalStore} />
-        );
+        ));
 
         await waitFor(() => {
-          expect(screen.getByText('No projects yet. Create your first project!')).toBeInTheDocument();
+          expect(
+            screen.getByText('No projects yet. Create your first project!'),
+          ).toBeInTheDocument();
         });
       });
     });
@@ -279,12 +276,24 @@ describe('ProjectList Factory', () => {
     it('should render projects with status badges', async () => {
       await createRoot(async (d) => {
         dispose = d;
-        
+
         const goal = createGoal({ name: 'Build App' });
         const projects = [
-          createProject({ title: 'Planning Phase', status: ProjectStatus.Planning, goal_id: goal.id }),
-          createProject({ title: 'Active Development', status: ProjectStatus.Active, goal_id: goal.id }),
-          createProject({ title: 'Completed Feature', status: ProjectStatus.Completed, goal_id: goal.id }),
+          createProject({
+            title: 'Planning Phase',
+            status: ProjectStatus.Planning,
+            goal_id: goal.id,
+          }),
+          createProject({
+            title: 'Active Development',
+            status: ProjectStatus.Active,
+            goal_id: goal.id,
+          }),
+          createProject({
+            title: 'Completed Feature',
+            status: ProjectStatus.Completed,
+            goal_id: goal.id,
+          }),
         ];
 
         projectApi.project.getAll.mockResolvedValue(projects);
@@ -293,9 +302,9 @@ describe('ProjectList Factory', () => {
         const projectStore = createProjectStoreFactory(projectApi);
         const goalStore = createGoalStoreFactory(goalApi);
 
-        renderWithProviders(() => 
+        renderWithProviders(() => (
           <ProjectListTestable projectStore={projectStore} goalStore={goalStore} />
-        );
+        ));
 
         await waitFor(() => {
           expect(screen.getByText('Planning Phase')).toBeInTheDocument();
@@ -311,10 +320,13 @@ describe('ProjectList Factory', () => {
     it('should show archived projects with reduced opacity', async () => {
       await createRoot(async (d) => {
         dispose = d;
-        
+
         const goal = createGoal({ name: 'Test Goal' });
         const activeProject = createProject({ title: 'Active Project', goal_id: goal.id });
-        const archivedProject = createArchivedProject({ title: 'Archived Project', goal_id: goal.id });
+        const archivedProject = createArchivedProject({
+          title: 'Archived Project',
+          goal_id: goal.id,
+        });
 
         projectApi.project.getAll.mockResolvedValue([activeProject, archivedProject]);
         goalApi.goal.getAll.mockResolvedValue([goal]);
@@ -322,9 +334,9 @@ describe('ProjectList Factory', () => {
         const projectStore = createProjectStoreFactory(projectApi);
         const goalStore = createGoalStoreFactory(goalApi);
 
-        renderWithProviders(() => 
+        renderWithProviders(() => (
           <ProjectListTestable projectStore={projectStore} goalStore={goalStore} />
-        );
+        ));
 
         await waitFor(() => {
           const archivedElement = screen.getByTestId(`project-${archivedProject.id}`);
@@ -337,7 +349,7 @@ describe('ProjectList Factory', () => {
     it('should display goal names for projects', async () => {
       await createRoot(async (d) => {
         dispose = d;
-        
+
         const goal = createGoal({ name: 'Learn TypeScript' });
         const project = createProject({ title: 'Setup Environment', goal_id: goal.id });
 
@@ -347,9 +359,9 @@ describe('ProjectList Factory', () => {
         const projectStore = createProjectStoreFactory(projectApi);
         const goalStore = createGoalStoreFactory(goalApi);
 
-        renderWithProviders(() => 
+        renderWithProviders(() => (
           <ProjectListTestable projectStore={projectStore} goalStore={goalStore} />
-        );
+        ));
 
         await waitFor(() => {
           expect(screen.getByText('Goal: Learn TypeScript')).toBeInTheDocument();
@@ -362,25 +374,25 @@ describe('ProjectList Factory', () => {
     it('should select and deselect projects on click', async () => {
       await createRoot(async (d) => {
         dispose = d;
-        
+
         const project = createProject({ title: 'Test Project' });
         projectApi.project.getAll.mockResolvedValue([project]);
 
         const projectStore = createProjectStoreFactory(projectApi);
         const goalStore = createGoalStoreFactory(goalApi);
 
-        renderWithProviders(() => 
+        renderWithProviders(() => (
           <ProjectListTestable projectStore={projectStore} goalStore={goalStore} />
-        );
+        ));
 
         await waitFor(() => {
           const projectElement = screen.getByTestId(`project-${project.id}`);
-          
+
           // Click to select
           fireEvent.click(projectElement);
           expect(projectElement).toHaveClass('ring-2');
           expect(projectElement).toHaveClass('ring-primary');
-          
+
           // Click again to deselect
           fireEvent.click(projectElement);
           expect(projectElement).not.toHaveClass('ring-2');
@@ -391,18 +403,18 @@ describe('ProjectList Factory', () => {
     it('should refresh projects when refresh button clicked', async () => {
       await createRoot(async (d) => {
         dispose = d;
-        
+
         const projectStore = createProjectStoreFactory(projectApi);
         const goalStore = createGoalStoreFactory(goalApi);
 
-        renderWithProviders(() => 
+        renderWithProviders(() => (
           <ProjectListTestable projectStore={projectStore} goalStore={goalStore} />
-        );
+        ));
 
         await waitFor(() => {
           const refreshButton = screen.getByText('Refresh');
           fireEvent.click(refreshButton);
-          
+
           // Should call fetchAll again (once on mount, once on click)
           expect(projectApi.project.getAll).toHaveBeenCalledTimes(2);
         });
@@ -412,7 +424,7 @@ describe('ProjectList Factory', () => {
     it('should call onEdit when edit action is triggered', async () => {
       await createRoot(async (d) => {
         dispose = d;
-        
+
         const project = createProject({ title: 'Test Project' });
         projectApi.project.getAll.mockResolvedValue([project]);
 
@@ -420,18 +432,14 @@ describe('ProjectList Factory', () => {
         const goalStore = createGoalStoreFactory(goalApi);
         const onEdit = vi.fn();
 
-        renderWithProviders(() => 
-          <ProjectListTestable 
-            projectStore={projectStore} 
-            goalStore={goalStore}
-            onEdit={onEdit}
-          />
-        );
+        renderWithProviders(() => (
+          <ProjectListTestable projectStore={projectStore} goalStore={goalStore} onEdit={onEdit} />
+        ));
 
         await waitFor(() => {
           const editButton = screen.getByTestId(`edit-${project.id}`);
           fireEvent.click(editButton);
-          
+
           expect(onEdit).toHaveBeenCalledWith(project);
         });
       });
@@ -440,7 +448,7 @@ describe('ProjectList Factory', () => {
     it('should update project status', async () => {
       await createRoot(async (d) => {
         dispose = d;
-        
+
         const project = createProject({ title: 'Test Project', status: ProjectStatus.Planning });
         projectApi.project.getAll.mockResolvedValue([project]);
         projectApi.project.updateStatus.mockResolvedValue({
@@ -451,9 +459,9 @@ describe('ProjectList Factory', () => {
         const projectStore = createProjectStoreFactory(projectApi);
         const goalStore = createGoalStoreFactory(goalApi);
 
-        renderWithProviders(() => 
+        renderWithProviders(() => (
           <ProjectListTestable projectStore={projectStore} goalStore={goalStore} />
-        );
+        ));
 
         await waitFor(() => {
           const activeButton = screen.getByTestId(`status-active-${project.id}`);
@@ -463,7 +471,7 @@ describe('ProjectList Factory', () => {
         await waitFor(() => {
           expect(projectApi.project.updateStatus).toHaveBeenCalledWith(
             project.id,
-            ProjectStatus.Active
+            ProjectStatus.Active,
           );
         });
       });
@@ -472,7 +480,7 @@ describe('ProjectList Factory', () => {
     it('should delete project with confirmation', async () => {
       await createRoot(async (d) => {
         dispose = d;
-        
+
         const project = createProject({ title: 'Test Project' });
         projectApi.project.getAll.mockResolvedValue([project]);
         projectApi.project.delete.mockResolvedValue(undefined);
@@ -483,9 +491,9 @@ describe('ProjectList Factory', () => {
         const projectStore = createProjectStoreFactory(projectApi);
         const goalStore = createGoalStoreFactory(goalApi);
 
-        renderWithProviders(() => 
+        renderWithProviders(() => (
           <ProjectListTestable projectStore={projectStore} goalStore={goalStore} />
-        );
+        ));
 
         await waitFor(() => {
           const deleteButton = screen.getByTestId(`delete-${project.id}`);
@@ -502,7 +510,7 @@ describe('ProjectList Factory', () => {
     it('should restore archived project', async () => {
       await createRoot(async (d) => {
         dispose = d;
-        
+
         const archivedProject = createArchivedProject({ title: 'Archived Project' });
         projectApi.project.getAll.mockResolvedValue([archivedProject]);
         projectApi.project.restore.mockResolvedValue({
@@ -513,9 +521,9 @@ describe('ProjectList Factory', () => {
         const projectStore = createProjectStoreFactory(projectApi);
         const goalStore = createGoalStoreFactory(goalApi);
 
-        renderWithProviders(() => 
+        renderWithProviders(() => (
           <ProjectListTestable projectStore={projectStore} goalStore={goalStore} />
-        );
+        ));
 
         await waitFor(() => {
           const restoreButton = screen.getByTestId(`restore-${archivedProject.id}`);
@@ -531,15 +539,15 @@ describe('ProjectList Factory', () => {
     it('should show error message when fetch fails', async () => {
       await createRoot(async (d) => {
         dispose = d;
-        
+
         projectApi.project.getAll.mockRejectedValue(new Error('Network error'));
 
         const projectStore = createProjectStoreFactory(projectApi);
         const goalStore = createGoalStoreFactory(goalApi);
 
-        renderWithProviders(() => 
+        renderWithProviders(() => (
           <ProjectListTestable projectStore={projectStore} goalStore={goalStore} />
-        );
+        ));
 
         await waitFor(() => {
           expect(screen.getByText('Failed to fetch projects')).toBeInTheDocument();

@@ -65,25 +65,17 @@ export function validateProjectForm(data: {
 
 export function isValidStatusTransition(
   currentStatus: ProjectStatus,
-  newStatus: ProjectStatus
+  newStatus: ProjectStatus,
 ): boolean {
   // Define valid status transitions
   const validTransitions: Record<ProjectStatus, ProjectStatus[]> = {
-    [ProjectStatus.Planning]: [
-      ProjectStatus.Active,
-      ProjectStatus.OnHold,
-      ProjectStatus.Cancelled,
-    ],
+    [ProjectStatus.Planning]: [ProjectStatus.Active, ProjectStatus.OnHold, ProjectStatus.Cancelled],
     [ProjectStatus.Active]: [
       ProjectStatus.Completed,
       ProjectStatus.OnHold,
       ProjectStatus.Cancelled,
     ],
-    [ProjectStatus.OnHold]: [
-      ProjectStatus.Active,
-      ProjectStatus.Planning,
-      ProjectStatus.Cancelled,
-    ],
+    [ProjectStatus.OnHold]: [ProjectStatus.Active, ProjectStatus.Planning, ProjectStatus.Cancelled],
     [ProjectStatus.Completed]: [
       ProjectStatus.Active, // Can reopen a completed project
     ],
@@ -137,7 +129,7 @@ describe('Project Validation', () => {
     it('should reject description that is too long', () => {
       const longDescription = 'A'.repeat(501);
       expect(validateProjectDescription(longDescription)).toBe(
-        'Description must be less than 500 characters'
+        'Description must be less than 500 characters',
       );
     });
 
