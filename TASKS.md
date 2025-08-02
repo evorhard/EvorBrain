@@ -266,38 +266,36 @@ P2.1.T.1 implementation:**
   - [ ] Test UI state updates after archive/restore ⚠️ (blocked by store dependencies)
   - [ ] **Feasible Now**: Test archive/restore UI buttons and confirmation dialogs
   - [ ] **Feasible Now**: Test archived item visual indicators (opacity, badges)
-- [ ] 📋 [P2.1.T.8] Fix test infrastructure issues 🔴 _(Required before blocked tests can proceed)_
-  - [ ] Refactor stores to use lazy initialization or dependency injection
-  - [ ] Create API abstraction layer with test doubles
-  - [ ] Resolve "computations created outside createRoot" warnings
-  - [ ] Fix module mocking limitations with vi.mock
-  - [ ] Update TauriMock for better isolation
-  - [ ] Create store providers that can be mocked for tests
-  - [ ] Ensure all tests pass in CI
-
-### [P2.1.T.9] UI-Only Component Tests _(Can be done now without blocking issues)_
-
-- [ ] 📋 [P2.1.T.9.1] Create isolated UI component tests 🟢
-  - [ ] Extract and test form components without store dependencies
-  - [ ] Test loading states and error displays
-  - [ ] Test empty states and placeholder content
-  - [ ] Test button states (enabled/disabled/loading)
-  - [ ] Test list item rendering and selection states
-- [ ] 📋 [P2.1.T.9.2] Test validation logic in isolation 🟢
-  - [ ] Test all form field validators
-  - [ ] Test error message generation
-  - [ ] Test form submission prevention with invalid data
-- [ ] 📋 [P2.1.T.9.3] Test UI utilities and helpers 🟢
-  - [ ] Test date formatting functions
-  - [ ] Test priority display logic
-  - [ ] Test status badge rendering
-  - [ ] Test color and icon utilities
-- [ ] 📋 [P2.1.T.9.4] Test pure presentation components 🟢
-  - [ ] Test Badge component
-  - [ ] Test LoadingSpinner component
-  - [ ] Test Alert component
-  - [ ] Test EmptyState component
-  - [ ] Test any other UI-only components
+- [ ] 📋 [P2.1.T.8] Fix test infrastructure issues ⚠️ IN PROGRESS
+  - [x] ✅ [P2.1.T.8.1] Refactor stores to use lazy initialization or dependency injection 🟡
+  - [x] ✅ [P2.1.T.8.2] Create API abstraction layer with test doubles 🟡
+  - [ ] 📋 [P2.1.T.8.3] Resolve "computations created outside createRoot" warnings 🟢
+  - [ ] 📋 [P2.1.T.8.4] Fix module mocking limitations with vi.mock 🟡
+  - [ ] 📋 [P2.1.T.8.5] Update TauriMock for better isolation 🟡
+  - [ ] 📋 [P2.1.T.8.6] Create store providers that can be mocked for tests 🟡
+  - [ ] 📋 [P2.1.T.8.7] Ensure all tests pass in CI 🟡
+- [ ] 📋 [P2.1.T.9] UI-Only Component Tests _(Can be done now without blocking issues)_
+  - [ ] 📋 [P2.1.T.9.1] Create isolated UI component tests 🟢
+    - [ ] Extract and test form components without store dependencies
+    - [ ] Test loading states and error displays
+    - [ ] Test empty states and placeholder content
+    - [ ] Test button states (enabled/disabled/loading)
+    - [ ] Test list item rendering and selection states
+  - [ ] 📋 [P2.1.T.9.2] Test validation logic in isolation 🟢
+    - [ ] Test all form field validators
+    - [ ] Test error message generation
+    - [ ] Test form submission prevention with invalid data
+  - [ ] 📋 [P2.1.T.9.3] Test UI utilities and helpers 🟢
+    - [ ] Test date formatting functions
+    - [ ] Test priority display logic
+    - [ ] Test status badge rendering
+    - [ ] Test color and icon utilities
+  - [ ] 📋 [P2.1.T.9.4] Test pure presentation components 🟢
+    - [ ] Test Badge component
+    - [ ] Test LoadingSpinner component
+    - [ ] Test Alert component
+    - [ ] Test EmptyState component
+    - [ ] Test any other UI-only components
 
 ### [P2.2] Hierarchical Navigation
 
@@ -694,6 +692,12 @@ _Last updated: 2025-08-02_
 - ✅ Applied Prettier formatting to entire codebase
 - ✅ Updated project documentation to reflect improvements
 - ✅ Created 34 passing unit tests for Life Area components (UI, Form, Validation)
+- ✅ Implemented factory pattern for testable stores (P2.1.T.8.1)
+- ✅ Created API abstraction layer with test doubles (P2.1.T.8.2)
+  - `ApiClient` interface for all operations
+  - `TauriApiClient` for production use
+  - `TestApiClient` for unit testing
+  - 14 passing tests for lifeAreaStore factory
 
 ### Technical Debt
 
