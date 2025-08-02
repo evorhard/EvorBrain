@@ -65,6 +65,7 @@ Based on our current task structure, here are the phases/tasks that MUST be comp
   - [P2.3] Dashboard/Homepage - 📋 Required for MVP
   - [P2.4] Task Management UI - 📋 Required for MVP
   - [P2.5] Calendar View - 📋 Required for MVP
+  - [P2.8] Performance & Startup Optimization - 📋 Critical for usability
 - **Phase 3**: Data Persistence
   - [P3.1] File System Integration - 📋 Required for MVP
   - [P3.2] Git Integration - 📋 Required for MVP
@@ -339,6 +340,37 @@ This ensures stability without delaying the MVP. Full test coverage can be added
 - [ ] 📋 [P2.7.4] Support task lists in markdown 🟡
 - [ ] 📋 [P2.7.5] Add image/file attachment support 🔴
 - [ ] 📋 [P2.7.6] Implement auto-save functionality 🟡
+
+### [P2.8] Performance & Startup Optimization
+
+**Issue**: Application takes 5-10 seconds to show content after window appears due to:
+
+- Synchronous database initialization and migrations blocking startup
+- Components eagerly fetching data even when not visible
+
+- [ ] 📋 [P2.8.1] Optimize application startup time 🟡
+  - [ ] Show window immediately with loading state
+  - [ ] Move database initialization to background thread
+  - [ ] Display progress indicator during initialization
+  - [ ] Cache migration status to avoid redundant checks
+- [ ] 📋 [P2.8.2] Implement lazy data loading for components 🟡
+  - [ ] Remove `onMount` fetchAll() calls from GoalList and LifeAreaList
+  - [ ] Fetch data only when component/view becomes visible
+  - [ ] Add visibility detection for views in App.tsx
+  - [ ] Implement one-time fetch with caching
+- [ ] 📋 [P2.8.3] Add application splash screen 🟢
+  - [ ] Create loading screen component
+  - [ ] Show during Tauri initialization
+  - [ ] Transition smoothly to main app
+- [ ] 📋 [P2.8.4] Optimize database connection pooling 🟡
+  - [ ] Configure connection pool size
+  - [ ] Implement connection warmup
+  - [ ] Add connection timeout handling
+- [ ] 📋 [P2.8.5] Profile and optimize startup bottlenecks 🟡
+  - [ ] Add timing logs for each startup phase
+  - [ ] Identify slowest operations
+  - [ ] Optimize critical path
+  - [ ] Consider parallel initialization where possible
 
 ---
 
@@ -664,6 +696,15 @@ This ensures stability without delaying the MVP. Full test coverage can be added
 _Last updated: 2025-08-02_
 
 ### Recent Updates (2025-08-02)
+
+#### Performance Issues Identified
+
+- 🚨 Application takes 5-10 seconds to display content after window appears
+- Root causes identified:
+  - Database initialization runs synchronously during startup
+  - Components fetch data eagerly in `onMount` even when not visible
+- Created new task section P2.8 for Performance & Startup Optimization
+- Quick win: Implement lazy loading for component data fetching
 
 #### Life Area Component Tests (P2.1.T.1) ✅ Completed
 
