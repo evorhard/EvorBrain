@@ -224,6 +224,12 @@ export const createArchivedLifeArea = (overrides?: Partial<LifeArea>): LifeArea 
     ...overrides,
   });
 
+export const createArchivedGoal = (overrides?: Partial<Goal>): Goal =>
+  createGoal({
+    archived_at: createTimestamp(),
+    ...overrides,
+  });
+
 export const createOverdueTask = (overrides?: Partial<Task>): Task =>
   createTask({
     due_date: createTimestamp(-7), // 7 days ago
