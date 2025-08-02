@@ -40,7 +40,7 @@ export interface StoreActions<T> {
  */
 export function createStore<T extends object>(
   initialState: T,
-  name?: string,
+  _name?: string,
 ): [get: T, actions: StoreActions<T>] {
   const [state, setState] = createSolidStore<T>(initialState);
 
@@ -53,14 +53,6 @@ export function createStore<T extends object>(
     },
   };
 
-  // Dev mode: log state changes
-  if (import.meta.env.DEV && name) {
-    const originalSetState = setState;
-    actions.setState = (...args: Parameters<typeof originalSetState>) => {
-      console.warn(`[${name} Store Update]`, args);
-      return originalSetState(...args);
-    };
-  }
 
   return [state, actions];
 }

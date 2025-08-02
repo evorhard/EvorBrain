@@ -19,8 +19,16 @@ export function ProjectList(props: ProjectListProps) {
 
   // Fetch projects and goals on mount
   createEffect(() => {
-    projectActions.fetchAll();
-    goalActions.fetchAll();
+    try {
+      projectActions.fetchAll().catch((error) => {
+        console.error('[ProjectList] Failed to fetch projects:', error);
+      });
+      goalActions.fetchAll().catch((error) => {
+        console.error('[ProjectList] Failed to fetch goals:', error);
+      });
+    } catch (error) {
+      console.error('[ProjectList] Error in createEffect:', error);
+    }
   });
 
   const handleDelete = async () => {

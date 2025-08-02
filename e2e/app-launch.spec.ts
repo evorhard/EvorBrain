@@ -20,7 +20,7 @@ test.describe('App Launch', () => {
 
   test('should have functioning navigation', async ({ page }) => {
     // Check that navigation items are visible
-    const navItems = page.locator('nav a, nav button[role="link"]');
+    const navItems = page.locator('nav button');
     await expect(navItems).toHaveCount(await navItems.count());
     
     // Should have at least some navigation items

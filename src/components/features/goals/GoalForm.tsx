@@ -4,7 +4,7 @@ import { Button } from '../../ui/Button';
 import { Input } from '../../ui/Input';
 import { Textarea } from '../../ui/Textarea';
 import { Label } from '../../ui/Label';
-import { Select } from '../../ui/Select';
+import { Select } from '../../ui/SelectHtml';
 import type { Goal } from '../../../types/models';
 
 interface GoalFormProps {

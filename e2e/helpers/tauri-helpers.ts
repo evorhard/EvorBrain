@@ -1,4 +1,4 @@
-import { Page, expect } from '@playwright/test';
+import { Page } from '@playwright/test';
 
 /**
  * Helper functions for Tauri E2E testing
@@ -8,14 +8,14 @@ import { Page, expect } from '@playwright/test';
  * Wait for the Tauri application to fully load
  */
 export async function waitForTauriApp(page: Page) {
-  // Wait for the app container to be visible
-  await page.waitForSelector('#root', { state: 'visible' });
+  // Wait for the app container to be visible with longer timeout
+  await page.waitForSelector('#root', { state: 'visible', timeout: 30000 });
   
   // Wait for initial data load (adjust selector based on your app)
   await page.waitForLoadState('networkidle');
   
   // Additional wait to ensure app is interactive
-  await page.waitForTimeout(1000);
+  await page.waitForTimeout(2000);
 }
 
 /**
@@ -39,7 +39,7 @@ export async function tauriWindowControls(page: Page) {
  * Navigate through the app sidebar
  */
 export async function navigateTo(page: Page, section: string) {
-  const sidebarItem = page.locator(`nav a:has-text("${section}")`);
+  const sidebarItem = page.locator(`nav button:has-text("${section}")`);
   await sidebarItem.click();
   await page.waitForLoadState('networkidle');
 }

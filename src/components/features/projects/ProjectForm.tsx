@@ -1,7 +1,7 @@
 import { createSignal, createEffect, Show, For } from 'solid-js';
 import { Input } from '../../ui/Input';
 import { Textarea } from '../../ui/Textarea';
-import { Select } from '../../ui/Select';
+import { Select } from '../../ui/SelectHtml';
 import { Button } from '../../ui/Button';
 import { Label } from '../../ui/Label';
 import { useProjectStore, useGoalStore } from '../../../stores';

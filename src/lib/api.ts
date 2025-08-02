@@ -1,6 +1,7 @@
 // API client for Tauri commands with full TypeScript support
 
 import { invoke } from '@tauri-apps/api/core';
+import { isTauri, mockInvoke } from './tauriCheck';
 import type { LifeArea, Goal, Project, Task, Note, ProjectStatus } from '../types/models';
 import type {
   CreateLifeAreaRequest,
@@ -39,7 +40,12 @@ import type {
  */
 async function invokeCommand<T>(command: string, args?: Record<string, unknown>): Promise<T> {
   try {
-    return await invoke<T>(command, args);
+    if (isTauri()) {
+      return await invoke<T>(command, args);
+    } else {
+      // Use mock for development in browser
+      return await mockInvoke(command, args) as T;
+    }
   } catch (error) {
     throw EvorBrainError.fromTauriError(error);
   }

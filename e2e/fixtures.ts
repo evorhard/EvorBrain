@@ -15,6 +15,8 @@ type TestFixtures = {
 export const test = base.extend<TestFixtures>({
   // Automatically wait for app to be ready before each test
   appReady: [async ({ page }, use) => {
+    // Navigate to the app first
+    await page.goto('/');
     await waitForTauriApp(page);
     await use();
   }, { auto: true }],
