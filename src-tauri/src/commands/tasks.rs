@@ -259,24 +259,12 @@ pub async fn uncomplete_task(state: State<'_, AppState>, id: String) -> Result<T
 
 #[tauri::command]
 pub async fn delete_task(state: State<'_, AppState>, id: String) -> Result<(), String> {
-    let now = Utc::now();
+    use crate::db::repository::Repository;
     
-    // Archive the task and all its subtasks
-    sqlx::query(
-        r#"
-        UPDATE tasks 
-        SET archived_at = ?1, updated_at = ?2
-        WHERE id = ?3 OR parent_task_id = ?3
-        "#
-    )
-    .bind(&now)
-    .bind(&now)
-    .bind(&id)
-    .execute(&*state.db)
-    .await
-    .map_err(|e| e.to_string())?;
-    
-    Ok(())
+    let repo = Repository::new(state.db.clone());
+    repo.archive_task_cascade(&id)
+        .await
+        .map_err(|e| e.to_string())
 }
 
 #[tauri::command]

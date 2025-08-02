@@ -227,7 +227,7 @@ pub async fn uncomplete_goal(state: State<'_, AppState>, id: String) -> Result<G
     get_goal(state, id).await
 }
 
-/// Soft deletes a goal (marks as archived)
+/// Soft deletes a goal (marks as archived) and cascades to all related entities
 /// 
 /// # Arguments
 /// * `state` - Application state containing the database connection
@@ -237,23 +237,12 @@ pub async fn uncomplete_goal(state: State<'_, AppState>, id: String) -> Result<G
 /// * `Result<(), String>` - Success or error message
 #[tauri::command]
 pub async fn delete_goal(state: State<'_, AppState>, id: String) -> Result<(), String> {
-    let now = Utc::now();
+    use crate::db::repository::Repository;
     
-    sqlx::query(
-        r#"
-        UPDATE goals 
-        SET archived_at = ?1, updated_at = ?2
-        WHERE id = ?3
-        "#
-    )
-    .bind(&now)
-    .bind(&now)
-    .bind(&id)
-    .execute(&*state.db)
-    .await
-    .map_err(|e| e.to_string())?;
-    
-    Ok(())
+    let repo = Repository::new(state.db.clone());
+    repo.archive_goal_cascade(&id)
+        .await
+        .map_err(|e| e.to_string())
 }
 
 /// Restores a previously deleted goal

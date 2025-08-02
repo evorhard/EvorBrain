@@ -341,4 +341,108 @@ impl Repository {
         tx.commit().await?;
         Ok(())
     }
+
+    // Archive operations for goals with cascading
+    pub async fn archive_goal_cascade(&self, goal_id: &str) -> AppResult<()> {
+        let mut tx = self.begin_transaction().await?;
+        let now = Utc::now();
+        
+        // Archive the goal
+        sqlx::query("UPDATE goals SET archived_at = ?1, updated_at = ?2 WHERE id = ?3")
+            .bind(&now)
+            .bind(&now)
+            .bind(goal_id)
+            .execute(&mut *tx)
+            .await
+            .map_err(|e| AppError::database_error("archive goal", e))?;
+
+        // Archive all projects in the goal
+        sqlx::query("UPDATE projects SET archived_at = ?1, updated_at = ?2 WHERE goal_id = ?3 AND archived_at IS NULL")
+            .bind(&now)
+            .bind(&now)
+            .bind(goal_id)
+            .execute(&mut *tx)
+            .await
+            .map_err(|e| AppError::database_error("cascade archive projects", e))?;
+
+        // Archive all tasks in projects of this goal
+        sqlx::query(
+            r#"
+            UPDATE tasks 
+            SET archived_at = ?1, updated_at = ?2
+            WHERE project_id IN (
+                SELECT id FROM projects WHERE goal_id = ?3
+            ) AND archived_at IS NULL
+            "#
+        )
+        .bind(&now)
+        .bind(&now)
+        .bind(goal_id)
+        .execute(&mut *tx)
+        .await
+        .map_err(|e| AppError::database_error("cascade archive tasks", e))?;
+
+        // Archive all notes associated with the goal
+        sqlx::query("UPDATE notes SET archived_at = ?1, updated_at = ?2 WHERE goal_id = ?3 AND archived_at IS NULL")
+            .bind(&now)
+            .bind(&now)
+            .bind(goal_id)
+            .execute(&mut *tx)
+            .await
+            .map_err(|e| AppError::database_error("cascade archive notes", e))?;
+
+        tx.commit().await?;
+        Ok(())
+    }
+
+    // Archive operations for tasks with cascading
+    pub async fn archive_task_cascade(&self, task_id: &str) -> AppResult<()> {
+        let mut tx = self.begin_transaction().await?;
+        let now = Utc::now();
+        
+        // Archive the task
+        sqlx::query("UPDATE tasks SET archived_at = ?1, updated_at = ?2 WHERE id = ?3")
+            .bind(&now)
+            .bind(&now)
+            .bind(task_id)
+            .execute(&mut *tx)
+            .await
+            .map_err(|e| AppError::database_error("archive task", e))?;
+
+        // Archive all subtasks
+        sqlx::query("UPDATE tasks SET archived_at = ?1, updated_at = ?2 WHERE parent_task_id = ?3 AND archived_at IS NULL")
+            .bind(&now)
+            .bind(&now)
+            .bind(task_id)
+            .execute(&mut *tx)
+            .await
+            .map_err(|e| AppError::database_error("cascade archive subtasks", e))?;
+
+        // Archive all notes associated with the task
+        sqlx::query("UPDATE notes SET archived_at = ?1, updated_at = ?2 WHERE task_id = ?3 AND archived_at IS NULL")
+            .bind(&now)
+            .bind(&now)
+            .bind(task_id)
+            .execute(&mut *tx)
+            .await
+            .map_err(|e| AppError::database_error("cascade archive notes", e))?;
+
+        tx.commit().await?;
+        Ok(())
+    }
+
+    // Archive a note
+    pub async fn archive_note(&self, note_id: &str) -> AppResult<()> {
+        let now = Utc::now();
+        
+        sqlx::query("UPDATE notes SET archived_at = ?1, updated_at = ?2 WHERE id = ?3")
+            .bind(&now)
+            .bind(&now)
+            .bind(note_id)
+            .execute(&*self.pool)
+            .await
+            .map_err(|e| AppError::database_error("archive note", e))?;
+
+        Ok(())
+    }
 }

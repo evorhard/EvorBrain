@@ -184,7 +184,7 @@ Based on our current task structure, here are the phases/tasks that MUST be comp
 - [x] ✅ [P2.1.3] Implement Project CRUD operations 🟡
 - [x] ✅ [P2.1.4] Implement Task CRUD operations 🟡
 - [x] ✅ [P2.1.5] Add subtask support 🟡
-- [ ] 🔄 [P2.1.6] Implement archiving functionality 🟢 (partial - project cascade done)
+- [x] ✅ [P2.1.6] Implement archiving functionality 🟢
 
 ### [P2.2] Hierarchical Navigation
 
@@ -451,7 +451,8 @@ Based on our current task structure, here are the phases/tasks that MUST be comp
   Notes
 - **TypeScript Types**: Complete type definitions for all models and commands
 - **Frontend API Client**: Type-safe API client with full command coverage
-- **UI Components**: Life Area, Goal, Project, and Task management interfaces complete with full CRUD functionality
+- **UI Components**: Life Area, Goal, Project, and Task management interfaces complete with full
+  CRUD functionality
 - **Task Management**: Complete task CRUD with subtask support, priority management, and due dates
 - **Test Utilities**: Comprehensive test helpers created (TauriMock, render helpers, data factories,
   custom matchers)
@@ -459,7 +460,8 @@ Based on our current task structure, here are the phases/tasks that MUST be comp
 - **Code Quality**: ESLint configured with TypeScript rules, reduced errors from 181 to 2 warnings
   only
 - **UI Components**: Added ConfirmDialog component to replace browser confirm/alert dialogs
-- **New UI Components**: Created Heading, Alert, LoadingSpinner, and cn utility for consistent styling
+- **New UI Components**: Created Heading, Alert, LoadingSpinner, and cn utility for consistent
+  styling
 
 ### Technical Decisions
 

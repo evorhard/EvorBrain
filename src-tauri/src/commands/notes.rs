@@ -200,23 +200,12 @@ pub async fn update_note(
 
 #[tauri::command]
 pub async fn delete_note(state: State<'_, AppState>, id: String) -> Result<(), String> {
-    let now = Utc::now();
+    use crate::db::repository::Repository;
     
-    sqlx::query(
-        r#"
-        UPDATE notes 
-        SET archived_at = ?1, updated_at = ?2
-        WHERE id = ?3
-        "#
-    )
-    .bind(&now)
-    .bind(&now)
-    .bind(&id)
-    .execute(&*state.db)
-    .await
-    .map_err(|e| e.to_string())?;
-    
-    Ok(())
+    let repo = Repository::new(state.db.clone());
+    repo.archive_note(&id)
+        .await
+        .map_err(|e| e.to_string())
 }
 
 #[tauri::command]
