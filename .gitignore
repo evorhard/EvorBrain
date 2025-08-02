@@ -66,6 +66,7 @@ desktop.ini
 coverage/
 *.lcov
 .nyc_output/
+test-results.json
 
 # Playwright test results
 test-results/
