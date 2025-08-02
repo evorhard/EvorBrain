@@ -77,16 +77,23 @@ export function LifeAreaList(props: LifeAreaListProps) {
 
       <div class="grid gap-3">
         <For each={store.items}>
-          {(area) => (
-            <div
-              class="bg-surface shadow-card cursor-pointer rounded-lg p-4 transition-all"
-              classList={{
-                'ring-2 ring-primary': store.selectedId === area.id,
-                'hover:shadow-card-hover': store.selectedId !== area.id,
-                'opacity-60': !!area.archived_at,
-              }}
-              onClick={() => actions.select(area.id)}
-            >
+          {(area) => {
+            // Defensive check to ensure area is not null and has required properties
+            if (!area || typeof area !== 'object' || !area.id || !area.name) {
+              console.warn('Invalid life area object received:', area);
+              return null;
+            }
+            
+            return (
+              <div
+                class="bg-surface shadow-card cursor-pointer rounded-lg p-4 transition-all"
+                classList={{
+                  'ring-2 ring-primary': store.selectedId === area.id,
+                  'hover:shadow-card-hover': store.selectedId !== area.id,
+                  'opacity-60': !!(area.archived_at),
+                }}
+                onClick={() => actions.select(area.id)}
+              >
               <div class="flex items-start justify-between">
                 <div class="flex items-start gap-3 flex-1">
                   {area.icon && (
@@ -163,7 +170,8 @@ export function LifeAreaList(props: LifeAreaListProps) {
                 </DropdownMenu>
               </div>
             </div>
-          )}
+            );
+          }}
         </For>
       </div>
 
