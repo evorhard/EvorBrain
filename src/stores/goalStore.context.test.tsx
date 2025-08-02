@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render, waitFor } from '@solidjs/testing-library';
-import { createRoot, createSignal } from 'solid-js';
+import { createRoot } from 'solid-js';
 import { createGoalStore, GoalStoreProvider, useGoalStore } from './goalStore.context';
 
 describe('Goal Store Context', () => {
@@ -79,10 +79,10 @@ describe('Goal Store Context', () => {
       const store = createRoot(() => createGoalStore());
 
       expect(store.state.selectedId).toBe(null);
-      
+
       store.actions.select('test-id');
       expect(store.state.selectedId).toBe('test-id');
-      
+
       store.actions.select(null);
       expect(store.state.selectedId).toBe(null);
     });
@@ -93,7 +93,7 @@ describe('Goal Store Context', () => {
       // Set an error
       store.actions.setState('error', 'Test error');
       expect(store.state.error).toBe('Test error');
-      
+
       // Clear error
       store.actions.clearError();
       expect(store.state.error).toBe(null);
@@ -103,10 +103,10 @@ describe('Goal Store Context', () => {
       const store = createRoot(() => createGoalStore());
 
       expect(store.state.isLoading).toBe(false);
-      
+
       store.actions.setState('isLoading', true);
       expect(store.state.isLoading).toBe(true);
-      
+
       store.actions.setState('isLoading', false);
       expect(store.state.isLoading).toBe(false);
     });

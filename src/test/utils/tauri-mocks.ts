@@ -46,7 +46,7 @@ export class TauriMock {
         this.commandCalls.set(command, []);
       }
       this.commandCalls.get(command)?.push(args);
-      
+
       // Track call counts
       this.commandCallCounts.set(command, (this.commandCallCounts.get(command) ?? 0) + 1);
 
@@ -287,7 +287,7 @@ export function installTauriMock(mock: TauriMock) {
   window.__TAURI__ = {
     invoke: mock.getMock(),
   };
-  
+
   // Also mock the module import
   vi.doMock('@tauri-apps/api/core', () => ({
     invoke: mock.getMock(),
@@ -301,7 +301,7 @@ export function installTauriMock(mock: TauriMock) {
 export function uninstallTauriMock() {
   // @ts-expect-error - We're cleaning up our mock
   delete window.__TAURI__;
-  
+
   // Clear module mock
   vi.doUnmock('@tauri-apps/api/core');
 }
