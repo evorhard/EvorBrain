@@ -81,6 +81,15 @@ Based on our current task structure, here are the phases/tasks that MUST be comp
 - AI features (P5.1)
 - Multi-platform support (P6.x)
 
+**Testing Strategy for MVP**: While comprehensive testing (P7) is not required for MVP release, each
+feature should have:
+
+- Basic unit tests for critical functionality
+- At least one integration test for the happy path
+- Manual testing checklist for the feature
+
+This ensures stability without delaying the MVP. Full test coverage can be added post-MVP.
+
 **Legend:**
 
 - ✅ Completed
@@ -186,6 +195,47 @@ Based on our current task structure, here are the phases/tasks that MUST be comp
 - [x] ✅ [P2.1.5] Add subtask support 🟡
 - [x] ✅ [P2.1.6] Implement archiving functionality 🟢
 
+### [P2.1.T] Tests for Data Models & CRUD
+
+- [ ] 📋 [P2.1.T.1] Write unit tests for Life Area components 🟡
+  - [ ] Test LifeAreaList component interactions
+  - [ ] Test create/edit/delete operations
+  - [ ] Test validation and error handling
+- [ ] 📋 [P2.1.T.2] Write unit tests for Goal components 🟡
+  - [ ] Test GoalList component (partially done)
+  - [ ] Test GoalForm component (partially done)
+  - [ ] Test GoalsPage component (partially done)
+  - [ ] Fix failing tests and add missing coverage
+- [ ] 📋 [P2.1.T.3] Write unit tests for Project components 🟡
+  - [ ] Test ProjectList component
+  - [ ] Test ProjectForm component
+  - [ ] Test ProjectsPage component
+  - [ ] Test project status transitions
+- [ ] 📋 [P2.1.T.4] Write unit tests for Task components 🟡
+  - [ ] Test TaskList component
+  - [ ] Test TaskForm component
+  - [ ] Test TaskDetail component
+  - [ ] Test TasksPage component
+  - [ ] Test subtask functionality
+- [ ] 📋 [P2.1.T.5] Write unit tests for Note components 🟡
+  - [ ] Test note CRUD operations
+  - [ ] Test note associations with other entities
+- [ ] 📋 [P2.1.T.6] Write integration tests for stores 🟡
+  - [ ] Test lifeAreaStore
+  - [ ] Test goalStore
+  - [ ] Test projectStore
+  - [ ] Test taskStore
+  - [ ] Test noteStore
+- [ ] 📋 [P2.1.T.7] Write unit tests for archiving functionality 🟢
+  - [ ] Test cascading archive operations
+  - [ ] Test restore operations
+  - [ ] Test UI state updates after archive/restore
+- [ ] 📋 [P2.1.T.8] Fix test infrastructure issues 🔴
+  - [ ] Resolve "computations created outside createRoot" warnings
+  - [ ] Fix missing test data factory functions
+  - [ ] Update TauriMock for new commands
+  - [ ] Ensure all tests pass in CI
+
 ### [P2.2] Hierarchical Navigation
 
 - [ ] 📋 [P2.2.1] Build tree view component 🔴
@@ -194,6 +244,13 @@ Based on our current task structure, here are the phases/tasks that MUST be comp
 - [ ] 📋 [P2.2.4] Create breadcrumb navigation 🟡
 - [ ] 📋 [P2.2.5] Implement context menus 🟡
 - [ ] 📋 [P2.2.6] Add keyboard navigation 🟡
+
+### [P2.2.T] Tests for Hierarchical Navigation
+
+- [ ] 📋 [P2.2.T.1] Write tests for tree view component 🟡
+- [ ] 📋 [P2.2.T.2] Test drag-and-drop functionality 🟡
+- [ ] 📋 [P2.2.T.3] Test keyboard navigation 🟢
+- [ ] 📋 [P2.2.T.4] Test breadcrumb navigation 🟢
 
 ### [P2.3] Dashboard/Homepage
 
@@ -436,6 +493,74 @@ Based on our current task structure, here are the phases/tasks that MUST be comp
 - [ ] 📋 [P6.5.4] Build responsive design ⚫
 - [ ] 📋 [P6.5.5] Create public link generation ⚫
 - [ ] 📋 [P6.5.6] Add collaboration features ⚫
+
+---
+
+## Phase 7: Comprehensive Testing [P7]
+
+### [P7.1] Backend Rust Tests
+
+- [ ] 📋 [P7.1.1] Write unit tests for repository methods 🟡
+  - [ ] Test all CRUD operations
+  - [ ] Test cascading operations
+  - [ ] Test transaction handling
+- [ ] 📋 [P7.1.2] Write unit tests for Tauri commands 🟡
+  - [ ] Test command input validation
+  - [ ] Test error handling
+  - [ ] Test response formatting
+- [ ] 📋 [P7.1.3] Write integration tests for database operations 🔴
+  - [ ] Test migration system
+  - [ ] Test data integrity
+  - [ ] Test concurrent operations
+- [ ] 📋 [P7.1.4] Write tests for error handling 🟡
+  - [ ] Test AppError types
+  - [ ] Test error propagation
+  - [ ] Test user-friendly error messages
+
+### [P7.2] End-to-End Tests
+
+- [ ] 📋 [P7.2.1] Write E2E tests for core user flows 🔴
+  - [ ] Test complete GTD workflow (Life Area → Goal → Project → Task)
+  - [ ] Test task creation and completion
+  - [ ] Test archiving and restoration
+- [ ] 📋 [P7.2.2] Write E2E tests for data persistence 🔴
+  - [ ] Test data saves correctly
+  - [ ] Test data loads on restart
+  - [ ] Test backup functionality
+- [ ] 📋 [P7.2.3] Write E2E tests for navigation 🟡
+  - [ ] Test all navigation paths
+  - [ ] Test breadcrumb navigation
+  - [ ] Test keyboard shortcuts
+- [ ] 📋 [P7.2.4] Write E2E tests for search and filtering 🟡
+  - [ ] Test search functionality
+  - [ ] Test filters
+  - [ ] Test sorting
+
+### [P7.3] Performance Tests
+
+- [ ] 📋 [P7.3.1] Write performance benchmarks 🔴
+  - [ ] Test with large datasets (1000+ items)
+  - [ ] Test render performance
+  - [ ] Test database query performance
+- [ ] 📋 [P7.3.2] Write memory leak tests 🔴
+  - [ ] Test component mounting/unmounting
+  - [ ] Test store subscriptions
+  - [ ] Test event listeners
+
+### [P7.4] Test Infrastructure Improvements
+
+- [ ] 📋 [P7.4.1] Set up continuous integration testing 🟡
+  - [ ] Configure GitHub Actions for tests
+  - [ ] Set up test coverage reporting
+  - [ ] Configure test result notifications
+- [ ] 📋 [P7.4.2] Improve test utilities 🟡
+  - [ ] Enhance TauriMock capabilities
+  - [ ] Create more test factories
+  - [ ] Add custom test matchers
+- [ ] 📋 [P7.4.3] Set up visual regression testing 🔴
+  - [ ] Configure screenshot testing
+  - [ ] Set up visual diff tools
+  - [ ] Create baseline screenshots
 
 ---
 
