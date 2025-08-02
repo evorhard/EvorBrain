@@ -201,22 +201,19 @@ This ensures stability without delaying the MVP. Full test coverage can be added
 
 ### [P2.1.T] Tests for Data Models & CRUD
 
-**⚠️ IMPORTANT: Many tests in this section are blocked by architectural issues discovered during
-P2.1.T.1 implementation:**
+**✅ RESOLVED: Testing infrastructure issues have been fixed by P2.1.T.8:**
 
-- Store modules auto-initialize and call Tauri APIs on import
-- Components that import stores cannot be tested in isolation
-- Module mocking with vi.mock has hoisting limitations
+- ✅ Factory pattern for testable stores implemented
+- ✅ API abstraction layer with TestApiClient for isolated testing
+- ✅ Context-based stores with dependency injection
+- ✅ Enhanced TauriMock with better isolation
 
-**✅ Tests marked with "Feasible Now" can be completed without waiting for infrastructure fixes**
-**⚠️ Tests marked with warning emoji require P2.1.T.8 to be resolved first**
+**Testing Approach:** Use the same patterns demonstrated in P2.1.T.1 (Life Area tests):
 
-**Alternative Testing Strategies While Blocked:**
-
-1. Focus on UI-only component tests (P2.1.T.9)
-2. Use E2E tests with Playwright for integration testing
-3. Test pure utility functions and business logic
-4. Create isolated test components that don't depend on stores
+1. Factory pattern for stores (e.g., `createGoalStoreFactory`, `createProjectStoreFactory`)
+2. TestApiClient for API mocking instead of vi.mock
+3. Context providers for better component testability
+4. UI-only tests for components without store dependencies
 
 - [x] ✅ [P2.1.T.1] Write unit tests for Life Area components 🟡 _(Complete - 55 tests passing)_
   - [x] Test validation and error handling (14 tests in LifeAreaValidation.test.tsx)
@@ -225,48 +222,50 @@ P2.1.T.1 implementation:**
   - [x] Test LifeAreaList component with factory pattern (7 tests in LifeAreaList.factory.test.tsx)
   - [x] Test store factory pattern (14 tests in lifeAreaStore.factory.test.ts)
   - [ ] Note: LifeAreaList.test.tsx blocked by singleton store initialization
-- [ ] 📋 [P2.1.T.2] Write unit tests for Goal components 🟡 _(Blocked by same issues as P2.1.T.1)_
-  - [ ] Test GoalList component interactions ⚠️ (blocked by store initialization)
-  - [ ] Test GoalForm component ⚠️ (blocked if using goalStore)
-  - [ ] Test GoalsPage component ⚠️ (blocked by store dependencies)
-  - [ ] Fix failing tests and add missing coverage ⚠️
-  - [ ] **Feasible Now**: Create UI-only Goal tests without store dependencies
-- [ ] 📋 [P2.1.T.3] Write unit tests for Project components 🟡 _(Blocked by same issues as
-      P2.1.T.1)_
-  - [ ] Test ProjectList component ⚠️ (blocked by store initialization)
-  - [ ] Test ProjectForm component ⚠️ (blocked if using projectStore)
-  - [ ] Test ProjectsPage component ⚠️ (blocked by store dependencies)
-  - [ ] Test project status transitions ⚠️ (blocked by API calls)
-  - [ ] **Feasible Now**: Create UI-only Project tests without store dependencies
-  - [ ] **Feasible Now**: Test project status enum values and transitions logic
-- [ ] 📋 [P2.1.T.4] Write unit tests for Task components 🟡 _(Blocked by same issues as P2.1.T.1)_
-  - [ ] Test TaskList component ⚠️ (blocked by store initialization)
-  - [ ] Test TaskForm component ⚠️ (blocked if using taskStore)
-  - [ ] Test TaskDetail component ⚠️ (blocked by store dependencies)
-  - [ ] Test TasksPage component ⚠️ (blocked by store dependencies)
-  - [ ] Test subtask functionality ⚠️ (blocked by API calls)
-  - [ ] **Feasible Now**: Create UI-only Task tests without store dependencies
-  - [ ] **Feasible Now**: Test priority selector component in isolation
-  - [ ] **Feasible Now**: Test date formatting and validation utilities
-- [ ] 📋 [P2.1.T.5] Write unit tests for Note components 🟡 _(Blocked by same issues as P2.1.T.1)_
-  - [ ] Test note CRUD operations ⚠️ (blocked by API calls)
-  - [ ] Test note associations with other entities ⚠️ (blocked by store dependencies)
-  - [ ] **Feasible Now**: Create UI-only Note editor tests
-  - [ ] **Feasible Now**: Test markdown rendering in isolation
-- [ ] 📋 [P2.1.T.6] Write integration tests for stores 🔴 _(Completely blocked until P2.1.T.8 is
-      resolved)_
-  - [ ] Test lifeAreaStore ⚠️ (blocked by auto-initialization)
-  - [ ] Test goalStore ⚠️ (blocked by auto-initialization)
-  - [ ] Test projectStore ⚠️ (blocked by auto-initialization)
-  - [ ] Test taskStore ⚠️ (blocked by auto-initialization)
-  - [ ] Test noteStore ⚠️ (blocked by auto-initialization)
+- [ ] 📋 [P2.1.T.2] Write unit tests for Goal components 🟡
+  - [ ] Test GoalList component interactions (use factory pattern like P2.1.T.1)
+  - [ ] Test GoalForm component (use factory pattern approach)
+  - [ ] Test GoalsPage component (use factory pattern approach)
+  - [ ] Fix failing tests and add missing coverage
+  - [ ] **Recommended**: Create UI-only Goal tests without store dependencies
+  - [ ] **Recommended**: Use createGoalStoreFactory pattern like Life Areas
+- [ ] 📋 [P2.1.T.3] Write unit tests for Project components 🟡
+  - [ ] Test ProjectList component (use factory pattern like P2.1.T.1)
+  - [ ] Test ProjectForm component (use factory pattern approach)
+  - [ ] Test ProjectsPage component (use factory pattern approach)
+  - [ ] Test project status transitions (use TestApiClient)
+  - [ ] **Recommended**: Create UI-only Project tests without store dependencies
+  - [ ] **Recommended**: Test project status enum values and transitions logic
+  - [ ] **Recommended**: Use createProjectStoreFactory pattern like Life Areas
+- [ ] 📋 [P2.1.T.4] Write unit tests for Task components 🟡
+  - [ ] Test TaskList component (use factory pattern like P2.1.T.1)
+  - [ ] Test TaskForm component (use factory pattern approach)
+  - [ ] Test TaskDetail component (use factory pattern approach)
+  - [ ] Test TasksPage component (use factory pattern approach)
+  - [ ] Test subtask functionality (use TestApiClient)
+  - [ ] **Recommended**: Create UI-only Task tests without store dependencies
+  - [ ] **Recommended**: Test priority selector component in isolation
+  - [ ] **Recommended**: Test date formatting and validation utilities
+  - [ ] **Recommended**: Use createTaskStoreFactory pattern like Life Areas
+- [ ] 📋 [P2.1.T.5] Write unit tests for Note components 🟡
+  - [ ] Test note CRUD operations (use TestApiClient)
+  - [ ] Test note associations with other entities (use factory pattern approach)
+  - [ ] **Recommended**: Create UI-only Note editor tests
+  - [ ] **Recommended**: Test markdown rendering in isolation
+  - [ ] **Recommended**: Use createNoteStoreFactory pattern like Life Areas
+- [ ] 📋 [P2.1.T.6] Write integration tests for stores 🟡
+  - [ ] Test lifeAreaStore (use factory pattern demonstrated in P2.1.T.1)
+  - [ ] Test goalStore (use createGoalStoreFactory)
+  - [ ] Test projectStore (use createProjectStoreFactory)
+  - [ ] Test taskStore (use createTaskStoreFactory)
+  - [ ] Test noteStore (use createNoteStoreFactory)
   - [ ] **Alternative**: Consider E2E tests with Playwright instead
-- [ ] 📋 [P2.1.T.7] Write unit tests for archiving functionality 🟡 _(Partially blocked)_
-  - [ ] Test cascading archive operations ⚠️ (blocked by API calls)
-  - [ ] Test restore operations ⚠️ (blocked by API calls)
-  - [ ] Test UI state updates after archive/restore ⚠️ (blocked by store dependencies)
-  - [ ] **Feasible Now**: Test archive/restore UI buttons and confirmation dialogs
-  - [ ] **Feasible Now**: Test archived item visual indicators (opacity, badges)
+- [ ] 📋 [P2.1.T.7] Write unit tests for archiving functionality 🟡
+  - [ ] Test cascading archive operations (use TestApiClient)
+  - [ ] Test restore operations (use TestApiClient)
+  - [ ] Test UI state updates after archive/restore (use factory pattern)
+  - [ ] **Recommended**: Test archive/restore UI buttons and confirmation dialogs
+  - [ ] **Recommended**: Test archived item visual indicators (opacity, badges)
 - [x] ✅ [P2.1.T.8] Fix test infrastructure issues ⚠️ COMPLETED
   - [x] Refactor stores to use lazy initialization or dependency injection 🟡
   - [x] Create API abstraction layer with test doubles 🟡
