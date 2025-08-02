@@ -1,5 +1,4 @@
-import type { Component } from 'solid-js';
-import { createSignal, onMount, Show } from 'solid-js';
+import { type Component, createSignal, onMount, Show } from 'solid-js';
 import { useTaskStore } from '../../../stores';
 import TaskList from './TaskList';
 import TaskForm from './TaskForm';
@@ -137,13 +136,15 @@ const TasksPage: Component = () => {
               const task = store.items.find((t) => t.id === taskId());
               return (
                 <Show when={task}>
-                  <TaskDetail
-                    task={task!}
-                    onEdit={() => setEditingTask(taskId())}
-                    onComplete={() => handleTaskComplete(taskId())}
-                    onUncomplete={() => handleTaskUncomplete(taskId())}
-                    onDelete={() => handleTaskDelete(taskId())}
-                  />
+                  {(currentTask) => (
+                    <TaskDetail
+                      task={currentTask()}
+                      onEdit={() => setEditingTask(taskId())}
+                      onComplete={() => handleTaskComplete(taskId())}
+                      onUncomplete={() => handleTaskUncomplete(taskId())}
+                      onDelete={() => handleTaskDelete(taskId())}
+                    />
+                  )}
                 </Show>
               );
             }}

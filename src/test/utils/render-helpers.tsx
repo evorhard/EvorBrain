@@ -64,6 +64,7 @@ export function createTestContext<T>(defaultValue: T) {
 
   const TestProvider: Component<{ value?: T; children: JSX.Element }> = (props) => {
     const value = () => props.value ?? defaultValue;
+    // eslint-disable-next-line solid/reactivity
     return <Context.Provider value={value()}>{props.children}</Context.Provider>;
   };
 

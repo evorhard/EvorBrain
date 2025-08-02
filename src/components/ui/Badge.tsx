@@ -160,6 +160,7 @@ export const Badge: Component<BadgeProps> = (props) => {
   // Variant styles
   const variantStyles = createMemo(() => {
     const variant = local.variant || 'default';
+    // eslint-disable-next-line solid/reactivity
     const { outline } = local;
 
     const styles = {

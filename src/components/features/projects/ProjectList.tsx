@@ -147,7 +147,7 @@ export function ProjectList(props: ProjectListProps) {
                       <span>Goal: {getGoalName(project.goal_id)}</span>
                       <span>Created: {formatDate(project.created_at)}</span>
                       <Show when={project.completed_at}>
-                        <span>Completed: {formatDate(project.completed_at!)}</span>
+                        <span>Completed: {formatDate(project.completed_at || '')}</span>
                       </Show>
                     </div>
                   </div>

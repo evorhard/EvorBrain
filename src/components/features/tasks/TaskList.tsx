@@ -1,5 +1,4 @@
-import type { Component } from 'solid-js';
-import { For, Show, createMemo } from 'solid-js';
+import { type Component, For, Show, createMemo } from 'solid-js';
 import type { Task } from '../../../types/models';
 import {
   CheckCircle2,

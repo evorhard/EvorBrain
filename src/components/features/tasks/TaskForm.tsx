@@ -1,5 +1,4 @@
-import type { Component } from 'solid-js';
-import { Show, createSignal, onMount, For } from 'solid-js';
+import { type Component, Show, createSignal, onMount, For } from 'solid-js';
 import type { Task, TaskPriority } from '../../../types/models';
 import { Button } from '../../ui/Button';
 import { Input } from '../../ui/Input';
@@ -25,13 +24,18 @@ interface TaskFormProps {
 
 const TaskForm: Component<TaskFormProps> = (props) => {
   const { store: projectStore, actions: projectActions } = useProjectStore();
-  const [title, setTitle] = createSignal(props.task?.title || '');
-  const [description, setDescription] = createSignal(props.task?.description || '');
-  const [projectId, setProjectId] = createSignal(props.task?.project_id || props.projectId || '');
-  const [priority, setPriority] = createSignal<TaskPriority>(props.task?.priority || 'medium');
-  const [dueDate, setDueDate] = createSignal(
-    props.task?.due_date ? format(new Date(props.task.due_date), 'yyyy-MM-dd') : '',
-  );
+  const initialTitle = () => props.task?.title || '';
+  const initialDescription = () => props.task?.description || '';
+  const initialProjectId = () => props.task?.project_id || props.projectId || '';
+  const initialPriority = () => props.task?.priority || 'medium';
+  const initialDueDate = () =>
+    props.task?.due_date ? format(new Date(props.task.due_date), 'yyyy-MM-dd') : '';
+
+  const [title, setTitle] = createSignal(initialTitle());
+  const [description, setDescription] = createSignal(initialDescription());
+  const [projectId, setProjectId] = createSignal(initialProjectId());
+  const [priority, setPriority] = createSignal<TaskPriority>(initialPriority());
+  const [dueDate, setDueDate] = createSignal(initialDueDate());
 
   onMount(async () => {
     if (projectStore.items.length === 0) {

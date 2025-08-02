@@ -1,5 +1,4 @@
-import type { Component } from 'solid-js';
-import { Show, createMemo } from 'solid-js';
+import { type Component, Show, createMemo } from 'solid-js';
 import type { Task } from '../../../types/models';
 import { Card } from '../../ui/Card';
 import { Badge } from '../../ui/Badge';
@@ -145,7 +144,7 @@ const TaskDetail: Component<TaskDetailProps> = (props) => {
                 <span class="text-sm font-medium">Project:</span>
                 <div class="text-muted-foreground flex items-center gap-1 text-sm">
                   <FolderOpen class="h-4 w-4" />
-                  <span>{project()!.title}</span>
+                  <span>{project()?.title || ''}</span>
                 </div>
               </div>
             </Show>

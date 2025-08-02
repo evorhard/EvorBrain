@@ -148,7 +148,11 @@ export function ProjectForm(props: ProjectFormProps) {
           Cancel
         </Button>
         <Button type="submit" disabled={isSubmitting()}>
-          {isSubmitting() ? 'Saving...' : props.project ? 'Update' : 'Create'} Project
+          {(() => {
+            if (isSubmitting()) return 'Saving...';
+            return props.project ? 'Update' : 'Create';
+          })()}{' '}
+          Project
         </Button>
       </div>
     </form>
