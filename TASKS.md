@@ -97,6 +97,7 @@ This ensures stability without delaying the MVP. Full test coverage can be added
 - 📋 Pending
 - 🚧 Blocked
 - ❌ Cancelled
+- ⚠️ Blocked by technical debt (see specific section for details)
 
 **Difficulty Levels:**
 
@@ -200,45 +201,73 @@ This ensures stability without delaying the MVP. Full test coverage can be added
 
 ### [P2.1.T] Tests for Data Models & CRUD
 
+**⚠️ IMPORTANT: Many tests in this section are blocked by architectural issues discovered during P2.1.T.1 implementation:**
+- Store modules auto-initialize and call Tauri APIs on import
+- Components that import stores cannot be tested in isolation
+- Module mocking with vi.mock has hoisting limitations
+
+**✅ Tests marked with "Feasible Now" can be completed without waiting for infrastructure fixes**
+**⚠️ Tests marked with warning emoji require P2.1.T.8 to be resolved first**
+
+**Alternative Testing Strategies While Blocked:**
+1. Focus on UI-only component tests (P2.1.T.9)
+2. Use E2E tests with Playwright for integration testing
+3. Test pure utility functions and business logic
+4. Create isolated test components that don't depend on stores
+
 - [ ] 📋 [P2.1.T.1] Write unit tests for Life Area components 🟡 *(Partially Complete)*
   - [x] Test validation and error handling (14 tests in LifeAreaValidation.test.tsx)
   - [x] Test create/edit operations (10 tests in LifeAreaForm.test.tsx)
   - [x] Test UI components without store dependencies (10 tests in LifeAreaUI.test.tsx)
   - [ ] Test LifeAreaList component interactions (blocked by store initialization issues)
   - [ ] Test store actions and delete operations (blocked by module mocking issues)
-- [ ] 📋 [P2.1.T.2] Write unit tests for Goal components 🟡
-  - [ ] Test GoalList component (partially done)
-  - [ ] Test GoalForm component (partially done)
-  - [ ] Test GoalsPage component (partially done)
-  - [ ] Fix failing tests and add missing coverage
-- [ ] 📋 [P2.1.T.3] Write unit tests for Project components 🟡
-  - [ ] Test ProjectList component
-  - [ ] Test ProjectForm component
-  - [ ] Test ProjectsPage component
-  - [ ] Test project status transitions
-- [ ] 📋 [P2.1.T.4] Write unit tests for Task components 🟡
-  - [ ] Test TaskList component
-  - [ ] Test TaskForm component
-  - [ ] Test TaskDetail component
-  - [ ] Test TasksPage component
-  - [ ] Test subtask functionality
-- [ ] 📋 [P2.1.T.5] Write unit tests for Note components 🟡
-  - [ ] Test note CRUD operations
-  - [ ] Test note associations with other entities
-- [ ] 📋 [P2.1.T.6] Write integration tests for stores 🟡
-  - [ ] Test lifeAreaStore
-  - [ ] Test goalStore
-  - [ ] Test projectStore
-  - [ ] Test taskStore
-  - [ ] Test noteStore
-- [ ] 📋 [P2.1.T.7] Write unit tests for archiving functionality 🟢
-  - [ ] Test cascading archive operations
-  - [ ] Test restore operations
-  - [ ] Test UI state updates after archive/restore
-- [ ] 📋 [P2.1.T.8] Fix test infrastructure issues 🔴
+- [ ] 📋 [P2.1.T.2] Write unit tests for Goal components 🟡 *(Blocked by same issues as P2.1.T.1)*
+  - [ ] Test GoalList component interactions ⚠️ (blocked by store initialization)
+  - [ ] Test GoalForm component ⚠️ (blocked if using goalStore)
+  - [ ] Test GoalsPage component ⚠️ (blocked by store dependencies)
+  - [ ] Fix failing tests and add missing coverage ⚠️
+  - [ ] **Feasible Now**: Create UI-only Goal tests without store dependencies
+- [ ] 📋 [P2.1.T.3] Write unit tests for Project components 🟡 *(Blocked by same issues as P2.1.T.1)*
+  - [ ] Test ProjectList component ⚠️ (blocked by store initialization)
+  - [ ] Test ProjectForm component ⚠️ (blocked if using projectStore)
+  - [ ] Test ProjectsPage component ⚠️ (blocked by store dependencies)
+  - [ ] Test project status transitions ⚠️ (blocked by API calls)
+  - [ ] **Feasible Now**: Create UI-only Project tests without store dependencies
+  - [ ] **Feasible Now**: Test project status enum values and transitions logic
+- [ ] 📋 [P2.1.T.4] Write unit tests for Task components 🟡 *(Blocked by same issues as P2.1.T.1)*
+  - [ ] Test TaskList component ⚠️ (blocked by store initialization)
+  - [ ] Test TaskForm component ⚠️ (blocked if using taskStore)
+  - [ ] Test TaskDetail component ⚠️ (blocked by store dependencies)
+  - [ ] Test TasksPage component ⚠️ (blocked by store dependencies)
+  - [ ] Test subtask functionality ⚠️ (blocked by API calls)
+  - [ ] **Feasible Now**: Create UI-only Task tests without store dependencies
+  - [ ] **Feasible Now**: Test priority selector component in isolation
+  - [ ] **Feasible Now**: Test date formatting and validation utilities
+- [ ] 📋 [P2.1.T.5] Write unit tests for Note components 🟡 *(Blocked by same issues as P2.1.T.1)*
+  - [ ] Test note CRUD operations ⚠️ (blocked by API calls)
+  - [ ] Test note associations with other entities ⚠️ (blocked by store dependencies)
+  - [ ] **Feasible Now**: Create UI-only Note editor tests
+  - [ ] **Feasible Now**: Test markdown rendering in isolation
+- [ ] 📋 [P2.1.T.6] Write integration tests for stores 🔴 *(Completely blocked until P2.1.T.8 is resolved)*
+  - [ ] Test lifeAreaStore ⚠️ (blocked by auto-initialization)
+  - [ ] Test goalStore ⚠️ (blocked by auto-initialization)
+  - [ ] Test projectStore ⚠️ (blocked by auto-initialization)
+  - [ ] Test taskStore ⚠️ (blocked by auto-initialization)
+  - [ ] Test noteStore ⚠️ (blocked by auto-initialization)
+  - [ ] **Alternative**: Consider E2E tests with Playwright instead
+- [ ] 📋 [P2.1.T.7] Write unit tests for archiving functionality 🟡 *(Partially blocked)*
+  - [ ] Test cascading archive operations ⚠️ (blocked by API calls)
+  - [ ] Test restore operations ⚠️ (blocked by API calls)
+  - [ ] Test UI state updates after archive/restore ⚠️ (blocked by store dependencies)
+  - [ ] **Feasible Now**: Test archive/restore UI buttons and confirmation dialogs
+  - [ ] **Feasible Now**: Test archived item visual indicators (opacity, badges)
+- [ ] 📋 [P2.1.T.8] Fix test infrastructure issues 🔴 *(Required before blocked tests can proceed)*
+  - [ ] Refactor stores to use lazy initialization or dependency injection
+  - [ ] Create API abstraction layer with test doubles
   - [ ] Resolve "computations created outside createRoot" warnings
-  - [ ] Fix missing test data factory functions
-  - [ ] Update TauriMock for new commands
+  - [ ] Fix module mocking limitations with vi.mock
+  - [ ] Update TauriMock for better isolation
+  - [ ] Create store providers that can be mocked for tests
   - [ ] Ensure all tests pass in CI
 
 ### [P2.2] Hierarchical Navigation
@@ -249,6 +278,30 @@ This ensures stability without delaying the MVP. Full test coverage can be added
 - [ ] 📋 [P2.2.4] Create breadcrumb navigation 🟡
 - [ ] 📋 [P2.2.5] Implement context menus 🟡
 - [ ] 📋 [P2.2.6] Add keyboard navigation 🟡
+
+### [P2.1.T.9] UI-Only Component Tests *(Can be done now without blocking issues)*
+
+- [ ] 📋 [P2.1.T.9.1] Create isolated UI component tests 🟢
+  - [ ] Extract and test form components without store dependencies
+  - [ ] Test loading states and error displays
+  - [ ] Test empty states and placeholder content
+  - [ ] Test button states (enabled/disabled/loading)
+  - [ ] Test list item rendering and selection states
+- [ ] 📋 [P2.1.T.9.2] Test validation logic in isolation 🟢
+  - [ ] Test all form field validators
+  - [ ] Test error message generation
+  - [ ] Test form submission prevention with invalid data
+- [ ] 📋 [P2.1.T.9.3] Test UI utilities and helpers 🟢
+  - [ ] Test date formatting functions
+  - [ ] Test priority display logic
+  - [ ] Test status badge rendering
+  - [ ] Test color and icon utilities
+- [ ] 📋 [P2.1.T.9.4] Test pure presentation components 🟢
+  - [ ] Test Badge component
+  - [ ] Test LoadingSpinner component
+  - [ ] Test Alert component
+  - [ ] Test EmptyState component
+  - [ ] Test any other UI-only components
 
 ### [P2.2.T] Tests for Hierarchical Navigation
 
