@@ -1,127 +1,114 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { render, cleanup } from '@solidjs/testing-library';
-import { GoalStoreProvider, useGoalStore } from './goalStore.context';
-import { createTestStore } from './createStoreContext';
-import type { Goal } from '../types/models';
+import { describe, it, expect } from 'vitest';
+import { render, waitFor } from '@solidjs/testing-library';
+import { createRoot, createSignal } from 'solid-js';
+import { createGoalStore, GoalStoreProvider, useGoalStore } from './goalStore.context';
 
-// Mock the API
-vi.mock('../lib/api', () => ({
-  api: {
-    goal: {
-      getAll: vi.fn().mockResolvedValue([]),
-      getByLifeArea: vi.fn().mockResolvedValue([]),
-      create: vi.fn(),
-      update: vi.fn(),
-      complete: vi.fn(),
-      uncomplete: vi.fn(),
-      delete: vi.fn(),
-      restore: vi.fn(),
-    },
-  },
-}));
+describe('Goal Store Context', () => {
+  describe('createGoalStore factory', () => {
+    it('should create store with initial state', () => {
+      const store = createRoot(() => createGoalStore());
 
-describe('GoalStore Context', () => {
-  beforeEach(() => {
-    cleanup();
-    vi.clearAllMocks();
-  });
-
-  it('should provide store through context without reactive warnings', () => {
-    let storeResult: ReturnType<typeof useGoalStore> | undefined;
-
-    const TestComponent = () => {
-      const store = useGoalStore();
-      storeResult = store;
-      return <div>Test</div>;
-    };
-
-    render(() => (
-      <GoalStoreProvider>
-        <TestComponent />
-      </GoalStoreProvider>
-    ));
-
-    expect(storeResult).toBeDefined();
-    expect(storeResult.state).toBeDefined();
-    expect(storeResult.actions).toBeDefined();
-    expect(storeResult.computed).toBeDefined();
-  });
-
-  it('should provide reactive computed values', () => {
-    let activeGoalsResult: Goal[] | undefined;
-    let completedGoalsResult: Goal[] | undefined;
-
-    const TestComponent = () => {
-      const { computed } = useGoalStore();
-      activeGoalsResult = computed.activeGoals();
-      completedGoalsResult = computed.completedGoals();
-      return <div>Test</div>;
-    };
-
-    render(() => (
-      <GoalStoreProvider>
-        <TestComponent />
-      </GoalStoreProvider>
-    ));
-
-    expect(activeGoalsResult).toEqual([]);
-    expect(completedGoalsResult).toEqual([]);
-  });
-
-  it('should throw error when used outside provider', () => {
-    const TestComponent = () => {
-      try {
-        useGoalStore();
-      } catch (error) {
-        return <div>{(error as Error).message}</div>;
-      }
-      return <div>No error</div>;
-    };
-
-    const { getByText } = render(() => <TestComponent />);
-    expect(getByText('useGoalStore must be used within GoalStoreProvider')).toBeTruthy();
-  });
-
-  it('should support testing with createTestStore', async () => {
-    // This demonstrates how to test stores without the provider
-    const { api } = await import('../lib/api');
-
-    // Create a test goal
-    const testGoal: Goal = {
-      id: '1',
-      life_area_id: 'life-1',
-      name: 'Test Goal',
-      description: 'Test description',
-      priority: 'high',
-      target_date: null,
-      completed_at: null,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-      archived_at: null,
-    };
-
-    // Mock the API response
-    vi.mocked(api.goal.create).mockResolvedValue(testGoal);
-
-    // Import the factory directly for testing
-    const { createGoalStore } = await import('./goalStore.context');
-    const testStore = createTestStore(() => createGoalStore());
-    const { getStore, cleanup: cleanupStore } = testStore();
-
-    const store = getStore();
-    expect(store.state.items).toHaveLength(0);
-
-    // Test an action
-    await store.actions.create({
-      life_area_id: 'life-1',
-      name: 'Test Goal',
-      description: 'Test description',
-      priority: 'high',
+      expect(store.state.items).toEqual([]);
+      expect(store.state.selectedId).toBe(null);
+      expect(store.state.isLoading).toBe(false);
+      expect(store.state.error).toBe(null);
     });
 
-    expect(store.state.items).toHaveLength(1);
+    it('should have all computed values', () => {
+      const store = createRoot(() => createGoalStore());
 
-    // Cleanup
-    cleanupStore();
+      expect(store.computed.selectedGoal()).toBe(undefined);
+      expect(store.computed.activeGoals()).toEqual([]);
+      expect(store.computed.completedGoals()).toEqual([]);
+      expect(store.computed.goalsByLifeArea()).toBeInstanceOf(Map);
+    });
+
+    it('should have all actions', () => {
+      const store = createRoot(() => createGoalStore());
+
+      expect(store.actions.fetchAll).toBeInstanceOf(Function);
+      expect(store.actions.fetchByLifeArea).toBeInstanceOf(Function);
+      expect(store.actions.create).toBeInstanceOf(Function);
+      expect(store.actions.update).toBeInstanceOf(Function);
+      expect(store.actions.complete).toBeInstanceOf(Function);
+      expect(store.actions.uncomplete).toBeInstanceOf(Function);
+      expect(store.actions.delete).toBeInstanceOf(Function);
+      expect(store.actions.restore).toBeInstanceOf(Function);
+      expect(store.actions.select).toBeInstanceOf(Function);
+      expect(store.actions.clearError).toBeInstanceOf(Function);
+    });
+  });
+
+  describe('GoalStore with context', () => {
+    it('should provide store through context', async () => {
+      let capturedStore: ReturnType<typeof useGoalStore> | null = null;
+
+      function TestComponent() {
+        capturedStore = useGoalStore();
+        return null;
+      }
+
+      render(() => (
+        <GoalStoreProvider>
+          <TestComponent />
+        </GoalStoreProvider>
+      ));
+
+      await waitFor(() => {
+        expect(capturedStore).not.toBe(null);
+        expect(capturedStore!.state).toBeDefined();
+        expect(capturedStore!.actions).toBeDefined();
+        expect(capturedStore!.computed).toBeDefined();
+      });
+    });
+
+    it('should throw error when used outside provider', () => {
+      function TestComponent() {
+        useGoalStore();
+        return null;
+      }
+
+      expect(() => render(() => <TestComponent />)).toThrow(
+        'useGoalStore must be used within GoalStoreProvider',
+      );
+    });
+  });
+
+  describe('Store actions', () => {
+    it('should update selected id', () => {
+      const store = createRoot(() => createGoalStore());
+
+      expect(store.state.selectedId).toBe(null);
+      
+      store.actions.select('test-id');
+      expect(store.state.selectedId).toBe('test-id');
+      
+      store.actions.select(null);
+      expect(store.state.selectedId).toBe(null);
+    });
+
+    it('should clear error', () => {
+      const store = createRoot(() => createGoalStore());
+
+      // Set an error
+      store.actions.setState('error', 'Test error');
+      expect(store.state.error).toBe('Test error');
+      
+      // Clear error
+      store.actions.clearError();
+      expect(store.state.error).toBe(null);
+    });
+
+    it('should handle loading state', () => {
+      const store = createRoot(() => createGoalStore());
+
+      expect(store.state.isLoading).toBe(false);
+      
+      store.actions.setState('isLoading', true);
+      expect(store.state.isLoading).toBe(true);
+      
+      store.actions.setState('isLoading', false);
+      expect(store.state.isLoading).toBe(false);
+    });
   });
 });

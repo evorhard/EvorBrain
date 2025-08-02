@@ -271,8 +271,8 @@ P2.1.T.1 implementation:**
   - [x] Create API abstraction layer with test doubles 🟡
   - [ ] Resolve "computations created outside createRoot" warnings 🟢
   - [ ] Fix module mocking limitations with vi.mock 🟡
-  - [ ] Update TauriMock for better isolation 🟡
-  - [ ] Create store providers that can be mocked for tests 🟡
+  - [x] Update TauriMock for better isolation 🟡
+  - [x] Create store providers that can be mocked for tests 🟡
   - [ ] Ensure all tests pass in CI 🟡
 
 ### [P2.2] Hierarchical Navigation
@@ -676,6 +676,16 @@ _Last updated: 2025-08-02_
   - `TauriApiClient` for production use
   - `TestApiClient` for unit testing
   - 14 passing tests for lifeAreaStore factory
+- ✅ Created context-based stores for all entities (P2.1.T.8.6)
+  - LifeAreaStoreContext, GoalStoreContext, ProjectStoreContext, TaskStoreContext
+  - Backward compatibility with singleton stores
+  - Context providers for better testability
+- ✅ Enhanced TauriMock with better isolation (P2.1.T.8.5)
+  - Command tracking and call counts
+  - State management with StatefulTauriMock
+  - Debug logging support
+  - Global installation helpers
+  - 16 passing tests for TauriMock functionality
 
 ### Technical Debt
 
