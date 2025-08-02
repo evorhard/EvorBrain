@@ -201,7 +201,9 @@ This ensures stability without delaying the MVP. Full test coverage can be added
 
 ### [P2.1.T] Tests for Data Models & CRUD
 
-**⚠️ IMPORTANT: Many tests in this section are blocked by architectural issues discovered during P2.1.T.1 implementation:**
+**⚠️ IMPORTANT: Many tests in this section are blocked by architectural issues discovered during
+P2.1.T.1 implementation:**
+
 - Store modules auto-initialize and call Tauri APIs on import
 - Components that import stores cannot be tested in isolation
 - Module mocking with vi.mock has hoisting limitations
@@ -210,31 +212,33 @@ This ensures stability without delaying the MVP. Full test coverage can be added
 **⚠️ Tests marked with warning emoji require P2.1.T.8 to be resolved first**
 
 **Alternative Testing Strategies While Blocked:**
+
 1. Focus on UI-only component tests (P2.1.T.9)
 2. Use E2E tests with Playwright for integration testing
 3. Test pure utility functions and business logic
 4. Create isolated test components that don't depend on stores
 
-- [ ] 📋 [P2.1.T.1] Write unit tests for Life Area components 🟡 *(Partially Complete)*
+- [ ] 📋 [P2.1.T.1] Write unit tests for Life Area components 🟡 _(Partially Complete)_
   - [x] Test validation and error handling (14 tests in LifeAreaValidation.test.tsx)
   - [x] Test create/edit operations (10 tests in LifeAreaForm.test.tsx)
   - [x] Test UI components without store dependencies (10 tests in LifeAreaUI.test.tsx)
   - [ ] Test LifeAreaList component interactions (blocked by store initialization issues)
   - [ ] Test store actions and delete operations (blocked by module mocking issues)
-- [ ] 📋 [P2.1.T.2] Write unit tests for Goal components 🟡 *(Blocked by same issues as P2.1.T.1)*
+- [ ] 📋 [P2.1.T.2] Write unit tests for Goal components 🟡 _(Blocked by same issues as P2.1.T.1)_
   - [ ] Test GoalList component interactions ⚠️ (blocked by store initialization)
   - [ ] Test GoalForm component ⚠️ (blocked if using goalStore)
   - [ ] Test GoalsPage component ⚠️ (blocked by store dependencies)
   - [ ] Fix failing tests and add missing coverage ⚠️
   - [ ] **Feasible Now**: Create UI-only Goal tests without store dependencies
-- [ ] 📋 [P2.1.T.3] Write unit tests for Project components 🟡 *(Blocked by same issues as P2.1.T.1)*
+- [ ] 📋 [P2.1.T.3] Write unit tests for Project components 🟡 _(Blocked by same issues as
+      P2.1.T.1)_
   - [ ] Test ProjectList component ⚠️ (blocked by store initialization)
   - [ ] Test ProjectForm component ⚠️ (blocked if using projectStore)
   - [ ] Test ProjectsPage component ⚠️ (blocked by store dependencies)
   - [ ] Test project status transitions ⚠️ (blocked by API calls)
   - [ ] **Feasible Now**: Create UI-only Project tests without store dependencies
   - [ ] **Feasible Now**: Test project status enum values and transitions logic
-- [ ] 📋 [P2.1.T.4] Write unit tests for Task components 🟡 *(Blocked by same issues as P2.1.T.1)*
+- [ ] 📋 [P2.1.T.4] Write unit tests for Task components 🟡 _(Blocked by same issues as P2.1.T.1)_
   - [ ] Test TaskList component ⚠️ (blocked by store initialization)
   - [ ] Test TaskForm component ⚠️ (blocked if using taskStore)
   - [ ] Test TaskDetail component ⚠️ (blocked by store dependencies)
@@ -243,25 +247,26 @@ This ensures stability without delaying the MVP. Full test coverage can be added
   - [ ] **Feasible Now**: Create UI-only Task tests without store dependencies
   - [ ] **Feasible Now**: Test priority selector component in isolation
   - [ ] **Feasible Now**: Test date formatting and validation utilities
-- [ ] 📋 [P2.1.T.5] Write unit tests for Note components 🟡 *(Blocked by same issues as P2.1.T.1)*
+- [ ] 📋 [P2.1.T.5] Write unit tests for Note components 🟡 _(Blocked by same issues as P2.1.T.1)_
   - [ ] Test note CRUD operations ⚠️ (blocked by API calls)
   - [ ] Test note associations with other entities ⚠️ (blocked by store dependencies)
   - [ ] **Feasible Now**: Create UI-only Note editor tests
   - [ ] **Feasible Now**: Test markdown rendering in isolation
-- [ ] 📋 [P2.1.T.6] Write integration tests for stores 🔴 *(Completely blocked until P2.1.T.8 is resolved)*
+- [ ] 📋 [P2.1.T.6] Write integration tests for stores 🔴 _(Completely blocked until P2.1.T.8 is
+      resolved)_
   - [ ] Test lifeAreaStore ⚠️ (blocked by auto-initialization)
   - [ ] Test goalStore ⚠️ (blocked by auto-initialization)
   - [ ] Test projectStore ⚠️ (blocked by auto-initialization)
   - [ ] Test taskStore ⚠️ (blocked by auto-initialization)
   - [ ] Test noteStore ⚠️ (blocked by auto-initialization)
   - [ ] **Alternative**: Consider E2E tests with Playwright instead
-- [ ] 📋 [P2.1.T.7] Write unit tests for archiving functionality 🟡 *(Partially blocked)*
+- [ ] 📋 [P2.1.T.7] Write unit tests for archiving functionality 🟡 _(Partially blocked)_
   - [ ] Test cascading archive operations ⚠️ (blocked by API calls)
   - [ ] Test restore operations ⚠️ (blocked by API calls)
   - [ ] Test UI state updates after archive/restore ⚠️ (blocked by store dependencies)
   - [ ] **Feasible Now**: Test archive/restore UI buttons and confirmation dialogs
   - [ ] **Feasible Now**: Test archived item visual indicators (opacity, badges)
-- [ ] 📋 [P2.1.T.8] Fix test infrastructure issues 🔴 *(Required before blocked tests can proceed)*
+- [ ] 📋 [P2.1.T.8] Fix test infrastructure issues 🔴 _(Required before blocked tests can proceed)_
   - [ ] Refactor stores to use lazy initialization or dependency injection
   - [ ] Create API abstraction layer with test doubles
   - [ ] Resolve "computations created outside createRoot" warnings
@@ -270,16 +275,7 @@ This ensures stability without delaying the MVP. Full test coverage can be added
   - [ ] Create store providers that can be mocked for tests
   - [ ] Ensure all tests pass in CI
 
-### [P2.2] Hierarchical Navigation
-
-- [ ] 📋 [P2.2.1] Build tree view component 🔴
-- [ ] 📋 [P2.2.2] Implement expand/collapse functionality 🟡
-- [ ] 📋 [P2.2.3] Add drag-and-drop reordering 🔴
-- [ ] 📋 [P2.2.4] Create breadcrumb navigation 🟡
-- [ ] 📋 [P2.2.5] Implement context menus 🟡
-- [ ] 📋 [P2.2.6] Add keyboard navigation 🟡
-
-### [P2.1.T.9] UI-Only Component Tests *(Can be done now without blocking issues)*
+### [P2.1.T.9] UI-Only Component Tests _(Can be done now without blocking issues)_
 
 - [ ] 📋 [P2.1.T.9.1] Create isolated UI component tests 🟢
   - [ ] Extract and test form components without store dependencies
@@ -302,6 +298,15 @@ This ensures stability without delaying the MVP. Full test coverage can be added
   - [ ] Test Alert component
   - [ ] Test EmptyState component
   - [ ] Test any other UI-only components
+
+### [P2.2] Hierarchical Navigation
+
+- [ ] 📋 [P2.2.1] Build tree view component 🔴
+- [ ] 📋 [P2.2.2] Implement expand/collapse functionality 🟡
+- [ ] 📋 [P2.2.3] Add drag-and-drop reordering 🔴
+- [ ] 📋 [P2.2.4] Create breadcrumb navigation 🟡
+- [ ] 📋 [P2.2.5] Implement context menus 🟡
+- [ ] 📋 [P2.2.6] Add keyboard navigation 🟡
 
 ### [P2.2.T] Tests for Hierarchical Navigation
 
@@ -693,7 +698,9 @@ _Last updated: 2025-08-02_
 ### Technical Debt
 
 #### Testing Infrastructure Issues
-During the implementation of unit tests for Life Area components, we encountered significant challenges with testing components and stores that depend on Tauri APIs:
+
+During the implementation of unit tests for Life Area components, we encountered significant
+challenges with testing components and stores that depend on Tauri APIs:
 
 1. **Store Auto-initialization Problem**
    - The lifeAreaStore module initializes and calls Tauri APIs immediately upon import
@@ -712,11 +719,13 @@ During the implementation of unit tests for Life Area components, we encountered
    - **Suggested Fix**: Use dependency injection or context providers for stores
 
 #### Workarounds Implemented
+
 - Created UI-only test components that don't depend on stores
 - Successfully tested forms, validation, and pure UI logic (34 tests passing)
 - Deferred store and integration tests until architecture improvements are made
 
 #### Recommended Actions
+
 1. Consider using E2E tests with Playwright for integration testing
 2. Refactor store initialization to be more test-friendly
 3. Create an API abstraction layer that can be easily mocked
