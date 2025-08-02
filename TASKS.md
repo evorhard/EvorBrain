@@ -5,6 +5,82 @@
 This document tracks all development tasks for the EvorBrain project. Tasks are organized by
 development phase with difficulty ratings and current status.
 
+## 🎯 Minimum Viable Product (MVP)
+
+The MVP represents the minimum functionality needed for EvorBrain to be operational and useful.
+These are the core features required before the first release:
+
+### MVP Requirements
+
+1. **Hierarchical Structure**
+   - Life Areas → Goals → Projects → Tasks (with optional subtasks)
+   - Tasks can exist independently (e.g., "chores" with subtasks like "take out trash", "do dishes")
+   - Projects can link to goals and life areas (e.g., "Build SaaS app" → "Make $4000/month online" →
+     "Career")
+   - Flexible linking - not all items need to be connected
+
+2. **Overview/Homepage**
+   - Quick glance dashboard showing:
+     - Tasks due today and upcoming
+     - Active projects with progress indicators
+     - Recent activity
+   - Clean, intuitive interface for daily use
+
+3. **Priority System**
+   - Priority levels for all entities (Life Areas, Goals, Projects, Tasks)
+   - Visual indicators for priority (colors, icons, or badges)
+   - Ability to sort/filter by priority
+
+4. **Calendar View**
+   - Month/Week/Day views
+   - Tasks displayed on calendar (even without specific times)
+   - Easy filtering and sorting options (by priority, project, etc.)
+   - Quick task creation from calendar
+
+5. **Local File Storage**
+   - All data stored locally in Obsidian-like manner
+   - Human-readable markdown files
+   - Attachments and media support
+   - No cloud dependency
+
+6. **Windows Support**
+   - Full compatibility with Windows 10/11
+   - Native performance
+   - Proper file system integration
+
+7. **Automatic Git Backups**
+   - Auto-commit changes to local git repository
+   - Push to remote repository (GitHub/GitLab)
+   - Conflict resolution for multi-device sync
+   - Backup scheduling options
+
+### MVP Task Mapping
+
+Based on our current task structure, here are the phases/tasks that MUST be completed for MVP:
+
+- **Phase 1**: ✅ Complete (Foundation)
+- **Phase 2**: Core Features
+  - [P2.1] Data Models & CRUD - 🔄 In Progress (must complete)
+  - [P2.2] Hierarchical Navigation - 📋 Required for MVP
+  - [P2.3] Dashboard/Homepage - 📋 Required for MVP
+  - [P2.4] Task Management UI - 📋 Required for MVP
+  - [P2.5] Calendar View - 📋 Required for MVP
+- **Phase 3**: Data Persistence
+  - [P3.1] File System Integration - 📋 Required for MVP
+  - [P3.2] Git Integration - 📋 Required for MVP
+
+**Not Required for MVP** (but nice to have):
+
+- Search functionality (P2.6)
+- Markdown integration (P2.7) - basic support only needed
+- Advanced backup options (P3.3)
+- Import/Export (P3.4)
+- Keyboard shortcuts (P4.1)
+- UI animations (P4.2)
+- Performance optimizations (P4.3)
+- AI features (P5.1)
+- Multi-platform support (P6.x)
+
 **Legend:**
 
 - ✅ Completed
@@ -379,7 +455,8 @@ development phase with difficulty ratings and current status.
 - **Test Utilities**: Comprehensive test helpers created (TauriMock, render helpers, data factories,
   custom matchers)
 - **Testing Setup**: Vitest + Playwright configured, though some environment issues need resolution
-- **Code Quality**: ESLint configured with TypeScript rules, reduced errors from 181 to 2 warnings only
+- **Code Quality**: ESLint configured with TypeScript rules, reduced errors from 181 to 2 warnings
+  only
 - **UI Components**: Added ConfirmDialog component to replace browser confirm/alert dialogs
 
 ### Technical Decisions

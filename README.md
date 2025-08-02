@@ -48,6 +48,24 @@ into a blazing-fast desktop application.**
 
 EvorBrain is currently in the initial development phase. Here's the development progress:
 
+### 🎯 Minimum Viable Product (MVP)
+
+The MVP will be considered complete and operational when the following core features are
+implemented:
+
+1. **✅ Hierarchical task management** - Organize your life with Life Areas → Goals → Projects →
+   Tasks
+2. **✅ Dashboard overview** - See what needs to be done at a glance
+3. **✅ Priority system** - Focus on what matters most
+4. **✅ Calendar view** - Visualize your tasks over time
+5. **✅ Local file storage** - Your data stays on your computer
+6. **✅ Windows support** - Native Windows 10/11 application
+7. **✅ Automatic Git backups** - Never lose your data
+
+**When will it be ready?** The app will be functional for daily use once Phase 2 (Core Features) and
+Phase 3.1-3.2 (File System & Git Integration) are complete. Check the
+[Development Checklist](#development-checklist) below for current progress.
+
 ### Development Checklist
 
 #### ✅ Completed
@@ -75,25 +93,33 @@ EvorBrain is currently in the initial development phase. Here's the development 
 - [x] Pre-commit hooks with Husky and lint-staged
 - [x] Code quality improvements (reduced ESLint errors from 181 to ~99)
 
-#### 🔄 In Progress
+#### 🔄 In Progress (MVP Focus)
 
-- [ ] Basic CRUD operations implementation
-- [ ] Frontend state management setup
+- [ ] Basic CRUD operations implementation (MVP)
+- [ ] Frontend state management setup (MVP)
 
-#### 📋 Pending
+#### 📋 Pending - MVP Requirements
+
+**Essential for MVP:**
+
+- [ ] Complete CRUD operations for all entities
+- [ ] Hierarchical navigation component
+- [ ] Dashboard/Homepage with task overview
+- [ ] Task management UI with priority system
+- [ ] Calendar view implementation
+- [ ] Local file storage (Obsidian-like structure)
+- [ ] Git integration for automatic backups
+
+**Post-MVP Features:**
 
 - [ ] Unit test coverage for existing components
-- [ ] Frontend routing and navigation
-- [ ] Life Area management implementation
-- [ ] Goal and Project hierarchies
-- [ ] Task management features
-- [ ] Git integration for backup/sync
-- [ ] Calendar view implementation
 - [ ] Search functionality
 - [ ] Keyboard shortcuts
-- [ ] Cross-platform testing
+- [ ] Markdown editor integration
+- [ ] Import/Export functionality
+- [ ] Cross-platform testing (macOS, Linux)
 - [ ] Performance optimization
-- [ ] Production build pipeline
+- [ ] AI-powered features
 
 **Development Status**: Major progress! The app now has a complete database layer with SQLite
 integration, migration system, and all data models implemented. The UI foundation is complete with
