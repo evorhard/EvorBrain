@@ -1,4 +1,5 @@
-import { Component, createSignal, onMount, Show } from 'solid-js';
+import type { Component } from 'solid-js';
+import { createSignal, onMount, Show } from 'solid-js';
 import { useTaskStore } from '../../../stores';
 import TaskList from './TaskList';
 import TaskForm from './TaskForm';
@@ -40,7 +41,7 @@ const TasksPage: Component = () => {
       description?: string;
       priority: 'urgent' | 'high' | 'medium' | 'low';
       due_date?: string;
-    }
+    },
   ) => {
     await actions.update(id, data);
     setEditingTask(null);
@@ -70,10 +71,7 @@ const TasksPage: Component = () => {
     <div class="container mx-auto px-4 py-8">
       <div class="mb-8 flex items-center justify-between">
         <Heading level={1}>Tasks</Heading>
-        <Button
-          onClick={() => setIsFormOpen(true)}
-          leftIcon={<Plus size={20} />}
-        >
+        <Button onClick={() => setIsFormOpen(true)} leftIcon={<Plus size={20} />}>
           New Task
         </Button>
       </div>
@@ -84,20 +82,23 @@ const TasksPage: Component = () => {
         </Alert>
       </Show>
 
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <div class="lg:col-span-2">
           <Card>
-            <Show when={store.isLoading} fallback={
-              <TaskList
-                tasks={store.items}
-                selectedId={store.selectedId}
-                onSelect={handleTaskSelect}
-                onComplete={handleTaskComplete}
-                onUncomplete={handleTaskUncomplete}
-                onEdit={(id) => setEditingTask(id)}
-                onDelete={handleTaskDelete}
-              />
-            }>
+            <Show
+              when={store.isLoading}
+              fallback={
+                <TaskList
+                  tasks={store.items}
+                  selectedId={store.selectedId}
+                  onSelect={handleTaskSelect}
+                  onComplete={handleTaskComplete}
+                  onUncomplete={handleTaskUncomplete}
+                  onEdit={(id) => setEditingTask(id)}
+                  onDelete={handleTaskDelete}
+                />
+              }
+            >
               <div class="flex justify-center p-8">
                 <LoadingSpinner size="lg" />
               </div>
@@ -108,11 +109,8 @@ const TasksPage: Component = () => {
         <div class="space-y-6">
           <Show when={isFormOpen()}>
             <Card>
-              <h2 class="text-lg font-semibold mb-4">Create Task</h2>
-              <TaskForm
-                onSubmit={handleTaskCreate}
-                onCancel={() => setIsFormOpen(false)}
-              />
+              <h2 class="mb-4 text-lg font-semibold">Create Task</h2>
+              <TaskForm onSubmit={handleTaskCreate} onCancel={() => setIsFormOpen(false)} />
             </Card>
           </Show>
 
@@ -122,7 +120,7 @@ const TasksPage: Component = () => {
               return (
                 <Show when={task}>
                   <Card>
-                    <h2 class="text-lg font-semibold mb-4">Edit Task</h2>
+                    <h2 class="mb-4 text-lg font-semibold">Edit Task</h2>
                     <TaskForm
                       task={task}
                       onSubmit={(data) => handleTaskUpdate(taskId(), data)}

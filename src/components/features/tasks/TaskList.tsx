@@ -1,10 +1,24 @@
-import { Component, For, Show, createMemo } from 'solid-js';
+import type { Component } from 'solid-js';
+import { For, Show, createMemo } from 'solid-js';
 import type { Task } from '../../../types/models';
-import { CheckCircle2, Circle, Calendar, AlertCircle, MoreVertical, Trash2, Edit } from 'lucide-solid';
+import {
+  CheckCircle2,
+  Circle,
+  Calendar,
+  AlertCircle,
+  MoreVertical,
+  Trash2,
+  Edit,
+} from 'lucide-solid';
 import { cn } from '../../../utils/cn';
 import { Badge } from '../../ui/Badge';
 import { Button } from '../../ui/Button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../../ui/DropdownMenu';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '../../ui/DropdownMenu';
 import { format, isPast, isToday } from 'date-fns';
 
 interface TaskListProps {
@@ -18,12 +32,12 @@ interface TaskListProps {
 }
 
 const TaskList: Component<TaskListProps> = (props) => {
-  const rootTasks = createMemo(() => 
-    props.tasks.filter(task => !task.parent_task_id && !task.archived_at)
+  const rootTasks = createMemo(() =>
+    props.tasks.filter((task) => !task.parent_task_id && !task.archived_at),
   );
 
   const getSubtasks = (parentId: string) =>
-    props.tasks.filter(task => task.parent_task_id === parentId && !task.archived_at);
+    props.tasks.filter((task) => task.parent_task_id === parentId && !task.archived_at);
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
@@ -52,16 +66,16 @@ const TaskList: Component<TaskListProps> = (props) => {
     const task = () => props.task;
     const level = () => props.level || 0;
     const subtasks = createMemo(() => getSubtasks(task().id));
-    const isOverdue = createMemo(() => 
-      task().due_date && !task().completed_at && isPast(new Date(task().due_date))
+    const isOverdue = createMemo(
+      () => task().due_date && !task().completed_at && isPast(new Date(task().due_date)),
     );
 
     return (
       <div class={cn('border-b last:border-b-0', level() > 0 && 'ml-8')}>
         <div
           class={cn(
-            'flex items-center gap-3 p-4 hover:bg-muted/50 cursor-pointer transition-colors',
-            props.selectedId === task().id && 'bg-muted'
+            'hover:bg-muted/50 flex cursor-pointer items-center gap-3 p-4 transition-colors',
+            props.selectedId === task().id && 'bg-muted',
           )}
           onClick={() => props.onSelect(task().id)}
         >
@@ -78,36 +92,33 @@ const TaskList: Component<TaskListProps> = (props) => {
           >
             <Show
               when={task().completed_at}
-              fallback={<Circle class="h-5 w-5 text-muted-foreground" />}
+              fallback={<Circle class="text-muted-foreground h-5 w-5" />}
             >
-              <CheckCircle2 class="h-5 w-5 text-primary" />
+              <CheckCircle2 class="text-primary h-5 w-5" />
             </Show>
           </button>
 
-          <div class="flex-1 min-w-0">
-            <p class={cn(
-              'font-medium',
-              task().completed_at && 'line-through text-muted-foreground'
-            )}>
+          <div class="min-w-0 flex-1">
+            <p
+              class={cn('font-medium', task().completed_at && 'text-muted-foreground line-through')}
+            >
               {task().title}
             </p>
             <Show when={task().description}>
-              <p class="text-sm text-muted-foreground truncate mt-1">
-                {task().description}
-              </p>
+              <p class="text-muted-foreground mt-1 truncate text-sm">{task().description}</p>
             </Show>
           </div>
 
           <div class="flex items-center gap-2">
-            <Badge variant={getPriorityColor(task().priority)}>
-              {task().priority}
-            </Badge>
+            <Badge variant={getPriorityColor(task().priority)}>{task().priority}</Badge>
 
             <Show when={task().due_date}>
-              <div class={cn(
-                'flex items-center gap-1 text-sm',
-                isOverdue() ? 'text-destructive' : 'text-muted-foreground'
-              )}>
+              <div
+                class={cn(
+                  'flex items-center gap-1 text-sm',
+                  isOverdue() ? 'text-destructive' : 'text-muted-foreground',
+                )}
+              >
                 <Show when={isOverdue()}>
                   <AlertCircle class="h-4 w-4" />
                 </Show>
@@ -121,9 +132,7 @@ const TaskList: Component<TaskListProps> = (props) => {
                 <MoreVertical class="h-4 w-4" />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem
-                  onSelect={() => props.onEdit(task().id)}
-                >
+                <DropdownMenuItem onSelect={() => props.onEdit(task().id)}>
                   <Edit class="mr-2 h-4 w-4" />
                   Edit
                 </DropdownMenuItem>
@@ -153,14 +162,12 @@ const TaskList: Component<TaskListProps> = (props) => {
       <Show
         when={rootTasks().length > 0}
         fallback={
-          <div class="p-8 text-center text-muted-foreground">
+          <div class="text-muted-foreground p-8 text-center">
             No tasks yet. Create your first task to get started.
           </div>
         }
       >
-        <For each={rootTasks()}>
-          {(task) => <TaskItem task={task} />}
-        </For>
+        <For each={rootTasks()}>{(task) => <TaskItem task={task} />}</For>
       </Show>
     </div>
   );

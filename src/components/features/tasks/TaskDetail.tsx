@@ -1,9 +1,18 @@
-import { Component, Show, createMemo } from 'solid-js';
+import type { Component } from 'solid-js';
+import { Show, createMemo } from 'solid-js';
 import type { Task } from '../../../types/models';
 import { Card } from '../../ui/Card';
 import { Badge } from '../../ui/Badge';
 import { Button } from '../../ui/Button';
-import { Edit, Trash2, CheckCircle2, Circle, Calendar, AlertCircle, FolderOpen } from 'lucide-solid';
+import {
+  Edit,
+  Trash2,
+  CheckCircle2,
+  Circle,
+  Calendar,
+  AlertCircle,
+  FolderOpen,
+} from 'lucide-solid';
 import { format, isPast, isToday } from 'date-fns';
 import { useProjectStore } from '../../../stores';
 import { cn } from '../../../utils/cn';
@@ -18,15 +27,13 @@ interface TaskDetailProps {
 
 const TaskDetail: Component<TaskDetailProps> = (props) => {
   const { store: projectStore } = useProjectStore();
-  
-  const project = createMemo(() => 
-    props.task.project_id 
-      ? projectStore.items.find(p => p.id === props.task.project_id)
-      : null
+
+  const project = createMemo(() =>
+    props.task.project_id ? projectStore.items.find((p) => p.id === props.task.project_id) : null,
   );
 
-  const isOverdue = createMemo(() => 
-    props.task.due_date && !props.task.completed_at && isPast(new Date(props.task.due_date))
+  const isOverdue = createMemo(
+    () => props.task.due_date && !props.task.completed_at && isPast(new Date(props.task.due_date)),
   );
 
   const formatDueDate = (date: string | null | undefined) => {
@@ -79,10 +86,12 @@ const TaskDetail: Component<TaskDetailProps> = (props) => {
 
         <div class="space-y-4">
           <div>
-            <h3 class={cn(
-              'text-lg font-medium',
-              props.task.completed_at && 'line-through text-muted-foreground'
-            )}>
+            <h3
+              class={cn(
+                'text-lg font-medium',
+                props.task.completed_at && 'text-muted-foreground line-through',
+              )}
+            >
               {props.task.title}
             </h3>
             <Show when={props.task.description}>
@@ -101,11 +110,7 @@ const TaskDetail: Component<TaskDetailProps> = (props) => {
                   props.onComplete();
                 }
               }}
-              leftIcon={
-                props.task.completed_at 
-                  ? <CheckCircle2 size={16} />
-                  : <Circle size={16} />
-              }
+              leftIcon={props.task.completed_at ? <CheckCircle2 size={16} /> : <Circle size={16} />}
             >
               {props.task.completed_at ? 'Mark as Incomplete' : 'Mark as Complete'}
             </Button>
@@ -114,18 +119,18 @@ const TaskDetail: Component<TaskDetailProps> = (props) => {
           <div class="space-y-3">
             <div class="flex items-center gap-2">
               <span class="text-sm font-medium">Priority:</span>
-              <Badge variant={getPriorityColor(props.task.priority)}>
-                {props.task.priority}
-              </Badge>
+              <Badge variant={getPriorityColor(props.task.priority)}>{props.task.priority}</Badge>
             </div>
 
             <Show when={props.task.due_date}>
               <div class="flex items-center gap-2">
                 <span class="text-sm font-medium">Due Date:</span>
-                <div class={cn(
-                  'flex items-center gap-1 text-sm',
-                  isOverdue() ? 'text-destructive' : 'text-muted-foreground'
-                )}>
+                <div
+                  class={cn(
+                    'flex items-center gap-1 text-sm',
+                    isOverdue() ? 'text-destructive' : 'text-muted-foreground',
+                  )}
+                >
                   <Show when={isOverdue()}>
                     <AlertCircle class="h-4 w-4" />
                   </Show>
@@ -138,7 +143,7 @@ const TaskDetail: Component<TaskDetailProps> = (props) => {
             <Show when={project()}>
               <div class="flex items-center gap-2">
                 <span class="text-sm font-medium">Project:</span>
-                <div class="flex items-center gap-1 text-sm text-muted-foreground">
+                <div class="text-muted-foreground flex items-center gap-1 text-sm">
                   <FolderOpen class="h-4 w-4" />
                   <span>{project()!.title}</span>
                 </div>
@@ -148,7 +153,7 @@ const TaskDetail: Component<TaskDetailProps> = (props) => {
             <Show when={props.task.completed_at}>
               <div class="flex items-center gap-2">
                 <span class="text-sm font-medium">Completed:</span>
-                <span class="text-sm text-muted-foreground">
+                <span class="text-muted-foreground text-sm">
                   {format(new Date(props.task.completed_at), 'MMMM d, yyyy')}
                 </span>
               </div>
@@ -156,7 +161,7 @@ const TaskDetail: Component<TaskDetailProps> = (props) => {
 
             <div class="flex items-center gap-2">
               <span class="text-sm font-medium">Created:</span>
-              <span class="text-sm text-muted-foreground">
+              <span class="text-muted-foreground text-sm">
                 {format(new Date(props.task.created_at), 'MMMM d, yyyy')}
               </span>
             </div>
@@ -164,7 +169,7 @@ const TaskDetail: Component<TaskDetailProps> = (props) => {
             <Show when={props.task.updated_at !== props.task.created_at}>
               <div class="flex items-center gap-2">
                 <span class="text-sm font-medium">Updated:</span>
-                <span class="text-sm text-muted-foreground">
+                <span class="text-muted-foreground text-sm">
                   {format(new Date(props.task.updated_at), 'MMMM d, yyyy')}
                 </span>
               </div>

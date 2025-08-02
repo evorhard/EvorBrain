@@ -128,9 +128,10 @@ export const taskActions = {
       const todaysTasks = await api.task.getTodaysTasks();
       setState('todaysTasks', todaysTasks);
     } catch (error) {
-      const message = error instanceof EvorBrainError ? error.message : 'Failed to fetch today\'s tasks';
+      const message =
+        error instanceof EvorBrainError ? error.message : "Failed to fetch today's tasks";
       setState('error', message);
-      console.error('Failed to fetch today\'s tasks:', error);
+      console.error("Failed to fetch today's tasks:", error);
     } finally {
       setState('isLoading', false);
     }
@@ -189,7 +190,8 @@ export const taskActions = {
       await taskActions.fetchAll();
       return created;
     } catch (error) {
-      const message = error instanceof EvorBrainError ? error.message : 'Failed to create task with subtasks';
+      const message =
+        error instanceof EvorBrainError ? error.message : 'Failed to create task with subtasks';
       setState('error', message);
       throw error;
     } finally {

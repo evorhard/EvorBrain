@@ -1,4 +1,5 @@
-import { Component, Show, createSignal, onMount } from 'solid-js';
+import type { Component } from 'solid-js';
+import { Show, createSignal, onMount, For } from 'solid-js';
 import type { Task, TaskPriority } from '../../../types/models';
 import { Button } from '../../ui/Button';
 import { Input } from '../../ui/Input';
@@ -29,7 +30,7 @@ const TaskForm: Component<TaskFormProps> = (props) => {
   const [projectId, setProjectId] = createSignal(props.task?.project_id || props.projectId || '');
   const [priority, setPriority] = createSignal<TaskPriority>(props.task?.priority || 'medium');
   const [dueDate, setDueDate] = createSignal(
-    props.task?.due_date ? format(new Date(props.task.due_date), 'yyyy-MM-dd') : ''
+    props.task?.due_date ? format(new Date(props.task.due_date), 'yyyy-MM-dd') : '',
   );
 
   onMount(async () => {
@@ -41,7 +42,7 @@ const TaskForm: Component<TaskFormProps> = (props) => {
   const handleSubmit = (e: Event) => {
     e.preventDefault();
     const titleValue = title().trim();
-    
+
     if (!titleValue) return;
 
     props.onSubmit({
@@ -54,13 +55,13 @@ const TaskForm: Component<TaskFormProps> = (props) => {
     });
   };
 
-  const activeProjects = () => 
-    projectStore.items.filter(p => !p.archived_at && p.status !== 'completed');
+  const activeProjects = () =>
+    projectStore.items.filter((p) => !p.archived_at && p.status !== 'completed');
 
   return (
     <form onSubmit={handleSubmit} class="space-y-4">
       <div>
-        <label for="title" class="block text-sm font-medium mb-1">
+        <label for="title" class="mb-1 block text-sm font-medium">
           Title
         </label>
         <Input
@@ -73,7 +74,7 @@ const TaskForm: Component<TaskFormProps> = (props) => {
       </div>
 
       <div>
-        <label for="description" class="block text-sm font-medium mb-1">
+        <label for="description" class="mb-1 block text-sm font-medium">
           Description
         </label>
         <Textarea
@@ -87,34 +88,28 @@ const TaskForm: Component<TaskFormProps> = (props) => {
 
       <Show when={!props.parentTaskId}>
         <div>
-          <label for="project" class="block text-sm font-medium mb-1">
+          <label for="project" class="mb-1 block text-sm font-medium">
             Project
           </label>
-          <Select
-            value={projectId()}
-            onChange={setProjectId}
-          >
+          <Select value={projectId()} onChange={setProjectId}>
             <SelectTrigger id="project">
               <SelectValue placeholder="Select a project (optional)" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="">No project</SelectItem>
-              {activeProjects().map((project) => (
-                <SelectItem value={project.id}>{project.title}</SelectItem>
-              ))}
+              <For each={activeProjects()}>
+                {(project) => <SelectItem value={project.id}>{project.title}</SelectItem>}
+              </For>
             </SelectContent>
           </Select>
         </div>
       </Show>
 
       <div>
-        <label for="priority" class="block text-sm font-medium mb-1">
+        <label for="priority" class="mb-1 block text-sm font-medium">
           Priority
         </label>
-        <Select
-          value={priority()}
-          onChange={(value) => setPriority(value as TaskPriority)}
-        >
+        <Select value={priority()} onChange={(value) => setPriority(value as TaskPriority)}>
           <SelectTrigger id="priority">
             <SelectValue placeholder="Select priority" />
           </SelectTrigger>
@@ -128,7 +123,7 @@ const TaskForm: Component<TaskFormProps> = (props) => {
       </div>
 
       <div>
-        <label for="dueDate" class="block text-sm font-medium mb-1">
+        <label for="dueDate" class="mb-1 block text-sm font-medium">
           Due Date
         </label>
         <Input
