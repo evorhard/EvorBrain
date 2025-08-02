@@ -179,27 +179,29 @@ export const createCrudMocks = () => {
 
 /**
  * Mock successful Tauri responses
+ * @deprecated Use TauriMock class instead
  */
-export const mockTauriSuccess = <T>(command: string, response: T) => {
-  const mockInvoke = vi.fn().mockResolvedValueOnce(response);
-  vi.mock('@tauri-apps/api/core', () => ({
-    invoke: mockInvoke,
-  }));
-  return mockInvoke;
-};
+// export const mockTauriSuccess = <T>(command: string, response: T) => {
+//   const mockInvoke = vi.fn().mockResolvedValueOnce(response);
+//   vi.mock('@tauri-apps/api/core', () => ({
+//     invoke: mockInvoke,
+//   }));
+//   return mockInvoke;
+// };
 
 /**
  * Mock Tauri errors
+ * @deprecated Use TauriMock class instead
  */
-export const mockTauriError = (command: string, error: string | Error) => {
-  const mockInvoke = vi
-    .fn()
-    .mockRejectedValueOnce(typeof error === 'string' ? new Error(error) : error);
-  vi.mock('@tauri-apps/api/core', () => ({
-    invoke: mockInvoke,
-  }));
-  return mockInvoke;
-};
+// export const mockTauriError = (command: string, error: string | Error) => {
+//   const mockInvoke = vi
+//     .fn()
+//     .mockRejectedValueOnce(typeof error === 'string' ? new Error(error) : error);
+//   vi.mock('@tauri-apps/api/core', () => ({
+//     invoke: mockInvoke,
+//   }));
+//   return mockInvoke;
+// };
 
 /**
  * Create a mock that simulates loading states

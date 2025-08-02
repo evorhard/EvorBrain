@@ -200,10 +200,12 @@ This ensures stability without delaying the MVP. Full test coverage can be added
 
 ### [P2.1.T] Tests for Data Models & CRUD
 
-- [ ] 📋 [P2.1.T.1] Write unit tests for Life Area components 🟡
-  - [ ] Test LifeAreaList component interactions
-  - [ ] Test create/edit/delete operations
-  - [ ] Test validation and error handling
+- [ ] 📋 [P2.1.T.1] Write unit tests for Life Area components 🟡 *(Partially Complete)*
+  - [x] Test validation and error handling (14 tests in LifeAreaValidation.test.tsx)
+  - [x] Test create/edit operations (10 tests in LifeAreaForm.test.tsx)
+  - [x] Test UI components without store dependencies (10 tests in LifeAreaUI.test.tsx)
+  - [ ] Test LifeAreaList component interactions (blocked by store initialization issues)
+  - [ ] Test store actions and delete operations (blocked by module mocking issues)
 - [ ] 📋 [P2.1.T.2] Write unit tests for Goal components 🟡
   - [ ] Test GoalList component (partially done)
   - [ ] Test GoalForm component (partially done)
@@ -633,3 +635,36 @@ _Last updated: 2025-08-02_
 - ✅ Resolved SolidJS reactivity warnings
 - ✅ Applied Prettier formatting to entire codebase
 - ✅ Updated project documentation to reflect improvements
+- ✅ Created 34 passing unit tests for Life Area components (UI, Form, Validation)
+
+### Technical Debt
+
+#### Testing Infrastructure Issues
+During the implementation of unit tests for Life Area components, we encountered significant challenges with testing components and stores that depend on Tauri APIs:
+
+1. **Store Auto-initialization Problem**
+   - The lifeAreaStore module initializes and calls Tauri APIs immediately upon import
+   - This makes it impossible to mock the Tauri API before the store is created
+   - Affects: `LifeAreaList.test.tsx`, `lifeAreaStore.test.ts`
+   - **Suggested Fix**: Refactor stores to use lazy initialization or dependency injection
+
+2. **Module Mocking Limitations**
+   - Vitest's `vi.mock` hoisting conflicts with how our API client is structured
+   - The API module checks for Tauri at runtime, but mocks can't be set up early enough
+   - **Suggested Fix**: Create a proper API abstraction layer with test doubles
+
+3. **Component-Store Coupling**
+   - Components that directly import stores inherit the initialization problems
+   - Makes it difficult to test components in isolation
+   - **Suggested Fix**: Use dependency injection or context providers for stores
+
+#### Workarounds Implemented
+- Created UI-only test components that don't depend on stores
+- Successfully tested forms, validation, and pure UI logic (34 tests passing)
+- Deferred store and integration tests until architecture improvements are made
+
+#### Recommended Actions
+1. Consider using E2E tests with Playwright for integration testing
+2. Refactor store initialization to be more test-friendly
+3. Create an API abstraction layer that can be easily mocked
+4. Implement proper dependency injection for better testability
