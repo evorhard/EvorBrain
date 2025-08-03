@@ -16,9 +16,9 @@ rm -rf src-tauri/target
 
 # Remove lock files if requested
 if [ "$1" == "--all" ]; then
-    echo "🔒 Removing lock files..."
+    echo "🔒 Removing bun.lockb..."
     rm -f bun.lockb
-    rm -f src-tauri/Cargo.lock
+    # Note: Cargo.lock is NOT removed as it should be committed for application projects
 fi
 
 echo "✅ Project cleaned!"
