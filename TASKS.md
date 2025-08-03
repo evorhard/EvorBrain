@@ -255,26 +255,20 @@ This ensures stability without delaying the MVP. Full test coverage can be added
   - [x] Test priority selector component in isolation (tested in TaskForm)
   - [x] Test date formatting and validation utilities (tested in TaskList and TaskDetail)
   - [x] Use createTaskStoreFactory pattern (26 tests in taskStore.factory.test.ts)
-- [ ] 📋 [P2.1.T.5] Write unit tests for Note components 🟡
-  - [ ] Test note CRUD operations (use TestApiClient)
-  - [ ] Test note associations with other entities (use factory pattern approach)
-  - [ ] **Recommended**: Create UI-only Note editor tests
-  - [ ] **Recommended**: Test markdown rendering in isolation
-  - [ ] **Recommended**: Use createNoteStoreFactory pattern like Life Areas
-- [ ] 📋 [P2.1.T.6] Write integration tests for stores 🟡
+- [ ] 📋 [P2.1.T.5] Write integration tests for stores 🟡
   - [ ] Test lifeAreaStore (use factory pattern demonstrated in P2.1.T.1)
   - [ ] Test goalStore (use createGoalStoreFactory)
   - [ ] Test projectStore (use createProjectStoreFactory)
   - [ ] Test taskStore (use createTaskStoreFactory)
   - [ ] Test noteStore (use createNoteStoreFactory)
   - [ ] **Alternative**: Consider E2E tests with Playwright instead
-- [ ] 📋 [P2.1.T.7] Write unit tests for archiving functionality 🟡
+- [ ] 📋 [P2.1.T.6] Write unit tests for archiving functionality 🟡
   - [ ] Test cascading archive operations (use TestApiClient)
   - [ ] Test restore operations (use TestApiClient)
   - [ ] Test UI state updates after archive/restore (use factory pattern)
   - [ ] **Recommended**: Test archive/restore UI buttons and confirmation dialogs
   - [ ] **Recommended**: Test archived item visual indicators (opacity, badges)
-- [x] ✅ [P2.1.T.8] Fix test infrastructure issues ⚠️ COMPLETED
+- [x] ✅ [P2.1.T.7] Fix test infrastructure issues ⚠️ COMPLETED
   - [x] Refactor stores to use lazy initialization or dependency injection 🟡
   - [x] Create API abstraction layer with test doubles 🟡
   - [x] Resolve "computations created outside createRoot" warnings 🟢
@@ -374,6 +368,56 @@ This ensures stability without delaying the MVP. Full test coverage can be added
   - [ ] Identify slowest operations
   - [ ] Optimize critical path
   - [ ] Consider parallel initialization where possible
+
+### [P2.9] Note-Taking System
+
+- [ ] 📋 [P2.9.1] Implement Note CRUD operations 🟡
+  - [ ] Backend Tauri commands for notes
+  - [ ] Note database schema and migrations
+  - [ ] Repository methods for note operations
+- [ ] 📋 [P2.9.2] Create Note UI components 🟡
+  - [ ] NoteList component with filtering by entity
+  - [ ] NoteForm component for creating/editing notes
+  - [ ] NotesPage component for standalone notes view
+  - [ ] Note preview component with markdown rendering
+- [ ] 📋 [P2.9.3] Implement Note associations 🟡
+  - [ ] Link notes to tasks
+  - [ ] Link notes to projects
+  - [ ] Link notes to goals
+  - [ ] Link notes to life areas
+  - [ ] Support for standalone notes
+- [ ] 📋 [P2.9.4] Add Note search functionality 🟡
+  - [ ] Full-text search in note content
+  - [ ] Filter by associated entity
+  - [ ] Filter by creation/update date
+- [ ] 📋 [P2.9.5] Integrate Notes into existing views 🟡
+  - [ ] Add notes section to task detail view
+  - [ ] Add notes section to project detail view
+  - [ ] Add notes counter badges
+  - [ ] Quick note creation from any entity
+- [ ] 📋 [P2.9.6] Add rich text features 🔴
+  - [ ] Markdown editor with live preview
+  - [ ] Support for code blocks with syntax highlighting
+  - [ ] Image embedding and attachments
+  - [ ] Link references to other entities
+
+### [P2.9.T] Tests for Note-Taking System
+
+- [ ] 📋 [P2.9.T.1] Write unit tests for Note backend 🟡
+  - [ ] Test Note CRUD operations
+  - [ ] Test Note associations
+  - [ ] Test cascading deletes
+  - [ ] Test search functionality
+- [ ] 📋 [P2.9.T.2] Write unit tests for Note components 🟡
+  - [ ] Test NoteList component (use factory pattern)
+  - [ ] Test NoteForm component
+  - [ ] Test NotesPage component
+  - [ ] Test note preview rendering
+- [ ] 📋 [P2.9.T.3] Write integration tests for Notes 🟡
+  - [ ] Test note creation from different entities
+  - [ ] Test note filtering and search
+  - [ ] Test note archiving/restoration
+  - [ ] Test markdown rendering
 
 ---
 
