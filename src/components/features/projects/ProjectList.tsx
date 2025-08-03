@@ -163,12 +163,14 @@ export function ProjectList(props: ProjectListProps) {
                     <DropdownMenu.Trigger asChild>
                       {(triggerProps) => (
                         <Button
-                          {...triggerProps}
+                          {...(triggerProps || {})}
                           variant="ghost"
                           size="sm"
                           onClick={(e) => {
                             e.stopPropagation();
-                            triggerProps.onClick(e);
+                            if (triggerProps && typeof triggerProps.onClick === 'function') {
+                              triggerProps.onClick(e);
+                            }
                           }}
                         >
                           <svg

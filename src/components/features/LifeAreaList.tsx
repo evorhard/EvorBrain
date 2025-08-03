@@ -1,8 +1,7 @@
-import { For, Show, onMount, createSignal } from 'solid-js';
+import { For, Show, onMount } from 'solid-js';
 import { useLifeAreaStore } from '../../stores';
 import { Button } from '../ui/Button';
 import { DropdownMenu } from '../ui/DropdownMenu';
-import { createConfirmDialog } from '../ui/ConfirmDialog';
 import type { LifeArea } from '../../types/models';
 
 interface LifeAreaListProps {
@@ -11,46 +10,23 @@ interface LifeAreaListProps {
 
 export function LifeAreaList(props: LifeAreaListProps) {
   const { store, actions } = useLifeAreaStore();
-  const [areaToDelete, setAreaToDelete] = createSignal<LifeArea | null>(null);
 
   onMount(() => {
     // Fetch life areas when component mounts
     actions.fetchAll();
   });
 
-  const handleDelete = async () => {
-    const area = areaToDelete();
+  const handleDelete = async (area: LifeArea) => {
     if (area) {
       try {
         await actions.delete(area.id);
-        setAreaToDelete(null);
       } catch (error) {
         console.error('Failed to delete life area:', error);
       }
     }
   };
 
-  const [DeleteConfirmDialog, deleteConfirmHandle] = createConfirmDialog({
-    title: 'Delete Life Area',
-    description: () => {
-      const area = areaToDelete();
-      return area
-        ? `Are you sure you want to delete "${area.name}"? This will also archive all associated goals, projects, and tasks.`
-        : '';
-    },
-    confirmText: 'Delete',
-    variant: 'danger',
-    onConfirm: handleDelete,
-    onCancel: () => setAreaToDelete(null),
-  });
-
-  const handleRestore = async (area: LifeArea) => {
-    try {
-      await actions.restore(area.id);
-    } catch (error) {
-      console.error('Failed to restore life area:', error);
-    }
-  };
+  // Restore functionality removed for MVP - only permanent deletion
 
   return (
     <div class="space-y-4">
@@ -90,7 +66,6 @@ export function LifeAreaList(props: LifeAreaListProps) {
                 classList={{
                   'ring-2 ring-primary': store.selectedId === area.id,
                   'hover:shadow-card-hover': store.selectedId !== area.id,
-                  'opacity-60': Boolean(area.archived_at),
                 }}
                 onClick={() => actions.select(area.id)}
               >
@@ -106,23 +81,20 @@ export function LifeAreaList(props: LifeAreaListProps) {
                       {area.description && (
                         <p class="text-content-secondary mt-1 text-sm">{area.description}</p>
                       )}
-                      <Show when={area.archived_at}>
-                        <span class="mt-2 inline-block rounded bg-gray-100 px-2 py-1 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400">
-                          Archived
-                        </span>
-                      </Show>
                     </div>
                   </div>
                   <DropdownMenu>
                     <DropdownMenu.Trigger asChild>
                       {(triggerProps) => (
                         <Button
-                          {...triggerProps}
+                          {...(triggerProps || {})}
                           variant="ghost"
                           size="sm"
                           onClick={(e) => {
                             e.stopPropagation();
-                            triggerProps.onClick(e);
+                            if (triggerProps && typeof triggerProps.onClick === 'function') {
+                              triggerProps.onClick(e);
+                            }
                           }}
                         >
                           <svg
@@ -142,30 +114,28 @@ export function LifeAreaList(props: LifeAreaListProps) {
                       )}
                     </DropdownMenu.Trigger>
                     <DropdownMenu.Content>
-                      <Show when={!area.archived_at}>
-                        <DropdownMenu.Item
-                          onSelect={() => {
-                            props.onEdit?.(area);
-                          }}
-                        >
-                          Edit
-                        </DropdownMenu.Item>
-                        <DropdownMenu.Separator />
-                        <DropdownMenu.Item
-                          class="text-danger-600"
-                          onSelect={() => {
-                            setAreaToDelete(area);
-                            deleteConfirmHandle.open();
-                          }}
-                        >
-                          Delete
-                        </DropdownMenu.Item>
-                      </Show>
-                      <Show when={area.archived_at}>
-                        <DropdownMenu.Item onSelect={() => handleRestore(area)}>
-                          Restore
-                        </DropdownMenu.Item>
-                      </Show>
+                      <DropdownMenu.Item
+                        onSelect={() => {
+                          props.onEdit?.(area);
+                        }}
+                      >
+                        Edit
+                      </DropdownMenu.Item>
+                      <DropdownMenu.Separator />
+                      <DropdownMenu.Item
+                        class="text-danger-600"
+                        onSelect={async () => {
+                          // eslint-disable-next-line no-alert
+                          const confirmDelete = window.confirm(
+                            `Are you sure you want to delete "${area.name}"? This action cannot be undone.`,
+                          );
+                          if (confirmDelete) {
+                            await handleDelete(area);
+                          }
+                        }}
+                      >
+                        Delete
+                      </DropdownMenu.Item>
                     </DropdownMenu.Content>
                   </DropdownMenu>
                 </div>
@@ -174,8 +144,6 @@ export function LifeAreaList(props: LifeAreaListProps) {
           }}
         </For>
       </div>
-
-      <DeleteConfirmDialog />
     </div>
   );
 }

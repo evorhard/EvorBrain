@@ -38,21 +38,26 @@ export function createConfirmDialog(props: ConfirmDialogProps): [Component, Conf
   };
 
   const ConfirmDialogComponent: Component = () => (
-    <Modal open={isOpen()} onOpenChange={setIsOpen}>
-      <ModalContent>
-        <ModalHeader>
-          <ModalTitle>{props.title}</ModalTitle>
-          <ModalDescription>
-            {typeof props.description === 'function' ? props.description() : props.description}
-          </ModalDescription>
-        </ModalHeader>
+      <Modal open={isOpen()} onOpenChange={setIsOpen}>
+        <ModalContent>
+          <ModalHeader>
+            <ModalTitle>{props.title}</ModalTitle>
+            <ModalDescription>
+              {typeof props.description === 'function' ? props.description() : props.description}
+            </ModalDescription>
+          </ModalHeader>
         <ModalFooter>
-          <Button variant="outline" onClick={handleCancel}>
+          <Button 
+            variant="outline" 
+            onClick={handleCancel} 
+            class="relative z-10"
+          >
             {props.cancelText || 'Cancel'}
           </Button>
           <Button
             variant={props.variant === 'danger' ? 'danger' : 'default'}
             onClick={handleConfirm}
+            class="relative z-10"
           >
             {props.confirmText || 'Confirm'}
           </Button>

@@ -44,7 +44,7 @@ const ModalOverlay: Component<ModalOverlayProps> = (props) => {
 };
 
 const modalContentVariants = cva(
-  'border-border bg-surface shadow-modal animate-fade-in fixed top-[50%] left-[50%] z-50 grid w-full translate-x-[-50%] translate-y-[-50%] gap-4 border p-6',
+  'border-border bg-surface shadow-modal animate-fade-in fixed top-[50%] left-[50%] z-[60] grid w-full translate-x-[-50%] translate-y-[-50%] gap-4 border p-6',
   {
     variants: {
       size: {

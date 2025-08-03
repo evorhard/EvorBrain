@@ -11,7 +11,7 @@ const DropdownMenuContent: Component<KobalteDropdownMenu.DropdownMenuContentProp
   const [local, others] = splitProps(props, ['class']);
   return (
     <KobalteDropdownMenu.Content
-      class={`border-border bg-surface text-content shadow-modal animate-fade-in z-50 min-w-[8rem] overflow-hidden rounded-md border p-1 ${local.class || ''}`}
+      class={`border-border bg-surface text-content shadow-modal animate-fade-in z-40 min-w-[8rem] overflow-hidden rounded-md border p-1 ${local.class || ''}`}
       {...others}
     />
   );

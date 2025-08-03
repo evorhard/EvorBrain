@@ -86,7 +86,7 @@ export function createGoalStore() {
     // Create a new goal
     async create(data: {
       life_area_id: string;
-      name: string;
+      title: string;
       description?: string;
       target_date?: string;
       priority?: 'low' | 'medium' | 'high';
@@ -180,14 +180,14 @@ export function createGoalStore() {
       }
     },
 
-    // Delete (archive) a goal
+    // Delete a goal permanently
     async delete(id: string) {
       setState('isLoading', true);
       setState('error', null);
 
       try {
         await api.goal.delete(id);
-        // Refetch to get updated state (with cascaded archives)
+        // Refetch to get updated state
         await actions.fetchAll();
       } catch (error) {
         const message = error instanceof EvorBrainError ? error.message : 'Failed to delete goal';

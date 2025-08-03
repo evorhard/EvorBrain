@@ -7,14 +7,14 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-primary-500 text-content-inverse hover:bg-primary-600',
+        default: 'bg-primary text-content-inverse hover:bg-primary-600',
         secondary:
           'bg-surface-100 dark:bg-surface-200 text-content hover:bg-surface-200 dark:hover:bg-surface-300',
         outline:
           'border-border hover:bg-surface-100 dark:hover:bg-surface-200 border bg-transparent',
         ghost: 'hover:bg-surface-100 dark:hover:bg-surface-200',
-        danger: 'bg-danger-500 text-content-inverse hover:bg-danger-600',
-        success: 'bg-success-500 text-content-inverse hover:bg-success-600',
+        danger: 'bg-danger text-content-inverse hover:bg-danger-600',
+        success: 'bg-success text-content-inverse hover:bg-success-600',
       },
       size: {
         default: 'h-10 px-4 py-2',

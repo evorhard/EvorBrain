@@ -1,4 +1,4 @@
-import { createSignal, Show, For, createEffect } from 'solid-js';
+import { createSignal, Show, For, createEffect, onMount } from 'solid-js';
 import { useGoalStore, useLifeAreaStore } from '../../../stores';
 import { Button } from '../../ui/Button';
 import { Input } from '../../ui/Input';
@@ -14,7 +14,7 @@ interface GoalFormProps {
 
 export function GoalForm(props: GoalFormProps) {
   const { actions: goalActions } = useGoalStore();
-  const { store: lifeAreaStore } = useLifeAreaStore();
+  const { store: lifeAreaStore, actions: lifeAreaActions } = useLifeAreaStore();
 
   const [title, setTitle] = createSignal('');
   const [description, setDescription] = createSignal('');
@@ -22,6 +22,13 @@ export function GoalForm(props: GoalFormProps) {
   const [targetDate, setTargetDate] = createSignal('');
   const [isSubmitting, setIsSubmitting] = createSignal(false);
   const [error, setError] = createSignal<string | null>(null);
+
+  // Fetch life areas when the form mounts
+  onMount(() => {
+    if (lifeAreaStore.items.length === 0) {
+      lifeAreaActions.fetchAll();
+    }
+  });
 
   // Update form fields when goal prop changes
   createEffect(() => {

@@ -1,29 +1,10 @@
-import { For, Show, createEffect, onMount, createSignal } from 'solid-js';
+import { For, Show, createEffect, onMount } from 'solid-js';
 import { useGoalStore, useLifeAreaStore } from '../../../stores';
 import { formatDate } from '../../../utils/date';
-import { createConfirmDialog } from '../../ui/ConfirmDialog';
 
 export function GoalList() {
   const { store: goalStore, actions: goalActions } = useGoalStore();
   const { store: lifeAreaStore } = useLifeAreaStore();
-  const [goalToDelete, setGoalToDelete] = createSignal<{ id: string; title: string } | null>(null);
-
-  const handleDeleteGoal = () => {
-    const goal = goalToDelete();
-    if (goal) {
-      goalActions.delete(goal.id);
-      setGoalToDelete(null);
-    }
-  };
-
-  const [DeleteConfirmDialog, deleteConfirmHandle] = createConfirmDialog({
-    title: 'Delete Goal',
-    description: () => `Are you sure you want to delete "${goalToDelete()?.title}"?`,
-    confirmText: 'Delete',
-    variant: 'danger',
-    onConfirm: handleDeleteGoal,
-    onCancel: () => setGoalToDelete(null),
-  });
 
   onMount(() => {
     // Fetch goals when component mounts
@@ -41,7 +22,6 @@ export function GoalList() {
     const lifeArea = lifeAreaStore.items.find((area) => area.id === lifeAreaId);
     return lifeArea?.name || 'Unknown';
   };
-
 
   return (
     <div class="space-y-4">
@@ -74,7 +54,6 @@ export function GoalList() {
               classList={{
                 'ring-2 ring-primary': goalStore.selectedId === goal.id,
                 'hover:shadow-card-hover': goalStore.selectedId !== goal.id,
-                'opacity-60': goal.completed_at,
               }}
               onClick={() => goalActions.select(goal.id)}
             >
@@ -99,16 +78,11 @@ export function GoalList() {
                         Completed {formatDate(goal.completed_at)}
                       </span>
                     </Show>
-                    <Show when={goal.archived_at}>
-                      <span class="inline-block rounded bg-gray-100 px-2 py-1 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400">
-                        Archived
-                      </span>
-                    </Show>
                   </div>
                 </div>
 
                 <div class="flex items-center gap-2">
-                  <Show when={!goal.completed_at && !goal.archived_at}>
+                  <Show when={!goal.completed_at}>
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
@@ -128,7 +102,7 @@ export function GoalList() {
                     </button>
                   </Show>
 
-                  <Show when={goal.completed_at && !goal.archived_at}>
+                  <Show when={goal.completed_at}>
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
@@ -148,12 +122,17 @@ export function GoalList() {
                     </button>
                   </Show>
 
-                  <Show when={!goal.archived_at}>
+                  <Show when={true}>
                     <button
-                      onClick={(e) => {
+                      onClick={async (e) => {
                         e.stopPropagation();
-                        setGoalToDelete({ id: goal.id, title: goal.title });
-                        deleteConfirmHandle.open();
+                        // eslint-disable-next-line no-alert
+                        const confirmDelete = window.confirm(
+                          `Are you sure you want to delete "${goal.title}"? This action cannot be undone.`,
+                        );
+                        if (confirmDelete) {
+                          await goalActions.delete(goal.id);
+                        }
                       }}
                       class="rounded p-1.5 text-red-600 transition-colors hover:bg-red-50 dark:hover:bg-red-900/20"
                       title="Delete goal"
@@ -169,33 +148,12 @@ export function GoalList() {
                     </button>
                   </Show>
 
-                  <Show when={goal.archived_at}>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        goalActions.restore(goal.id);
-                      }}
-                      class="rounded p-1.5 text-blue-600 transition-colors hover:bg-blue-50 dark:hover:bg-blue-900/20"
-                      title="Restore goal"
-                    >
-                      <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                        />
-                      </svg>
-                    </button>
-                  </Show>
                 </div>
               </div>
             </div>
           )}
         </For>
       </div>
-
-      <DeleteConfirmDialog />
     </div>
   );
 }
