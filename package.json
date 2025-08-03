@@ -25,6 +25,8 @@
     "format:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,css,md}\" \"*.{js,json,md}\"",
     "clean": "./scripts/clean.sh",
     "clean:all": "./scripts/clean.sh --all",
+    "clean:rust": "cd src-tauri && cargo clean && cd ..",
+    "rebuild": "bun run clean:rust && bun run tauri:dev",
     "prepare": "husky",
     "docs": "./scripts/generate-docs.sh",
     "docs:typescript": "typedoc",
