@@ -17,7 +17,7 @@ function AppContent() {
   // Initialize theme after store is available
   onMount(() => {
     uiActions.initializeTheme();
-    
+
     // Add keyboard shortcut for clearing data in development
     if (!isTauri()) {
       const handleKeyPress = (e: KeyboardEvent) => {
@@ -34,7 +34,7 @@ function AppContent() {
           }
         }
       };
-      
+
       window.addEventListener('keydown', handleKeyPress);
       onCleanup(() => window.removeEventListener('keydown', handleKeyPress));
     }
@@ -114,9 +114,17 @@ function AppContent() {
                   </button>
                   {dbStatus() && <p class="text-content-secondary mt-2 text-sm">{dbStatus()}</p>}
                   {!isTauri() && (
-                    <div class="mt-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-md">
-                      <p class="text-yellow-800 dark:text-yellow-200 text-sm">
-                        <strong>Development Mode:</strong> Press <kbd class="px-2 py-1 bg-yellow-100 dark:bg-yellow-800 rounded text-xs">Ctrl/Cmd + Shift + D</kbd> to clear all data, or run <code class="px-2 py-1 bg-yellow-100 dark:bg-yellow-800 rounded text-xs">clearAllData()</code> in the console.
+                    <div class="mt-4 rounded-md bg-yellow-50 p-3 dark:bg-yellow-900/20">
+                      <p class="text-sm text-yellow-800 dark:text-yellow-200">
+                        <strong>Development Mode:</strong> Press{' '}
+                        <kbd class="rounded bg-yellow-100 px-2 py-1 text-xs dark:bg-yellow-800">
+                          Ctrl/Cmd + Shift + D
+                        </kbd>{' '}
+                        to clear all data, or run{' '}
+                        <code class="rounded bg-yellow-100 px-2 py-1 text-xs dark:bg-yellow-800">
+                          clearAllData()
+                        </code>{' '}
+                        in the console.
                       </p>
                     </div>
                   )}

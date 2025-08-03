@@ -147,7 +147,6 @@ export function GoalList() {
                       </svg>
                     </button>
                   </Show>
-
                 </div>
               </div>
             </div>

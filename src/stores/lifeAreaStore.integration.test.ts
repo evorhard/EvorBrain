@@ -23,13 +23,12 @@ describe('LifeAreaStore Integration Tests', () => {
     }
   });
 
-  const createStore = () => {
-    return createRoot((d) => {
+  const createStore = () =>
+    createRoot((d) => {
       dispose = d;
       const factoryStore = createLifeAreaStoreFactory(api);
       return createStoreWrapper<LifeArea>(factoryStore);
     });
-  };
 
   describe('Full CRUD Flow', () => {
     it('should handle complete lifecycle of a life area', async () => {
@@ -185,9 +184,9 @@ describe('LifeAreaStore Integration Tests', () => {
       expect(store.items()).toHaveLength(3);
 
       // Concurrent updates should maintain consistency
-      const updatePromises = store.items().map((item, index) =>
-        store.actions.update(item.id, { position: index * 10 }),
-      );
+      const updatePromises = store
+        .items()
+        .map((item, index) => store.actions.update(item.id, { position: index * 10 }));
 
       await Promise.all(updatePromises);
 
@@ -255,13 +254,13 @@ describe('LifeAreaStore Integration Tests', () => {
 
       // Start async operation
       const fetchPromise = store.actions.fetchAll();
-      
+
       // Loading should be true immediately
       expect(store.loading()).toBe(true);
 
       // Wait for completion
       await fetchPromise;
-      
+
       // Loading should be false after completion
       expect(store.loading()).toBe(false);
 

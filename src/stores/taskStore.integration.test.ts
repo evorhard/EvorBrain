@@ -2,7 +2,12 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { createRoot } from 'solid-js';
 import { createTaskStoreFactory } from './taskStore.factory';
 import { TestApiClient } from '../lib/api/test-double';
-import { createTask, createProject, createGoal, createLifeArea } from '../test/utils/data-factories';
+import {
+  createTask,
+  createProject,
+  createGoal,
+  createLifeArea,
+} from '../test/utils/data-factories';
 import { createStoreWrapper, type Store } from './types';
 import type { Task } from '../types/models';
 
@@ -21,14 +26,14 @@ describe('TaskStore Integration Tests', () => {
     // Create test hierarchy: Life Area -> Goal -> Project -> Tasks
     const lifeArea = createLifeArea({ name: 'Test Life Area' });
     api.testHelpers.addLifeArea(lifeArea);
-    
-    const goal = createGoal({ 
-      life_area_id: lifeArea.id, 
-      title: 'Test Goal' 
+
+    const goal = createGoal({
+      life_area_id: lifeArea.id,
+      title: 'Test Goal',
     });
     api.testHelpers.addGoal(goal);
     testGoalId = goal.id;
-    
+
     const project = createProject({
       goal_id: goal.id,
       name: 'Test Project',
@@ -43,13 +48,12 @@ describe('TaskStore Integration Tests', () => {
     }
   });
 
-  const createStore = () => {
-    return createRoot((d) => {
+  const createStore = () =>
+    createRoot((d) => {
       dispose = d;
       const factoryStore = createTaskStoreFactory(api);
       return createStoreWrapper<Task>(factoryStore);
     });
-  };
 
   describe('Full CRUD Flow', () => {
     it('should handle complete lifecycle of a task', async () => {
@@ -147,7 +151,7 @@ describe('TaskStore Integration Tests', () => {
 
       // Fetch subtasks
       await store.actions.fetchSubtasks(parentTask.id);
-      const fetchedSubtasks = store.items().filter(t => t.parent_task_id === parentTask.id);
+      const fetchedSubtasks = store.items().filter((t) => t.parent_task_id === parentTask.id);
       expect(fetchedSubtasks).toHaveLength(3);
 
       // Complete subtasks affects parent
@@ -156,9 +160,9 @@ describe('TaskStore Integration Tests', () => {
       }
 
       // All subtasks should be completed
-      const completedSubtasks = store.items().filter(
-        t => t.parent_task_id === parentTask.id && t.completed_at !== null
-      );
+      const completedSubtasks = store
+        .items()
+        .filter((t) => t.parent_task_id === parentTask.id && t.completed_at !== null);
       expect(completedSubtasks).toHaveLength(3);
     });
 
@@ -199,10 +203,10 @@ describe('TaskStore Integration Tests', () => {
       expect(store.items()).toHaveLength(4);
 
       // Test hierarchy traversal
-      const level2Tasks = store.items().filter(t => t.parent_task_id === mainTask.id);
+      const level2Tasks = store.items().filter((t) => t.parent_task_id === mainTask.id);
       expect(level2Tasks).toHaveLength(1);
 
-      const level3Tasks = store.items().filter(t => t.parent_task_id === featureTask.id);
+      const level3Tasks = store.items().filter((t) => t.parent_task_id === featureTask.id);
       expect(level3Tasks).toHaveLength(2);
     });
   });
@@ -227,12 +231,15 @@ describe('TaskStore Integration Tests', () => {
       expect(store.items()).toHaveLength(4);
 
       // Group by priority
-      const byPriority = store.items().reduce((acc, task) => {
-        const priority = task.priority || 'medium';
-        if (!acc[priority]) acc[priority] = [];
-        acc[priority].push(task);
-        return acc;
-      }, {} as Record<string, Task[]>);
+      const byPriority = store.items().reduce(
+        (acc, task) => {
+          const priority = task.priority || 'medium';
+          if (!acc[priority]) acc[priority] = [];
+          acc[priority].push(task);
+          return acc;
+        },
+        {} as Record<string, Task[]>,
+      );
 
       expect(byPriority['critical']).toHaveLength(1);
       expect(byPriority['high']).toHaveLength(1);
@@ -240,9 +247,9 @@ describe('TaskStore Integration Tests', () => {
       expect(byPriority['low']).toHaveLength(1);
 
       // High priority tasks (critical + high)
-      const highPriorityTasks = store.items().filter(
-        t => t.priority === 'critical' || t.priority === 'high'
-      );
+      const highPriorityTasks = store
+        .items()
+        .filter((t) => t.priority === 'critical' || t.priority === 'high');
       expect(highPriorityTasks).toHaveLength(2);
     });
   });
@@ -296,7 +303,7 @@ describe('TaskStore Integration Tests', () => {
       await store.actions.fetchTodaysTasks();
       // This would typically filter for tasks due today
       // For now, we'll manually filter
-      const todaysTasks = store.items().filter(t => {
+      const todaysTasks = store.items().filter((t) => {
         if (!t.due_date) return false;
         const dueDate = new Date(t.due_date);
         return dueDate.toDateString() === today.toDateString();
@@ -306,7 +313,7 @@ describe('TaskStore Integration Tests', () => {
       expect(todaysTasks[0].title).toBe('Due Today');
 
       // Check overdue tasks
-      const overdueTasks = store.items().filter(t => {
+      const overdueTasks = store.items().filter((t) => {
         if (!t.due_date || t.completed_at) return false;
         return new Date(t.due_date) < now;
       });
@@ -322,9 +329,9 @@ describe('TaskStore Integration Tests', () => {
 
       // Create additional projects
       const projects = ['Frontend', 'Backend', 'Database'].map((name) => {
-        const project = createProject({ 
+        const project = createProject({
           goal_id: testGoalId,
-          name: `${name} Development` 
+          name: `${name} Development`,
         });
         api.testHelpers.addProject(project);
         return project;
@@ -347,7 +354,7 @@ describe('TaskStore Integration Tests', () => {
       // Fetch tasks for specific project
       await store.actions.fetchByProject(projects[0].id);
       expect(store.items()).toHaveLength(tasksPerProject);
-      expect(store.items().every(t => t.project_id === projects[0].id)).toBe(true);
+      expect(store.items().every((t) => t.project_id === projects[0].id)).toBe(true);
 
       // Fetch all tasks again
       await store.actions.fetchAll();
@@ -377,25 +384,19 @@ describe('TaskStore Integration Tests', () => {
 
       // Batch complete high priority tasks
       const highPriorityTasks = tasks.filter((_, i) => i < 3);
-      await Promise.all(
-        highPriorityTasks.map(t => store.actions.complete(t.id)),
-      );
+      await Promise.all(highPriorityTasks.map((t) => store.actions.complete(t.id)));
 
-      const completedTasks = store.items().filter(t => t.completed_at !== null);
+      const completedTasks = store.items().filter((t) => t.completed_at !== null);
       expect(completedTasks).toHaveLength(3);
 
       // Batch update positions
-      const activeTasks = store.items().filter(t => t.completed_at === null);
+      const activeTasks = store.items().filter((t) => t.completed_at === null);
       await Promise.all(
-        activeTasks.map((t, index) =>
-          store.actions.update(t.id, { position: index * 10 }),
-        ),
+        activeTasks.map((t, index) => store.actions.update(t.id, { position: index * 10 })),
       );
 
       // Batch archive completed tasks
-      await Promise.all(
-        completedTasks.map(t => store.actions.archive(t.id)),
-      );
+      await Promise.all(completedTasks.map((t) => store.actions.archive(t.id)));
 
       expect(store.archived()).toHaveLength(3);
       expect(store.active()).toHaveLength(7);
@@ -419,7 +420,7 @@ describe('TaskStore Integration Tests', () => {
       ];
 
       const tasks = await Promise.all(
-        morningTasks.map(task =>
+        morningTasks.map((task) =>
           store.actions.create({
             project_id: testProjectId,
             title: task.title,
@@ -431,11 +432,11 @@ describe('TaskStore Integration Tests', () => {
       );
 
       // Start work: Complete standup first
-      const standup = tasks.find(t => t.title === 'Team standup');
+      const standup = tasks.find((t) => t.title === 'Team standup');
       await store.actions.complete(standup!.id);
 
       // Work on critical bug
-      const bugTask = tasks.find(t => t.title === 'Fix critical bug');
+      const bugTask = tasks.find((t) => t.title === 'Fix critical bug');
       // Add subtasks for the bug
       const bugSubtasks = await Promise.all([
         store.actions.create({
@@ -471,13 +472,11 @@ describe('TaskStore Integration Tests', () => {
       await store.actions.complete(bugTask!.id);
 
       // Afternoon: Complete some more tasks
-      const prReview = tasks.find(t => t.title === 'Review PRs');
+      const prReview = tasks.find((t) => t.title === 'Review PRs');
       await store.actions.complete(prReview!.id);
 
       // End of day: Move incomplete tasks to tomorrow
-      const incompleteTasks = store.items().filter(
-        t => !t.completed_at && !t.parent_task_id
-      );
+      const incompleteTasks = store.items().filter((t) => !t.completed_at && !t.parent_task_id);
 
       for (const task of incompleteTasks) {
         await store.actions.update(task.id, {
@@ -487,9 +486,9 @@ describe('TaskStore Integration Tests', () => {
 
       // Summary
       const allTasks = store.items();
-      const completedToday = allTasks.filter(t => t.completed_at !== null);
+      const completedToday = allTasks.filter((t) => t.completed_at !== null);
       const movedToTomorrow = allTasks.filter(
-        t => !t.completed_at && t.due_date === tomorrow.toISOString()
+        (t) => !t.completed_at && t.due_date === tomorrow.toISOString(),
       );
 
       expect(completedToday.length).toBeGreaterThan(0);
@@ -522,17 +521,14 @@ describe('TaskStore Integration Tests', () => {
             priority: task.priority as 'low' | 'medium' | 'high' | 'critical',
             description: `Story points: ${task.points}`,
             position: index,
-            due_date: new Date(
-              Date.now() + task.week * 7 * 24 * 60 * 60 * 1000
-            ).toISOString(),
+            due_date: new Date(Date.now() + task.week * 7 * 24 * 60 * 60 * 1000).toISOString(),
           }),
         ),
       );
 
       // Week 1: Complete high-priority tasks
       const week1HighPriority = tasks.filter(
-        (t, i) => sprintTasks[i].week === 1 && 
-        (t.priority === 'high' || t.priority === 'critical')
+        (t, i) => sprintTasks[i].week === 1 && (t.priority === 'high' || t.priority === 'critical'),
       );
 
       for (const task of week1HighPriority) {
@@ -540,17 +536,18 @@ describe('TaskStore Integration Tests', () => {
       }
 
       // Mid-sprint: Check velocity
-      const completedPoints = store.items()
-        .filter(t => t.completed_at !== null)
+      const completedPoints = store
+        .items()
+        .filter((t) => t.completed_at !== null)
         .reduce((sum, t, i) => {
-          const taskData = sprintTasks.find(st => st.title === t.title);
+          const taskData = sprintTasks.find((st) => st.title === t.title);
           return sum + (taskData?.points || 0);
         }, 0);
 
       expect(completedPoints).toBeGreaterThan(0);
 
       // Week 2: Some tasks blocked, create follow-up tasks
-      const blockedTask = tasks.find(t => t.title === 'Build frontend components');
+      const blockedTask = tasks.find((t) => t.title === 'Build frontend components');
       if (blockedTask) {
         await store.actions.update(blockedTask.id, {
           description: `Story points: 5\n\nBLOCKED: Waiting for design approval`,
@@ -567,19 +564,17 @@ describe('TaskStore Integration Tests', () => {
       }
 
       // Sprint end: Move incomplete tasks to backlog
-      const incompleteTasks = store.items().filter(
-        t => !t.completed_at && !t.parent_task_id
-      );
+      const incompleteTasks = store.items().filter((t) => !t.completed_at && !t.parent_task_id);
 
       for (const task of incompleteTasks) {
         await store.actions.update(task.id, {
-          description: (task.description || '') + '\n\nCarried over from previous sprint',
+          description: `${task.description || ''}\n\nCarried over from previous sprint`,
         });
       }
 
       // Final sprint metrics
-      const totalTasks = store.items().filter(t => !t.parent_task_id);
-      const completedTasks = totalTasks.filter(t => t.completed_at !== null);
+      const totalTasks = store.items().filter((t) => !t.parent_task_id);
+      const completedTasks = totalTasks.filter((t) => t.completed_at !== null);
       const completionRate = (completedTasks.length / totalTasks.length) * 100;
 
       expect(completionRate).toBeGreaterThan(0);
@@ -680,9 +675,7 @@ describe('TaskStore Integration Tests', () => {
             project_id: testProjectId,
             title: `Task ${i + 1}`,
             priority: ['low', 'medium', 'high', 'critical'][i % 4] as any,
-            due_date: new Date(
-              Date.now() + (i % 30) * 24 * 60 * 60 * 1000
-            ).toISOString(),
+            due_date: new Date(Date.now() + (i % 30) * 24 * 60 * 60 * 1000).toISOString(),
             position: i,
           }),
         ),
@@ -695,14 +688,14 @@ describe('TaskStore Integration Tests', () => {
 
       // Test filtering performance
       const filterStartTime = Date.now();
-      
-      const highPriorityTasks = store.items().filter(
-        t => t.priority === 'high' || t.priority === 'critical'
-      );
-      const overdueTasks = store.items().filter(
-        t => t.due_date && new Date(t.due_date) < new Date() && !t.completed_at
-      );
-      const todaysTasks = store.items().filter(t => {
+
+      const highPriorityTasks = store
+        .items()
+        .filter((t) => t.priority === 'high' || t.priority === 'critical');
+      const overdueTasks = store
+        .items()
+        .filter((t) => t.due_date && new Date(t.due_date) < new Date() && !t.completed_at);
+      const todaysTasks = store.items().filter((t) => {
         if (!t.due_date) return false;
         const today = new Date();
         const dueDate = new Date(t.due_date);

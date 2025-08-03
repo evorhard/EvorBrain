@@ -24,7 +24,7 @@ function loadMockStore() {
       console.error('Failed to parse stored mock data:', e);
     }
   }
-  
+
   // Return empty data if nothing stored - no pre-populated mock data
   return {
     lifeAreas: [],
@@ -57,11 +57,10 @@ export function clearAllData() {
     console.info('✅ All development data cleared!');
     console.info('Reload the page to see the changes.');
     return true;
-  } else {
-    console.warn('This command only works in development mode (browser).');
-    console.info('For Tauri app, use the reset_database command.');
-    return false;
   }
+  console.warn('This command only works in development mode (browser).');
+  console.info('For Tauri app, use the reset_database command.');
+  return false;
 }
 
 // Make it available globally in development
@@ -75,7 +74,7 @@ if (typeof window !== 'undefined' && !isTauri()) {
 export async function mockInvoke(cmd: string, args?: unknown): Promise<unknown> {
   // Always load fresh data from localStorage
   mockStore = loadMockStore();
-  
+
   // Return mock data based on command
   switch (cmd) {
     case 'get_life_areas':
@@ -106,11 +105,14 @@ export async function mockInvoke(cmd: string, args?: unknown): Promise<unknown> 
         request?: { id: string; name: string; description?: string; color?: string; icon?: string };
       };
       const updateRequest = updateArgs?.request;
-      const lifeAreaIndex = mockStore.lifeAreas.findIndex(la => la.id === updateRequest?.id);
+      const lifeAreaIndex = mockStore.lifeAreas.findIndex((la) => la.id === updateRequest?.id);
       if (lifeAreaIndex !== -1) {
         const lifeArea = mockStore.lifeAreas[lifeAreaIndex];
         lifeArea.name = updateRequest?.name || lifeArea.name;
-        lifeArea.description = updateRequest?.description !== undefined ? updateRequest.description : lifeArea.description;
+        lifeArea.description =
+          updateRequest?.description !== undefined
+            ? updateRequest.description
+            : lifeArea.description;
         lifeArea.color = updateRequest?.color !== undefined ? updateRequest.color : lifeArea.color;
         lifeArea.icon = updateRequest?.icon !== undefined ? updateRequest.icon : lifeArea.icon;
         lifeArea.updated_at = new Date().toISOString();
@@ -127,15 +129,15 @@ export async function mockInvoke(cmd: string, args?: unknown): Promise<unknown> 
       return mockStore.goals;
     case 'get_goals_by_life_area': {
       const goalArgs = args as { life_area_id?: string };
-      return mockStore.goals.filter(goal => goal.life_area_id === goalArgs?.life_area_id);
+      return mockStore.goals.filter((goal) => goal.life_area_id === goalArgs?.life_area_id);
     }
     case 'create_goal': {
       const createGoalArgs = args as {
-        request?: { 
+        request?: {
           life_area_id: string;
-          title: string; 
-          description?: string; 
-          target_date?: string; 
+          title: string;
+          description?: string;
+          target_date?: string;
         };
       };
       const request = createGoalArgs?.request;
@@ -157,7 +159,7 @@ export async function mockInvoke(cmd: string, args?: unknown): Promise<unknown> 
     case 'delete_goal': {
       // Permanently delete the goal
       const deleteArgs = args as { id?: string };
-      const goalIndex = mockStore.goals.findIndex(g => g.id === deleteArgs?.id);
+      const goalIndex = mockStore.goals.findIndex((g) => g.id === deleteArgs?.id);
       if (goalIndex !== -1) {
         mockStore.goals.splice(goalIndex, 1);
         saveMockStore();
@@ -168,10 +170,12 @@ export async function mockInvoke(cmd: string, args?: unknown): Promise<unknown> 
       return mockStore.projects || [];
     case 'get_projects_by_goal': {
       const goalArgs = args as { goal_id: string };
-      return (mockStore.projects || []).filter(p => p.goal_id === goalArgs.goal_id);
+      return (mockStore.projects || []).filter((p) => p.goal_id === goalArgs.goal_id);
     }
     case 'create_project': {
-      const createArgs = args as { request: { title: string; goal_id: string; description?: string; status?: string } };
+      const createArgs = args as {
+        request: { title: string; goal_id: string; description?: string; status?: string };
+      };
       const newProject = {
         id: `proj_${Date.now()}`,
         title: createArgs.request.title,
@@ -189,9 +193,17 @@ export async function mockInvoke(cmd: string, args?: unknown): Promise<unknown> 
       return newProject;
     }
     case 'update_project': {
-      const updateArgs = args as { request: { id: string; title: string; goal_id: string; description?: string; status: string } };
+      const updateArgs = args as {
+        request: {
+          id: string;
+          title: string;
+          goal_id: string;
+          description?: string;
+          status: string;
+        };
+      };
       if (mockStore.projects) {
-        const projectIndex = mockStore.projects.findIndex(p => p.id === updateArgs.request.id);
+        const projectIndex = mockStore.projects.findIndex((p) => p.id === updateArgs.request.id);
         if (projectIndex !== -1) {
           mockStore.projects[projectIndex] = {
             ...mockStore.projects[projectIndex],
@@ -207,7 +219,7 @@ export async function mockInvoke(cmd: string, args?: unknown): Promise<unknown> 
     case 'update_project_status': {
       const statusArgs = args as { id: string; status: string };
       if (mockStore.projects) {
-        const projectIndex = mockStore.projects.findIndex(p => p.id === statusArgs.id);
+        const projectIndex = mockStore.projects.findIndex((p) => p.id === statusArgs.id);
         if (projectIndex !== -1) {
           mockStore.projects[projectIndex] = {
             ...mockStore.projects[projectIndex],
@@ -224,7 +236,7 @@ export async function mockInvoke(cmd: string, args?: unknown): Promise<unknown> 
     case 'delete_project': {
       const deleteArgs = args as { id: string };
       if (mockStore.projects) {
-        const projectIndex = mockStore.projects.findIndex(p => p.id === deleteArgs.id);
+        const projectIndex = mockStore.projects.findIndex((p) => p.id === deleteArgs.id);
         if (projectIndex !== -1) {
           mockStore.projects.splice(projectIndex, 1);
           saveMockStore();
@@ -236,26 +248,26 @@ export async function mockInvoke(cmd: string, args?: unknown): Promise<unknown> 
       return mockStore.tasks || [];
     case 'get_tasks_by_project': {
       const projectArgs = args as { project_id: string };
-      return (mockStore.tasks || []).filter(t => t.project_id === projectArgs.project_id);
+      return (mockStore.tasks || []).filter((t) => t.project_id === projectArgs.project_id);
     }
     case 'get_todays_tasks':
       // Return tasks due today or overdue
       const today = new Date().toISOString().split('T')[0];
-      return (mockStore.tasks || []).filter(t => {
+      return (mockStore.tasks || []).filter((t) => {
         if (!t.due_date) return false;
         const taskDate = t.due_date.split('T')[0];
         return taskDate <= today && !t.completed_at;
       });
     case 'get_subtasks': {
       const subtaskArgs = args as { parent_task_id: string };
-      return (mockStore.tasks || []).filter(t => t.parent_task_id === subtaskArgs.parent_task_id);
+      return (mockStore.tasks || []).filter((t) => t.parent_task_id === subtaskArgs.parent_task_id);
     }
     case 'create_task_with_subtasks': {
-      const createArgs = args as { 
+      const createArgs = args as {
         request: {
           parent_task: Record<string, unknown>;
           subtasks: Array<Record<string, unknown>>;
-        }
+        };
       };
       // For now, just create the parent task
       const parentTask = {
@@ -268,7 +280,7 @@ export async function mockInvoke(cmd: string, args?: unknown): Promise<unknown> 
         mockStore.tasks = [];
       }
       mockStore.tasks.push(parentTask);
-      
+
       // Create subtasks if any
       if (createArgs.request.subtasks && createArgs.request.subtasks.length > 0) {
         createArgs.request.subtasks.forEach((subtask, index) => {
@@ -282,16 +294,16 @@ export async function mockInvoke(cmd: string, args?: unknown): Promise<unknown> 
           mockStore.tasks.push(newSubtask);
         });
       }
-      
+
       saveMockStore();
       return parentTask;
     }
     case 'create_task': {
-      const createArgs = args as { 
-        title: string; 
-        project_id?: string; 
+      const createArgs = args as {
+        title: string;
+        project_id?: string;
         parent_task_id?: string;
-        description?: string; 
+        description?: string;
         priority?: string;
         due_date?: string;
       };
@@ -314,15 +326,15 @@ export async function mockInvoke(cmd: string, args?: unknown): Promise<unknown> 
       return newTask;
     }
     case 'update_task': {
-      const updateArgs = args as { 
-        id: string; 
-        title: string; 
-        description?: string; 
+      const updateArgs = args as {
+        id: string;
+        title: string;
+        description?: string;
         priority: string;
         due_date?: string;
       };
       if (mockStore.tasks) {
-        const taskIndex = mockStore.tasks.findIndex(t => t.id === updateArgs.id);
+        const taskIndex = mockStore.tasks.findIndex((t) => t.id === updateArgs.id);
         if (taskIndex !== -1) {
           mockStore.tasks[taskIndex] = {
             ...mockStore.tasks[taskIndex],
@@ -338,7 +350,7 @@ export async function mockInvoke(cmd: string, args?: unknown): Promise<unknown> 
     case 'complete_task': {
       const completeArgs = args as { id: string };
       if (mockStore.tasks) {
-        const taskIndex = mockStore.tasks.findIndex(t => t.id === completeArgs.id);
+        const taskIndex = mockStore.tasks.findIndex((t) => t.id === completeArgs.id);
         if (taskIndex !== -1) {
           mockStore.tasks[taskIndex] = {
             ...mockStore.tasks[taskIndex],
@@ -354,7 +366,7 @@ export async function mockInvoke(cmd: string, args?: unknown): Promise<unknown> 
     case 'uncomplete_task': {
       const uncompleteArgs = args as { id: string };
       if (mockStore.tasks) {
-        const taskIndex = mockStore.tasks.findIndex(t => t.id === uncompleteArgs.id);
+        const taskIndex = mockStore.tasks.findIndex((t) => t.id === uncompleteArgs.id);
         if (taskIndex !== -1) {
           mockStore.tasks[taskIndex] = {
             ...mockStore.tasks[taskIndex],
@@ -370,7 +382,7 @@ export async function mockInvoke(cmd: string, args?: unknown): Promise<unknown> 
     case 'delete_task': {
       const deleteArgs = args as { id: string };
       if (mockStore.tasks) {
-        const taskIndex = mockStore.tasks.findIndex(t => t.id === deleteArgs.id);
+        const taskIndex = mockStore.tasks.findIndex((t) => t.id === deleteArgs.id);
         if (taskIndex !== -1) {
           mockStore.tasks.splice(taskIndex, 1);
           saveMockStore();
@@ -383,12 +395,12 @@ export async function mockInvoke(cmd: string, args?: unknown): Promise<unknown> 
     case 'delete_life_area': {
       // Permanently delete the life area
       const deleteArgs = args as { id?: string };
-      const lifeAreaIndex = mockStore.lifeAreas.findIndex(la => la.id === deleteArgs?.id);
+      const lifeAreaIndex = mockStore.lifeAreas.findIndex((la) => la.id === deleteArgs?.id);
       if (lifeAreaIndex !== -1) {
         // Remove the life area from the array
         mockStore.lifeAreas.splice(lifeAreaIndex, 1);
         // Also delete any goals in this life area
-        mockStore.goals = mockStore.goals.filter(goal => goal.life_area_id !== deleteArgs?.id);
+        mockStore.goals = mockStore.goals.filter((goal) => goal.life_area_id !== deleteArgs?.id);
         saveMockStore();
       }
       return undefined;

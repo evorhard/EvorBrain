@@ -20,10 +20,10 @@ describe('ProjectStore Integration Tests', () => {
     // Create test hierarchy: Life Area -> Goal -> Projects
     const lifeArea = createLifeArea({ name: 'Test Life Area' });
     api.testHelpers.addLifeArea(lifeArea);
-    
-    const goal = createGoal({ 
-      life_area_id: lifeArea.id, 
-      title: 'Test Goal' 
+
+    const goal = createGoal({
+      life_area_id: lifeArea.id,
+      title: 'Test Goal',
     });
     api.testHelpers.addGoal(goal);
     testGoalId = goal.id;
@@ -35,13 +35,12 @@ describe('ProjectStore Integration Tests', () => {
     }
   });
 
-  const createStore = () => {
-    return createRoot((d) => {
+  const createStore = () =>
+    createRoot((d) => {
       dispose = d;
       const factoryStore = createProjectStoreFactory(api);
       return createStoreWrapper<Project>(factoryStore);
     });
-  };
 
   describe('Full CRUD Flow', () => {
     it('should handle complete lifecycle of a project', async () => {
@@ -154,12 +153,15 @@ describe('ProjectStore Integration Tests', () => {
       );
 
       // Group by status
-      const byStatus = store.items().reduce((acc, project) => {
-        const status = project.status;
-        if (!acc[status]) acc[status] = [];
-        acc[status].push(project);
-        return acc;
-      }, {} as Record<ProjectStatus, Project[]>);
+      const byStatus = store.items().reduce(
+        (acc, project) => {
+          const { status } = project;
+          if (!acc[status]) acc[status] = [];
+          acc[status].push(project);
+          return acc;
+        },
+        {} as Record<ProjectStatus, Project[]>,
+      );
 
       expect(byStatus['not_started']).toHaveLength(1);
       expect(byStatus['planning']).toHaveLength(1);
@@ -170,9 +172,9 @@ describe('ProjectStore Integration Tests', () => {
 
       // Test active vs inactive projects
       const activeStatuses: ProjectStatus[] = ['not_started', 'planning', 'in_progress', 'on_hold'];
-      const activeProjects = store.items().filter((p) => 
-        activeStatuses.includes(p.status) && !p.archived_at
-      );
+      const activeProjects = store
+        .items()
+        .filter((p) => activeStatuses.includes(p.status) && !p.archived_at);
       expect(activeProjects).toHaveLength(5); // All except completed and cancelled
     });
   });
@@ -234,26 +236,20 @@ describe('ProjectStore Integration Tests', () => {
 
       // Batch update status for first half to in_progress
       const firstHalf = projects.slice(0, 5);
-      await Promise.all(
-        firstHalf.map((p) => store.actions.updateStatus(p.id, 'in_progress')),
-      );
+      await Promise.all(firstHalf.map((p) => store.actions.updateStatus(p.id, 'in_progress')));
 
       const inProgress = store.items().filter((p) => p.status === 'in_progress');
       expect(inProgress).toHaveLength(5);
 
       // Batch complete some projects
       const toComplete = inProgress.slice(0, 2);
-      await Promise.all(
-        toComplete.map((p) => store.actions.updateStatus(p.id, 'completed')),
-      );
+      await Promise.all(toComplete.map((p) => store.actions.updateStatus(p.id, 'completed')));
 
       const completed = store.items().filter((p) => p.status === 'completed');
       expect(completed).toHaveLength(2);
 
       // Batch archive completed projects
-      await Promise.all(
-        completed.map((p) => store.actions.archive(p.id)),
-      );
+      await Promise.all(completed.map((p) => store.actions.archive(p.id)));
 
       expect(store.archived()).toHaveLength(2);
       expect(store.active()).toHaveLength(8);
@@ -261,9 +257,7 @@ describe('ProjectStore Integration Tests', () => {
       // Batch update positions
       const activeProjects = store.active();
       await Promise.all(
-        activeProjects.map((p, index) =>
-          store.actions.update(p.id, { position: index * 10 }),
-        ),
+        activeProjects.map((p, index) => store.actions.update(p.id, { position: index * 10 })),
       );
 
       const positions = store.active().map((p) => p.position);
@@ -299,9 +293,7 @@ describe('ProjectStore Integration Tests', () => {
 
       // Sprint planning: Move high priority items to planning
       const highPriority = projects.filter((_, i) => backlog[i].priority === 'high');
-      await Promise.all(
-        highPriority.map((p) => store.actions.updateStatus(p.id, 'planning')),
-      );
+      await Promise.all(highPriority.map((p) => store.actions.updateStatus(p.id, 'planning')));
 
       // Start sprint: Move planned items to in_progress
       const plannedProjects = store.items().filter((p) => p.status === 'planning');
@@ -311,29 +303,32 @@ describe('ProjectStore Integration Tests', () => {
 
       // Mid-sprint: Complete small effort items
       const smallEffortInProgress = projects.filter(
-        (p, i) => backlog[i].effort === 'small' && 
-        store.items().find((item) => item.id === p.id)?.status === 'not_started'
+        (p, i) =>
+          backlog[i].effort === 'small' &&
+          store.items().find((item) => item.id === p.id)?.status === 'not_started',
       );
-      
+
       // Move small items directly to in_progress (fast track)
       for (const project of smallEffortInProgress) {
         await store.actions.updateStatus(project.id, 'in_progress');
       }
 
       // End of sprint: Complete some projects
-      const toComplete = store.items()
+      const toComplete = store
+        .items()
         .filter((p) => p.status === 'in_progress')
         .slice(0, 2);
-      
-      await Promise.all(
-        toComplete.map((p) => store.actions.updateStatus(p.id, 'completed')),
-      );
+
+      await Promise.all(toComplete.map((p) => store.actions.updateStatus(p.id, 'completed')));
 
       // Sprint review
-      const statusSummary = store.items().reduce((acc, p) => {
-        acc[p.status] = (acc[p.status] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>);
+      const statusSummary = store.items().reduce(
+        (acc, p) => {
+          acc[p.status] = (acc[p.status] || 0) + 1;
+          return acc;
+        },
+        {} as Record<string, number>,
+      );
 
       expect(statusSummary['completed']).toBe(2);
       expect(statusSummary['in_progress']).toBeGreaterThan(0);
@@ -341,9 +336,7 @@ describe('ProjectStore Integration Tests', () => {
 
       // Archive completed projects
       const completedProjects = store.items().filter((p) => p.status === 'completed');
-      await Promise.all(
-        completedProjects.map((p) => store.actions.archive(p.id)),
-      );
+      await Promise.all(completedProjects.map((p) => store.actions.archive(p.id)));
 
       expect(store.archived()).toHaveLength(2);
     });
@@ -392,16 +385,17 @@ describe('ProjectStore Integration Tests', () => {
       // Start remaining projects
       const notStarted = store.items().filter((p) => p.status === 'planning');
       await Promise.all(
-        notStarted.slice(0, 2).map((p) => 
-          store.actions.updateStatus(p.id, 'in_progress')
-        ),
+        notStarted.slice(0, 2).map((p) => store.actions.updateStatus(p.id, 'in_progress')),
       );
 
       // Final portfolio status
-      const finalStatus = store.items().reduce((acc, p) => {
-        acc[p.status] = (acc[p.status] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>);
+      const finalStatus = store.items().reduce(
+        (acc, p) => {
+          acc[p.status] = (acc[p.status] || 0) + 1;
+          return acc;
+        },
+        {} as Record<string, number>,
+      );
 
       // Verify portfolio has projects in various states
       expect(Object.keys(finalStatus).length).toBeGreaterThan(2);
@@ -415,9 +409,21 @@ describe('ProjectStore Integration Tests', () => {
 
       // Create projects
       const projects = await Promise.all([
-        store.actions.create({ goal_id: testGoalId, name: 'Project A', status: 'not_started' as ProjectStatus }),
-        store.actions.create({ goal_id: testGoalId, name: 'Project B', status: 'in_progress' as ProjectStatus }),
-        store.actions.create({ goal_id: testGoalId, name: 'Project C', status: 'completed' as ProjectStatus }),
+        store.actions.create({
+          goal_id: testGoalId,
+          name: 'Project A',
+          status: 'not_started' as ProjectStatus,
+        }),
+        store.actions.create({
+          goal_id: testGoalId,
+          name: 'Project B',
+          status: 'in_progress' as ProjectStatus,
+        }),
+        store.actions.create({
+          goal_id: testGoalId,
+          name: 'Project C',
+          status: 'completed' as ProjectStatus,
+        }),
       ]);
 
       // Select a project

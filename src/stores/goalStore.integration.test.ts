@@ -29,13 +29,12 @@ describe('GoalStore Integration Tests', () => {
     }
   });
 
-  const createStore = () => {
-    return createRoot((d) => {
+  const createStore = () =>
+    createRoot((d) => {
       dispose = d;
       const factoryStore = createGoalStoreFactory(api);
       return createStoreWrapper<Goal>(factoryStore);
     });
-  };
 
   describe('Full CRUD Flow', () => {
     it('should handle complete lifecycle of a goal', async () => {

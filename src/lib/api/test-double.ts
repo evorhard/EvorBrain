@@ -129,7 +129,7 @@ export class TestApiClient implements ApiClient {
           archivedGoalIds.add(goal.id);
         }
       }
-      
+
       // Archive projects for archived goals
       const archivedProjectIds = new Set<string>();
       for (const project of this.data.projects.values()) {
@@ -138,7 +138,7 @@ export class TestApiClient implements ApiClient {
           archivedProjectIds.add(project.id);
         }
       }
-      
+
       // Archive tasks for archived projects
       for (const task of this.data.tasks.values()) {
         if (task.project_id && archivedProjectIds.has(task.project_id)) {
@@ -152,7 +152,7 @@ export class TestApiClient implements ApiClient {
 
       lifeArea.archived_at = null;
       lifeArea.updated_at = new Date().toISOString();
-      
+
       // Restore related entities - cascade through hierarchy
       const restoredGoalIds = new Set<string>();
       for (const goal of this.data.goals.values()) {
@@ -162,7 +162,7 @@ export class TestApiClient implements ApiClient {
           restoredGoalIds.add(goal.id);
         }
       }
-      
+
       // Restore projects for restored goals
       const restoredProjectIds = new Set<string>();
       for (const project of this.data.projects.values()) {
@@ -172,7 +172,7 @@ export class TestApiClient implements ApiClient {
           restoredProjectIds.add(project.id);
         }
       }
-      
+
       // Restore tasks for restored projects
       for (const task of this.data.tasks.values()) {
         if (task.project_id && restoredProjectIds.has(task.project_id)) {
@@ -180,7 +180,7 @@ export class TestApiClient implements ApiClient {
           task.updated_at = new Date().toISOString();
         }
       }
-      
+
       return lifeArea;
     },
   };

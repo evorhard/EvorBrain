@@ -28,8 +28,8 @@ describe('Cross-Store Integration Tests', () => {
     }
   });
 
-  const createStores = () => {
-    return createRoot((d) => {
+  const createStores = () =>
+    createRoot((d) => {
       dispose = d;
       return {
         lifeAreaStore: createStoreWrapper<LifeArea>(createLifeAreaStoreFactory(api)),
@@ -38,7 +38,6 @@ describe('Cross-Store Integration Tests', () => {
         taskStore: createStoreWrapper<Task>(createTaskStoreFactory(api)),
       };
     });
-  };
 
   describe('Cascading Operations', () => {
     it('should handle cascading archives from life area to tasks', async () => {
@@ -85,15 +84,15 @@ describe('Cross-Store Integration Tests', () => {
 
       // Verify cascading archives
       expect(lifeAreaStore.archived()).toHaveLength(1);
-      
+
       // Fetch updated data
       await goalStore.actions.fetchAll();
       await projectStore.actions.fetchAll();
       await taskStore.actions.fetchAll();
 
-      const archivedGoals = goalStore.items().filter(g => g.archived_at !== null);
-      const archivedProjects = projectStore.items().filter(p => p.archived_at !== null);
-      const archivedTasks = taskStore.items().filter(t => t.archived_at !== null);
+      const archivedGoals = goalStore.items().filter((g) => g.archived_at !== null);
+      const archivedProjects = projectStore.items().filter((p) => p.archived_at !== null);
+      const archivedTasks = taskStore.items().filter((t) => t.archived_at !== null);
 
       expect(archivedGoals).toHaveLength(1);
       expect(archivedProjects).toHaveLength(1);
@@ -133,7 +132,7 @@ describe('Cross-Store Integration Tests', () => {
 
       // Archive everything
       await lifeAreaStore.actions.archive(lifeArea.id);
-      
+
       // Refresh all stores
       await goalStore.actions.fetchAll();
       await projectStore.actions.fetchAll();
@@ -236,31 +235,40 @@ describe('Cross-Store Integration Tests', () => {
       await taskStore.actions.fetchAll();
 
       // Verify cascading archives
-      const archivedLifeAreas = lifeAreaStore.items().filter(la => la.id === lifeAreas[0].id && la.archived_at !== null);
+      const archivedLifeAreas = lifeAreaStore
+        .items()
+        .filter((la) => la.id === lifeAreas[0].id && la.archived_at !== null);
       expect(archivedLifeAreas).toHaveLength(1);
-      
+
       // Goals for archived life area should be archived
-      const archivedGoals = goalStore.items().filter(g => g.life_area_id === lifeAreas[0].id && g.archived_at !== null);
-      const activeGoalsForArchivedArea = goalStore.items().filter(g => g.life_area_id === lifeAreas[0].id && !g.archived_at);
+      const archivedGoals = goalStore
+        .items()
+        .filter((g) => g.life_area_id === lifeAreas[0].id && g.archived_at !== null);
+      const activeGoalsForArchivedArea = goalStore
+        .items()
+        .filter((g) => g.life_area_id === lifeAreas[0].id && !g.archived_at);
       expect(archivedGoals).toHaveLength(2); // 2 goals per life area
       expect(activeGoalsForArchivedArea).toHaveLength(0);
 
       // Projects for archived goals should be archived
       const archivedGoalIds = goals
-        .filter(g => g.life_area_id === lifeAreas[0].id)
-        .map(g => g.id);
-      const archivedProjects = projectStore.items().filter(p => 
-        archivedGoalIds.includes(p.goal_id) && p.archived_at !== null
-      );
+        .filter((g) => g.life_area_id === lifeAreas[0].id)
+        .map((g) => g.id);
+      const archivedProjects = projectStore
+        .items()
+        .filter((p) => archivedGoalIds.includes(p.goal_id) && p.archived_at !== null);
       expect(archivedProjects).toHaveLength(2); // 1 project per goal × 2 goals
-      
+
       // Tasks for archived projects should be archived
       const archivedProjectIds = projects
-        .filter(p => archivedGoalIds.includes(p.goal_id))
-        .map(p => p.id);
-      const archivedTasks = taskStore.items().filter(t => 
-        t.project_id && archivedProjectIds.includes(t.project_id) && t.archived_at !== null
-      );
+        .filter((p) => archivedGoalIds.includes(p.goal_id))
+        .map((p) => p.id);
+      const archivedTasks = taskStore
+        .items()
+        .filter(
+          (t) =>
+            t.project_id && archivedProjectIds.includes(t.project_id) && t.archived_at !== null,
+        );
       expect(archivedTasks).toHaveLength(4); // 2 tasks per project × 2 projects
     });
 
@@ -311,9 +319,9 @@ describe('Cross-Store Integration Tests', () => {
 
       // Verify all updates applied correctly
       expect(lifeAreaStore.items()[0].name).toBe('Updated Area');
-      expect(goalStore.items().filter(g => g.completed_at !== null)).toHaveLength(2);
-      expect(projectStore.items().find(p => p.id === projects[0].id)?.status).toBe('in_progress');
-      expect(projectStore.items().find(p => p.id === projects[1].id)?.status).toBe('completed');
+      expect(goalStore.items().filter((g) => g.completed_at !== null)).toHaveLength(2);
+      expect(projectStore.items().find((p) => p.id === projects[0].id)?.status).toBe('in_progress');
+      expect(projectStore.items().find((p) => p.id === projects[1].id)?.status).toBe('completed');
       expect(projectStore.archived()).toHaveLength(1);
     });
   });
@@ -337,7 +345,7 @@ describe('Cross-Store Integration Tests', () => {
       // Create quarterly goals for each area
       const quarterEndDate = new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString();
       const goals = [];
-      
+
       for (const area of lifeAreas) {
         const goal = await goalStore.actions.create({
           life_area_id: area.id,
@@ -367,7 +375,7 @@ describe('Cross-Store Integration Tests', () => {
       }
 
       // Create tasks for in-progress projects
-      const inProgressProjects = projects.filter(p => p.status === 'in_progress');
+      const inProgressProjects = projects.filter((p) => p.status === 'in_progress');
       for (const project of inProgressProjects) {
         await Promise.all([
           taskStore.actions.create({
@@ -394,31 +402,29 @@ describe('Cross-Store Integration Tests', () => {
       // Simulate mid-quarter review
       // Complete some tasks
       const allTasks = taskStore.items();
-      const tasksToComplete = allTasks.filter(t => t.title === 'Research');
-      await Promise.all(tasksToComplete.map(t => taskStore.actions.complete(t.id)));
+      const tasksToComplete = allTasks.filter((t) => t.title === 'Research');
+      await Promise.all(tasksToComplete.map((t) => taskStore.actions.complete(t.id)));
 
       // Update some project statuses
-      const planningProjects = projects.filter(p => p.status === 'planning');
+      const planningProjects = projects.filter((p) => p.status === 'planning');
       await Promise.all(
-        planningProjects.slice(0, 2).map(p => 
-          projectStore.actions.updateStatus(p.id, 'in_progress')
-        )
+        planningProjects
+          .slice(0, 2)
+          .map((p) => projectStore.actions.updateStatus(p.id, 'in_progress')),
       );
 
       // Complete a goal
       await goalStore.actions.complete(goals[0].id);
 
       // Archive completed goal's projects
-      const completedGoalProjects = projects.filter(p => p.goal_id === goals[0].id);
-      await Promise.all(
-        completedGoalProjects.map(p => projectStore.actions.archive(p.id))
-      );
+      const completedGoalProjects = projects.filter((p) => p.goal_id === goals[0].id);
+      await Promise.all(completedGoalProjects.map((p) => projectStore.actions.archive(p.id)));
 
       // Verify quarterly status
-      const activeGoals = goalStore.items().filter(g => !g.completed_at && !g.archived_at);
-      const completedGoals = goalStore.items().filter(g => g.completed_at !== null);
+      const activeGoals = goalStore.items().filter((g) => !g.completed_at && !g.archived_at);
+      const completedGoals = goalStore.items().filter((g) => g.completed_at !== null);
       const activeProjects = projectStore.active();
-      const completedTasks = taskStore.items().filter(t => t.completed_at !== null);
+      const completedTasks = taskStore.items().filter((t) => t.completed_at !== null);
 
       expect(lifeAreaStore.items()).toHaveLength(4);
       expect(completedGoals).toHaveLength(1);
@@ -484,22 +490,20 @@ describe('Cross-Store Integration Tests', () => {
       // Weekly Review Process
       // 1. Complete done tasks
       const completedTasks = lastWeekTasks.slice(0, 3);
-      await Promise.all(completedTasks.map(t => taskStore.actions.complete(t.id)));
+      await Promise.all(completedTasks.map((t) => taskStore.actions.complete(t.id)));
 
       // 2. Review and update projects
-      const stuckProjects = lastWeekProjects.filter(p => p.status === 'not_started');
+      const stuckProjects = lastWeekProjects.filter((p) => p.status === 'not_started');
       await Promise.all(
-        stuckProjects.map(p => projectStore.actions.updateStatus(p.id, 'on_hold'))
+        stuckProjects.map((p) => projectStore.actions.updateStatus(p.id, 'on_hold')),
       );
 
       // 3. Archive completed projects
       const projectsToComplete = lastWeekProjects.slice(0, 2);
       await Promise.all(
-        projectsToComplete.map(p => projectStore.actions.updateStatus(p.id, 'completed'))
+        projectsToComplete.map((p) => projectStore.actions.updateStatus(p.id, 'completed')),
       );
-      await Promise.all(
-        projectsToComplete.map(p => projectStore.actions.archive(p.id))
-      );
+      await Promise.all(projectsToComplete.map((p) => projectStore.actions.archive(p.id)));
 
       // 4. Create new projects for next week
       const nextWeekProjects = [];
@@ -523,9 +527,9 @@ describe('Cross-Store Integration Tests', () => {
       }
 
       // Verify weekly review results
-      const activeTasks = taskStore.items().filter(t => !t.completed_at && !t.archived_at);
-      const onHoldProjects = projectStore.items().filter(p => p.status === 'on_hold');
-      const planningProjects = projectStore.items().filter(p => p.status === 'planning');
+      const activeTasks = taskStore.items().filter((t) => !t.completed_at && !t.archived_at);
+      const onHoldProjects = projectStore.items().filter((p) => p.status === 'on_hold');
+      const planningProjects = projectStore.items().filter((p) => p.status === 'planning');
 
       expect(activeTasks.length).toBeGreaterThan(0);
       expect(onHoldProjects.length).toBeGreaterThan(0);
@@ -612,7 +616,7 @@ describe('Cross-Store Integration Tests', () => {
       expect(goalStore.items()).toHaveLength(lifeAreaCount * goalsPerArea);
       expect(projectStore.items()).toHaveLength(lifeAreaCount * goalsPerArea * projectsPerGoal);
       expect(taskStore.items()).toHaveLength(
-        lifeAreaCount * goalsPerArea * projectsPerGoal * tasksPerProject
+        lifeAreaCount * goalsPerArea * projectsPerGoal * tasksPerProject,
       );
 
       // Performance assertion - should complete in reasonable time
@@ -627,7 +631,7 @@ describe('Cross-Store Integration Tests', () => {
         taskStore.actions.fetchAll(),
       ]);
       const fetchTime = Date.now() - fetchStartTime;
-      
+
       expect(fetchTime).toBeLessThan(1000); // Fetching should be fast
     });
   });
@@ -640,10 +644,10 @@ declare global {
   }
 }
 
-Date.prototype.getWeek = function() {
+Date.prototype.getWeek = function () {
   const d = new Date(Date.UTC(this.getFullYear(), this.getMonth(), this.getDate()));
   const dayNum = d.getUTCDay() || 7;
   d.setUTCDate(d.getUTCDate() + 4 - dayNum);
   const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-  return Math.ceil((((d.getTime() - yearStart.getTime()) / 86400000) + 1) / 7);
+  return Math.ceil(((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
 };

@@ -98,7 +98,13 @@ export function ProjectForm(props: ProjectFormProps) {
 
       <div>
         <Label for="goal">Goal</Label>
-        <Select id="goal" value={goalId()} onChange={(e) => setGoalId(e.currentTarget.value)} disabled={isSubmitting()} required>
+        <Select
+          id="goal"
+          value={goalId()}
+          onChange={(e) => setGoalId(e.currentTarget.value)}
+          disabled={isSubmitting()}
+          required
+        >
           <option value="">Select a goal...</option>
           <For each={activeGoals()}>{(goal) => <option value={goal.id}>{goal.title}</option>}</For>
         </Select>

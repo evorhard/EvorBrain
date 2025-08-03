@@ -164,8 +164,8 @@ export function createTaskStoreFactory(
         const subtasks = await api.task.getSubtasks(parentTaskId);
         // Merge subtasks with existing items, avoiding duplicates
         setState('items', (current) => {
-          const existingIds = new Set(current.map(t => t.id));
-          const newSubtasks = subtasks.filter(t => !existingIds.has(t.id));
+          const existingIds = new Set(current.map((t) => t.id));
+          const newSubtasks = subtasks.filter((t) => !existingIds.has(t.id));
           return [...current, ...newSubtasks];
         });
       } catch (error) {

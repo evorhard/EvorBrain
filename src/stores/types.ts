@@ -62,7 +62,7 @@ export interface Store<T> {
   error: () => string | null;
   active: () => T[];
   archived: () => T[];
-  
+
   // Actions
   actions: {
     fetchAll: () => Promise<void>;
@@ -85,22 +85,23 @@ export interface Store<T> {
 }
 
 // Helper to create Store wrapper from factory stores
-export function createStoreWrapper<T extends { id: string; archived_at: string | null }>(
-  factoryStore: {
-    state: { items: T[]; selectedId: string | null; isLoading: boolean; error: string | null };
-    actions: any;
-  }
-): Store<T> {
+export function createStoreWrapper<
+  T extends { id: string; archived_at: string | null },
+>(factoryStore: {
+  state: { items: T[]; selectedId: string | null; isLoading: boolean; error: string | null };
+  actions: any;
+}): Store<T> {
   return {
     // State accessors
     items: () => factoryStore.state.items,
     selectedId: () => factoryStore.state.selectedId,
-    selectedItem: () => factoryStore.state.items.find(item => item.id === factoryStore.state.selectedId),
+    selectedItem: () =>
+      factoryStore.state.items.find((item) => item.id === factoryStore.state.selectedId),
     loading: () => factoryStore.state.isLoading,
     error: () => factoryStore.state.error,
-    active: () => factoryStore.state.items.filter(item => !item.archived_at),
-    archived: () => factoryStore.state.items.filter(item => item.archived_at !== null),
-    
+    active: () => factoryStore.state.items.filter((item) => !item.archived_at),
+    archived: () => factoryStore.state.items.filter((item) => item.archived_at !== null),
+
     // Actions - map to factory actions
     actions: {
       fetchAll: factoryStore.actions.fetchAll,

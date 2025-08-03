@@ -95,9 +95,9 @@ const TaskForm: Component<TaskFormProps> = (props) => {
           <label for="project" class="mb-1 block text-sm font-medium">
             Project
           </label>
-          <Select 
+          <Select
             id="project"
-            value={projectId()} 
+            value={projectId()}
             onChange={(e) => setProjectId(e.currentTarget.value)}
           >
             <option value="">No project</option>
@@ -112,9 +112,9 @@ const TaskForm: Component<TaskFormProps> = (props) => {
         <label for="priority" class="mb-1 block text-sm font-medium">
           Priority
         </label>
-        <Select 
+        <Select
           id="priority"
-          value={priority()} 
+          value={priority()}
           onChange={(e) => setPriority(e.currentTarget.value as TaskPriority)}
         >
           <option value="urgent">Urgent</option>
