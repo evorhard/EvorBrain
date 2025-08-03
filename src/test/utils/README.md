@@ -3,19 +3,18 @@
 This directory contains reusable test utilities to help write consistent and maintainable tests for
 EvorBrain.
 
-## ⚠️ Current Status
+## ✅ Current Status
 
-**Important:** These test utilities are fully implemented but have some limitations due to the
-current test environment setup:
+**Updated:** These test utilities are fully implemented and enhanced with comprehensive provider
+support:
 
-- **Render Helpers**: Router integration is not yet implemented (commented out to avoid SSR issues)
-- **DOM Environment**: Some tests may fail with "document is not defined" errors when running
-  outside of the proper test environment
-- **Component Tests**: The existing Button and Input tests need to be updated to work with the
-  current environment setup
+- **✅ Store Integration**: Full StoreProvider integration for testing components that use stores
+- **✅ Theme Support**: ThemeProvider integration with theme detection mocks
+- **✅ Render Helpers**: Complete provider support including stores, themes, and router
+- **⚠️ Component Testing**: Use factory-based tests for components with store dependencies
 
-The utilities themselves are working correctly as demonstrated by the passing `example.test.tsx`
-file, but full integration with all component tests is still in progress.
+The utilities now support all common testing scenarios. For components that use stores, use the
+factory pattern demonstrated in `*.factory.test.tsx` files for best results.
 
 ## Overview
 
@@ -34,6 +33,8 @@ Import all utilities from the main index:
 import {
   TauriMock,
   renderWithProviders,
+  renderWithStores,
+  renderWithAllProviders,
   createLifeArea,
   // ... other utilities
 } from '../test/utils';
@@ -96,27 +97,56 @@ const mock = createCrudMocks();
 
 ### renderWithProviders
 
-Enhanced render function with common wrappers:
+Enhanced render function with comprehensive provider support:
 
 ```typescript
 import { renderWithProviders } from '../test/utils';
 
-// Basic usage
+// Basic usage (includes stores and theme by default)
 const { getByText } = renderWithProviders(() => <MyComponent />);
 
-// With router (⚠️ Not yet implemented - will log warning)
+// With all providers (stores, theme, router)
 const result = renderWithProviders(() => <MyComponent />, {
   withRouter: true,
+  withStores: true,
+  withTheme: true,
   initialRoute: '/life-areas'
 });
 
-// With mock Tauri
+// Disable specific providers if needed
 const result = renderWithProviders(() => <MyComponent />, {
-  mockInvoke: tauriMock.getMock()
+  withStores: false, // For UI-only components
+  withTheme: false,  // If theme is not needed
+  mockInvoke: tauriMock.invoke
 });
 ```
 
-**Note:** Router support is currently disabled to avoid SSR issues with @solidjs/router.
+### renderWithStores
+
+Convenient shorthand for components that need stores and theme:
+
+```typescript
+import { renderWithStores } from '../test/utils';
+
+// Includes StoreProvider and ThemeProvider automatically
+const result = renderWithStores(() => <MyComponent />, {
+  mockInvoke: tauriMock.invoke
+});
+```
+
+### renderWithAllProviders
+
+Full provider stack (stores, theme, router):
+
+```typescript
+import { renderWithAllProviders } from '../test/utils';
+
+// Maximum provider support
+const result = renderWithAllProviders(() => <MyComponent />, {
+  mockInvoke: tauriMock.invoke,
+  initialRoute: '/goals'
+});
+```
 
 ### renderWithTheme
 
@@ -341,6 +371,49 @@ describe('LifeAreaManager', () => {
 });
 ```
 
+## Testing Patterns
+
+### Factory Pattern vs Singleton Pattern
+
+**For components with store dependencies, use the factory pattern:**
+
+```typescript
+// ✅ Factory Pattern (Recommended)
+import { createGoalStoreFactory } from '../test/utils';
+
+describe('GoalComponent with Factory', () => {
+  it('should work with mocked store', () => {
+    const { goalStore, GoalStoreProvider } = createGoalStoreFactory();
+
+    const result = render(() => (
+      <GoalStoreProvider>
+        <GoalComponent />
+      </GoalStoreProvider>
+    ));
+
+    // Test works because store is isolated
+  });
+});
+```
+
+```typescript
+// ❌ Singleton Pattern (Limited support)
+describe('GoalComponent with Singleton', () => {
+  it('may fail due to store initialization', () => {
+    // This may not work because stores initialize on import
+    const result = renderWithStores(() => <GoalComponent />, {
+      mockInvoke: mockFn
+    });
+  });
+});
+```
+
+**When to use each approach:**
+
+- **Factory Pattern**: Components that use stores (Goal, Project, Task, LifeArea pages/lists)
+- **Render Helpers**: UI-only components, forms without store dependencies
+- **Singleton + Render Helpers**: Simple components that don't interact with stores
+
 ## Best Practices
 
 1. **Always reset mocks** between tests to avoid state leakage
@@ -349,6 +422,8 @@ describe('LifeAreaManager', () => {
 4. **Mock at the right level** - usually at the Tauri command level
 5. **Test both success and error paths**
 6. **Use meaningful test data** that reflects real usage
+7. **Use factory pattern** for components with store dependencies
+8. **Use render helpers** for UI-only components
 
 ## Tips
 

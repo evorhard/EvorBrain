@@ -2,6 +2,8 @@ import { render, type RenderResult } from '@solidjs/testing-library';
 import { createContext, useContext, type JSX, type Component } from 'solid-js';
 import { MemoryRouter } from '@solidjs/router';
 import type { Mock } from 'vitest';
+import { StoreProvider } from '@/stores';
+import { ThemeProvider } from '@/providers/ThemeProvider';
 
 /**
  * Render helpers for SolidJS component testing
@@ -16,6 +18,10 @@ export interface RenderOptions {
   wrapper?: Component<{ children: JSX.Element }>;
   /** Mock Tauri invoke function */
   mockInvoke?: Mock;
+  /** Include StoreProvider (default: true) */
+  withStores?: boolean;
+  /** Include ThemeProvider (default: true) */
+  withTheme?: boolean;
 }
 
 /**
@@ -25,7 +31,14 @@ export function renderWithProviders(
   ui: () => JSX.Element,
   options: RenderOptions = {},
 ): RenderResult {
-  const { withRouter = false, initialRoute = '/', wrapper: Wrapper, mockInvoke } = options;
+  const {
+    withRouter = false,
+    initialRoute = '/',
+    wrapper: Wrapper,
+    mockInvoke,
+    withStores = true,
+    withTheme = true,
+  } = options;
 
   // Set up mock invoke if provided
   if (mockInvoke && typeof window !== 'undefined') {
@@ -37,6 +50,18 @@ export function renderWithProviders(
   }
 
   let component = ui;
+
+  // Wrap with StoreProvider if needed
+  if (withStores) {
+    const originalComponent = component;
+    component = () => <StoreProvider>{originalComponent()}</StoreProvider>;
+  }
+
+  // Wrap with ThemeProvider if needed
+  if (withTheme) {
+    const originalComponent = component;
+    component = () => <ThemeProvider>{originalComponent()}</ThemeProvider>;
+  }
 
   // Wrap with router if needed
   if (withRouter) {
@@ -161,7 +186,18 @@ export async function waitForUpdate(ms = 50) {
 }
 
 /**
- * Render with all common providers
+ * Render with stores and theme (most common use case)
+ */
+export function renderWithStores(ui: () => JSX.Element, options: RenderOptions = {}) {
+  return renderWithProviders(ui, {
+    ...options,
+    withStores: true,
+    withTheme: true,
+  });
+}
+
+/**
+ * Render with all common providers (stores, theme, router)
  */
 export function renderWithAllProviders(
   ui: () => JSX.Element,
@@ -170,15 +206,12 @@ export function renderWithAllProviders(
     mockData?: Record<string, unknown>;
   } = {},
 ) {
-  const { theme = 'light', mockData: _mockData = {}, ...renderOptions } = options;
-
-  const AllProviders: Component<{ children: JSX.Element }> = (props) => (
-    <div class={theme === 'dark' ? 'dark' : ''}>{props.children}</div>
-  );
+  const { theme: _theme = 'light', mockData: _mockData = {}, ...renderOptions } = options;
 
   return renderWithProviders(ui, {
     ...renderOptions,
-    wrapper: AllProviders,
     withRouter: true,
+    withStores: true,
+    withTheme: true,
   });
 }

@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { render, screen, fireEvent, waitFor, within } from '@solidjs/testing-library';
+import { screen, fireEvent, waitFor, within } from '@solidjs/testing-library';
 import { GoalsPage } from './GoalsPage';
 import {
   TauriMock,
@@ -7,6 +7,7 @@ import {
   createLifeArea,
   createArchivedGoal,
   batchCreate,
+  renderWithStores,
 } from '../../../test/utils';
 
 describe('GoalsPage Component', () => {
@@ -26,7 +27,7 @@ describe('GoalsPage Component', () => {
   it('should render page title and new goal button', async () => {
     tauriMock.onCommand('get_goals', () => []);
 
-    render(() => <GoalsPage />);
+    renderWithStores(() => <GoalsPage />, { mockInvoke: tauriMock.invoke });
 
     expect(screen.getByText('Goals', { selector: 'h1' })).toBeInTheDocument();
 
@@ -40,7 +41,7 @@ describe('GoalsPage Component', () => {
 
     tauriMock.onCommand('get_goals', () => goals);
 
-    render(() => <GoalsPage />);
+    renderWithStores(() => <GoalsPage />, { mockInvoke: tauriMock.invoke });
 
     await waitFor(() => {
       expect(screen.getByText('Test Goal 1')).toBeInTheDocument();
@@ -51,7 +52,7 @@ describe('GoalsPage Component', () => {
   it('should open create form when new goal button is clicked', async () => {
     tauriMock.onCommand('get_goals', () => []);
 
-    render(() => <GoalsPage />);
+    renderWithStores(() => <GoalsPage />, { mockInvoke: tauriMock.invoke });
 
     fireEvent.click(screen.getByText('New Goal'));
 
@@ -66,7 +67,7 @@ describe('GoalsPage Component', () => {
       .onCommand('get_goals', () => [])
       .onCommand('create_goal', () => createGoal({ name: 'New Goal' }));
 
-    render(() => <GoalsPage />);
+    renderWithStores(() => <GoalsPage />, { mockInvoke: tauriMock.invoke });
 
     fireEvent.click(screen.getByText('New Goal'));
 
@@ -93,7 +94,7 @@ describe('GoalsPage Component', () => {
 
     tauriMock.onCommand('get_goals', () => goals);
 
-    render(() => <GoalsPage />);
+    renderWithStores(() => <GoalsPage />, { mockInvoke: tauriMock.invoke });
 
     await waitFor(() => {
       expect(screen.getByText('Goal 1')).toBeInTheDocument();
@@ -121,7 +122,7 @@ describe('GoalsPage Component', () => {
 
     tauriMock.onCommand('get_goals', () => goals);
 
-    render(() => <GoalsPage />);
+    renderWithStores(() => <GoalsPage />, { mockInvoke: tauriMock.invoke });
 
     await waitFor(() => {
       expect(screen.getByText('Archived Goal')).toBeInTheDocument();
@@ -148,7 +149,7 @@ describe('GoalsPage Component', () => {
 
     tauriMock.onCommand('get_goals', () => [goal]);
 
-    render(() => <GoalsPage />);
+    renderWithStores(() => <GoalsPage />, { mockInvoke: tauriMock.invoke });
 
     await waitFor(() => {
       expect(screen.getByText('Editable Goal')).toBeInTheDocument();
@@ -180,7 +181,7 @@ describe('GoalsPage Component', () => {
   it('should handle form cancellation', async () => {
     tauriMock.onCommand('get_goals', () => []);
 
-    render(() => <GoalsPage />);
+    renderWithStores(() => <GoalsPage />, { mockInvoke: tauriMock.invoke });
 
     fireEvent.click(screen.getByText('New Goal'));
 
@@ -198,7 +199,7 @@ describe('GoalsPage Component', () => {
   it('should handle modal close', async () => {
     tauriMock.onCommand('get_goals', () => []);
 
-    render(() => <GoalsPage />);
+    renderWithStores(() => <GoalsPage />, { mockInvoke: tauriMock.invoke });
 
     fireEvent.click(screen.getByText('New Goal'));
 
@@ -223,7 +224,7 @@ describe('GoalsPage Component', () => {
 
     tauriMock.onCommand('get_goals', () => goals);
 
-    render(() => <GoalsPage />);
+    renderWithStores(() => <GoalsPage />, { mockInvoke: tauriMock.invoke });
 
     await waitFor(() => {
       expect(screen.getByText('Goal 1')).toBeInTheDocument();
@@ -266,7 +267,7 @@ describe('GoalsPage Component', () => {
 
     tauriMock.onCommand('get_goals', () => [goal]).onCommand('update_goal', () => updatedGoal);
 
-    render(() => <GoalsPage />);
+    renderWithStores(() => <GoalsPage />, { mockInvoke: tauriMock.invoke });
 
     await waitFor(() => {
       expect(screen.getByText('Original Name')).toBeInTheDocument();
@@ -309,7 +310,7 @@ describe('GoalsPage Component', () => {
 
     tauriMock.onCommand('get_goals', () => goals);
 
-    render(() => <GoalsPage />);
+    renderWithStores(() => <GoalsPage />, { mockInvoke: tauriMock.invoke });
 
     await waitFor(() => {
       expect(screen.getByText('Goal 1')).toBeInTheDocument();

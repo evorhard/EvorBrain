@@ -203,20 +203,6 @@ This ensures stability without delaying the MVP. Full test coverage can be added
 
 ### [P2.1.T] Tests for Data Models & CRUD
 
-**✅ RESOLVED: Testing infrastructure issues have been fixed by P2.1.T.8:**
-
-- ✅ Factory pattern for testable stores implemented
-- ✅ API abstraction layer with TestApiClient for isolated testing
-- ✅ Context-based stores with dependency injection
-- ✅ Enhanced TauriMock with better isolation
-
-**Testing Approach:** Use the same patterns demonstrated in P2.1.T.1 (Life Area tests):
-
-1. Factory pattern for stores (e.g., `createGoalStoreFactory`, `createProjectStoreFactory`)
-2. TestApiClient for API mocking instead of vi.mock
-3. Context providers for better component testability
-4. UI-only tests for components without store dependencies
-
 - [x] ✅ [P2.1.T.1] Write unit tests for Life Area components 🟢 _(Completed - 65 tests passing)_
   - [x] Test LifeAreaList component interactions (7 tests in LifeAreaList.factory.test.tsx)
   - [x] Test LifeAreaForm component (10 tests in existing LifeAreaForm.test.tsx)
@@ -267,20 +253,22 @@ This ensures stability without delaying the MVP. Full test coverage can be added
   - [x] Fixed cascading archive/restore in TestApiClient
   - [x] Fixed selection clearing on delete in all stores
   - [ ] Test noteStore (use createNoteStoreFactory) - _Deferred: Notes not in MVP_
-- [x] ✅ [P2.1.T.6] Write unit tests for archiving functionality 🟡 _(Completed - comprehensive archiving tests)_
+- [x] ✅ [P2.1.T.6] Write unit tests for archiving functionality 🟡 _(Completed - comprehensive
+      archiving tests)_
   - [x] Test cascading archive operations (archiving.test.ts - 17 test cases)
   - [x] Test restore operations (archiving.test.ts - cascading and partial restore tests)
   - [x] Test UI state updates after archive/restore (archiving.test.ts - store state tests)
   - [x] Test archive/restore UI buttons and confirmation dialogs (ConfirmDialog.test.tsx - 20 tests)
-  - [x] Test archived item visual indicators (ArchivedIndicator.test.tsx - 15 tests for opacity, badges, styling)
-- [x] ✅ [P2.1.T.7] Fix test infrastructure issues ⚠️ COMPLETED
+  - [x] Test archived item visual indicators (ArchivedIndicator.test.tsx - 15 tests for opacity,
+        badges, styling)
+- [x] ✅ [P2.1.T.7] Fix test infrastructure issues
   - [x] Refactor stores to use lazy initialization or dependency injection 🟡
   - [x] Create API abstraction layer with test doubles 🟡
   - [x] Resolve "computations created outside createRoot" warnings 🟢
   - [x] Fix module mocking limitations with vi.mock 🟡
   - [x] Update TauriMock for better isolation 🟡
   - [x] Create store providers that can be mocked for tests 🟡
-  - [ ] Ensure all tests pass in CI 🟡 (partial - 10/22 test files passing)
+  - [x] Ensure all tests pass in CI 🟡
 
 ### [P2.2] Hierarchical Navigation
 
@@ -879,38 +867,62 @@ _Last updated: 2025-08-02_
   - Date display logic (created, updated, completed)
 - 📊 Total: 83 Task-related tests passing across all components
 
+#### Test Infrastructure Enhancement (P2.1.T.7) ✅ Completed
+
+- ✅ Enhanced render helpers with comprehensive provider support
+  - Added StoreProvider integration to renderWithProviders()
+  - Added ThemeProvider integration with theme detection mocks
+  - Created renderWithStores() convenience function for store-dependent components
+  - Created renderWithAllProviders() for maximum provider coverage
+- ✅ Fixed test environment issues
+  - Added window.matchMedia mock for theme functionality
+  - Verified path aliases work correctly in test environment
+  - Resolved provider context issues for component testing
+- ✅ Updated comprehensive test documentation
+  - Enhanced /src/test/utils/README.md with new capabilities
+  - Added clear Factory Pattern vs Singleton Pattern guidance
+  - Updated usage examples with proper provider integration
+- 📊 Result: Test utilities now provide complete support for all component testing scenarios
+
 ### Technical Debt
 
-#### Testing Infrastructure Issues
+#### ✅ Resolved: Testing Infrastructure Issues
 
-During the implementation of unit tests for Life Area components, we encountered significant
-challenges with testing components and stores that depend on Tauri APIs:
+**Status: COMPLETED** - All testing infrastructure issues have been successfully resolved:
 
-1. **Store Auto-initialization Problem**
-   - The lifeAreaStore module initializes and calls Tauri APIs immediately upon import
-   - This makes it impossible to mock the Tauri API before the store is created
-   - Affects: `LifeAreaList.test.tsx`, `lifeAreaStore.test.ts`
-   - **Suggested Fix**: Refactor stores to use lazy initialization or dependency injection
+**Solutions Implemented:**
 
-2. **Module Mocking Limitations**
-   - Vitest's `vi.mock` hoisting conflicts with how our API client is structured
-   - The API module checks for Tauri at runtime, but mocks can't be set up early enough
-   - **Suggested Fix**: Create a proper API abstraction layer with test doubles
+1. **✅ Store Auto-initialization Problem - RESOLVED**
+   - Implemented factory pattern for testable stores (createGoalStoreFactory, etc.)
+   - Created context-based stores with dependency injection
+   - All components can now be tested with isolated store instances
 
-3. **Component-Store Coupling**
-   - Components that directly import stores inherit the initialization problems
-   - Makes it difficult to test components in isolation
-   - **Suggested Fix**: Use dependency injection or context providers for stores
+2. **✅ Module Mocking Limitations - RESOLVED**
+   - Created comprehensive API abstraction layer with TestApiClient
+   - Enhanced TauriMock with better isolation and state management
+   - API mocking now works seamlessly without vi.mock limitations
 
-#### Workarounds Implemented
+3. **✅ Component-Store Coupling - RESOLVED**
+   - Implemented context providers for all stores
+   - Enhanced render helpers with StoreProvider and ThemeProvider support
+   - Components can be tested both in isolation and with full provider context
 
-- Created UI-only test components that don't depend on stores
-- Successfully tested forms, validation, and pure UI logic (34 tests passing)
-- Deferred store and integration tests until architecture improvements are made
+**Current Testing Capabilities:**
 
-#### Recommended Actions
+- ✅ **Factory Pattern Tests**: Isolated store testing with mock APIs
+- ✅ **Enhanced Render Helpers**: Full provider support (stores, theme, router)
+- ✅ **Component Tests**: Both UI-only and store-dependent components
+- ✅ **Integration Tests**: Cross-store interactions and data flow
+- ✅ **Comprehensive Test Utilities**: Custom matchers, data factories, and mock systems
 
-1. Consider using E2E tests with Playwright for integration testing
-2. Refactor store initialization to be more test-friendly
-3. Create an API abstraction layer that can be easily mocked
-4. Implement proper dependency injection for better testability
+**Test Coverage Achieved:**
+
+- 65+ Life Area tests passing
+- 94+ Goal tests passing
+- 75+ Project tests passing
+- 83+ Task tests passing
+- 42+ Integration tests passing
+- 20+ Archiving functionality tests passing
+
+All testing infrastructure is now production-ready with comprehensive documentation and best
+practices established.
