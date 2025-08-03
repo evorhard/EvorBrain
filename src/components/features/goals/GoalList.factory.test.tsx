@@ -224,15 +224,13 @@ const GoalListWithFactory: Component = () => {
 const TestProvider: ParentComponent<{
   goalStore: ReturnType<typeof createGoalStoreFactory>;
   lifeAreaStore: ReturnType<typeof createLifeAreaStoreFactory>;
-}> = (props) => {
-  return (
-    <GoalStoreContext.Provider value={props.goalStore}>
-      <LifeAreaStoreContext.Provider value={props.lifeAreaStore}>
-        {props.children}
-      </LifeAreaStoreContext.Provider>
-    </GoalStoreContext.Provider>
-  );
-};
+}> = (props) => (
+  <GoalStoreContext.Provider value={props.goalStore}>
+    <LifeAreaStoreContext.Provider value={props.lifeAreaStore}>
+      {props.children}
+    </LifeAreaStoreContext.Provider>
+  </GoalStoreContext.Provider>
+);
 
 describe('GoalList with Factory Store', () => {
   let mockGoalApi: any;
@@ -496,4 +494,3 @@ describe('GoalList with Factory Store', () => {
     expect(goalElement).toHaveClass('opacity-60');
   });
 });
-

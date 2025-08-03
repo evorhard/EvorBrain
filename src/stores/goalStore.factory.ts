@@ -251,4 +251,3 @@ export function createGoalStoreFactory(
 }
 
 export type GoalStoreInstance = ReturnType<typeof createGoalStoreFactory>;
-

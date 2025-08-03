@@ -442,4 +442,3 @@ describe('Goal Store Factory', () => {
     });
   });
 });
-

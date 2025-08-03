@@ -280,9 +280,15 @@ describe('Project Store Factory', () => {
     it('should compute projects by status', () => {
       createRoot((d) => {
         dispose = d;
-        const planningProject = createProject({ title: 'Planning', status: ProjectStatus.Planning });
+        const planningProject = createProject({
+          title: 'Planning',
+          status: ProjectStatus.Planning,
+        });
         const activeProject = createProject({ title: 'Active', status: ProjectStatus.Active });
-        const completedProject = createProject({ title: 'Completed', status: ProjectStatus.Completed });
+        const completedProject = createProject({
+          title: 'Completed',
+          status: ProjectStatus.Completed,
+        });
 
         const store = createProjectStoreFactory(mockApi, {
           initialState: { items: [planningProject, activeProject, completedProject] },

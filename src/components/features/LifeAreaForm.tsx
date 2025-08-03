@@ -131,12 +131,7 @@ export function LifeAreaForm(props: LifeAreaFormProps) {
       </div>
 
       <div class="flex justify-end gap-3 pt-4">
-        <Button
-          type="button"
-          variant="secondary"
-          onClick={props.onClose}
-          disabled={isSubmitting()}
-        >
+        <Button type="button" variant="secondary" onClick={props.onClose} disabled={isSubmitting()}>
           Cancel
         </Button>
         <Button type="submit" disabled={isSubmitting()}>

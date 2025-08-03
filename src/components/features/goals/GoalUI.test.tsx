@@ -625,4 +625,3 @@ describe('Goal UI Component', () => {
     expect(onSelect).not.toHaveBeenCalled();
   });
 });
-

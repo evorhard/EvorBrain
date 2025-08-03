@@ -33,7 +33,9 @@ export async function mockInvoke(cmd: string, args?: unknown): Promise<unknown> 
       ];
     case 'create_life_area': {
       // Create a new mock life area with the provided data
-      const createArgs = args as { request?: { name: string; description?: string; color?: string; icon?: string } };
+      const createArgs = args as {
+        request?: { name: string; description?: string; color?: string; icon?: string };
+      };
       const request = createArgs?.request;
       return {
         id: `mock-${Date.now()}`,
@@ -48,7 +50,9 @@ export async function mockInvoke(cmd: string, args?: unknown): Promise<unknown> 
     }
     case 'update_life_area': {
       // Update mock life area
-      const updateArgs = args as { request?: { id: string; name: string; description?: string; color?: string; icon?: string } };
+      const updateArgs = args as {
+        request?: { id: string; name: string; description?: string; color?: string; icon?: string };
+      };
       const updateRequest = updateArgs?.request;
       return {
         id: updateRequest?.id || 'mock-id',
