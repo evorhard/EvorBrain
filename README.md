@@ -443,8 +443,10 @@ bun run test:e2e:debug # Debug E2E tests
 bun run test:e2e:headed # Run E2E tests in headed mode
 
 # Clean build artifacts ✅ WORKING
-bun run clean
-bun run clean:all  # Deep clean including node_modules
+bun run clean       # Clean build artifacts
+bun run clean:all   # Deep clean including node_modules
+bun run clean:rust  # Clean only Rust/Cargo cache
+bun run rebuild     # Clean Rust cache and restart dev server
 
 # Lint code ✅ WORKING
 bun run lint      # Check for linting errors
@@ -499,6 +501,29 @@ bun run docs:serve    # Serve documentation locally
 - Install recommended extensions for the best development experience
 - Check [`TASKS.md`](TASKS.md) for current development priorities
 - Join my Discord for help and discussions
+
+### Troubleshooting Development Issues
+
+If you encounter issues where changes aren't taking effect:
+
+1. **Frontend changes not updating**: The Vite dev server should hot-reload automatically. If not, try refreshing the browser.
+
+2. **Backend (Rust) changes not working**: 
+   ```bash
+   # Clean and rebuild the Rust backend
+   bun run rebuild
+   ```
+
+3. **Database issues or stale data**:
+   - Check the database location: `~/.local/share/com.evorbrain.evorbrain/evorbrain.db` (Linux/Mac)
+   - Delete the database file to start fresh (backup first if needed)
+
+4. **Complete reset**:
+   ```bash
+   bun run clean:all  # Clean everything
+   bun install        # Reinstall dependencies
+   bun run tauri:dev # Start fresh
+   ```
 
 ---
 
