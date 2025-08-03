@@ -16,20 +16,18 @@ export function GoalForm(props: GoalFormProps) {
   const { actions: goalActions } = useGoalStore();
   const { store: lifeAreaStore } = useLifeAreaStore();
 
-  const [name, setName] = createSignal('');
+  const [title, setTitle] = createSignal('');
   const [description, setDescription] = createSignal('');
   const [lifeAreaId, setLifeAreaId] = createSignal('');
-  const [priority, setPriority] = createSignal<'low' | 'medium' | 'high'>('medium');
   const [targetDate, setTargetDate] = createSignal('');
   const [isSubmitting, setIsSubmitting] = createSignal(false);
   const [error, setError] = createSignal<string | null>(null);
 
   // Update form fields when goal prop changes
   createEffect(() => {
-    setName(props.goal?.name || '');
+    setTitle(props.goal?.title || '');
     setDescription(props.goal?.description || '');
     setLifeAreaId(props.goal?.life_area_id || '');
-    setPriority(props.goal?.priority || 'medium');
     setTargetDate(props.goal?.target_date || '');
   });
 
@@ -46,7 +44,7 @@ export function GoalForm(props: GoalFormProps) {
     e.preventDefault();
     setError(null);
 
-    if (!name().trim()) {
+    if (!title().trim()) {
       setError('Goal name is required');
       return;
     }
@@ -60,19 +58,18 @@ export function GoalForm(props: GoalFormProps) {
 
     try {
       const goalData = {
-        name: name().trim(),
+        title: title().trim(),
         description: description().trim() || undefined,
         life_area_id: lifeAreaId(),
-        priority: priority(),
         target_date: targetDate() || undefined,
       };
 
       if (props.goal) {
         await goalActions.update(props.goal.id, {
-          name: goalData.name,
+          title: goalData.title,
           description: goalData.description,
-          priority: goalData.priority,
           target_date: goalData.target_date,
+          life_area_id: goalData.life_area_id,
         });
       } else {
         await goalActions.create(goalData);
@@ -95,8 +92,8 @@ export function GoalForm(props: GoalFormProps) {
         <Input
           id="goal-name"
           type="text"
-          value={name()}
-          onInput={(e) => setName(e.currentTarget.value)}
+          value={title()}
+          onInput={(e) => setTitle(e.currentTarget.value)}
           placeholder="Enter goal name"
           required
           autofocus
@@ -129,29 +126,14 @@ export function GoalForm(props: GoalFormProps) {
         />
       </div>
 
-      <div class="grid grid-cols-2 gap-4">
-        <div>
-          <Label for="goal-priority">Priority</Label>
-          <Select
-            id="goal-priority"
-            value={priority()}
-            onChange={(e) => setPriority(e.currentTarget.value as 'low' | 'medium' | 'high')}
-          >
-            <option value="low">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
-          </Select>
-        </div>
-
-        <div>
-          <Label for="goal-target-date">Target Date</Label>
-          <Input
-            id="goal-target-date"
-            type="date"
-            value={targetDate()}
-            onInput={(e) => setTargetDate(e.currentTarget.value)}
-          />
-        </div>
+      <div>
+        <Label for="goal-target-date">Target Date</Label>
+        <Input
+          id="goal-target-date"
+          type="date"
+          value={targetDate()}
+          onInput={(e) => setTargetDate(e.currentTarget.value)}
+        />
       </div>
 
       <Show when={error()}>

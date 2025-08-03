@@ -111,17 +111,27 @@ export function createGoalStore() {
     async update(
       id: string,
       data: {
-        name: string;
+        title: string;
         description?: string;
         target_date?: string;
-        priority?: 'low' | 'medium' | 'high';
+        life_area_id?: string;
       },
     ) {
       setState('isLoading', true);
       setState('error', null);
 
       try {
-        const updated = await api.goal.update({ id, ...data });
+        // Get the current goal to preserve life_area_id if not provided
+        const currentGoal = state.items.find((g) => g.id === id);
+        if (!currentGoal) throw new Error('Goal not found');
+
+        const updated = await api.goal.update({
+          id,
+          life_area_id: data.life_area_id || currentGoal.life_area_id,
+          title: data.title,
+          description: data.description,
+          target_date: data.target_date,
+        });
         setState('items', (item) => item.id === id, updated);
         return updated;
       } catch (error) {

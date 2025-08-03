@@ -6,7 +6,7 @@ import { createConfirmDialog } from '../../ui/ConfirmDialog';
 export function GoalList() {
   const { store: goalStore, actions: goalActions } = useGoalStore();
   const { store: lifeAreaStore } = useLifeAreaStore();
-  const [goalToDelete, setGoalToDelete] = createSignal<{ id: string; name: string } | null>(null);
+  const [goalToDelete, setGoalToDelete] = createSignal<{ id: string; title: string } | null>(null);
 
   const handleDeleteGoal = () => {
     const goal = goalToDelete();
@@ -18,7 +18,7 @@ export function GoalList() {
 
   const [DeleteConfirmDialog, deleteConfirmHandle] = createConfirmDialog({
     title: 'Delete Goal',
-    description: () => `Are you sure you want to delete "${goalToDelete()?.name}"?`,
+    description: () => `Are you sure you want to delete "${goalToDelete()?.title}"?`,
     confirmText: 'Delete',
     variant: 'danger',
     onConfirm: handleDeleteGoal,
@@ -42,30 +42,6 @@ export function GoalList() {
     return lifeArea?.name || 'Unknown';
   };
 
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case 'high':
-        return 'text-red-600 dark:text-red-400';
-      case 'medium':
-        return 'text-yellow-600 dark:text-yellow-400';
-      case 'low':
-        return 'text-green-600 dark:text-green-400';
-      default:
-        return 'text-content-secondary';
-    }
-  };
-
-  const getPriorityBadge = (priority: string) => {
-    const color = getPriorityColor(priority);
-    const label = priority.charAt(0).toUpperCase() + priority.slice(1);
-    return (
-      <span
-        class={`inline-block rounded px-2 py-1 text-xs font-medium ${color} bg-opacity-10 bg-current`}
-      >
-        {label}
-      </span>
-    );
-  };
 
   return (
     <div class="space-y-4">
@@ -105,8 +81,7 @@ export function GoalList() {
               <div class="flex items-start gap-3">
                 <div class="flex-1">
                   <div class="mb-1 flex items-center gap-2">
-                    <h3 class="text-content font-semibold">{goal.name}</h3>
-                    {goal.priority && getPriorityBadge(goal.priority)}
+                    <h3 class="text-content font-semibold">{goal.title}</h3>
                   </div>
 
                   {goal.description && (
@@ -177,7 +152,7 @@ export function GoalList() {
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        setGoalToDelete({ id: goal.id, name: goal.name });
+                        setGoalToDelete({ id: goal.id, title: goal.title });
                         deleteConfirmHandle.open();
                       }}
                       class="rounded p-1.5 text-red-600 transition-colors hover:bg-red-50 dark:hover:bg-red-900/20"
