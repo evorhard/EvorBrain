@@ -54,19 +54,19 @@ export function clearAllData() {
       projects: [],
       tasks: [],
     };
-    console.log('✅ All development data cleared!');
-    console.log('Reload the page to see the changes.');
+    console.info('✅ All development data cleared!');
+    console.info('Reload the page to see the changes.');
     return true;
   } else {
     console.warn('This command only works in development mode (browser).');
-    console.log('For Tauri app, use the reset_database command.');
+    console.info('For Tauri app, use the reset_database command.');
     return false;
   }
 }
 
 // Make it available globally in development
 if (typeof window !== 'undefined' && !isTauri()) {
-  (window as any).clearAllData = clearAllData;
+  (window as unknown as { clearAllData: typeof clearAllData }).clearAllData = clearAllData;
 }
 
 /**
@@ -253,8 +253,8 @@ export async function mockInvoke(cmd: string, args?: unknown): Promise<unknown> 
     case 'create_task_with_subtasks': {
       const createArgs = args as { 
         request: {
-          parent_task: any;
-          subtasks: any[];
+          parent_task: Record<string, unknown>;
+          subtasks: Array<Record<string, unknown>>;
         }
       };
       // For now, just create the parent task
