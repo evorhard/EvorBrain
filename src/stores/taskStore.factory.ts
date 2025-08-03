@@ -155,6 +155,29 @@ export function createTaskStoreFactory(
       }
     },
 
+    // Fetch subtasks for a parent task
+    async fetchSubtasks(parentTaskId: string) {
+      setState('isLoading', true);
+      setState('error', null);
+
+      try {
+        const subtasks = await api.task.getSubtasks(parentTaskId);
+        // Merge subtasks with existing items, avoiding duplicates
+        setState('items', (current) => {
+          const existingIds = new Set(current.map(t => t.id));
+          const newSubtasks = subtasks.filter(t => !existingIds.has(t.id));
+          return [...current, ...newSubtasks];
+        });
+      } catch (error) {
+        const message =
+          error instanceof EvorBrainError ? error.message : 'Failed to fetch subtasks';
+        setState('error', message);
+        console.error('Failed to fetch subtasks:', error);
+      } finally {
+        setState('isLoading', false);
+      }
+    },
+
     // Fetch today's tasks
     async fetchTodaysTasks() {
       setState('isLoading', true);
@@ -307,6 +330,10 @@ export function createTaskStoreFactory(
 
       try {
         await api.task.delete(id);
+        // Clear selection if the deleted item was selected
+        if (state.selectedId === id) {
+          setState('selectedId', null);
+        }
         // Refetch to get updated state (with cascaded archives)
         await actions.fetchAll();
       } catch (error) {

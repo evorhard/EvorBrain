@@ -118,6 +118,10 @@ export function createLifeAreaStoreFactory(
 
       try {
         await api.lifeArea.delete(id);
+        // Clear selection if the deleted item was selected
+        if (state.selectedId === id) {
+          setState('selectedId', null);
+        }
         // Refetch to get updated state (with cascaded archives)
         await actions.fetchAll();
       } catch (error) {

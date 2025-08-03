@@ -121,10 +121,28 @@ export class TestApiClient implements ApiClient {
 
       lifeArea.archived_at = new Date().toISOString();
 
-      // Archive related entities
+      // Archive related entities - cascade through hierarchy
+      const archivedGoalIds = new Set<string>();
       for (const goal of this.data.goals.values()) {
         if (goal.life_area_id === id) {
           goal.archived_at = new Date().toISOString();
+          archivedGoalIds.add(goal.id);
+        }
+      }
+      
+      // Archive projects for archived goals
+      const archivedProjectIds = new Set<string>();
+      for (const project of this.data.projects.values()) {
+        if (archivedGoalIds.has(project.goal_id)) {
+          project.archived_at = new Date().toISOString();
+          archivedProjectIds.add(project.id);
+        }
+      }
+      
+      // Archive tasks for archived projects
+      for (const task of this.data.tasks.values()) {
+        if (task.project_id && archivedProjectIds.has(task.project_id)) {
+          task.archived_at = new Date().toISOString();
         }
       }
     },
@@ -134,6 +152,35 @@ export class TestApiClient implements ApiClient {
 
       lifeArea.archived_at = null;
       lifeArea.updated_at = new Date().toISOString();
+      
+      // Restore related entities - cascade through hierarchy
+      const restoredGoalIds = new Set<string>();
+      for (const goal of this.data.goals.values()) {
+        if (goal.life_area_id === id) {
+          goal.archived_at = null;
+          goal.updated_at = new Date().toISOString();
+          restoredGoalIds.add(goal.id);
+        }
+      }
+      
+      // Restore projects for restored goals
+      const restoredProjectIds = new Set<string>();
+      for (const project of this.data.projects.values()) {
+        if (restoredGoalIds.has(project.goal_id)) {
+          project.archived_at = null;
+          project.updated_at = new Date().toISOString();
+          restoredProjectIds.add(project.id);
+        }
+      }
+      
+      // Restore tasks for restored projects
+      for (const task of this.data.tasks.values()) {
+        if (task.project_id && restoredProjectIds.has(task.project_id)) {
+          task.archived_at = null;
+          task.updated_at = new Date().toISOString();
+        }
+      }
+      
       return lifeArea;
     },
   };

@@ -79,7 +79,8 @@ Based on our current task structure, here are the phases/tasks that MUST be comp
 - Keyboard shortcuts (P4.1)
 - UI animations (P4.2)
 - Performance optimizations (P4.3)
-- AI features (P5.1)
+- Note taking functionality (P5.1)
+- AI features (P5.2)
 - Multi-platform support (P6.x)
 
 **Testing Strategy for MVP**: While comprehensive testing (P7) is not required for MVP release, each
@@ -255,13 +256,17 @@ This ensures stability without delaying the MVP. Full test coverage can be added
   - [x] Test priority selector component in isolation (tested in TaskForm)
   - [x] Test date formatting and validation utilities (tested in TaskList and TaskDetail)
   - [x] Use createTaskStoreFactory pattern (26 tests in taskStore.factory.test.ts)
-- [ ] 📋 [P2.1.T.5] Write integration tests for stores 🟡
-  - [ ] Test lifeAreaStore (use factory pattern demonstrated in P2.1.T.1)
-  - [ ] Test goalStore (use createGoalStoreFactory)
-  - [ ] Test projectStore (use createProjectStoreFactory)
-  - [ ] Test taskStore (use createTaskStoreFactory)
-  - [ ] Test noteStore (use createNoteStoreFactory)
-  - [ ] **Alternative**: Consider E2E tests with Playwright instead
+- [x] ✅ [P2.1.T.5] Write integration tests for stores 🟢 _(Completed - 42 integration tests
+      passing)_
+  - [x] Test lifeAreaStore (7 tests in lifeAreaStore.integration.test.ts)
+  - [x] Test goalStore (8 tests in goalStore.integration.test.ts)
+  - [x] Test projectStore (8 tests in projectStore.integration.test.ts)
+  - [x] Test taskStore (12 tests in taskStore.integration.test.ts)
+  - [x] Test cross-store interactions (7 tests in cross-store.integration.test.ts)
+  - [x] Added createStoreWrapper helper for consistent test API
+  - [x] Fixed cascading archive/restore in TestApiClient
+  - [x] Fixed selection clearing on delete in all stores
+  - [ ] Test noteStore (use createNoteStoreFactory) - _Deferred: Notes not in MVP_
 - [ ] 📋 [P2.1.T.6] Write unit tests for archiving functionality 🟡
   - [ ] Test cascading archive operations (use TestApiClient)
   - [ ] Test restore operations (use TestApiClient)
@@ -369,56 +374,6 @@ This ensures stability without delaying the MVP. Full test coverage can be added
   - [ ] Optimize critical path
   - [ ] Consider parallel initialization where possible
 
-### [P2.9] Note-Taking System
-
-- [ ] 📋 [P2.9.1] Implement Note CRUD operations 🟡
-  - [ ] Backend Tauri commands for notes
-  - [ ] Note database schema and migrations
-  - [ ] Repository methods for note operations
-- [ ] 📋 [P2.9.2] Create Note UI components 🟡
-  - [ ] NoteList component with filtering by entity
-  - [ ] NoteForm component for creating/editing notes
-  - [ ] NotesPage component for standalone notes view
-  - [ ] Note preview component with markdown rendering
-- [ ] 📋 [P2.9.3] Implement Note associations 🟡
-  - [ ] Link notes to tasks
-  - [ ] Link notes to projects
-  - [ ] Link notes to goals
-  - [ ] Link notes to life areas
-  - [ ] Support for standalone notes
-- [ ] 📋 [P2.9.4] Add Note search functionality 🟡
-  - [ ] Full-text search in note content
-  - [ ] Filter by associated entity
-  - [ ] Filter by creation/update date
-- [ ] 📋 [P2.9.5] Integrate Notes into existing views 🟡
-  - [ ] Add notes section to task detail view
-  - [ ] Add notes section to project detail view
-  - [ ] Add notes counter badges
-  - [ ] Quick note creation from any entity
-- [ ] 📋 [P2.9.6] Add rich text features 🔴
-  - [ ] Markdown editor with live preview
-  - [ ] Support for code blocks with syntax highlighting
-  - [ ] Image embedding and attachments
-  - [ ] Link references to other entities
-
-### [P2.9.T] Tests for Note-Taking System
-
-- [ ] 📋 [P2.9.T.1] Write unit tests for Note backend 🟡
-  - [ ] Test Note CRUD operations
-  - [ ] Test Note associations
-  - [ ] Test cascading deletes
-  - [ ] Test search functionality
-- [ ] 📋 [P2.9.T.2] Write unit tests for Note components 🟡
-  - [ ] Test NoteList component (use factory pattern)
-  - [ ] Test NoteForm component
-  - [ ] Test NotesPage component
-  - [ ] Test note preview rendering
-- [ ] 📋 [P2.9.T.3] Write integration tests for Notes 🟡
-  - [ ] Test note creation from different entities
-  - [ ] Test note filtering and search
-  - [ ] Test note archiving/restoration
-  - [ ] Test markdown rendering
-
 ---
 
 ## Phase 3: Data Persistence [P3]
@@ -522,50 +477,82 @@ This ensures stability without delaying the MVP. Full test coverage can be added
 
 ## Phase 5: Advanced Features [P5]
 
-### [P5.1] AI Integration
+### [P5.1] Note-Taking System
 
-- [ ] 📋 [P5.1.1] Design Claude API integration 🔴
-- [ ] 📋 [P5.1.2] Implement priority suggestions 🔴
-- [ ] 📋 [P5.1.3] Add natural language task creation 🔴
-- [ ] 📋 [P5.1.4] Create smart scheduling 🔴
-- [ ] 📋 [P5.1.5] Build AI settings panel 🟡
-- [ ] 📋 [P5.1.6] Add usage tracking and limits 🟡
+- [ ] 📋 [P5.1.1] Implement Note CRUD operations 🟡
+  - [ ] Backend Tauri commands for notes
+  - [ ] Note database schema and migrations
+  - [ ] Repository methods for note operations
+- [ ] 📋 [P5.1.2] Create Note UI components 🟡
+  - [ ] NoteList component with filtering by entity
+  - [ ] NoteForm component for creating/editing notes
+  - [ ] NotesPage component for standalone notes view
+  - [ ] Note preview component with markdown rendering
+- [ ] 📋 [P5.1.3] Implement Note associations 🟡
+  - [ ] Link notes to tasks
+  - [ ] Link notes to projects
+  - [ ] Link notes to goals
+  - [ ] Link notes to life areas
+  - [ ] Support for standalone notes
+- [ ] 📋 [P5.1.4] Add Note search functionality 🟡
+  - [ ] Full-text search in note content
+  - [ ] Filter by associated entity
+  - [ ] Filter by creation/update date
+- [ ] 📋 [P5.1.5] Integrate Notes into existing views 🟡
+  - [ ] Add notes section to task detail view
+  - [ ] Add notes section to project detail view
+  - [ ] Add notes counter badges
+  - [ ] Quick note creation from any entity
+- [ ] 📋 [P5.1.6] Add rich text features 🔴
+  - [ ] Markdown editor with live preview
+  - [ ] Support for code blocks with syntax highlighting
+  - [ ] Image embedding and attachments
+  - [ ] Link references to other entities
 
-### [P5.2] Habit Tracker
+### [P5.2] AI Integration
 
-- [ ] 📋 [P5.2.1] Design habit data model 🟡
-- [ ] 📋 [P5.2.2] Create habit UI components 🟡
-- [ ] 📋 [P5.2.3] Implement streak tracking 🟡
-- [ ] 📋 [P5.2.4] Add habit statistics 🟡
-- [ ] 📋 [P5.2.5] Build habit calendar view 🟡
-- [ ] 📋 [P5.2.6] Create reminder system 🔴
+- [ ] 📋 [P5.2.1] Design Claude API integration 🔴
+- [ ] 📋 [P5.2.2] Implement priority suggestions 🔴
+- [ ] 📋 [P5.2.3] Add natural language task creation 🔴
+- [ ] 📋 [P5.2.4] Create smart scheduling 🔴
+- [ ] 📋 [P5.2.5] Build AI settings panel 🟡
+- [ ] 📋 [P5.2.6] Add usage tracking and limits 🟡
 
-### [P5.3] Analytics Dashboard
+### [P5.3] Habit Tracker
 
-- [ ] 📋 [P5.3.1] Design analytics views 🟡
-- [ ] 📋 [P5.3.2] Implement task completion metrics 🟡
-- [ ] 📋 [P5.3.3] Add productivity graphs 🔴
-- [ ] 📋 [P5.3.4] Create time tracking analytics 🔴
-- [ ] 📋 [P5.3.5] Build custom report builder 🔴
-- [ ] 📋 [P5.3.6] Add data export for analytics 🟡
+- [ ] 📋 [P5.3.1] Design habit data model 🟡
+- [ ] 📋 [P5.3.2] Create habit UI components 🟡
+- [ ] 📋 [P5.3.3] Implement streak tracking 🟡
+- [ ] 📋 [P5.3.4] Add habit statistics 🟡
+- [ ] 📋 [P5.3.5] Build habit calendar view 🟡
+- [ ] 📋 [P5.3.6] Create reminder system 🔴
 
-### [P5.4] Template System
+### [P5.4] Analytics Dashboard
 
-- [ ] 📋 [P5.4.1] Design template structure 🟡
-- [ ] 📋 [P5.4.2] Create template editor 🔴
-- [ ] 📋 [P5.4.3] Implement template library 🟡
-- [ ] 📋 [P5.4.4] Add template sharing 🔴
-- [ ] 📋 [P5.4.5] Build quick-create from template 🟡
-- [ ] 📋 [P5.4.6] Create default templates 🟢
+- [ ] 📋 [P5.4.1] Design analytics views 🟡
+- [ ] 📋 [P5.4.2] Implement task completion metrics 🟡
+- [ ] 📋 [P5.4.3] Add productivity graphs 🔴
+- [ ] 📋 [P5.4.4] Create time tracking analytics 🔴
+- [ ] 📋 [P5.4.5] Build custom report builder 🔴
+- [ ] 📋 [P5.4.6] Add data export for analytics 🟡
 
-### [P5.5] Advanced Filtering
+### [P5.5] Template System
 
-- [ ] 📋 [P5.5.1] Build advanced filter UI 🔴
-- [ ] 📋 [P5.5.2] Implement filter combinations 🟡
-- [ ] 📋 [P5.5.3] Add saved filters 🟡
-- [ ] 📋 [P5.5.4] Create smart filters 🔴
-- [ ] 📋 [P5.5.5] Implement filter presets 🟡
-- [ ] 📋 [P5.5.6] Add bulk operations 🟡
+- [ ] 📋 [P5.5.1] Design template structure 🟡
+- [ ] 📋 [P5.5.2] Create template editor 🔴
+- [ ] 📋 [P5.5.3] Implement template library 🟡
+- [ ] 📋 [P5.5.4] Add template sharing 🔴
+- [ ] 📋 [P5.5.5] Build quick-create from template 🟡
+- [ ] 📋 [P5.5.6] Create default templates 🟢
+
+### [P5.6] Advanced Filtering
+
+- [ ] 📋 [P5.6.1] Build advanced filter UI 🔴
+- [ ] 📋 [P5.6.2] Implement filter combinations 🟡
+- [ ] 📋 [P5.6.3] Add saved filters 🟡
+- [ ] 📋 [P5.6.4] Create smart filters 🔴
+- [ ] 📋 [P5.6.5] Implement filter presets 🟡
+- [ ] 📋 [P5.6.6] Add bulk operations 🟡
 
 ---
 
