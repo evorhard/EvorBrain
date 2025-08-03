@@ -79,7 +79,7 @@ export function ProjectList(props: ProjectListProps) {
 
   const getGoalName = (goalId: string) => {
     const goal = goalStore.items.find((g) => g.id === goalId);
-    return goal?.name || 'Unknown Goal';
+    return goal?.title || 'Unknown Goal';
   };
 
   const getStatusBadgeVariant = (status: ProjectStatus) => {

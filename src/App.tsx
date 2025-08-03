@@ -2,12 +2,13 @@ import MainLayout from './components/layout/MainLayout';
 import { Container } from './components/ui/Container';
 import { ErrorBoundary } from './components/ui/ErrorBoundary';
 import { invoke } from '@tauri-apps/api/core';
-import { createSignal, onMount, Switch, Match } from 'solid-js';
+import { createSignal, onMount, Switch, Match, onCleanup } from 'solid-js';
 import { StoreProvider, useUIStore } from './stores';
 import { GoalsPage } from './components/features/goals';
 import { ProjectsPage } from './components/features/projects';
 import TasksPage from './components/features/tasks/TasksPage';
 import { LifeAreasPage } from './components/features';
+import { clearAllData, isTauri } from './lib/tauriCheck';
 
 function AppContent() {
   const { store: uiStore, actions: uiActions } = useUIStore();
@@ -16,6 +17,27 @@ function AppContent() {
   // Initialize theme after store is available
   onMount(() => {
     uiActions.initializeTheme();
+    
+    // Add keyboard shortcut for clearing data in development
+    if (!isTauri()) {
+      const handleKeyPress = (e: KeyboardEvent) => {
+        // Ctrl/Cmd + Shift + D (for "Delete/Development")
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'D') {
+          e.preventDefault();
+          // eslint-disable-next-line no-alert
+          const confirmClear = window.confirm(
+            'Are you sure you want to clear all development data? This cannot be undone.',
+          );
+          if (confirmClear) {
+            clearAllData();
+            window.location.reload();
+          }
+        }
+      };
+      
+      window.addEventListener('keydown', handleKeyPress);
+      onCleanup(() => window.removeEventListener('keydown', handleKeyPress));
+    }
   });
 
   const testDatabase = async () => {
@@ -83,7 +105,7 @@ function AppContent() {
                   Your intelligent life management system. Start by creating your first task or
                   exploring the features.
                 </p>
-                <div class="mt-4">
+                <div class="mt-4 space-y-2">
                   <button
                     onClick={testDatabase}
                     class="bg-primary hover:bg-primary-600 rounded-md px-4 py-2 text-white transition-colors"
@@ -91,6 +113,13 @@ function AppContent() {
                     Test Database Connection
                   </button>
                   {dbStatus() && <p class="text-content-secondary mt-2 text-sm">{dbStatus()}</p>}
+                  {!isTauri() && (
+                    <div class="mt-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-md">
+                      <p class="text-yellow-800 dark:text-yellow-200 text-sm">
+                        <strong>Development Mode:</strong> Press <kbd class="px-2 py-1 bg-yellow-100 dark:bg-yellow-800 rounded text-xs">Ctrl/Cmd + Shift + D</kbd> to clear all data, or run <code class="px-2 py-1 bg-yellow-100 dark:bg-yellow-800 rounded text-xs">clearAllData()</code> in the console.
+                      </p>
+                    </div>
+                  )}
                 </div>
               </div>
 

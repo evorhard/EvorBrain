@@ -3,7 +3,7 @@ import type { Task, TaskPriority } from '../../../types/models';
 import { Button } from '../../ui/Button';
 import { Input } from '../../ui/Input';
 import { Textarea } from '../../ui/Textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../ui/Select';
+import { Select } from '../../ui/SelectHtml';
 import { useProjectStore } from '../../../stores';
 import { format } from 'date-fns';
 
@@ -95,16 +95,15 @@ const TaskForm: Component<TaskFormProps> = (props) => {
           <label for="project" class="mb-1 block text-sm font-medium">
             Project
           </label>
-          <Select value={projectId()} onChange={setProjectId}>
-            <SelectTrigger id="project">
-              <SelectValue placeholder="Select a project (optional)" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="">No project</SelectItem>
-              <For each={activeProjects()}>
-                {(project) => <SelectItem value={project.id}>{project.title}</SelectItem>}
-              </For>
-            </SelectContent>
+          <Select 
+            id="project"
+            value={projectId()} 
+            onChange={(e) => setProjectId(e.currentTarget.value)}
+          >
+            <option value="">No project</option>
+            <For each={activeProjects()}>
+              {(project) => <option value={project.id}>{project.title}</option>}
+            </For>
           </Select>
         </div>
       </Show>
@@ -113,16 +112,15 @@ const TaskForm: Component<TaskFormProps> = (props) => {
         <label for="priority" class="mb-1 block text-sm font-medium">
           Priority
         </label>
-        <Select value={priority()} onChange={(value) => setPriority(value as TaskPriority)}>
-          <SelectTrigger id="priority">
-            <SelectValue placeholder="Select priority" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="urgent">Urgent</SelectItem>
-            <SelectItem value="high">High</SelectItem>
-            <SelectItem value="medium">Medium</SelectItem>
-            <SelectItem value="low">Low</SelectItem>
-          </SelectContent>
+        <Select 
+          id="priority"
+          value={priority()} 
+          onChange={(e) => setPriority(e.currentTarget.value as TaskPriority)}
+        >
+          <option value="urgent">Urgent</option>
+          <option value="high">High</option>
+          <option value="medium">Medium</option>
+          <option value="low">Low</option>
         </Select>
       </div>
 

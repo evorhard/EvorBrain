@@ -29,6 +29,8 @@ function loadMockStore() {
   return {
     lifeAreas: [],
     goals: [],
+    projects: [],
+    tasks: [],
   };
 }
 
@@ -38,6 +40,34 @@ function saveMockStore() {
 
 // Store for mock data persistence across calls
 let mockStore = loadMockStore();
+
+/**
+ * Clear all mock data in development environment
+ * Can be called from browser console: window.clearAllData()
+ */
+export function clearAllData() {
+  if (!isTauri()) {
+    localStorage.removeItem(MOCK_STORE_KEY);
+    mockStore = {
+      lifeAreas: [],
+      goals: [],
+      projects: [],
+      tasks: [],
+    };
+    console.log('✅ All development data cleared!');
+    console.log('Reload the page to see the changes.');
+    return true;
+  } else {
+    console.warn('This command only works in development mode (browser).');
+    console.log('For Tauri app, use the reset_database command.');
+    return false;
+  }
+}
+
+// Make it available globally in development
+if (typeof window !== 'undefined' && !isTauri()) {
+  (window as any).clearAllData = clearAllData;
+}
 
 /**
  * Mock invoke function for development in browser
@@ -135,9 +165,219 @@ export async function mockInvoke(cmd: string, args?: unknown): Promise<unknown> 
       return undefined;
     }
     case 'get_projects':
-      return [];
+      return mockStore.projects || [];
+    case 'get_projects_by_goal': {
+      const goalArgs = args as { goal_id: string };
+      return (mockStore.projects || []).filter(p => p.goal_id === goalArgs.goal_id);
+    }
+    case 'create_project': {
+      const createArgs = args as { request: { title: string; goal_id: string; description?: string; status?: string } };
+      const newProject = {
+        id: `proj_${Date.now()}`,
+        title: createArgs.request.title,
+        goal_id: createArgs.request.goal_id,
+        description: createArgs.request.description,
+        status: createArgs.request.status || 'planning',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      };
+      if (!mockStore.projects) {
+        mockStore.projects = [];
+      }
+      mockStore.projects.push(newProject);
+      saveMockStore();
+      return newProject;
+    }
+    case 'update_project': {
+      const updateArgs = args as { request: { id: string; title: string; goal_id: string; description?: string; status: string } };
+      if (mockStore.projects) {
+        const projectIndex = mockStore.projects.findIndex(p => p.id === updateArgs.request.id);
+        if (projectIndex !== -1) {
+          mockStore.projects[projectIndex] = {
+            ...mockStore.projects[projectIndex],
+            ...updateArgs.request,
+            updated_at: new Date().toISOString(),
+          };
+          saveMockStore();
+          return mockStore.projects[projectIndex];
+        }
+      }
+      throw new Error('Project not found');
+    }
+    case 'update_project_status': {
+      const statusArgs = args as { id: string; status: string };
+      if (mockStore.projects) {
+        const projectIndex = mockStore.projects.findIndex(p => p.id === statusArgs.id);
+        if (projectIndex !== -1) {
+          mockStore.projects[projectIndex] = {
+            ...mockStore.projects[projectIndex],
+            status: statusArgs.status,
+            updated_at: new Date().toISOString(),
+            completed_at: statusArgs.status === 'completed' ? new Date().toISOString() : undefined,
+          };
+          saveMockStore();
+          return mockStore.projects[projectIndex];
+        }
+      }
+      throw new Error('Project not found');
+    }
+    case 'delete_project': {
+      const deleteArgs = args as { id: string };
+      if (mockStore.projects) {
+        const projectIndex = mockStore.projects.findIndex(p => p.id === deleteArgs.id);
+        if (projectIndex !== -1) {
+          mockStore.projects.splice(projectIndex, 1);
+          saveMockStore();
+        }
+      }
+      return undefined;
+    }
     case 'get_tasks':
-      return [];
+      return mockStore.tasks || [];
+    case 'get_tasks_by_project': {
+      const projectArgs = args as { project_id: string };
+      return (mockStore.tasks || []).filter(t => t.project_id === projectArgs.project_id);
+    }
+    case 'get_todays_tasks':
+      // Return tasks due today or overdue
+      const today = new Date().toISOString().split('T')[0];
+      return (mockStore.tasks || []).filter(t => {
+        if (!t.due_date) return false;
+        const taskDate = t.due_date.split('T')[0];
+        return taskDate <= today && !t.completed_at;
+      });
+    case 'get_subtasks': {
+      const subtaskArgs = args as { parent_task_id: string };
+      return (mockStore.tasks || []).filter(t => t.parent_task_id === subtaskArgs.parent_task_id);
+    }
+    case 'create_task_with_subtasks': {
+      const createArgs = args as { 
+        request: {
+          parent_task: any;
+          subtasks: any[];
+        }
+      };
+      // For now, just create the parent task
+      const parentTask = {
+        id: `task_${Date.now()}`,
+        ...createArgs.request.parent_task,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      };
+      if (!mockStore.tasks) {
+        mockStore.tasks = [];
+      }
+      mockStore.tasks.push(parentTask);
+      
+      // Create subtasks if any
+      if (createArgs.request.subtasks && createArgs.request.subtasks.length > 0) {
+        createArgs.request.subtasks.forEach((subtask, index) => {
+          const newSubtask = {
+            id: `task_${Date.now()}_${index}`,
+            ...subtask,
+            parent_task_id: parentTask.id,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          };
+          mockStore.tasks.push(newSubtask);
+        });
+      }
+      
+      saveMockStore();
+      return parentTask;
+    }
+    case 'create_task': {
+      const createArgs = args as { 
+        title: string; 
+        project_id?: string; 
+        parent_task_id?: string;
+        description?: string; 
+        priority?: string;
+        due_date?: string;
+      };
+      const newTask = {
+        id: `task_${Date.now()}`,
+        title: createArgs.title,
+        project_id: createArgs.project_id,
+        parent_task_id: createArgs.parent_task_id,
+        description: createArgs.description,
+        priority: createArgs.priority || 'medium',
+        due_date: createArgs.due_date,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      };
+      if (!mockStore.tasks) {
+        mockStore.tasks = [];
+      }
+      mockStore.tasks.push(newTask);
+      saveMockStore();
+      return newTask;
+    }
+    case 'update_task': {
+      const updateArgs = args as { 
+        id: string; 
+        title: string; 
+        description?: string; 
+        priority: string;
+        due_date?: string;
+      };
+      if (mockStore.tasks) {
+        const taskIndex = mockStore.tasks.findIndex(t => t.id === updateArgs.id);
+        if (taskIndex !== -1) {
+          mockStore.tasks[taskIndex] = {
+            ...mockStore.tasks[taskIndex],
+            ...updateArgs,
+            updated_at: new Date().toISOString(),
+          };
+          saveMockStore();
+          return mockStore.tasks[taskIndex];
+        }
+      }
+      throw new Error('Task not found');
+    }
+    case 'complete_task': {
+      const completeArgs = args as { id: string };
+      if (mockStore.tasks) {
+        const taskIndex = mockStore.tasks.findIndex(t => t.id === completeArgs.id);
+        if (taskIndex !== -1) {
+          mockStore.tasks[taskIndex] = {
+            ...mockStore.tasks[taskIndex],
+            completed_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          };
+          saveMockStore();
+          return mockStore.tasks[taskIndex];
+        }
+      }
+      throw new Error('Task not found');
+    }
+    case 'uncomplete_task': {
+      const uncompleteArgs = args as { id: string };
+      if (mockStore.tasks) {
+        const taskIndex = mockStore.tasks.findIndex(t => t.id === uncompleteArgs.id);
+        if (taskIndex !== -1) {
+          mockStore.tasks[taskIndex] = {
+            ...mockStore.tasks[taskIndex],
+            completed_at: undefined,
+            updated_at: new Date().toISOString(),
+          };
+          saveMockStore();
+          return mockStore.tasks[taskIndex];
+        }
+      }
+      throw new Error('Task not found');
+    }
+    case 'delete_task': {
+      const deleteArgs = args as { id: string };
+      if (mockStore.tasks) {
+        const taskIndex = mockStore.tasks.findIndex(t => t.id === deleteArgs.id);
+        if (taskIndex !== -1) {
+          mockStore.tasks.splice(taskIndex, 1);
+          saveMockStore();
+        }
+      }
+      return undefined;
+    }
     case 'get_notes':
       return [];
     case 'delete_life_area': {

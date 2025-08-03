@@ -61,9 +61,9 @@ const TaskList: Component<TaskListProps> = (props) => {
     return format(dueDate, 'MMM d');
   };
 
-  const TaskItem: Component<{ task: Task; level?: number }> = (props) => {
-    const task = () => props.task;
-    const level = () => props.level || 0;
+  const TaskItem: Component<{ task: Task; level?: number }> = (itemProps) => {
+    const task = () => itemProps.task;
+    const level = () => itemProps.level || 0;
     const subtasks = createMemo(() => getSubtasks(task().id));
     const isOverdue = createMemo(
       () => task().due_date && !task().completed_at && isPast(new Date(task().due_date)),
