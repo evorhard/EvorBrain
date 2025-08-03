@@ -442,11 +442,9 @@ bun run test:e2e:ui   # Run E2E tests with interactive UI
 bun run test:e2e:debug # Debug E2E tests
 bun run test:e2e:headed # Run E2E tests in headed mode
 
-# Clean build artifacts ✅ WORKING
-bun run clean       # Clean build artifacts
-bun run clean:all   # Deep clean including node_modules
-bun run clean:rust  # Clean only Rust/Cargo cache
+# Rebuild commands ✅ WORKING
 bun run rebuild     # Clean Rust cache and restart dev server
+bun run rebuild:all # Deep clean everything, reinstall deps, and restart
 
 # Lint code ✅ WORKING
 bun run lint      # Check for linting errors
@@ -506,9 +504,11 @@ bun run docs:serve    # Serve documentation locally
 
 If you encounter issues where changes aren't taking effect:
 
-1. **Frontend changes not updating**: The Vite dev server should hot-reload automatically. If not, try refreshing the browser.
+1. **Frontend changes not updating**: The Vite dev server should hot-reload automatically. If not,
+   try refreshing the browser.
 
-2. **Backend (Rust) changes not working**: 
+2. **Backend (Rust) changes not working**:
+
    ```bash
    # Clean and rebuild the Rust backend
    bun run rebuild
@@ -520,9 +520,7 @@ If you encounter issues where changes aren't taking effect:
 
 4. **Complete reset**:
    ```bash
-   bun run clean:all  # Clean everything
-   bun install        # Reinstall dependencies
-   bun run tauri:dev # Start fresh
+   bun run rebuild:all  # Clean everything, reinstall deps, and start fresh
    ```
 
 ---
