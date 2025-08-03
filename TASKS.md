@@ -267,12 +267,12 @@ This ensures stability without delaying the MVP. Full test coverage can be added
   - [x] Fixed cascading archive/restore in TestApiClient
   - [x] Fixed selection clearing on delete in all stores
   - [ ] Test noteStore (use createNoteStoreFactory) - _Deferred: Notes not in MVP_
-- [ ] 📋 [P2.1.T.6] Write unit tests for archiving functionality 🟡
-  - [ ] Test cascading archive operations (use TestApiClient)
-  - [ ] Test restore operations (use TestApiClient)
-  - [ ] Test UI state updates after archive/restore (use factory pattern)
-  - [ ] **Recommended**: Test archive/restore UI buttons and confirmation dialogs
-  - [ ] **Recommended**: Test archived item visual indicators (opacity, badges)
+- [x] ✅ [P2.1.T.6] Write unit tests for archiving functionality 🟡 _(Completed - comprehensive archiving tests)_
+  - [x] Test cascading archive operations (archiving.test.ts - 17 test cases)
+  - [x] Test restore operations (archiving.test.ts - cascading and partial restore tests)
+  - [x] Test UI state updates after archive/restore (archiving.test.ts - store state tests)
+  - [x] Test archive/restore UI buttons and confirmation dialogs (ConfirmDialog.test.tsx - 20 tests)
+  - [x] Test archived item visual indicators (ArchivedIndicator.test.tsx - 15 tests for opacity, badges, styling)
 - [x] ✅ [P2.1.T.7] Fix test infrastructure issues ⚠️ COMPLETED
   - [x] Refactor stores to use lazy initialization or dependency injection 🟡
   - [x] Create API abstraction layer with test doubles 🟡

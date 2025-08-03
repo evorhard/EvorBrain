@@ -244,10 +244,19 @@ export class TestApiClient implements ApiClient {
 
       goal.archived_at = new Date().toISOString();
 
-      // Archive related projects
+      // Archive related projects and collect their IDs
+      const archivedProjectIds = new Set<string>();
       for (const project of this.data.projects.values()) {
         if (project.goal_id === id) {
           project.archived_at = new Date().toISOString();
+          archivedProjectIds.add(project.id);
+        }
+      }
+
+      // Archive tasks for archived projects
+      for (const task of this.data.tasks.values()) {
+        if (task.project_id && archivedProjectIds.has(task.project_id)) {
+          task.archived_at = new Date().toISOString();
         }
       }
     },
